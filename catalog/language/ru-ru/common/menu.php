@@ -1,0 +1,14 @@
+<?php
+// *	@source		See SOURCE.txt for source and other copyright.
+// *	@license	GNU General Public License version 3; see LICENSE.txt
+
+// Text
+$_['text_menu_catalog'] = 'Каталог товаров';
+$_['text_all'] = 'Смотреть Все';
+$_['button_manufacturers'] = 'Все бренды';
+$_['text_manufacturers'] = 'Бренды';
+$_['button_catalog'] = 'Каталог товаров';
+
+$_['button_show_more'] = 'Показать еще';
+$_['button_hide_more'] = 'Скрыть';
+$_['text_forward'] = 'Повернуть назад';

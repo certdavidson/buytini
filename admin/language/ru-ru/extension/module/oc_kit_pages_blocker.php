@@ -1,0 +1,104 @@
+<?php
+/**
+ * Pages Blocker — OpenCart 3.x Module
+ *
+ * @author    oc-kit.com
+ * @copyright Copyright (c) 2026 oc-kit.com. All rights reserved.
+ * @link      https://oc-kit.com
+ */
+
+$_['heading_title']              = 'oc-kit.com — Pages Blocker';
+$_['text_rules']                 = 'Правила';
+$_['text_notifications']         = 'Уведомления';
+$_['text_settings']              = 'Настройки';
+$_['text_add_rule']              = 'Добавить правило';
+$_['text_edit_rule']             = 'Редактировать правило';
+$_['text_no_rules']              = 'Правил пока нет. Нажмите «Добавить правило», чтобы создать первое.';
+$_['text_no_notifications']      = 'Заявок пока нет.';
+$_['text_confirm_delete']        = 'Вы уверены, что хотите удалить?';
+$_['text_success_save']          = 'Изменения сохранены';
+$_['text_success_delete']        = 'Запись удалена';
+$_['text_guests']                = 'Гости (не авторизованы)';
+$_['text_unread']                = 'непрочитанных';
+$_['text_records']               = 'записей';
+$_['text_yes']                   = 'Да';
+$_['text_no']                    = 'Нет';
+$_['text_enabled']               = 'Включено';
+$_['text_disabled']              = 'Отключено';
+$_['text_no_results']            = 'Ничего не найдено';
+$_['text_extension']             = 'Расширения';
+$_['column_id']                  = '#';
+$_['column_name']                = 'Название';
+$_['column_type']                = 'Тип';
+$_['column_entities']            = 'Объекты';
+$_['column_groups']              = 'Группы';
+$_['column_countries']           = 'Страны';
+$_['column_action']              = 'Действие';
+$_['column_status']              = 'Статус';
+$_['column_actions']             = 'Действия';
+$_['column_date']                = 'Дата';
+$_['column_email']               = 'Email';
+$_['column_sender_name']         = 'Имя';
+$_['column_page']                = 'Страница';
+$_['column_message']             = 'Сообщение';
+$_['entry_name']                 = 'Название правила';
+$_['entry_entity_type']          = 'Тип объекта';
+$_['entry_entities']             = 'Объекты';
+$_['entry_search']               = 'Поиск...';
+$_['entry_search_product']       = 'Поиск товаров...';
+$_['entry_search_category']      = 'Поиск категорий...';
+$_['entry_search_manufacturer']  = 'Поиск брендов...';
+$_['entry_groups']               = 'Разрешённые группы';
+$_['entry_countries']            = 'Разрешённые страны (ISO)';
+$_['entry_fallback']             = 'Действие при блокировке';
+$_['entry_sort_order']           = 'Порядок сортировки';
+$_['entry_status']               = 'Статус';
+$_['entry_default_action']       = 'Действие по умолчанию';
+$_['entry_allow_bots']           = 'Не блокировать поисковых ботов';
+$_['entry_bot_patterns']         = 'Список ботов (User-Agent)';
+$_['entry_bot_patterns_placeholder'] = 'googlebot';
+$_['help_bot_patterns']          = 'Один паттерн на строку. Сравнение без учёта регистра, поиск подстроки в User-Agent. Если поле пустое — используется встроенный список.';
+$_['entry_extend_category']      = 'Расширенная блокировка категорий';
+$_['entry_extend_manufacturer']  = 'Расширенная блокировка брендов';
+$_['entry_geo_source']           = 'Источник геолокации';
+$_['entry_unknown_geo']          = 'Блокировать неизвестную геолокацию';
+$_['entry_notify_title']         = 'Заголовок формы уведомления';
+$_['entry_notify_text']          = 'Текст формы';
+$_['entry_notify_button']        = 'Текст кнопки';
+$_['entry_admin_email']          = 'Email администратора';
+$_['entry_send_confirmation']    = 'Отправлять подтверждение покупателю';
+$_['help_allow_bots']            = 'Google, Bing, Yandex и другие поисковые боты смогут индексировать заблокированные страницы';
+$_['help_extend_category']       = 'Если включено — товары заблокированных категорий также исчезают из каталога, поиска и похожих товаров';
+$_['help_extend_manufacturer']   = 'Если включено — товары заблокированных брендов также исчезают из каталога и поиска';
+$_['help_unknown_geo']           = 'Если заголовок геолокации отсутствует или невалиден — блокировать такого посетителя';
+$_['help_geo_source']            = 'Источник для определения страны посетителя. «Авто» проверяет CF-IPCountry, X-Real-IP, затем REMOTE_ADDR';
+$_['help_notify_text']           = 'Обычный текст. Для отображения названия сайта используйте статический текст.';
+$_['type_product']               = 'Товар';
+$_['type_category']              = 'Категория';
+$_['type_manufacturer']          = 'Бренд';
+$_['action_global']              = 'Глобальное';
+$_['action_404']                 = '404';
+$_['action_notify_form']         = 'Форма уведомления';
+$_['geo_cloudflare']             = 'Cloudflare (CF-IPCountry)';
+$_['geo_x_country_code']         = 'X-Country-Code';
+$_['geo_geoip']                  = 'Geoip-Country-Code';
+$_['geo_x_real_country']         = 'X-Real-Country';
+$_['geo_auto']                   = 'Авто (все по очереди)';
+$_['geo_disabled']               = 'Отключено';
+$_['button_save']                = 'Сохранить';
+$_['button_cancel']              = 'Отмена';
+$_['button_add']                 = 'Добавить';
+$_['button_delete']              = 'Удалить';
+$_['button_edit']                = 'Редактировать';
+$_['button_mark_read']           = 'Прочитано';
+$_['button_mark_unread']         = 'Непрочитано';
+$_['filter_type']                = 'Тип';
+$_['filter_status']              = 'Статус';
+$_['filter_read']                = 'Статус чтения';
+$_['status_read']                = 'Прочитанные';
+$_['status_unread']              = 'Непрочитанные';
+$_['error_permission']           = 'Недостаточно прав для выполнения этого действия';
+$_['error_name']                 = 'Укажите название правила';
+$_['error_entity_type']          = 'Выберите тип объекта';
+$_['error_entities']             = 'Выберите хотя бы один объект';
+$_['error_no_conditions']        = 'Укажите хотя бы одно условие доступа (группу или страну)';
