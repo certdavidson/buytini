@@ -1,0 +1,27 @@
+/* our-partners */
+.op-head { max-width: 680px; margin: 0 auto; padding: 36px 20px; text-align: center; }
+.op-head__title { font-size: 42px; line-height: 1.14; font-weight: 600; margin: 0 0 14px; }
+.op-head__sub { font-size: 17px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+.op-stats-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 8px; }
+.op-stats { background: var(--text); color: var(--bg); border-radius: var(--radius-lg); padding: 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 700px) { .op-stats { grid-template-columns: 1fr 1fr; } }
+.op-stat { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.op-stat__v { font-size: 30px; font-weight: 600; color: var(--accent); }
+.op-stat__l { font-size: 13px; opacity: .78; margin-top: 3px; }
+.op-body { max-width: var(--maxw); margin: 0 auto; padding: 32px 20px 56px; }
+.op-group { margin-bottom: 40px; }
+.op-group__title { font-size: 22px; font-weight: 600; margin: 0 0 16px; }
+.op-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; display: flex; flex-direction: column; transition: border-color .15s, transform .15s; }
+.op-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.op-card__head { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+.op-card__avatar { width: 52px; height: 52px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600; flex-shrink: 0; }
+.op-card__avatar--round { border-radius: var(--radius-pill); }
+.op-card__id { min-width: 0; }
+.op-card__name { display: block; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.op-card__meta { display: block; font-size: 12px; color: var(--text-subtle); }
+.op-card__desc { display: block; font-size: 13px; color: var(--text-muted); line-height: 1.55; flex: 1; }
+.op-card__link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--accent); margin-top: 14px; }
+.op-cta { display: flex; gap: 14px; align-items: center; background: var(--accent-soft); border-radius: var(--radius-lg); padding: 28px; flex-wrap: wrap; justify-content: space-between; }
+.op-cta__title { display: block; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.op-cta__sub { display: block; font-size: 14px; color: var(--text-muted); line-height: 1.55; max-width: 560px; }
+.op-cta__btn { height: 50px; }

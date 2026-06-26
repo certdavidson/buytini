@@ -1,0 +1,42 @@
+/* -------- page: cart (+ .summary, .empty) -------- */
+.cart { max-width: var(--maxw); margin: 0 auto; padding: 24px 20px 64px; }
+.cart__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+.cart__head h1 { font-size: 32px; font-weight: 600; margin: 0; }
+.cart__head span { font-size: 14px; color: var(--text-muted); }
+.cart__grid { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; }
+@media (max-width: 900px) { .cart__grid { grid-template-columns: 1fr; } }
+.cart__list { display: flex; flex-direction: column; gap: 14px; }
+.cart__continue { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--accent); font-weight: 500; margin-top: 6px; transition: color .15s; }
+.cart__continue:hover { color: var(--accent-hover); }
+.cart-item { display: flex; gap: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+.cart-item__media { width: 96px; height: 120px; border-radius: var(--radius-md); background: var(--surface-sunken) center / cover no-repeat; flex-shrink: 0; }
+.cart-item__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.cart-item__top { display: flex; justify-content: space-between; gap: 12px; }
+.cart-item__brand { display: block; font-size: 12px; color: var(--text-subtle); margin-bottom: 3px; }
+.cart-item__name { display: block; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 5px; transition: color .15s; }
+.cart-item__name:hover { color: var(--accent); }
+.cart-item__opts { display: block; font-size: 13px; color: var(--text-muted); }
+.cart-item__remove { width: 34px; height: 34px; border: none; background: transparent; color: var(--text-subtle); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: color .15s, background-color .15s; }
+.cart-item__remove:hover { color: var(--error); background: var(--surface-muted); }
+.cart-item__foot { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; padding-top: 12px; }
+.cart-item__total { font-size: 18px; font-weight: 600; }
+.qty--lg .qty__btn { width: 38px; height: 40px; font-size: 18px; }
+.qty--lg .qty__val { min-width: 36px; font-size: 15px; }
+.summary { position: sticky; top: 90px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+@media (max-width: 900px) { .summary { position: static; } }
+.summary__title { display: block; font-size: 18px; font-weight: 600; margin-bottom: 18px; }
+.summary__promo { display: flex; gap: 8px; margin-bottom: 18px; }
+.summary__row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+.summary__row span:first-child { color: var(--text-muted); }
+.summary__row--muted span:last-child { color: var(--text-subtle); }
+.summary__row--success span { color: var(--success); }
+.summary__note { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-muted); margin: 12px 0; background: var(--info-soft); padding: 11px 12px; border-radius: var(--radius-sm); }
+.summary__note svg { flex-shrink: 0; margin-top: 1px; }
+.summary__total { display: flex; justify-content: space-between; padding: 14px 0; margin-top: 4px; border-top: 1px solid var(--border); font-size: 18px; font-weight: 600; }
+.summary__total span:last-child { color: var(--accent); }
+.summary__secure { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; font-size: 12px; color: var(--text-subtle); }
+.empty { max-width: 520px; margin: 0 auto; padding: 80px 20px; text-align: center; }
+.empty__icon { width: 88px; height: 88px; border-radius: var(--radius-pill); background: var(--surface-muted); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--text-subtle); }
+.empty__title { font-size: 28px; font-weight: 600; margin: 0 0 10px; }
+.empty__text { font-size: 15px; color: var(--text-muted); margin: 0 0 24px; }
+.empty__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }

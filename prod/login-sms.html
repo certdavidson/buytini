@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вхід за SMS — buytini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<script>(function(){try{var t=localStorage.getItem('buytini-theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+
+  <div class="auth-center"><div class="auth-center__inner">
+    <a class="auth-center__logo" href="index.html"><img src="images/buytini-logo.svg" alt="buytini" width="40" height="42"><span>buytini</span></a>
+    <div class="auth-card">
+      <div id="sms-phone">
+        <h1 class="auth-card__title">Вхід за SMS</h1>
+        <p class="auth-card__sub">Введіть номер телефону — надішлемо код підтвердження.</p>
+        <form data-form="sms-phone" data-show="#sms-code" data-hide="#sms-phone">
+          <label class="field__label">Номер телефону</label>
+          <input class="input auth-input" type="tel" required placeholder="+380 __ ___ __ __">
+          <button class="btn btn--primary btn--block auth-submit" type="submit">Надіслати код</button>
+        </form>
+      </div>
+      <div id="sms-code" hidden>
+        <h1 class="auth-card__title">Введіть код</h1>
+        <p class="auth-card__sub">Надіслали 4-значний код на ваш номер</p>
+        <form data-form="sms-code" data-go="account.html">
+          <div class="otp">
+            <input class="otp__box" maxlength="1" inputmode="numeric" aria-label="Цифра 1">
+            <input class="otp__box" maxlength="1" inputmode="numeric" aria-label="Цифра 2">
+            <input class="otp__box" maxlength="1" inputmode="numeric" aria-label="Цифра 3">
+            <input class="otp__box" maxlength="1" inputmode="numeric" aria-label="Цифра 4">
+          </div>
+          <button class="btn btn--primary btn--block auth-submit" type="submit">Підтвердити</button>
+        </form>
+        <p class="auth-resend">Не отримали? <button type="button" data-form-toast>Надіслати ще раз</button></p>
+        <p class="auth-back"><button class="auth-link-btn" type="button" data-show="#sms-phone" data-hide="#sms-code">← Змінити номер</button></p>
+      </div>
+    </div>
+    <p class="auth-center__below"><a href="login.html">Увійти з паролем</a></p>
+  </div></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

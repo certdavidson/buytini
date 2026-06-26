@@ -1,0 +1,24 @@
+/* delivery */
+.deliv-wrap { max-width: var(--maxw); margin: 0 auto; padding: 8px 20px 56px; }
+.deliv-methods { margin-bottom: 36px; align-items: start; }
+.deliv-card { position: relative; display: flex; flex-direction: column; }
+.deliv-card--featured { border-color: var(--accent); }
+.deliv-card__ribbon { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--accent); color: var(--on-accent); font-size: 12px; font-weight: 500; }
+.deliv-card__rows { margin-top: auto; }
+.tariff { margin-bottom: 28px; }
+.tariff__title { font-size: 24px; font-weight: 600; margin: 0 0 18px; }
+.tariff__scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.tariff__table { width: 100%; border-collapse: collapse; min-width: 480px; }
+.tariff__table th { text-align: left; padding: 14px 20px; font-size: 13px; font-weight: 600; color: var(--text-muted); background: var(--surface-muted); border-bottom: 1px solid var(--border); }
+.tariff__table th:not(:first-child), .tariff__table td:not(:first-child) { text-align: center; }
+.tariff__table td { padding: 14px 20px; font-size: 15px; border-bottom: 1px solid var(--border); }
+.tariff__table tr:last-child td { border-bottom: none; }
+.tariff__table tbody tr:hover { background: var(--surface-muted); }
+.tariff__note { font-size: 13px; color: var(--text-subtle); margin: 12px 0 0; line-height: 1.5; }
+.customs { display: flex; gap: 16px; background: var(--info-soft); border-radius: var(--radius-lg); padding: 24px 26px; margin-bottom: 36px; }
+.customs__icon { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--surface); color: var(--info); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.customs__title { display: block; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.customs__text { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin: 0; }
+.customs__text strong { color: var(--text); }
+.deliv-faq-title { font-size: 24px; font-weight: 600; margin: 0 0 18px; }
+.faq + .help-cta { margin-top: 36px; }

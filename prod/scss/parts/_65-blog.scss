@@ -1,0 +1,23 @@
+/* blog */
+.blog-grid { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 64px; display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+@media (max-width: 900px) { .blog-grid { grid-template-columns: 1fr; } }
+.blog-feature { display: block; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 24px; transition: border-color .15s; }
+.blog-feature:hover { border-color: var(--accent); }
+.blog-feature__img { display: block; height: 300px; background: center / cover no-repeat; }
+.blog-feature__body { display: block; padding: 24px; }
+.blog-feature__title { display: block; font-size: 24px; font-weight: 600; margin: 0 0 8px; line-height: 1.3; }
+.post-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 560px) { .post-grid { grid-template-columns: 1fr; } }
+.post { display: block; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); transition: border-color .15s; }
+.post:hover { border-color: var(--accent); }
+.post__img { display: block; height: 170px; background: var(--surface-sunken) center / cover no-repeat; }
+.post__body { display: block; padding: 18px; }
+.post__title { display: block; font-size: 16px; font-weight: 600; margin: 0 0 6px; line-height: 1.35; }
+.post__meta { display: block; font-size: 13px; color: var(--text-subtle); }
+.tag-cat { display: inline-block; padding: 4px 11px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+.tag-cat--muted { background: var(--surface-muted); color: var(--text-muted); font-size: 11px; padding: 3px 10px; margin-bottom: 10px; }
+.blog-side-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; }
+.blog-cats { display: flex; flex-direction: column; }
+.blog-cats a { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; font-size: 14px; color: var(--text-muted); transition: color .15s; }
+.blog-cats a:hover { color: var(--accent); }
+.blog-cats span { font-size: 12px; color: var(--text-subtle); }

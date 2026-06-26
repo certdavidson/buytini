@@ -1,0 +1,14 @@
+/* -------- layout -------- */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+.breadcrumb { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--text-subtle); }
+.breadcrumb__link { color: var(--text-subtle); transition: color .15s; }
+.breadcrumb__link:hover { color: var(--accent); }
+.breadcrumb__current { color: var(--text); font-weight: 500; }
+
+.page-head__title { font-size: 34px; font-weight: 600; margin: 0 0 6px; }
+.page-head__meta { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+.seo-block { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+.seo-block__title { font-size: 20px; font-weight: 600; margin: 0 0 12px; }
+.seo-block__text { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin: 0; max-width: 880px; }

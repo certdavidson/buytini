@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Реєстрація — buytini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<script>(function(){try{var t=localStorage.getItem('buytini-theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-brand">
+      <a class="auth-brand__logo" href="index.html"><img src="images/buytini-logo.svg" alt="buytini" width="40" height="42"><span>buytini</span></a>
+      <div class="auth-brand__body"><h2 class="auth-brand__title">Приєднуйтесь до buytini</h2><p class="auth-brand__text">Зберігайте обране, відстежуйте замовлення й викупи, отримуйте бонуси за покупки.</p>
+        <div class="auth-brand__perks"><div class="auth-brand__perk"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></span>Збереження обраного й історії</div><div class="auth-brand__perk"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></span>Трекінг замовлень і викупів</div><div class="auth-brand__perk"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></span>Бонуси та персональні знижки</div></div>
+      </div>
+      <span class="auth-brand__copy">© 2026 buytini</span>
+      <span class="auth-brand__bg" style="background-image:url(https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=70)"></span>
+    </div>
+    <div class="auth-form"><div class="auth-form__inner">
+      <span class="auth-form__eyebrow">Створення акаунта</span>
+      <h1 class="auth-form__title">Реєстрація</h1>
+      <p class="auth-form__sub">Вже є акаунт? <a href="login.html">Увійти</a></p>
+      <form data-form="register" data-go="account.html">
+        <div class="auth-form__row auth-row--gap"><div><label class="field__label">Ім'я</label><input class="input input--48" required placeholder="Олена"></div><div><label class="field__label">Прізвище</label><input class="input input--48" placeholder="Ковальчук"></div></div>
+        <label class="field__label">Email</label><input class="input auth-input" type="email" required placeholder="you@example.com">
+        <label class="field__label">Телефон</label><input class="input auth-input" type="tel" required placeholder="+380 __ ___ __ __">
+        <label class="field__label">Пароль</label><input class="input auth-input" type="password" required placeholder="Мінімум 8 символів">
+        <label class="check auth-agree" data-check-toggle><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span class="auth-agree__text">Погоджуюсь з <a href="info.html">умовами</a> та <a href="info.html">політикою конфіденційності</a></span></label>
+        <button class="btn btn--primary btn--block auth-submit" type="submit">Створити акаунт</button>
+      </form>
+    </div></div>
+  </div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

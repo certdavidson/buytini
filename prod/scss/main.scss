@@ -1,0 +1,82 @@
+// ==========================================================================
+// buytini — main stylesheet entry
+// Збирає всі партіали в один файл. Компілюється в ../css/main.css:
+//   sass scss/main.scss css/main.css
+//
+// Партіали в scss/parts/ розбито за секціями (токени, база, компоненти,
+// сторінки). Стилі — BEM-класи; кольори й радіуси — CSS-перемінні (var(--*)),
+// тож тему легко міняти без рекомпіляції.
+// ==========================================================================
+
+@import "parts/00-base";
+@import "parts/01-tokens";
+@import "parts/02-reset";
+@import "parts/03-animations";
+@import "parts/04-layout";
+@import "parts/05-buttons";
+@import "parts/06-forms";
+@import "parts/07-header-topbar";
+@import "parts/08-header-main";
+@import "parts/09-header-search";
+@import "parts/10-dropdowns";
+@import "parts/11-overlay";
+@import "parts/12-cart-panel";
+@import "parts/13-mega-menu";
+@import "parts/14-auth-modal";
+@import "parts/15-footer";
+@import "parts/16-state-pages-404-maintenance";
+@import "parts/17-sitemap";
+@import "parts/18-size-chart";
+@import "parts/19-size-charts";
+@import "parts/20-promocodes-page-wrappers";
+@import "parts/21-reviews-page-leave-review";
+@import "parts/22-auth-page-helpers";
+@import "parts/23-account-inner-page-helpers";
+@import "parts/24-listing-wrappers-search-page";
+@import "parts/25-brand-store-pages";
+@import "parts/26-cart-checkout-helpers";
+@import "parts/27-bonuses-buyout-detail-helpers";
+@import "parts/28-order-detail-order-link-helpers";
+@import "parts/29-order-success";
+@import "parts/30-our-partners";
+@import "parts/31-partner-info-extras";
+@import "parts/32-contacts-page-extras";
+@import "parts/33-blog-article-extras";
+@import "parts/34-services-support";
+@import "parts/35-how-it-works";
+@import "parts/36-delivery";
+@import "parts/37-calculator";
+@import "parts/38-buyout";
+@import "parts/39-partners";
+@import "parts/40-product-card";
+@import "parts/41-filters";
+@import "parts/42-catalog-layout-toolbar";
+@import "parts/43-toast";
+@import "parts/44-page-catalog";
+@import "parts/45-catalog-page-semantic-rebuild";
+@import "parts/46-layout-section-section-head";
+@import "parts/47-page-home";
+@import "parts/48-component-modal";
+@import "parts/49-page-product";
+@import "parts/50-product-semantic-rebuild-extras";
+@import "parts/51-index-home-extras";
+@import "parts/52-page-cart-summary-empty";
+@import "parts/53-page-checkout";
+@import "parts/54-account-layout-sidebar";
+@import "parts/55-page-search";
+@import "parts/56-page-compare";
+@import "parts/57-pages-brands-brand-stores-store-sale";
+@import "parts/58-auth-pages";
+@import "parts/59-account-inner-pages";
+@import "parts/60-pages-bonuses-promocodes";
+@import "parts/61-page-buyout-result-screen";
+@import "parts/62-content-pages";
+@import "parts/63-contacts";
+@import "parts/64-info-tabbed-legal-about";
+@import "parts/65-blog";
+@import "parts/66-article";
+@import "parts/67-reviews-page";
+@import "parts/68-home-variant-switcher";
+@import "parts/69-page-home-b";
+@import "parts/70-page-home-c";
+@import "parts/71-page-home-d";

@@ -1,0 +1,11 @@
+/* promocodes page wrappers */
+.promo-bar { max-width: 1080px; margin: 0 auto; padding: 18px 20px 0; }
+.promo-wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
+.promo-lower__title { font-size: 20px; font-weight: 600; margin: 0 0 6px; }
+.promo-lower__text { font-size: 14px; color: var(--text-muted); margin: 0 0 16px; line-height: 1.55; }
+.promo-lower__check { height: 48px; padding: 0 22px; }
+.howto-list { display: flex; flex-direction: column; gap: 12px; }
+.howto-step__text { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.section-card--muted { background: var(--surface-muted); }
+.input--upper { height: 48px; text-transform: uppercase; }
+.compare__btn { height: 42px; font-size: 13px; }

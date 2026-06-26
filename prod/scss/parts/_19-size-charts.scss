@@ -1,0 +1,27 @@
+/* size-charts (категорії) */
+.size-charts__head { max-width: var(--maxw); margin: 0 auto; padding: 24px 20px 12px; }
+.size-charts__title { font-size: 34px; font-weight: 600; margin: 14px 0 6px; }
+.size-charts__intro { font-size: 15px; color: var(--text-muted); margin: 0 0 24px; max-width: 640px; }
+.size-charts__body { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 56px; }
+.size-charts__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 48px; }
+@media (max-width: 820px) { .size-charts__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .size-charts__grid { grid-template-columns: 1fr; } }
+.size-charts__subtitle { font-size: 22px; font-weight: 600; margin: 0 0 16px; }
+.sc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; display: block; transition: border-color .15s, transform .15s; }
+.sc-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.sc-card__icon { width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.sc-card__title { display: block; font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.sc-card__desc { display: block; font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+.sc-card__link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--accent); }
+.sc-brands { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 48px; }
+.sc-brand { display: flex; align-items: center; gap: 16px; padding: 16px 22px; border-bottom: 1px solid var(--border); transition: background-color .15s; }
+.sc-brand:last-child { border-bottom: none; }
+.sc-brand:hover { background: var(--surface-muted); }
+.sc-brand__logo { width: 40px; height: 40px; border-radius: var(--radius-pill); background: var(--surface-sunken); flex-shrink: 0; }
+.sc-brand__body { flex: 1; min-width: 0; }
+.sc-brand__name { display: block; font-size: 15px; font-weight: 500; }
+.sc-brand__note { display: block; font-size: 13px; color: var(--text-subtle); }
+.help-cta { display: flex; gap: 14px; align-items: center; background: var(--accent-soft); border-radius: var(--radius-lg); padding: 24px 26px; flex-wrap: wrap; justify-content: space-between; }
+.help-cta__text { display: flex; gap: 14px; align-items: center; max-width: 600px; font-size: 14px; color: var(--text); line-height: 1.6; }
+.help-cta__icon { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--surface); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.help-cta__btn { height: 46px; }

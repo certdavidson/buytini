@@ -1,0 +1,29 @@
+/* -------- buttons -------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; border-radius: var(--radius-md); font-family: inherit;
+  font-size: 15px; font-weight: 500; cursor: pointer;
+  transition: background-color .15s, border-color .15s, color .15s, opacity .15s;
+  white-space: nowrap;
+}
+.btn--primary { height: 48px; padding: 0 22px; background: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--accent-hover); }
+.btn--dark { height: 52px; padding: 0 22px; background: var(--text); color: var(--bg); }
+.btn--dark:hover { opacity: .9; }
+.btn--ghost { height: 48px; padding: 0 22px; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); }
+.btn--ghost:hover { background: var(--surface-muted); border-color: var(--accent); }
+.btn--lg { height: 50px; padding: 0 32px; font-size: 15px; }
+.btn--block { display: flex; width: 100%; }
+
+.icon-btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border: none; border-radius: var(--radius-md);
+  background: transparent; color: var(--text); cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+.icon-btn:hover { background: var(--surface-muted); }
+.icon-btn__badge {
+  position: absolute; top: 4px; right: 4px; min-width: 17px; height: 17px; padding: 0 4px;
+  border-radius: var(--radius-pill); background: var(--accent); color: var(--on-accent);
+  font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+}

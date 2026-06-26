@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Адреси доставки — buytini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<script>(function(){try{var t=localStorage.getItem('buytini-theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+</head>
+<body>
+<div class="site-header">
+
+  <!-- Службовий верхній рядок -->
+  <div class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <nav class="topbar__nav" aria-label="Службові посилання">
+        <a class="topbar__link" href="how-it-works.html">Як це працює</a>
+        <a class="topbar__link" href="delivery.html">Доставка та мита</a>
+        <a class="topbar__link" href="buyout.html">Викуп</a>
+        <a class="topbar__link" href="contacts.html">Контакти</a>
+      </nav>
+      <div class="topbar__side">
+        <a class="topbar__email" href="mailto:hello@buytini.ua">hello@buytini.ua</a>
+        <div class="topbar__socials">
+          <a class="topbar__social" href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a>
+          <a class="topbar__social" href="#" aria-label="Telegram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.9 13.4l-4.7-1.5c-1-.3-1-1 .2-1.5l18.3-7c.9-.3 1.6.2 1.2 1.9z"></path></svg></a>
+          <a class="topbar__social" href="#" aria-label="TikTok"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.2 1.6 3.6 3.7 3.8v2.5c-1.3.1-2.5-.3-3.7-1v5.9c0 4-3.2 6.5-6.6 5.4-2.6-.8-3.7-3.8-2.5-6.2.9-1.8 2.9-2.7 4.9-2.4v2.6c-.4-.1-.8-.2-1.2-.1-1 .1-1.7 1-1.6 2 .1 1.4 1.7 2 2.8 1.2.6-.4.8-1 .8-1.8V3h2.4z"></path></svg></a>
+          <a class="topbar__social" href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Основна шапка -->
+  <header class="header">
+    <div class="header__inner">
+
+      <a class="header__logo" href="index.html">
+        <img class="header__logo-img" src="images/buytini-logo.svg" alt="buytini" width="40" height="42">
+        <span class="header__logo-text">buytini</span>
+      </a>
+
+      <button class="catalog-btn" type="button" data-toggle="mega" aria-label="Каталог">
+        <span class="catalog-btn__open"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></span>
+        <span class="catalog-btn__close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+        <span class="catalog-btn__label">Каталог</span>
+      </button>
+
+      <!-- Пошук -->
+      <div class="search">
+        <form class="search__box" data-form="search" role="search">
+          <input class="search__input" type="search" name="search" data-search-input="" placeholder="Назва товару, бренд…" aria-label="Пошук">
+          <button class="search__clear" type="button" data-search-clear aria-label="Очистити" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><button class="search__submit" type="submit" aria-label="Знайти"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
+        </form>
+
+        <!-- Живі результати (демо-розмітка; на бойовому — підставляє OpenCart) -->
+        <div class="search__results" id="search-results" data-popover="" hidden="">
+          <div class="search__results-head"><span>Товари · знайдено 4</span><a class="search__more" href="search.html">Усі результати →</a></div>
+
+          <a class="search__result" href="product.html">
+            <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+            <span class="search__result-body"><span class="search__result-brand">Lacoste · LC-BH1585</span><span class="search__result-name">Чоловічий жилет BH1585</span></span>
+            <span class="search__result-price">8 648 ₴</span>
+          </a>
+          <a class="search__result" href="product.html">
+            <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+            <span class="search__result-body"><span class="search__result-brand">Nike · NK-DQ5733</span><span class="search__result-name">Жіночий світшот Phoenix Fleece</span></span>
+            <span class="search__result-price">3 272 ₴</span>
+          </a>
+          <a class="search__result" href="product.html">
+            <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+            <span class="search__result-body"><span class="search__result-brand">Lacoste · LC-44SMA0047</span><span class="search__result-name">Чоловічі шкіряні кросівки Courtderby</span></span>
+            <span class="search__result-price">6 311 ₴</span>
+          </a>
+
+          <div class="search__section">
+            <div class="search__section-head"><span>Бренди</span><a class="search__more" href="brands.html">Усі 1 240 →</a></div>
+            <div class="search__brands">
+              <a class="search__brand" href="brand.html">Lacoste</a>
+              <a class="search__brand" href="brand.html">Nike</a>
+              <a class="search__brand" href="brand.html">adidas</a>
+              <a class="search__brand" href="brand.html">Tommy Hilfiger</a>
+              <a class="search__brand" href="brand.html">Calvin Klein</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Праві дії -->
+      <div class="header__actions">
+
+        <button class="icon-btn" type="button" data-toggle="theme" aria-label="Перемкнути тему">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+
+        <!-- Мова -->
+        <div class="dropdown">
+          <button class="dropdown__trigger" type="button" data-dropdown="" aria-label="Мова">
+            <span>UA</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="dropdown__menu" data-popover="" hidden="">
+            <button class="dropdown__item is-active" type="button">Українська</button>
+            <button class="dropdown__item" type="button">Русский</button>
+            <button class="dropdown__item" type="button">English</button>
+          </div>
+        </div>
+
+        <!-- Валюта -->
+        <div class="dropdown">
+          <button class="dropdown__trigger" type="button" data-dropdown="" aria-label="Валюта">
+            <span>₴ UAH</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="dropdown__menu" data-popover="" hidden="">
+            <button class="dropdown__item is-active" type="button">₴ UAH</button>
+            <button class="dropdown__item" type="button">$ USD</button>
+            <button class="dropdown__item" type="button">€ EUR</button>
+          </div>
+        </div>
+
+        <!-- Акаунт -->
+        <button class="icon-btn" type="button" data-open="auth" aria-label="Акаунт">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </button>
+
+        <!-- Обране -->
+        <a class="icon-btn" href="wishlist.html" aria-label="Обране">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+          <span class="icon-btn__badge">2</span>
+        </a>
+
+        <!-- Кошик -->
+        <button class="icon-btn" type="button" data-toggle="cart" aria-label="Кошик">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+          <span class="icon-btn__badge">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Затемнення під пошук -->
+  <div class="overlay overlay--search" id="search-overlay" data-popover="" hidden=""></div>
+
+  <!-- Міні-кошик -->
+  <div class="overlay overlay--cart" id="cart-overlay" data-popover="" hidden=""></div>
+  <aside class="cart-panel" id="cart-panel" data-popover="" hidden="" role="dialog" aria-label="Кошик">
+    <div class="cart-panel__head"><span>Кошик · 3</span><button class="panel-close" type="button" data-toggle="cart" aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+
+    <div class="cart-panel__body">
+      <div class="cart-panel__item">
+        <span class="cart-panel__thumb" style="background-image:url(https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+        <div class="cart-panel__info">
+          <span class="cart-panel__brand">Nike · США</span>
+          <span class="cart-panel__name">Air Max 270 React</span>
+          <span class="cart-panel__opts">Розмір 42 · Чорний</span>
+          <div class="cart-panel__row">
+            <span class="qty"><button class="qty__btn" type="button" aria-label="Менше">−</button><span class="qty__val">1</span><button class="qty__btn" type="button" aria-label="Більше">+</button></span>
+            <span class="cart-panel__price">6 490 ₴</span>
+          </div>
+        </div>
+        <button class="cart-panel__remove" type="button" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>
+      </div>
+
+      <div class="cart-panel__item">
+        <span class="cart-panel__thumb" style="background-image:url(https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+        <div class="cart-panel__info">
+          <span class="cart-panel__brand">Armani Exchange · Європа</span>
+          <span class="cart-panel__name">Худі з логотипом</span>
+          <span class="cart-panel__opts">Розмір M · Сірий</span>
+          <div class="cart-panel__row">
+            <span class="qty"><button class="qty__btn" type="button" aria-label="Менше">−</button><span class="qty__val">1</span><button class="qty__btn" type="button" aria-label="Більше">+</button></span>
+            <span class="cart-panel__price">3 980 ₴</span>
+          </div>
+        </div>
+        <button class="cart-panel__remove" type="button" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>
+      </div>
+
+      <div class="cart-panel__item">
+        <span class="cart-panel__thumb" style="background-image:url(https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+        <div class="cart-panel__info">
+          <span class="cart-panel__brand">Rituals · Європа</span>
+          <span class="cart-panel__name">Sakura набір</span>
+          <span class="cart-panel__opts">200 мл</span>
+          <div class="cart-panel__row">
+            <span class="qty"><button class="qty__btn" type="button" aria-label="Менше">−</button><span class="qty__val">1</span><button class="qty__btn" type="button" aria-label="Більше">+</button></span>
+            <span class="cart-panel__price">1 180 ₴</span>
+          </div>
+        </div>
+        <button class="cart-panel__remove" type="button" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>
+      </div>
+    </div>
+
+    <div class="cart-panel__foot">
+      <div class="cart-panel__note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        <span>Орієнтовна доставка та мита рахуються на оформленні</span>
+      </div>
+      <div class="cart-panel__total"><span>Разом</span><b>11 650 ₴</b></div>
+      <a class="btn btn--primary btn--block" href="cart.html">Оформити замовлення</a>
+    </div>
+  </aside>
+
+  <!-- Каталог: мега-меню -->
+  <div class="overlay" id="mega-overlay" data-popover="" hidden=""></div>
+  <div class="mega" id="mega" data-popover="" hidden="" role="dialog" aria-label="Каталог">
+    <div class="container">
+      <div class="mega__head"><span>Каталог</span><button class="panel-close" type="button" data-toggle="mega" aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+
+      <div class="mega__layout">
+        <div class="mega__rail">
+          <button class="mega__cat is-active" type="button" data-mega-cat="0"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M12 15v7"></path><path d="M9 19h6"></path></svg>Жінкам</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="1"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="m21 3-6.75 6.75"></path><circle cx="10" cy="14" r="6"></circle></svg>Чоловікам</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="2"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path><path d="M16 17h4"></path><path d="M4 13h4"></path></svg>Взуття</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="3"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="4"></circle><circle cx="18" cy="15" r="4"></circle><path d="M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2"></path><path d="M2.5 13 5 7c.7-1.3 1.4-2 3-2"></path><path d="M21.5 13 19 7c-.7-1.3-1.5-2-3-2"></path></svg>Аксесуари</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="4"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h.01"></path><path d="M7 5h.01"></path><path d="M11 7h.01"></path><path d="M3 7h.01"></path><path d="M7 9h.01"></path><path d="M3 11h.01"></path><rect width="4" height="4" x="15" y="5"></rect><path d="M6 19v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"></path><path d="M9 15v-3a2 2 0 0 1 2-2h2"></path></svg>Парфумерія</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="5"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>Бренди</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <button class="mega__cat" type="button" data-mega-cat="6"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>Акції</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        </div>
+
+        <!-- Жінкам -->
+        <div class="mega__groups mega__panel is-active" data-mega-panel="0">
+          <div><span class="mega__group-title">Одяг</span><a class="mega__sub" href="catalog.html">Сукні</a><a class="mega__sub" href="catalog.html">Светри й кардигани</a><a class="mega__sub" href="catalog.html">Сорочки й блузи</a><a class="mega__sub" href="catalog.html">Джинси</a><a class="mega__sub" href="catalog.html">Спідниці</a><a class="mega__sub" href="catalog.html">Верхній одяг</a></div>
+          <div><span class="mega__group-title">Взуття</span><a class="mega__sub" href="catalog.html">Кросівки</a><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Туфлі</a><a class="mega__sub" href="catalog.html">Босоніжки</a></div>
+          <div><span class="mega__group-title">Аксесуари</span><a class="mega__sub" href="catalog.html">Сумки</a><a class="mega__sub" href="catalog.html">Окуляри</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Хустки</a></div>
+          <div><span class="mega__group-title">Парфумерія</span><a class="mega__sub" href="catalog.html">Парфуми</a><a class="mega__sub" href="catalog.html">Набори</a><a class="mega__sub" href="catalog.html">Догляд</a></div>
+        </div>
+        <!-- Чоловікам -->
+        <div class="mega__groups mega__panel" data-mega-panel="1">
+          <div><span class="mega__group-title">Одяг</span><a class="mega__sub" href="catalog.html">Футболки й поло</a><a class="mega__sub" href="catalog.html">Сорочки</a><a class="mega__sub" href="catalog.html">Худі й світшоти</a><a class="mega__sub" href="catalog.html">Джинси</a><a class="mega__sub" href="catalog.html">Куртки</a></div>
+          <div><span class="mega__group-title">Взуття</span><a class="mega__sub" href="catalog.html">Кросівки</a><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Лофери</a></div>
+          <div><span class="mega__group-title">Аксесуари</span><a class="mega__sub" href="catalog.html">Годинники</a><a class="mega__sub" href="catalog.html">Гаманці</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Окуляри</a></div>
+          <div><span class="mega__group-title">Парфумерія</span><a class="mega__sub" href="catalog.html">Парфуми</a><a class="mega__sub" href="catalog.html">Догляд</a><a class="mega__sub" href="catalog.html">Набори</a></div>
+        </div>
+        <!-- Взуття -->
+        <div class="mega__groups mega__panel" data-mega-panel="2">
+          <div><span class="mega__group-title">Кросівки</span><a class="mega__sub" href="catalog.html">Nike</a><a class="mega__sub" href="catalog.html">Adidas</a><a class="mega__sub" href="catalog.html">New Balance</a><a class="mega__sub" href="catalog.html">Asics</a></div>
+          <div><span class="mega__group-title">Класичне</span><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Туфлі</a><a class="mega__sub" href="catalog.html">Лофери</a></div>
+          <div><span class="mega__group-title">Сезонне</span><a class="mega__sub" href="catalog.html">Літнє</a><a class="mega__sub" href="catalog.html">Зимове</a><a class="mega__sub" href="catalog.html">Демісезон</a></div>
+        </div>
+        <!-- Аксесуари -->
+        <div class="mega__groups mega__panel" data-mega-panel="3">
+          <div><span class="mega__group-title">Сумки</span><a class="mega__sub" href="catalog.html">JW Pei</a><a class="mega__sub" href="catalog.html">Michael Kors</a><a class="mega__sub" href="catalog.html">Coach</a></div>
+          <div><span class="mega__group-title">Годинники</span><a class="mega__sub" href="catalog.html">Jomashop</a><a class="mega__sub" href="catalog.html">Fossil</a><a class="mega__sub" href="catalog.html">Casio</a></div>
+          <div><span class="mega__group-title">Інше</span><a class="mega__sub" href="catalog.html">Окуляри</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Гаманці</a><a class="mega__sub" href="catalog.html">Прикраси</a></div>
+        </div>
+        <!-- Парфумерія -->
+        <div class="mega__groups mega__panel" data-mega-panel="4">
+          <div><span class="mega__group-title">Бренди</span><a class="mega__sub" href="catalog.html">Rituals</a><a class="mega__sub" href="catalog.html">Armani</a><a class="mega__sub" href="catalog.html">Dior</a><a class="mega__sub" href="catalog.html">Versace</a></div>
+          <div><span class="mega__group-title">Категорії</span><a class="mega__sub" href="catalog.html">Жіночі</a><a class="mega__sub" href="catalog.html">Чоловічі</a><a class="mega__sub" href="catalog.html">Унісекс</a><a class="mega__sub" href="catalog.html">Набори</a></div>
+        </div>
+        <!-- Бренди -->
+        <div class="mega__groups mega__panel" data-mega-panel="5">
+          <div><span class="mega__group-title">США</span><a class="mega__sub" href="brand.html">Nike</a><a class="mega__sub" href="brand.html">Levi’s</a><a class="mega__sub" href="brand.html">Lacoste</a><a class="mega__sub" href="brand.html">Coach</a><a class="mega__sub" href="brand.html">Michael Kors</a></div>
+          <div><span class="mega__group-title">Європа</span><a class="mega__sub" href="brand.html">Rituals</a><a class="mega__sub" href="brand.html">Armani Exchange</a><a class="mega__sub" href="brand.html">JW Pei</a><a class="mega__sub" href="brand.html">Versace</a></div>
+        </div>
+        <!-- Акції -->
+        <div class="mega__groups mega__panel" data-mega-panel="6">
+          <div><span class="mega__group-title">Розпродаж</span><a class="mega__sub" href="sale.html">До -50%</a><a class="mega__sub" href="sale.html">Останні розміри</a><a class="mega__sub" href="sale.html">Аутлет</a></div>
+          <div><span class="mega__group-title">Сезон</span><a class="mega__sub" href="sale.html">Літній сейл</a><a class="mega__sub" href="sale.html">Чорна п’ятниця</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка авторизації -->
+  <div class="overlay overlay--auth" id="auth-modal" data-popover="" hidden="">
+    <div class="auth" role="dialog" aria-label="Вхід в акаунт">
+      <div class="auth__head">
+        <div>
+          <span class="auth__title">Вхід в акаунт</span>
+          <span class="auth__sub">Увійдіть, щоб заповнення даних було автоматичним</span>
+        </div>
+        <button class="auth__close" type="button" data-close="" aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+      </div>
+
+      <div class="auth__tabs">
+        <button class="auth__tab is-active" type="button" data-auth-tab="phone">За номером</button>
+        <button class="auth__tab" type="button" data-auth-tab="email">Email + пароль</button>
+      </div>
+
+      <form class="auth__body" data-form="auth">
+        <div class="auth__method is-active" data-auth-method="phone">
+          <label class="field__label">Номер телефону</label>
+          <input class="input" type="tel" placeholder="+380 (XX) XXX-XX-XX">
+          <button class="btn btn--dark btn--block" type="submit">Отримати код в SMS</button>
+        </div>
+        <div class="auth__method" data-auth-method="email">
+          <label class="field__label">Email</label>
+          <input class="input" type="email" placeholder="you@example.com">
+          <label class="field__label">Пароль</label>
+          <input class="input" type="password" placeholder="••••••••">
+          <button class="btn btn--dark btn--block" type="submit">Увійти</button>
+        </div>
+
+        <div class="auth__divider"><span></span><span>або</span><span></span></div>
+
+        <button class="auth__social" type="button"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"></path><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"></path><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"></path><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"></path></svg>Увійти через Google</button>
+
+        <p class="auth__foot">Ще не маєте акаунту? <a href="register.html">Зареєструватися</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+  <main class="account">
+    <h1 class="account__h1">Адреси доставки</h1>
+    <div class="account__grid">
+      <aside>
+        <div class="acct-card"><span class="acct-card__avatar">ОК</span><div><span class="acct-card__name">Олена Ковальчук</span><span class="acct-card__mail">olena@example.com</span></div></div>
+        <nav class="acct-nav">
+        <a class="acct-nav__link" href="account.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>Кабінет</a>
+        <a class="acct-nav__link" href="orders.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg></span>Мої замовлення</a>
+        <a class="acct-nav__link" href="buyout-orders.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>Замовлення на викуп<span class="acct-nav__badge">2</span></a>
+        <a class="acct-nav__link" href="wishlist.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span>Обране</a>
+        <a class="acct-nav__link is-active" href="addresses.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>Адреси</a>
+        <a class="acct-nav__link" href="profile.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Профіль і пароль</a>
+        <a class="acct-nav__link" href="bonuses.html"><span class="acct-nav__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C9 3 11 5 12 8c1-3 3-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></span>Бонуси й транзакції</a>
+          <a class="acct-nav__logout" href="login.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>Вихід</a>
+        </nav>
+      </aside>
+      <div>
+        <div class="addr-grid">
+        <div class="addr-card is-default"><span class="addr-card__default">За замовчуванням</span><span class="addr-card__label">Дім</span><span class="addr-card__name">Олена Ковальчук</span><span class="addr-card__line">+380 67 123 45 67</span><span class="addr-card__line addr-card__line--addr">Київ, Нова Пошта, відділення №12</span><div class="addr-card__actions"><button class="addr-card__edit" type="button">Редагувати</button><button class="addr-card__delete" type="button">Видалити</button></div></div>
+        <div class="addr-card"><span class="addr-card__label">Робота</span><span class="addr-card__name">Олена Ковальчук</span><span class="addr-card__line">+380 67 123 45 67</span><span class="addr-card__line addr-card__line--addr">Львів, вул. Шевченка 24, кв. 8 (кур'єр)</span><div class="addr-card__actions"><button class="addr-card__edit" type="button">Редагувати</button><button class="addr-card__delete" type="button">Видалити</button></div></div>
+        </div>
+        <section class="section-card"><span class="section-card__title section-card__title--lg">Додати адресу</span>
+          <div class="form-grid">
+            <div><label class="field__label">Отримувач</label><input class="input input--48" placeholder="Ім’я та прізвище"></div>
+            <div><label class="field__label">Телефон</label><input class="input input--48" placeholder="+380 __ ___ __ __"></div>
+            <div><label class="field__label">Місто</label><input class="input input--48" placeholder="Київ"></div>
+            <div><label class="field__label">Спосіб доставки</label><select class="input input--48"><option>Нова Пошта · відділення</option><option>Нова Пошта · поштомат</option><option>Кур'єр на адресу</option></select></div>
+            <div class="form-grid__full"><label class="field__label">Відділення / адреса</label><input class="input input--48" placeholder="Відділення №12 або вулиця, будинок, квартира"></div>
+          </div>
+          <button class="btn btn--primary form-btn" type="button" data-toast="Адресу додано">Додати адресу</button>
+        </section>
+      </div>
+    </div>
+  </main>
+<footer class="footer">
+
+  <!-- CTA: викуп за посиланням -->
+  <div class="footer__cta">
+    <div class="footer__cta-inner">
+      <div class="footer__cta-text">
+        <span class="footer__cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
+        <div>
+          <span class="footer__cta-title">Не знайшли в каталозі?</span>
+          <span class="footer__cta-sub">Замовте будь-який товар із закордонного сайту за посиланням — ми викупимо й привеземо</span>
+        </div>
+      </div>
+      <a class="btn btn--primary btn--lg" href="buyout.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Викуп за посиланням</a>
+    </div>
+  </div>
+
+  <!-- Підписка -->
+  <div class="footer__subscribe">
+    <div class="footer__subscribe-inner">
+      <div class="footer__subscribe-copy">
+        <span class="footer__subscribe-title">Знижки й новинки першими</span>
+        <span class="footer__subscribe-sub">Підпишіться на розсилку — добірки, акції та корисне про доставку з-за кордону.</span>
+      </div>
+      <form class="footer__subscribe-form" data-form="subscribe">
+        <input class="input" type="email" name="email" placeholder="Ваш email" aria-label="Email">
+        <button class="btn btn--primary" type="submit">Підписатися</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Колонки -->
+  <div class="footer__columns">
+    <div>
+      <a class="footer__brand-logo" href="index.html">
+        <img src="images/buytini-logo.svg" alt="buytini" width="40" height="42">
+        <span>buytini</span>
+      </a>
+      <p class="footer__brand-text">Викуп і доставка брендових товарів зі США та Європи в Україну. Замовляйте з каталогу або за будь-яким посиланням.</p>
+      <div class="footer__socials">
+        <a class="footer__social" href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a>
+        <a class="footer__social" href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.9 13.4l-4.7-1.5c-1-.3-1-1 .2-1.5l18.3-7c.9-.3 1.6.2 1.2 1.9z"></path></svg></a>
+        <a class="footer__social" href="#" aria-label="TikTok"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.2 1.6 3.6 3.7 3.8v2.5c-1.3.1-2.5-.3-3.7-1v5.9c0 4-3.2 6.5-6.6 5.4-2.6-.8-3.7-3.8-2.5-6.2.9-1.8 2.9-2.7 4.9-2.4v2.6c-.4-.1-.8-.2-1.2-.1-1 .1-1.7 1-1.6 2 .1 1.4 1.7 2 2.8 1.2.6-.4.8-1 .8-1.8V3h2.4z"></path></svg></a>
+        <a class="footer__social" href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg></a>
+      </div>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Компанія</span>
+      <a class="footer__link" href="info.html">Про нас</a>
+      <a class="footer__link" href="how-it-works.html">Як це працює</a>
+      <a class="footer__link" href="blog.html">Блог</a>
+      <a class="footer__link" href="partners.html">Партнерам</a>
+      <a class="footer__link" href="contacts.html">Контакти</a>
+      <a class="footer__link" href="sitemap.html">Мапа сайту</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Покупцям</span>
+      <a class="footer__link" href="delivery.html">Оплата та доставка</a>
+      <a class="footer__link" href="calculator.html">Калькулятор вартості</a>
+      <a class="footer__link" href="size-charts.html">Розмірні сітки</a>
+      <a class="footer__link" href="info.html">Повернення</a>
+      <a class="footer__link" href="buyout.html">Викуп за посиланням</a>
+      <a class="footer__link" href="support.html">Підтримка</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Каталог</span>
+      <a class="footer__link" href="stores.html">Магазини</a>
+      <a class="footer__link" href="brands.html">Бренди</a>
+      <a class="footer__link" href="sale.html">Акції</a>
+      <a class="footer__link" href="promocodes.html">Промокоди</a>
+      <a class="footer__link" href="services.html">Додаткові послуги</a>
+      <a class="footer__link" href="our-partners.html">Наші партнери</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Кабінет</span>
+      <a class="footer__link" href="login.html">Вхід</a>
+      <a class="footer__link" href="orders.html">Мої замовлення</a>
+      <a class="footer__link" href="buyout-orders.html">Замовлення на викуп</a>
+      <a class="footer__link" href="wishlist.html">Обране</a>
+      <a class="footer__link" href="bonuses.html">Бонуси</a>
+      <a class="footer__link" href="addresses.html">Адреси</a>
+    </div>
+  </div>
+
+  <!-- Нижній рядок -->
+  <div class="footer__bottom">
+    <div class="footer__bottom-inner">
+      <span class="footer__copy">© 2026 buytini. Усі права захищено.</span>
+      <div class="footer__pays">
+        <span class="footer__pay"><span class="pay-visa">VISA</span></span>
+        <span class="footer__pay"><svg width="32" height="20" viewBox="0 0 34 22"><circle cx="14" cy="11" r="7" fill="#EB001B"></circle><circle cx="20" cy="11" r="7" fill="#F79E1B" opacity=".9"></circle></svg></span>
+        <span class="footer__pay"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.1 1.2-.4 2.3-1.1 3.1-.8.9-2 1.5-3.1 1.4-.1-1.2.5-2.4 1.1-3.1C13.8 3.5 15 2.9 16 3zM19.5 17c-.5 1.2-.8 1.7-1.4 2.7-.9 1.4-2.1 3.1-3.7 3.1-1.4 0-1.7-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.6-3.7-2.9C1.2 18.2.5 14 2 11.1c.8-1.4 2.2-2.3 3.7-2.3 1.4 0 2.3.9 3.5.9 1.1 0 1.8-.9 3.5-.9 1.3 0 2.6.7 3.6 1.9-3.1 1.7-2.6 6.1.7 7.3z"></path></svg><span class="pay-text">Pay</span></span>
+        <span class="footer__pay"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2-1.9 3.3-4.7 3.3-7.9z"></path><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.3-1.9-6.2-4.6H2.2v2.8A11 11 0 0 0 12 23z"></path><path fill="#FBBC04" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"></path><path fill="#EA4335" d="M12 5.4c1.6 0 3 .6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"></path></svg><span class="pay-text">Pay</span></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

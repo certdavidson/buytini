@@ -1,0 +1,42 @@
+/* product — semantic rebuild extras */
+.pdp-info { min-width: 0; }
+.opt-color--camel { background-color: #C19A6B; }
+.opt-color--black { background-color: #1C1815; }
+.opt-color--green { background-color: #3A4A3A; }
+.opt-color--dark { background-color: #2A2520; }
+.pay-text { font-style: italic; font-weight: 700; font-size: 13px; color: #1A1F71; }
+.paypal { font-weight: 700; font-size: 13px; font-style: italic; }
+.paypal__pay { color: #003087; }
+.paypal__pal { color: #009CDE; }
+.card-block__title.card-block__title--mt { margin-top: 36px; }
+.reviews__add-btn { height: 42px; font-size: 14px; }
+.reviews__all-btn { height: 46px; margin-top: 8px; }
+.reviews__list { display: flex; flex-direction: column; }
+.rating-bar__fill--w88 { width: 88%; }
+.rating-bar__fill--w12 { width: 12%; }
+.rating-bar__fill--w0 { width: 0; }
+.eta-badge--mb { margin-bottom: 14px; }
+.buy-card__add { height: 46px; }
+.viewed-title { margin-bottom: 20px; }
+.modal__callout-icon { flex-shrink: 0; color: var(--success); display: flex; }
+.modal__callout-text { color: var(--text-muted); }
+.modal__subhead { display: block; font-size: 15px; font-weight: 600; margin: 22px 0 12px; }
+.modal__checklist { display: flex; flex-direction: column; gap: 10px; }
+.modal__check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.modal__check svg { flex-shrink: 0; margin-top: 2px; }
+.modal__link { color: var(--accent); font-weight: 500; }
+.modal__foot-link { margin-top: 20px; }
+.modal__title--icon { display: flex; align-items: center; gap: 9px; }
+.cart-added__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.modal__lead { margin-bottom: 16px; }
+.modal__lead.modal__lead--spaced { margin-top: 24px; }
+.modal__callout--spaced { margin-top: 24px; }
+.modal__field-label { margin-top: 14px; }
+.modal__field-label:first-of-type { margin-top: 0; }
+.star-rate { display: flex; gap: 6px; margin-bottom: 6px; }
+.star-rate__btn { border: none; background: transparent; padding: 2px; cursor: pointer; line-height: 0; opacity: .9; transition: transform .12s; }
+.star-rate__btn:hover { transform: scale(1.1); }
+.modal__submit { height: 50px; margin-top: 20px; }
+.oneclick__product { display: flex; gap: 14px; padding: 14px; background: var(--surface-muted); border-radius: var(--radius-md); margin-bottom: 18px; }
+.oneclick__price { display: block; font-size: 17px; font-weight: 600; color: var(--accent); margin-top: 6px; }
+.oneclick__note { font-size: 12px; color: var(--text-subtle); text-align: center; margin: 14px 0 0; line-height: 1.5; }

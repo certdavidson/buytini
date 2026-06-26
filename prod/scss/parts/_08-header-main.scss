@@ -1,0 +1,21 @@
+/* -------- header: main -------- */
+.header { position: sticky; top: 0; z-index: 200; background: var(--surface); border-bottom: 1px solid var(--border); }
+.header__inner { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; height: 72px; display: flex; align-items: center; gap: 20px; }
+.header__logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.header__logo-img { height: 38px; width: auto; display: block; flex-shrink: 0; }
+.header__logo-text { font-size: 26px; font-weight: 600; color: var(--text); letter-spacing: -2px; }
+.header__actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+.catalog-btn {
+  flex-shrink: 0; margin-left: 12px; display: flex; align-items: center; gap: 8px;
+  height: 44px; padding: 0 18px; border: none; border-radius: var(--radius-md);
+  background: var(--accent); color: var(--on-accent); font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: background-color .15s;
+}
+.catalog-btn:hover { background: var(--accent-hover); }
+.catalog-btn__open, .catalog-btn__close { align-items: center; }
+.catalog-btn__open { display: flex; }
+.catalog-btn__close { display: none; }
+.catalog-btn.is-open .catalog-btn__open { display: none; }
+.catalog-btn.is-open .catalog-btn__close { display: flex; }
+@media (max-width: 860px) { .catalog-btn__label { display: none; } }

@@ -1,0 +1,14 @@
+/* blog + article extras */
+.blog-bar { max-width: var(--maxw); margin: 0 auto; padding: 24px 20px 0; }
+.blog-bar__title { font-size: 34px; font-weight: 600; margin: 18px 0 0; }
+.blog-feature__desc { display: block; font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+.blog-feature__meta { font-size: 13px; color: var(--text-subtle); }
+.blog-side { display: flex; flex-direction: column; gap: 20px; }
+.blog-side-card__title { display: block; font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+.blog-side-card--accent { background: var(--accent-soft); border-color: var(--accent); }
+.blog-side-card__sub { display: block; font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+.input--44 { height: 44px; }
+.blog-sub__field { margin-bottom: 10px; }
+.blog-sub__btn { height: 44px; }
+.article-bar { max-width: 760px; margin: 0 auto; padding: 24px 20px 16px; }
+.article__cat { margin-top: 4px; }

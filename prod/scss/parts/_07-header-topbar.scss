@@ -1,0 +1,14 @@
+/* -------- header: topbar -------- */
+.site-header { position: relative; }
+
+.topbar { background: var(--text); color: var(--bg); position: relative; }
+.topbar.is-raised { z-index: 201; }
+.topbar__inner { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px; }
+.topbar__nav { display: flex; align-items: center; gap: 20px; }
+.topbar__link, .topbar__email { color: var(--bg); opacity: .82; transition: opacity .15s; display: none; }
+.topbar__link:hover, .topbar__email:hover { opacity: 1; }
+@media (min-width: 992px) { .topbar__link, .topbar__email { display: inline; } }
+.topbar__side { display: flex; align-items: center; gap: 18px; }
+.topbar__socials { display: flex; align-items: center; gap: 12px; }
+.topbar__social { color: var(--bg); opacity: .7; display: flex; transition: opacity .15s; }
+.topbar__social:hover { opacity: 1; }

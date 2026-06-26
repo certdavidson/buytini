@@ -1,0 +1,13 @@
+/* auth page helpers */
+.auth-input { margin-bottom: 16px; }
+.auth-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.auth-row__label { margin: 0; }
+.auth-row__link { font-size: 13px; color: var(--accent); }
+.auth-submit { height: 52px; font-size: 16px; }
+.auth-alt { height: 50px; }
+.auth-alt2 { height: 48px; }
+.auth-row--gap { margin-bottom: 16px; }
+.auth-agree { margin-bottom: 18px; align-items: flex-start; }
+.auth-agree__text { font-size: 13px; }
+.auth-back { text-align: center; margin: 8px 0 0; }
+.auth-sent { text-align: center; }

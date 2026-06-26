@@ -1,0 +1,28 @@
+/* order detail + order link helpers */
+.detail-item__info { flex: 1; }
+.recv-line { display: block; font-size: 14px; color: var(--text-muted); }
+.recv-line--strong { color: var(--text); }
+.recv-line--mt { margin-top: 6px; }
+.recv-line--mb { margin-bottom: 14px; }
+.section-card__title--xs { margin-bottom: 6px; }
+.help-btn { height: 44px; font-size: 14px; }
+.order-link { max-width: 880px; margin: 0 auto; padding: 28px 20px 64px; }
+.shared-banner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--info-soft); margin-bottom: 24px; font-size: 13px; color: var(--text-muted); }
+.shared-banner svg { flex-shrink: 0; }
+.shared-banner a { color: var(--accent); font-weight: 500; }
+.order-link__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.order-link__h1 { font-size: 28px; font-weight: 600; margin: 0 0 4px; }
+.order-link__sub { font-size: 14px; color: var(--text-muted); }
+.eta-card { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 22px; margin: 20px 0 24px; }
+.eta-card__icon { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.eta-card__label { display: block; font-size: 13px; color: var(--text-muted); }
+.eta-card__value { display: block; font-size: 18px; font-weight: 600; }
+.order-link__card { margin-bottom: 24px; }
+.order-link__totals { padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; }
+.order-link__total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+.co-section--muted { background: var(--surface-muted); }
+.track-box__title { display: block; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.track-box__sub { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.track-box__form { display: flex; gap: 10px; flex-wrap: wrap; }
+.track-box__field { flex: 1; min-width: 160px; }
+.track-box__btn { height: 48px; padding: 0 24px; }

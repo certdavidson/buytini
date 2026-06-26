@@ -1,0 +1,13 @@
+/* state pages (404, maintenance, недоступно) */
+.state { padding: 72px 20px; }
+.state--full { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.state__inner { max-width: 620px; margin: 0 auto; text-align: center; }
+.state__icon { width: 84px; height: 84px; border-radius: var(--radius-pill); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
+.state__icon--muted { background: var(--surface-muted); color: var(--text-subtle); }
+.state__icon--accent { background: var(--accent-soft); color: var(--accent); }
+.state__icon--warning { background: var(--warning-soft); color: var(--warning); }
+.state__code { font-size: 88px; font-weight: 600; line-height: 1; color: var(--accent); margin-bottom: 8px; }
+.state__title { font-size: 38px; font-weight: 600; margin: 0 0 14px; }
+.state__text { font-size: 17px; color: var(--text-muted); line-height: 1.6; margin: 0 0 28px; }
+.state__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.state__btn { height: 50px; }
