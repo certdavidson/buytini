@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Featured module multilanguage title</name>
+    <code>Multilanguage Title</code>
+    <version>1.0.0</version>
+    <author>#</author>
+    <link>#</link>
+    <file path="admin/controller/extension/module/{featured,latest,recent_viewed}.php">
+        <operation>
+            <search><![CDATA[
+            if (isset($this->request->post['status'])) {
+            ]]></search>
+            <add position="before"><![CDATA[
+        $this->load->model('localisation/language');
+        $data['languages'] = $this->model_localisation_language->getLanguages();
+
+        if (isset($this->request->post['module_title'])) {
+            $data['module_title'] = $this->request->post['module_title'];
+        } elseif (!empty($module_info) && isset($module_info['module_title'])) {
+            $data['module_title'] = $module_info['module_title'];
+        } else {
+            $data['module_title'] = '';
+        }
+
+        if (isset($this->request->post['module_link'])) {
+            $data['module_link'] = $this->request->post['module_link'];
+        } elseif (!empty($module_info) && isset($module_info['module_link'])) {
+            $data['module_link'] = $module_info['module_link'];
+        } else {
+            $data['module_link'] = '';
+        }
+
+            ]]>
+            </add>
+        </operation>
+    </file>
+    <file path="admin/view/template/extension/module/{featured,latest,recent_viewed}.twig">
+        <operation>
+            <search index="1"><![CDATA[
+            <div class="form-group">
+            ]]></search>
+            <add position="before"><![CDATA[
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-name">{{ entry_module_name }}</label>
+                <div class="col-sm-10">
+                    {% for language in languages %}
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <input type="text" class="form-control" name="module_title[{{ language.language_id }}]" value="{{ module_title[language.language_id] }}"/>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-link">{{ entry_module_link }}</label>
+                <div class="col-sm-10">
+                    {% for language in languages %}
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <input type="text" class="form-control" name="module_link[{{ language.language_id }}]" value="{{ module_link[language.language_id] }}"/>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            ]]>
+            </add>
+        </operation>
+    </file>
+    <file path="admin/language/ru-ru/extension/module/{featured,latest,recent_viewed}.php">
+        <operation>
+            <search><![CDATA[
+            <?php
+            ]]></search>
+            <add position="after"><![CDATA[
+            $_['entry_module_name']   = 'Заголовок:';
+            $_['entry_module_link']   = 'Посилання:';
+            ]]>
+            </add>
+        </operation>
+    </file>
+    <file path="admin/language/uk-ua/extension/module/{featured,latest,recent_viewed}.php">
+        <operation>
+            <search><![CDATA[
+            <?php
+            ]]></search>
+            <add position="after"><![CDATA[
+            $_['entry_module_name']   = 'Заголовок:';
+            $_['entry_module_link']   = 'Посилання:';
+            ]]>
+            </add>
+        </operation>
+    </file>
+    <file path="admin/language/en-gb/extension/module/{featured,latest,recent_viewed}.php">
+        <operation>
+            <search><![CDATA[
+            <?php
+            ]]></search>
+            <add position="after"><![CDATA[
+            $_['entry_module_name']   = 'Module Title:';
+            $_['entry_module_link']   = 'Посилання:';
+            ]]>
+            </add>
+        </operation>
+    </file>
+    <file path="catalog/controller/extension/module/{featured,latest,recent_viewed}.php">
+        <operation>
+            <search><![CDATA[
+            $data['heading_title'] = $this->language->get('heading_title');
+            ]]></search>
+            <add position="replace"><![CDATA[
+				if(isset($setting['module_title'])){
+					$data['heading_title'] = $setting['module_title'][$this->config->get('config_language_id')];
+				}else{
+					$data['heading_title'] = $this->language->get('heading_title');
+				}
+
+				if(isset($setting['module_link'])){
+					$data['heading_link'] = $setting['module_link'][$this->config->get('config_language_id')];
+				}else{
+					$data['heading_link'] = false;
+				}
+            ]]>
+            </add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+            $data['heading_title'] = $setting['name'];
+            ]]></search>
+            <add position="replace"><![CDATA[
+				if(isset($setting['module_title'])){
+					$data['heading_title'] = $setting['module_title'][$this->config->get('config_language_id')];
+				}else{
+					$data['heading_title'] = $this->language->get('heading_title');
+				}
+
+				if(isset($setting['module_link'])){
+					$data['heading_link'] = $setting['module_link'][$this->config->get('config_language_id')];
+				}else{
+					$data['heading_link'] = false;
+				}
+            ]]>
+            </add>
+        </operation>
+    </file>
+</modification>

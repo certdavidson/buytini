@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>#</name>
+    <version>1.0</version>
+    <link>#</link>
+    <author>oc-kit</author>
+    <code>svg_support_opencartfaq</code>
+
+    <file path="admin/controller/common/filemanager.php">
+        <operation error="skip">
+            <search><![CDATA[{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF}]]></search>
+            <add position="replace"><![CDATA[{jpg,jpeg,png,gif,svg,JPG,JPEG,PNG,GIF,SVG}]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA['png']]></search>
+            <add position="before"><![CDATA['svg',]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA['image/gif']]></search>
+            <add position="before"><![CDATA['image/svg+xml',]]></add>
+        </operation>
+    </file>
+</modification>

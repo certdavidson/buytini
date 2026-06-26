@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Maintenance Mode Admin Notice</name>
+  <code>maintenance_admin_notice</code>
+  <version>1.1</version>
+  <author>OCTemplates</author>
+  <link>https://octemplates.net</link>
+
+  <file path="admin/controller/common/header.php">
+    <operation>
+      <search><![CDATA[$data['logged'] = true;]]></search>
+      <add position="after"><![CDATA[
+        $data['config_maintenance'] = $this->config->get('config_maintenance') ?? 0;
+        $data['config_maintenance_link'] = $this->url->link('setting/store', 'user_token=' . $this->session->data['user_token']);
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="admin/view/template/common/header.twig">
+    <operation>
+      <search><![CDATA[</header>]]></search>
+      <add position="after"><![CDATA[
+        {% if config_maintenance %}
+          <div style="background:#ffeb3b; padding:10px; color:#000; text-align:center; font-weight:bold; border-bottom:2px solid #ccc; font-size: 16px;">
+            🚧 Сайт знаходиться в режимі обслуговування. Відвідувачі не бачать сайт. <br>
+            Щоб вимкнути режим обслуговування, перейдіть у
+            <a href="{{ config_maintenance_link }}" style="text-decoration: underline;">Система → Налаштування</a>
+            та змініть <strong>"Режим обслуговування"</strong> на "Ні".
+          </div>
+        {% endif %}
+      ]]></add>
+    </operation>
+  </file>
+</modification>

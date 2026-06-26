@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <code>CART CACHE</code>
+    <link>opencartfaq.com</link>
+    <name>CART CACHE</name>
+    <version>1.4</version>
+    <author>opencartfaq</author>
+
+
+    <file path="catalog/controller/account/logout.php">
+        <operation>
+            <search><![CDATA[unset($this->session->data['shipping_address']);]]></search>
+            <add position="before"><![CDATA[$this->cart->clearCache();]]></add>
+        </operation>
+    </file>
+
+    <file path="system/library/cart/cart.php|system/library/cart.php">
+        <operation error="skip">
+            <search><![CDATA[$this->config = $registry->get('config');]]></search>
+            <add position="after"><![CDATA[$this->cache = $registry->get('cache');]]></add>
+        </operation>
+
+        <operation error="skip">
+            <search><![CDATA[public function getProducts() {]]></search>
+            <add position="replace"><![CDATA[
+                public function clearCache()
+                {
+                    $cache = 'cart.products' . '.' . $this->session->getId();
+                    $this->cache->set($cache, false);
+                }
+
+
+                public function getProducts() {
+                $cache = 'cart.products' . '.' . $this->session->getId();
+                $cache_data = $this->cache->get($cache);
+                if($cache_data) return $cache_data;
+
+            ]]></add>
+        </operation>
+
+        <operation error="skip">
+            <search limit="1" regex="true"><![CDATA[~(return \$this->data\;)~]]></search>
+            <add><![CDATA[
+                $cache = 'cart.products' . '.' . $this->session->getId();
+                $this->cache->set($cache, $product_data);
+                $1
+            ]]></add>
+        </operation>
+
+
+        <operation error="skip">
+            <search regex="true"><![CDATA[
+            ~(public function (add|update|clear|remove)\(.*?\) \{)~
+            ]]></search>
+            <add><![CDATA[
+                $1
+
+                $this->clearCache();
+                ]]></add>
+        </operation>
+    </file>
+</modification>

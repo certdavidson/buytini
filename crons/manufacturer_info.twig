@@ -1,0 +1,103 @@
+{{ header }}
+
+<div class="manufacturer-page">
+  <div class="container">
+    {% include "/default/template/include/_breadcrumbs.twig" %}
+      <h1 class="page-heading">{{ heading_title }}</h1>
+
+      {{ content_top }}
+  </div>
+
+  <div class="page-tabs-sticky">
+      <div class="container">
+          <div class="page-tabs sticky" id="navbar-page">
+              {% if products %}<a href="#section-products" class="page-tabs_item active">{{ tab_products }}</a>{% endif %}
+              {% if vendors %}<a href="#section-vendors" class="page-tabs_item">{{ tab_vendors }}</a>{% endif %}
+              {% if description or thumb_wide %}<a href="#section-description" class="page-tabs_item">{{ tab_description }}</a>{% endif %}
+          </div>
+      </div>
+  </div>
+
+      <div data-bs-spy="scroll" data-bs-target="#navbar-page" data-bs-root-margin="0px 0px 0%" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+
+          <section id="section-products">
+              <div class="container">
+                <div class="row">
+              {{ column_left }}
+              <div class="col-12 {{ column_left ? ' column-content' : '' }}">
+
+                  {% if none and (thumb_wide or short_description) %}
+                  {% if thumb_wide %}<div class="page-image"><img src="{{ thumb_wide }}" class="img-fluid" alt="{{ heading_title }}"></div>{% endif %}
+                  {% if short_description %}<div class="page-description--short">{{ description_short }}</div>{% endif %}
+                  {% endif %}
+
+                    {% if products %}
+                        <div class="sort-block">
+                            <div class="d-flex align-items-center product-page__model_item me-lg-auto">
+                                <label for="input-sort form-label" class="me-3 d-none d-md-block">{{ text_sort }}</label>
+                                <select id="input-sort" class="form-select form-sort" onchange="location = this.value;">
+                                    {% for sorts in sorts %}
+                                        {% if sorts.value == '%s-%s'|format(sort, order) %}
+                                            <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+                                        {% else %}
+                                            <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-none d-md-flex w-50 product-page__model_item justify-content-end fw-200">{{ results }}</div>
+                            <div class="btn-filter">
+                                <div class="btn--filter fv-mobile_btn_mini fv_mobile_close_switch">{{ button_filter }}</div>
+                            </div>
+                        </div>
+
+                    <div class="products__wrapper">
+                        <div class="product__items flex-wrap row gx-3 gy-3 gx-lg-3 gy-lg-5">
+                            {% for product in products %}
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    {% include "/default/template/include/product/_product_widget.twig" %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="page-pagination">{{ pagination }}</div>
+                {% else %}
+                  <p class="text-empty">{{ text_empty }}</p>
+                  <div class="buttons mb-5 mb-lg-0">
+                    <a href="{{ continue }}" class="btn btn-return">{{ button_continue_manufacturers }}</a>
+                  </div>
+                {% endif %}
+                {% if vendors %}
+                <div class="vendors" id="section-vendors">
+                  <h4 class="page-heading mb-2 mb-md-4">{{ text_vendors }}</h4>
+                  <div class="vendors__wrapper vendors__wrapper-5">
+                    {% for vendor in vendors %}
+                    {% include "/default/template/include/vendor/_vendor_item_compact.twig" %}
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+
+                  {% if thumb or description %}
+                  <div id="section-description" class="mt-3 mt-lg-5">
+                      <div class="page-description">
+                          <h2 class="page-description__heading">{{ tab_description_name }}</h2>
+                          {% if thumb_wide %}<div class="page-image mb-4"><img src="{{ thumb_wide }}" class="img-fluid" alt="{{ heading_title }}"></div>{% endif %}
+                          {% if thumb %}<div class="page-image{% if description %} float-lg-start{% endif %} me-lg-4 mb-lg-2"><img src="{{ thumb }}" class="img-fluid" alt="{{ heading_title }}"></div>{% endif %}{% if description %}{{ description }}{% endif %}
+                      </div>
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
+              </div>
+          </section>
+      </div>
+  </div>
+</div>
+
+{{ content_bottom }}
+
+{{ products_recent }}
+
+{{ footer }}

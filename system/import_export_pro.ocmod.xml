@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Import / Export Pro</name>
+	<version>9.12.0</version>
+	<author>DevmanExtensions</author>
+	<link>https://www.devmanextensions.com</link>
+	<code>import_export_pro</code>
+
+	<file error="skip" path="system/framework.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[$registry->set('config', $config);]]></search>
+			<add position="after"><![CDATA[if(defined('IE_PRO_CRON')) $config->set('action_router', IE_PRO_CONTROLLER);]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="system/config/admin.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[$_['action_default'] = 'common/dashboard';]]></search>
+			<add position="after"><![CDATA[
+			    if(defined('IE_PRO_CRON'))
+                {
+                    $_['action_pre_action'] = array(
+                        'startup/startup',
+                        'startup/error',
+                        'startup/event',
+                        'startup/sass'
+                    );
+                }
+            ]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="system/library/cache/file.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[unlink($file);]]></search>
+			<add position="replace"><![CDATA[@unlink($file);]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/controller/common/header.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+				$data['disable_jquery'] = !empty($data['disable_jquery']) || (!empty($_GET['route']) && $_GET['route'] == 'extension/module/import_xls' && version_compare(VERSION, '2.3.0.3', '>='));
+			]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/view/template/common/header.twig">
+		<operation error="skip">
+			<search><![CDATA[<script type="text/javascript" src="view/javascript/jquery/jquery-3.7.0.min.js"></script>]]></search>
+			<add position="replace"><![CDATA[
+			{% if disable_jquery is empty %}
+				<script type="text/javascript" src="view/javascript/jquery/jquery-3.7.0.min.js" ></script>
+			{% else %}
+				<script type="text/javascript" src="https://devmanextensions.com/opencart_admin/common/js/jquery-2.1.1.min.js"></script>
+			{% endif %}
+			]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/view/template/common/header.tpl">
+		<operation error="skip">
+			<search><![CDATA[<script type="text/javascript" src="view/javascript/jquery/jquery-3.7.1.min.js"></script>]]></search>
+			<add position="replace"><![CDATA[
+			<?php if (!empty($disable_jquery)) { ?>
+				<script type="text/javascript" src="view/javascript/jquery/jquery-3.7.1.min.js"></script>
+			<?php } else { ?>
+				<script type="text/javascript" src="https://devmanextensions.com/opencart_admin/common/js/jquery-2.1.1.min.js"></script>
+			<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/controller/common/menu.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[$this->load->language('common/menu');]]></search>
+			<add position="after"><![CDATA[
+				$token_name = version_compare(VERSION, '3.0.0.0', '<') ? 'token' : 'user_token';
+
+				$route_compatible = (version_compare(VERSION, '2.3', '>=') ? 'extension/':'').'module/';
+
+				$this->load->language($route_compatible.'import_xls');
+
+				$data['text_buttom'] = $this->language->get('text_buttom');
+
+				$data['import'] = $this->url->link($route_compatible.'import_xls', $token_name.'=' . $this->session->data[$token_name], 'SSL');
+
+			]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/controller/common/column_left.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[$user = array();]]></search>
+			<add position="after"><![CDATA[
+				$token_name = version_compare(VERSION, '3.0.0.0', '<') ? 'token' : 'user_token';
+
+				$route_compatible = (version_compare(VERSION, '2.3', '>=') ? 'extension/':'').'module/';
+
+				$this->load->language($route_compatible.'import_xls');
+
+				$system[] = array(
+					'name'	   => $this->language->get('text_buttom'),
+					'href'     => $this->url->link($route_compatible.'import_xls', $token_name.'=' . $this->session->data[$token_name], 'SSL'),
+					'children' => array()
+				);
+			]]></add>
+		</operation>
+	</file>
+
+	<file error="skip" path="admin/view/template/common/menu.tpl">
+		<operation error="skip">
+			<search trim="true"><![CDATA[<li><a href="<?php echo $setting; ?>"><?php echo $text_setting; ?></a></li>]]></search>
+			<add position="after"><![CDATA[<li><a href="<?php echo $import; ?>"><?php echo $text_buttom; ?></a></li>]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/common/filemanager.php">
+		<operation error="skip" info="from OC.2.0.0.0 to OC.2.2.0.0">
+			<search trim="true"><![CDATA[move_uploaded_file($this->request->files['file']['tmp_name'], $directory . '/' . $filename);]]></search>
+			<add position="after"><![CDATA[
+		        $ext = strtolower(strrchr($this->request->files['file']['name'], '.'));
+		        $basename = basename($this->request->files['file']['name']);
+		        $target_file = "$directory/$basename";
+
+				//OLD Function
+			       	if ($ext == '.zip') {
+			          $extract = exec('unzip -o "'.$target_file.'" -d "'.$directory.'"');
+			          unlink($target_file);
+			        }
+			    //END OLD Function
+
+				/*
+				//PHP 5 >= 5.2.0, PECL zip >= 1.1.0
+					if ($ext == '.zip') {
+				        $zip = new ZipArchive;
+						$res = $zip->open($target_file);
+						if ($res === TRUE) {
+						  $zip->extractTo($directory);
+						  $zip->close();
+							unlink($target_file);
+						}
+					}
+				//END PHP 5 >= 5.2.0, PECL zip >= 1.1.0
+				*/
+			]]></add>
+		</operation>
+
+		<operation error="skip" info="more than OC.2.3.0.0">
+			<search trim="true"><![CDATA[move_uploaded_file($file['tmp_name'], $directory . '/' . $filename);]]></search>
+			<add position="before"><![CDATA[
+		        $ext = strtolower(strrchr($file['name'], '.'));
+		        $basename = basename($file['name']);
+		        $target_file = "$directory/$basename";
+
+				//OLD Function
+			       	if ($ext == '.zip') {
+			          $extract = exec('unzip -o "'.$target_file.'" -d "'.$directory.'"');
+			          unlink($target_file);
+			        }
+			    //END OLD Function
+
+				/*
+				//PHP 5 >= 5.2.0, PECL zip >= 1.1.0
+					if ($ext == '.zip') {
+				        $zip = new ZipArchive;
+						$res = $zip->open($target_file);
+						if ($res === TRUE) {
+						  $zip->extractTo($directory);
+						  $zip->close();
+							unlink($target_file);
+						}
+					}
+				//END PHP 5 >= 5.2.0, PECL zip >= 1.1.0
+				*/
+			]]></add>
+		</operation>
+
+		<operation error="skip" info="from OC.2.0.0.0 to OC.2.2.0.0">
+			<search trim="true"><![CDATA[if (!in_array($this->request->files['file']['type'], $allowed)) {]]></search>
+			<add position="before"><![CDATA[
+				$allowed[] = 'application/zip';
+				$allowed[] = 'application/x-zip-compressed';
+			]]></add>
+		</operation>
+
+		<operation error="skip" info="more than OC.2.3.0.0">
+			<search trim="true"><![CDATA[if (!in_array($file['type'], $allowed)) {]]></search>
+			<add position="before"><![CDATA[
+				$allowed[] = 'application/zip';
+				$allowed[] = 'application/x-zip-compressed';
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search trim="true"><![CDATA[if (!in_array(utf8_strtolower(utf8_substr(strrchr($filename, '.'), 1)), $allowed)) {]]></search>
+			<add position="before"><![CDATA[
+				$allowed[] = 'zip';
+			]]></add>
+		</operation>
+	</file>
+	<file error="skip" path="system/library/db/mysqli.php">
+		<operation error="skip">
+			<search trim="true"><![CDATA[$this->connection->query("SET SESSION sql_mode = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION'");]]></search>
+			<add position="replace"><![CDATA[$this->connection->query("SET SESSION sql_mode = 'NO_ZERO_IN_DATE,NO_ENGINE_SUBSTITUTION'");]]></add>
+		</operation>
+	</file>
+</modification>

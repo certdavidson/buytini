@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <code>hide_attributes</code>
+    <name>hide_attributes</name>
+    <version>1</version>
+    <link>https://opencartfaq.com/</link>
+    <author>opencartfaq</author>
+    <file path="admin/controller/setting/setting.php">
+        <operation error="skip">
+            <search><![CDATA[if (isset($this->request->post['config_telephone'])) {]]></search>
+            <add position="before"><![CDATA[
+            if (isset($this->request->post['config_no_attributes'])) {
+                $data['config_no_attributes'] = $this->request->post['config_no_attributes'];
+            } else {
+                $data['config_no_attributes'] = $this->config->get('config_no_attributes');
+            }
+
+            if (isset($this->request->post['config_no_attributes_group'])) {
+                $data['config_no_attributes_group'] = $this->request->post['config_no_attributes_group'];
+            } else {
+                $data['config_no_attributes_group'] = $this->config->get('config_no_attributes_group');
+            }
+			]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/setting/setting.twig">
+        <operation error="skip">
+            <search><![CDATA[<legend>{{ text_product }}</legend>]]></search>
+            <add position="before" offset="1"><![CDATA[
+              <fieldset>
+                <legend>Приховування груп атрибутів</legend>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Не виводити групи атрибутів (ID через кому)</label>
+                  <div class="col-sm-10">
+                  <input type="text" name="config_no_attributes_group" value="{{ config_no_attributes_group }}" class="form-control" />
+                  </div>
+                </div>
+                <legend>Приховування атрибутів</legend>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Не виводити атрибути (ID через кому)</label>
+                  <div class="col-sm-10">
+                  <input type="text" name="config_no_attributes" value="{{ config_no_attributes }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+			]]></add>
+        </operation>
+    </file>
+    <file path="catalog/model/catalog/product.php">
+        <operation error="skip">
+            <search><![CDATA[$product_attribute_query = $this->db->query("SELECT a.attribute_id, ad.name, pa.text FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id) WHERE pa.product_id = '" . (int)$product_id . "' AND ad.language_id = '" . (int)$this->config->get('config_language_id') . "' AND pa.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY a.sort_order, ad.name LIMIT " . (int)$limit);]]></search>
+            <add position="replace"><![CDATA[$product_attribute_query = $this->db->query("SELECT a.attribute_id, ad.name, pa.text FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id) WHERE pa.product_id = '" . (int)$product_id . "' AND ad.language_id = '" . (int)$this->config->get('config_language_id') . "' AND pa.language_id = '" . (int)$this->config->get('config_language_id') . "' " . ($this->config->get('config_no_attributes') ? " AND pa.attribute_id NOT IN (" . $this->config->get('config_no_attributes') . ") " : ""). " ORDER BY a.sort_order, ad.name LIMIT " . (int)$limit);]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[$product_attribute_query = $this->db->query("SELECT a.attribute_id, ad.name, pa.text FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id) WHERE pa.product_id = '" . (int)$product_id . "' AND a.attribute_group_id = '" . (int)$product_attribute_group['attribute_group_id'] . "' AND ad.language_id = '" . (int)$this->config->get('config_language_id') . "' AND pa.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY a.sort_order, ad.name");]]></search>
+            <add position="replace"><![CDATA[$product_attribute_query = $this->db->query("SELECT a.attribute_id, ad.name, pa.text FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id) WHERE pa.product_id = '" . (int)$product_id . "' AND a.attribute_group_id = '" . (int)$product_attribute_group['attribute_group_id'] . "' AND ad.language_id = '" . (int)$this->config->get('config_language_id') . "' AND pa.language_id = '" . (int)$this->config->get('config_language_id') . "' " . ($this->config->get('config_no_attributes') ? " AND pa.attribute_id NOT IN (" . $this->config->get('config_no_attributes') . ") " : "") . "ORDER BY a.sort_order, ad.name");]]></add>
+        </operation>
+
+        <!-- hide groups -->
+        <operation error="skip">
+            <search><![CDATA[$product_attribute_group_query = $this->db->query("SELECT ag.attribute_group_id, agd.name FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_group ag ON (a.attribute_group_id = ag.attribute_group_id) LEFT JOIN " . DB_PREFIX . "attribute_group_description agd ON (ag.attribute_group_id = agd.attribute_group_id) WHERE pa.product_id = '" . (int)$product_id . "' AND agd.language_id = '" . (int)$this->config->get('config_language_id') . "' GROUP BY ag.attribute_group_id ORDER BY ag.sort_order, agd.name");]]></search>
+            <add position="replace"><![CDATA[$product_attribute_group_query = $this->db->query("SELECT ag.attribute_group_id, agd.name FROM " . DB_PREFIX . "product_attribute pa LEFT JOIN " . DB_PREFIX . "attribute a ON (pa.attribute_id = a.attribute_id) LEFT JOIN " . DB_PREFIX . "attribute_group ag ON (a.attribute_group_id = ag.attribute_group_id) LEFT JOIN " . DB_PREFIX . "attribute_group_description agd ON (ag.attribute_group_id = agd.attribute_group_id) WHERE pa.product_id = '" . (int)$product_id . "' AND agd.language_id = '" . (int)$this->config->get('config_language_id') . "' " . ($this->config->get('config_no_attributes_group') ? " AND ag.attribute_group_id NOT IN (" . $this->config->get('config_no_attributes_group') . ") " : "") . " GROUP BY ag.attribute_group_id ORDER BY ag.sort_order, agd.name");]]></add>
+        </operation>
+        <!-- hide groups end -->
+    </file>
+</modification>
