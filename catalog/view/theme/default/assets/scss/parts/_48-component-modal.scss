@@ -1,0 +1,20 @@
+/* -------- component: modal -------- */
+.modal { position: fixed; inset: 0; z-index: 450; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(27, 24, 21, .36); backdrop-filter: blur(2px); animation: dcFade .18s ease; }
+.modal__dialog { width: 640px; max-width: 100%; max-height: 88vh; overflow-y: auto; background: var(--surface); border-radius: var(--radius-lg); animation: dcPop .22s cubic-bezier(.22, .61, .36, 1); }
+.modal__dialog--sm { width: 560px; }
+.modal__dialog--lg { width: 760px; }
+.modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 26px 32px 0; position: sticky; top: 0; background: var(--surface); z-index: 2; }
+.modal__title { font-size: 22px; font-weight: 600; }
+.modal__close { width: 40px; height: 40px; border: none; background: var(--surface-muted); color: var(--text-muted); border-radius: var(--radius-pill); display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: background-color .15s, color .15s; }
+.modal__close:hover { background: var(--surface-sunken); color: var(--text); }
+.modal__body { padding: 20px 32px 32px; }
+.modal__rows { display: flex; flex-direction: column; gap: 22px; margin-bottom: 24px; }
+.modal__row { display: flex; gap: 14px; }
+.modal__row-icon { width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--surface-muted); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.modal__row-title { display: block; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.modal__row-text { display: block; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+.modal__callout { display: flex; gap: 12px; padding: 16px 18px; border-radius: var(--radius-md); background: var(--accent-soft); font-size: 14px; line-height: 1.5; }
+.modal__callout--success { background: var(--success-soft); }
+.modal--lightbox { background: rgba(15, 12, 10, .92); backdrop-filter: none; padding: 40px; }
+.modal__lightbox-close { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border: none; background: rgba(255, 255, 255, .14); border-radius: var(--radius-pill); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.modal__lightbox-img { max-width: 600px; width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-lg); background: center / cover no-repeat; animation: dcPop .22s cubic-bezier(.22, .61, .36, 1); }

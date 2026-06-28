@@ -1,55 +1,124 @@
-<footer>
-  <div class="container">
-    <div class="row">
-      {% if informations %}
-      <div class="col-sm-3">
-        <h5>{{ text_information }}</h5>
-        <ul class="list-unstyled">
-         {% for information in informations %}
-          <li><a href="{{ information.href }}">{{ information.title }}</a></li>
-          {% endfor %}
-        </ul>
+<footer class="footer">
+
+  <div class="footer__cta">
+    <div class="footer__cta-inner">
+      <div class="footer__cta-text">
+        <span class="footer__cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
+        <div>
+          <span class="footer__cta-title">Не знайшли в каталозі?</span>
+          <span class="footer__cta-sub">Замовте будь-який товар із закордонного сайту за посиланням — ми викупимо й привеземо</span>
+        </div>
       </div>
-      {% endif %}
-      <div class="col-sm-3">
-        <h5>{{ text_service }}</h5>
-        <ul class="list-unstyled">
-          <li><a href="{{ contact }}">{{ text_contact }}</a></li>
-          <li><a href="{{ return }}">{{ text_return }}</a></li>
-          <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
-        </ul>
+      <a class="btn btn--primary btn--lg" href="buyout.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Викуп за посиланням</a>
+    </div>
+  </div>
+
+  <div class="footer__subscribe">
+    <div class="footer__subscribe-inner">
+      <div class="footer__subscribe-copy">
+        <span class="footer__subscribe-title">Знижки й новинки першими</span>
+        <span class="footer__subscribe-sub">Підпишіться на розсилку — добірки, акції та корисне про доставку з-за кордону.</span>
       </div>
-      <div class="col-sm-3">
-        <h5>{{ text_extra }}</h5>
-        <ul class="list-unstyled">
-          <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
-          <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
-          <li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>
-          <li><a href="{{ special }}">{{ text_special }}</a></li>
-        </ul>
-      </div>
-      <div class="col-sm-3">
-        <h5>{{ text_account }}</h5>
-        <ul class="list-unstyled">
-          <li><a href="{{ account }}">{{ text_account }}</a></li>
-          <li><a href="{{ order }}">{{ text_order }}</a></li>
-          <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
-          <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
-        </ul>
+      <form class="footer__subscribe-form" data-form="subscribe">
+        <input class="input" type="email" name="email" placeholder="Ваш email" aria-label="Email">
+        <button class="btn btn--primary" type="submit">Підписатися</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer__columns">
+    <div>
+      <a class="footer__brand-logo" href="index.html">
+        <img src="/catalog/view/theme/default/assets/images/buytini-logo.svg" alt="buytini" width="40" height="42">
+        <span>buytini</span>
+      </a>
+      <p class="footer__brand-text">Викуп і доставка брендових товарів зі США та Європи в Україну. Замовляйте з каталогу або за будь-яким посиланням.</p>
+      <div class="footer__socials">
+        {% if inst_link %}
+        <a class="footer__social" href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a>
+        {% endif %}
+
+        {% if tt_link %}
+        <a class="footer__social" href="#" aria-label="TikTok"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.2 1.6 3.6 3.7 3.8v2.5c-1.3.1-2.5-.3-3.7-1v5.9c0 4-3.2 6.5-6.6 5.4-2.6-.8-3.7-3.8-2.5-6.2.9-1.8 2.9-2.7 4.9-2.4v2.6c-.4-.1-.8-.2-1.2-.1-1 .1-1.7 1-1.6 2 .1 1.4 1.7 2 2.8 1.2.6-.4.8-1 .8-1.8V3h2.4z"></path></svg></a>
+        {% endif %}
+
+        {% if tg_link %}
+        <a class="footer__social" href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.9 13.4l-4.7-1.5c-1-.3-1-1 .2-1.5l18.3-7c.9-.3 1.6.2 1.2 1.9z"></path></svg></a>
+        {% endif %}
+
+        {% if x_link %}{% endif %}
+
+        {% if yt_link %}
+        <a class="footer__social" href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg></a>
+        {% endif %}
+
+        {% if fb_link %}{% endif %}
       </div>
     </div>
-    <hr>
-    <p>{{ powered }}</p>
+
+    <div>
+      <span class="footer__col-title">Компанія</span>
+      <a class="footer__link" href="info.html">Про нас</a>
+      <a class="footer__link" href="how-it-works.html">Як це працює</a>
+      <a class="footer__link" href="blog.html">Блог</a>
+      <a class="footer__link" href="partners.html">Партнерам</a>
+      <a class="footer__link" href="contacts.html">Контакти</a>
+      <a class="footer__link" href="sitemap.html">Мапа сайту</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Покупцям</span>
+      <a class="footer__link" href="delivery.html">Оплата та доставка</a>
+      <a class="footer__link" href="calculator.html">Калькулятор вартості</a>
+      <a class="footer__link" href="size-charts.html">Розмірні сітки</a>
+      <a class="footer__link" href="info.html">Повернення</a>
+      <a class="footer__link" href="buyout.html">Викуп за посиланням</a>
+      <a class="footer__link" href="support.html">Підтримка</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Каталог</span>
+      <a class="footer__link" href="stores.html">Магазини</a>
+      <a class="footer__link" href="brands.html">Бренди</a>
+      <a class="footer__link" href="sale.html">Акції</a>
+      <a class="footer__link" href="promocodes.html">Промокоди</a>
+      <a class="footer__link" href="services.html">Додаткові послуги</a>
+      <a class="footer__link" href="our-partners.html">Наші партнери</a>
+    </div>
+
+    <div>
+      <span class="footer__col-title">Кабінет</span>
+      <a class="footer__link" href="login.html">Вхід</a>
+      <a class="footer__link" href="orders.html">Мої замовлення</a>
+      <a class="footer__link" href="buyout-orders.html">Замовлення на викуп</a>
+      <a class="footer__link" href="wishlist.html">Обране</a>
+      <a class="footer__link" href="bonuses.html">Бонуси</a>
+      <a class="footer__link" href="addresses.html">Адреси</a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="footer__bottom-inner">
+      <span class="footer__copy">© 2026 buytini. Усі права захищено.</span>
+      <div class="footer__pays">
+        <span class="footer__pay"><span class="pay-visa">VISA</span></span>
+        <span class="footer__pay"><svg width="32" height="20" viewBox="0 0 34 22"><circle cx="14" cy="11" r="7" fill="#EB001B"></circle><circle cx="20" cy="11" r="7" fill="#F79E1B" opacity=".9"></circle></svg></span>
+        <span class="footer__pay"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.1 1.2-.4 2.3-1.1 3.1-.8.9-2 1.5-3.1 1.4-.1-1.2.5-2.4 1.1-3.1C13.8 3.5 15 2.9 16 3zM19.5 17c-.5 1.2-.8 1.7-1.4 2.7-.9 1.4-2.1 3.1-3.7 3.1-1.4 0-1.7-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.6-3.7-2.9C1.2 18.2.5 14 2 11.1c.8-1.4 2.2-2.3 3.7-2.3 1.4 0 2.3.9 3.5.9 1.1 0 1.8-.9 3.5-.9 1.3 0 2.6.7 3.6 1.9-3.1 1.7-2.6 6.1.7 7.3z"></path></svg><span class="pay-text">Pay</span></span>
+        <span class="footer__pay"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2-1.9 3.3-4.7 3.3-7.9z"></path><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.3-1.9-6.2-4.6H2.2v2.8A11 11 0 0 0 12 23z"></path><path fill="#FBBC04" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.2a11 11 0 0 0 0 9.8z"></path><path fill="#EA4335" d="M12 5.4c1.6 0 3 .6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"></path></svg><span class="pay-text">Pay</span></span>
+      </div>
+    </div>
   </div>
 </footer>
+
 {% for style in styles %}
 <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
 {% endfor %}
 {% for script in scripts %}
 <script src="{{ script }}" type="text/javascript"></script>
 {% endfor %}
-<!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
-</body></html>
+
+
+  <script>(function(){function go(){if(typeof Swiper==='undefined'){return setTimeout(go,120);}var el=document.querySelector('.heroSwiper');if(!el)return;new Swiper(el,{rewind:true,speed:550,autoplay:{delay:5500,disableOnInteraction:false},navigation:{prevEl:el.querySelector('.hero-prev'),nextEl:el.querySelector('.hero-next')},pagination:{el:el.querySelector('.hero-dots'),clickable:true}});}go();})();</script>
+  <script src="/catalog/view/theme/default/assets/js/main.js" defer></script>
+</body>
+</html>

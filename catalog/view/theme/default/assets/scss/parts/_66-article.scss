@@ -1,0 +1,5 @@
+/* article */
+.article { max-width: 760px; margin: 0 auto; padding: 0 20px 64px; }
+.article__hero { height: 380px; border-radius: var(--radius-lg); background: var(--surface-sunken) center / cover no-repeat; margin-bottom: 28px; }
+.article__title { font-size: 38px; font-weight: 600; line-height: 1.18; margin: 0 0 14px; }
+.article__meta { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-subtle); margin-bottom: 28px; }

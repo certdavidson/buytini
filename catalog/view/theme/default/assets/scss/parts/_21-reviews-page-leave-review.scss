@@ -1,0 +1,16 @@
+/* reviews page + leave review */
+.reviews-page { max-width: 880px; margin: 0 auto; padding: 24px 20px 64px; }
+.reviews-page__head { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 24px; flex-wrap: wrap; gap: 12px; }
+.reviews-page__title { font-size: 34px; font-weight: 600; margin: 0; }
+.reviews-page__add { height: 46px; font-size: 14px; }
+.reviews-page__more { display: flex; justify-content: center; margin-top: 24px; }
+.leave-review { max-width: 620px; margin: 0 auto; padding: 24px 20px 64px; }
+.leave-review__title { font-size: 32px; font-weight: 600; margin: 18px 0 8px; }
+.leave-review__sub { font-size: 15px; color: var(--text-muted); margin: 0 0 28px; }
+.leave-review__row { margin-bottom: 18px; }
+.leave-review__submit { height: 54px; font-size: 16px; }
+.field__label--strong { font-weight: 500; color: var(--text); }
+.star-input { display: flex; gap: 8px; margin-bottom: 20px; }
+.star-input__btn { border: none; background: transparent; padding: 0; cursor: pointer; }
+.input--48 { height: 48px; }
+.input--area { height: auto; padding: 13px 16px; resize: vertical; }

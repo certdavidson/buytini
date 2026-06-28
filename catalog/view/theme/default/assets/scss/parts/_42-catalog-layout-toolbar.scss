@@ -1,0 +1,38 @@
+/* -------- catalog layout + toolbar -------- */
+.catalog__layout { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 64px; display: grid; grid-template-columns: 264px 1fr; gap: 32px; align-items: start; }
+@media (max-width: 900px) { .catalog__layout { grid-template-columns: 1fr; } }
+
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+.toolbar__count { font-size: 14px; color: var(--text-muted); }
+.toolbar__side { display: flex; align-items: center; gap: 10px; }
+.toolbar__filter-btn { display: none; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; }
+@media (max-width: 900px) { .toolbar__filter-btn { display: inline-flex; } }
+
+.sort { position: relative; }
+.sort__trigger { height: 42px; padding: 0 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface); color: var(--text); font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: background-color .15s; }
+.sort__trigger:hover { background: var(--surface-muted); }
+.sort__menu { position: absolute; top: 48px; right: 0; min-width: 210px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; z-index: 30; animation: dcPop .16s ease; }
+.sort__item { width: 100%; text-align: left; padding: 11px 16px; border: none; background: transparent; color: var(--text); font-size: 14px; cursor: pointer; transition: background-color .15s; }
+.sort__item:hover { background: var(--surface-muted); }
+.sort__item.is-active { background: var(--surface-muted); }
+
+.view-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius-md); overflow: hidden; }
+.view-toggle__btn { width: 42px; height: 42px; border: none; background: var(--surface); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .15s, color .15s; }
+.view-toggle__btn + .view-toggle__btn { border-left: 1px solid var(--border-strong); }
+.view-toggle__btn.is-active { background: var(--accent); color: var(--on-accent); }
+
+.chip { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 1px solid var(--accent); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color .15s, color .15s; }
+.chip:hover { background: var(--accent); color: var(--on-accent); }
+
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+@media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 860px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+.product-grid.is-list { display: flex; flex-direction: column; gap: 14px; }
+
+.pagination { display: flex; flex-direction: column; align-items: center; gap: 24px; margin-top: 40px; }
+.pagination__pages { display: flex; align-items: center; gap: 6px; }
+.pagination__arrow { width: 40px; height: 40px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .15s; }
+.pagination__arrow:hover { background: var(--surface-muted); }
+.pagination__page { min-width: 40px; height: 40px; padding: 0 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color .15s; }
+.pagination__page:hover { background: var(--surface-muted); }
+.pagination__page.is-active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }

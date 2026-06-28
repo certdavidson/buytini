@@ -16,6 +16,11 @@
 
     <file path="system/library/cart/cart.php|system/library/cart.php">
         <operation error="skip">
+            <search><![CDATA[private $config;]]></search>
+            <add position="after"><![CDATA[	private $cache;]]></add>
+        </operation>
+
+        <operation error="skip">
             <search><![CDATA[$this->config = $registry->get('config');]]></search>
             <add position="after"><![CDATA[$this->cache = $registry->get('cache');]]></add>
         </operation>

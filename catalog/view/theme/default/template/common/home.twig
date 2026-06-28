@@ -1,14 +1,725 @@
 {{ header }}
-<div id="common-home" class="container">
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}{{ content_bottom }}</div>
-    {{ column_right }}</div>
-</div>
+
+<main class="homed">
+  
+  <section class="homed-sec">
+    <div class="homed-head">
+      <h2 class="homed-head__title">Популярні категорії</h2><a class="homed-head__link" href="catalog.html">Усі
+        категорії →</a>
+    </div>
+    <div class="homed-cats"><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">126 товарів</span><span
+            class="homed-cat__name">Енергорішення</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">3.2к товарів</span><span
+            class="homed-cat__name">Одяг</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">2.1к товарів</span><span
+            class="homed-cat__name">Взуття</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">880 товарів</span><span
+            class="homed-cat__name">Аксесуари</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">540 товарів</span><span class="homed-cat__name">Дім
+            і побут</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">1.4к товарів</span><span
+            class="homed-cat__name">Косметика та догляд</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a><a class="homed-cat homed-cat--dark" href="catalog.html">
+        <div class="homed-cat__head"><span class="homed-cat__badge">Новинка</span><span class="homed-cat__name">Аромати
+            та парфуми</span></div>
+        <div class="homed-cat__img"
+          style="background-image:url(https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=400&q=72)">
+        </div>
+      </a></div>
+  </section>
+  <section class="homed-sec homed-sec--brands">
+    <div class="homed-brands"><a class="homed-brand" href="brand.html"><img src="images/brands/adidas.png" alt="adidas"
+          loading="lazy"></a><a class="homed-brand" href="brand.html"><img src="images/brands/nike.png" alt="Nike"
+          loading="lazy"></a><a class="homed-brand" href="brand.html"><img src="images/brands/armani-exchange.png"
+          alt="Armani Exchange" loading="lazy"></a><a class="homed-brand" href="brand.html"><img
+          src="images/brands/lacoste.png" alt="Lacoste" loading="lazy"></a><a class="homed-brand" href="brand.html"><img
+          src="images/brands/jw-pei.png" alt="JW Pei" loading="lazy"></a><a class="homed-brand" href="brand.html"><img
+          src="images/brands/levis.png" alt="Levi’s" loading="lazy"></a></div>
+  </section>
+  <section class="homed-sec">
+    <div class="homed-head">
+      <h2 class="homed-head__title">Новинки</h2>
+      <div class="homed-tabs"><button class="homed-tabs__btn is-active" type="button">Усі</button><button
+          class="homed-tabs__btn" type="button">Жіноче</button><button class="homed-tabs__btn"
+          type="button">Чоловіче</button><button class="homed-tabs__btn" type="button">Аксесуари</button></div>
+    </div>
+    <div class="homed-grid">
+      
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Жіночий світшот
+            Phoenix Fleece Grey</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#9A958C"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">3 272 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--sale">-9%</span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Жіноча футболка
+            Southern</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#C9A24B"></span><span class="d-card__color"
+              style="background:#1C1815"></span></div>
+          <div class="d-card__foot">
+            <div class="d-card__prices"><span class="d-card__price">1 401 ₴</span><span class="d-card__price-old">1 436
+                ₴</span></div><button class="d-card__add" type="button" aria-label="Додати в кошик"><svg width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button>
+          </div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Чоловічий жилет
+            BH1585</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#C96A4B"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">8 648 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--stock">В наявності <span
+              class="fi fi-ua d-card__flag"></span></span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Унісекс худі
+            Loose Fit</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#7A8B6F"></span><span
+              class="d-card__color" style="background:#2E2A26"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">7 713 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--sale">-39%</span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Чоловічі кросівки
+            Waffle Debut</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#2C6FB0"></span><span class="d-card__color"
+              style="background:#C8412F"></span></div>
+          <div class="d-card__foot">
+            <div class="d-card__prices"><span class="d-card__price">2 289 ₴</span><span class="d-card__price-old">3 760
+                ₴</span></div><button class="d-card__add" type="button" aria-label="Додати в кошик"><svg width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button>
+          </div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Чоловічі шкіряні
+            кросівки Courtderby</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">6 311 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Tommy Hilfiger</span><span class="d-card__name">Чоловічі
+            шкіряні кросівки</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#1C1815"></span><span
+              class="d-card__color" style="background:#7A5C3E"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">3 190 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section section--muted homed-full">
+    <div class="section__inner">
+      <div class="section-head">
+        <div>
+          <h2 class="section-head__title">Як це працює</h2>
+        </div><a class="section-head__link" href="how-it-works.html">Про доставку й мита <svg width="18" height="18"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg></a>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step__head"><span class="step__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                <path d="M3 6h18"></path>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg></span><span class="step__num">01</span></div><span class="step__title">Оберіть товар</span><span
+            class="step__text">З каталогу або надішліть посилання на будь-який закордонний сайт.</span>
+        </div>
+        <div class="step">
+          <div class="step__head"><span class="step__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+              </svg></span><span class="step__num">02</span></div><span class="step__title">Ми викуповуємо</span><span
+            class="step__text">Купуємо в офіційному магазині бренду й отримуємо на свій склад за кордоном.</span>
+        </div>
+        <div class="step">
+          <div class="step__head"><span class="step__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+                <path d="M15 18H9"></path>
+                <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+                <circle cx="17" cy="18" r="2"></circle>
+                <circle cx="7" cy="18" r="2"></circle>
+              </svg></span><span class="step__num">03</span></div><span class="step__title">Доставка в
+            Україну</span><span class="step__text">Авіа, морем чи авто — обираєте строк і вартість. Усе про мита —
+            прозоро.</span>
+        </div>
+        <div class="step">
+          <div class="step__head"><span class="step__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16.5 9.4 7.55 4.24"></path>
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                </path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg></span><span class="step__num">04</span></div><span class="step__title">Отримання</span><span
+            class="step__text">Привозимо Новою Поштою чи на адресу. Трекінг на кожному етапі.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="homed-sec">
+    <div class="homed-head">
+      <h2 class="homed-head__title">Популярні товари</h2><a class="homed-head__link" href="catalog.html">Дивитись все
+        →</a>
+    </div>
+    <div class="homed-grid">
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--sale">-10%</span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Жіночий світшот
+            Phoenix Fleece</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#C96A4B"></span><span
+              class="d-card__color" style="background:#2E2A26"></span></div>
+          <div class="d-card__foot">
+            <div class="d-card__prices"><span class="d-card__price">3 272 ₴</span><span class="d-card__price-old">3 636
+                ₴</span></div><button class="d-card__add" type="button" aria-label="Додати в кошик"><svg width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button>
+          </div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Жіноча футболка
+            Southern</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#C9A24B"></span></div>
+          <div class="d-card__foot">
+            <div class="d-card__prices"><span class="d-card__price">1 401 ₴</span><span class="d-card__price-old">1 436
+                ₴</span></div><button class="d-card__add" type="button" aria-label="Додати в кошик"><svg width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button>
+          </div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Чоловічі шкіряні
+            кросівки Courtderby</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">6 311 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Унісекс сумка
+            через плече Neocroc</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#1C1815"></span><span
+              class="d-card__color" style="background:#7A8B6F"></span><span class="d-card__color"
+              style="background:#2C6FB0"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">4 114 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">One size</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--sale">-39%</span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Чоловічі кросівки
+            Waffle Debut</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#E4E0D8"></span><span
+              class="d-card__color" style="background:#2C6FB0"></span><span class="d-card__color"
+              style="background:#C8412F"></span></div>
+          <div class="d-card__foot">
+            <div class="d-card__prices"><span class="d-card__price">2 289 ₴</span><span class="d-card__price-old">3 760
+                ₴</span></div><button class="d-card__add" type="button" aria-label="Додати в кошик"><svg width="18"
+                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button>
+          </div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Rituals</span><span class="d-card__name">Парфум Aura of
+            Roses 50мл</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#C96A4B"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">1 840 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Об'єм</span>
+          <div class="d-opts__list"><span class="d-opt">30 мл</span><span class="d-opt">50 мл</span><span
+              class="d-opt">100 мл</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Чоловіча
+            куртка-стьобанка</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#2E2A26"></span><span
+              class="d-card__color" style="background:#7A8B6F"></span><span class="d-card__color"
+              style="background:#2C6FB0"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">7 770 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=500&q=72)"><button
+            class="d-card__wish" type="button" aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Nike</span><span class="d-card__name">Жіночий світшот
+            Phoenix Fleece Grey</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#9A958C"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">3 272 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="homed-sec">
+    <div class="homed-feats">
+      <div class="homed-feat"><span class="homed-feat__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
+          </svg></span><span class="homed-feat__title">Великий асортимент</span><span class="homed-feat__text">Доступ до
+          тисяч оригінальних товарів від брендів, яких немає в Україні.</span></div>
+      <div class="homed-feat"><span class="homed-feat__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 2" />
+          </svg></span><span class="homed-feat__title">Зручно та просто</span><span class="homed-feat__text">Замовляєте
+          товар — ми підбираємо ціну, перевіряємо, викуповуємо й доставляємо.</span></div>
+      <div class="homed-feat"><span class="homed-feat__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+            <path d="M9 12l2 2 4-4" />
+          </svg></span><span class="homed-feat__title">100% оригінал</span><span class="homed-feat__text">Купуємо лише в
+          офіційних магазинах. Гарантуємо справжність кожної покупки.</span></div>
+      <div class="homed-feat"><span class="homed-feat__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12z" />
+          </svg></span><span class="homed-feat__title">Завжди на зв’язку</span><span class="homed-feat__text">Допоможемо
+          з розміром, порадимо товар і завжди відповімо на запитання.</span></div>
+    </div>
+  </section>
+  <section class="homed-sec">
+    <div class="homed-head">
+      <div class="homed-head__row">
+        <h2 class="homed-head__title">Товари в Україні</h2><span class="homed-instock"><svg width="15" height="15"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 7h11v10H2zM13 10h4l3 3v4h-7z" />
+            <circle cx="6" cy="18.5" r="1.6" />
+            <circle cx="17" cy="18.5" r="1.6" />
+          </svg>Доставка 1–3 дні</span>
+      </div><a class="homed-head__link" href="catalog.html">Дивитись все →</a>
+    </div>
+    <div class="homed-grid">
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--stock">В наявності <span
+              class="fi fi-ua d-card__flag"></span></span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Унісекс поло
+            Regular Fit</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#C96A4B"></span><span
+              class="d-card__color" style="background:#2E2A26"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">5 843 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--stock">В наявності <span
+              class="fi fi-ua d-card__flag"></span></span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Унісекс худі
+            Loose Fit</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#7A8B6F"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">7 713 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">XS</span><span class="d-opt">S</span><span
+              class="d-opt">M</span><span class="d-opt">L</span><span class="d-opt">XL</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--stock">В наявності <span
+              class="fi fi-ua d-card__flag"></span></span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Tommy Hilfiger</span><span class="d-card__name">Чоловічі
+            шкіряні кросівки</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#1C1815"></span><span
+              class="d-card__color" style="background:#7A5C3E"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">3 190 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">40</span><span class="d-opt">41</span><span
+              class="d-opt">42</span><span class="d-opt">43</span><span class="d-opt">44</span><span
+              class="d-opt">45</span></div>
+        </div>
+      </div>
+      <div class="d-card"><a class="d-card__media" href="product.html"
+          style="background-image:url(https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=72)"><span
+            class="d-card__badge d-card__badge--stock">В наявності <span
+              class="fi fi-ua d-card__flag"></span></span><button class="d-card__wish" type="button"
+            aria-label="В обране"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg></button></a>
+        <div class="d-card__body"><span class="d-card__brand">Lacoste</span><span class="d-card__name">Унісекс сумка на
+            пояс LCST</span>
+          <div class="d-card__colors"><span class="d-card__color" style="background:#2C6FB0"></span><span
+              class="d-card__color" style="background:#1C1815"></span></div>
+          <div class="d-card__foot"><span class="d-card__price">5 516 ₴</span><button class="d-card__add" type="button"
+              aria-label="Додати в кошик"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M3 4h2l2.4 12.5a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 8H6" />
+                <circle cx="9.5" cy="20" r="1.3" />
+                <circle cx="17.5" cy="20" r="1.3" />
+              </svg></button></div>
+        </div>
+        <div class="d-opts"><span class="d-opts__label">Розмір</span>
+          <div class="d-opts__list"><span class="d-opt">One size</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="homed-sec">
+    <div class="homed-head">
+      <div class="homed-head__row">
+        <h2 class="homed-head__title">Останні відгуки</h2><span class="homed-rating"><strong
+            class="homed-rating__score">4.9</strong><span class="homed-rating__stars">★★★★★</span>· 12 480 оцінок</span>
+      </div><a class="homed-head__link" href="reviews.html">Усі відгуки →</a>
+    </div>
+    <div class="homed-revs">
+      <div class="homed-rev">
+        <div class="homed-rev__head"><span class="homed-rev__avatar">О</span>
+          <div class="homed-rev__who"><span class="homed-rev__name">Олексій Л.</span><span class="homed-rev__date">12
+              травня · покупка</span></div><span class="homed-rev__stars">★★★★★</span>
+        </div>
+        <p class="homed-rev__text">Костюм супер, виглядає дуже круто. Товар все оригінал, доставили швидше, ніж було
+          вказано. Однозначно рекомендую!</p>
+        <div class="homed-rev__foot"><span class="homed-rev__thumb"
+            style="background-image:url(https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=200&q=72)"></span><span
+            class="homed-rev__product">Adidas Чоловічий флісовий костюм</span></div>
+      </div>
+      <div class="homed-rev">
+        <div class="homed-rev__head"><span class="homed-rev__avatar">А</span>
+          <div class="homed-rev__who"><span class="homed-rev__name">Андрій К.</span><span class="homed-rev__date">9
+              травня · покупка</span></div><span class="homed-rev__stars">★★★★★</span>
+        </div>
+        <p class="homed-rev__text">Все чудово, від спілкування до якості товару. Сповна за гроші, фотографували перед
+          відправкою. Так тримати!</p>
+        <div class="homed-rev__foot"><span class="homed-rev__thumb"
+            style="background-image:url(https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=200&q=72)"></span><span
+            class="homed-rev__product">Сумка Tommy Hilfiger через плече</span></div>
+      </div>
+      <div class="homed-rev">
+        <div class="homed-rev__head"><span class="homed-rev__avatar">Ю</span>
+          <div class="homed-rev__who"><span class="homed-rev__name">Юлія П.</span><span class="homed-rev__date">18
+              травня · покупка</span></div><span class="homed-rev__stars">★★★★★</span>
+        </div>
+        <p class="homed-rev__text">Дякую велике дівчатам, дуже сподобалось обслуговування. Швидко й приємно, замовлятиму
+          ще. Рекомендую!</p>
+        <div class="homed-rev__foot"><span class="homed-rev__thumb"
+            style="background-image:url(https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=200&q=72)"></span><span
+            class="homed-rev__product">Calvin Klein Унісекс сумка</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="homed-sec homed-sec--news">
+    <div class="homed-news">
+      <div>
+        <h2 class="homed-news__title">Перше замовлення — зі знижкою <span>−5%</span></h2>
+        <p class="homed-news__text">Підпишіться на оновлення й отримуйте промокод NEWS, добірки та дропи раз на тиждень.
+        </p>
+      </div>
+      <form class="homed-news__form" action="#">
+        <div class="homed-news__row"><input class="homed-news__input" type="email" placeholder="mail@email.com"
+            aria-label="Email"><button class="homed-news__btn" type="submit">Відправити</button></div>
+        <span class="homed-news__note">Натискаючи «Відправити», ви погоджуєтеся з умовами користування.</span>
+      </form>
+    </div>
+  </section>
+</main>
+
 {{ footer }}

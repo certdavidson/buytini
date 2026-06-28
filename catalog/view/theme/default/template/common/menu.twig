@@ -1,30 +1,61 @@
-{% if categories %}
-<div class="container">
-  <nav id="menu" class="navbar">
-    <div class="navbar-header"><span id="category" class="visible-xs">{{ text_category }}</span>
-      <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+<div class="overlay" id="mega-overlay" data-popover="" hidden=""></div>
+<div class="mega" id="mega" data-popover="" hidden="" role="dialog" aria-label="Каталог">
+  <div class="container">
+    <div class="mega__head"><span>Каталог товарів</span><button class="panel-close" type="button" data-toggle="mega" aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+    <div class="mega__back"><button class="mega__back-btn" type="button" data-mega-back="" aria-label="Назад"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></button><span class="mega__back-title">Каталог</span></div>
+
+    <div class="mega__layout">
+      <div class="mega__rail">
+        <button class="mega__cat is-active" type="button" data-mega-cat="0"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M12 15v7"></path><path d="M9 19h6"></path></svg>Жінкам</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="1"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="m21 3-6.75 6.75"></path><circle cx="10" cy="14" r="6"></circle></svg>Чоловікам</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="2"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path><path d="M16 17h4"></path><path d="M4 13h4"></path></svg>Взуття</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="3"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="4"></circle><circle cx="18" cy="15" r="4"></circle><path d="M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2"></path><path d="M2.5 13 5 7c.7-1.3 1.4-2 3-2"></path><path d="M21.5 13 19 7c-.7-1.3-1.5-2-3-2"></path></svg>Аксесуари</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="4"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h.01"></path><path d="M7 5h.01"></path><path d="M11 7h.01"></path><path d="M3 7h.01"></path><path d="M7 9h.01"></path><path d="M3 11h.01"></path><rect width="4" height="4" x="15" y="5"></rect><path d="M6 19v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"></path><path d="M9 15v-3a2 2 0 0 1 2-2h2"></path></svg>Парфумерія</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="5"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>Бренди</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+        <button class="mega__cat" type="button" data-mega-cat="6"><span class="mega__cat-label"><svg class="mega__cat-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>Акції</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+      </div>
+
+      <!-- Жінкам -->
+      <div class="mega__groups mega__panel is-active" data-mega-panel="0">
+        <div><span class="mega__group-title">Одяг</span><a class="mega__sub" href="catalog.html">Сукні</a><a class="mega__sub" href="catalog.html">Светри й кардигани</a><a class="mega__sub" href="catalog.html">Сорочки й блузи</a><a class="mega__sub" href="catalog.html">Джинси</a><a class="mega__sub" href="catalog.html">Спідниці</a><a class="mega__sub" href="catalog.html">Верхній одяг</a></div>
+        <div><span class="mega__group-title">Взуття</span><a class="mega__sub" href="catalog.html">Кросівки</a><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Туфлі</a><a class="mega__sub" href="catalog.html">Босоніжки</a></div>
+        <div><span class="mega__group-title">Аксесуари</span><a class="mega__sub" href="catalog.html">Сумки</a><a class="mega__sub" href="catalog.html">Окуляри</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Хустки</a></div>
+        <div><span class="mega__group-title">Парфумерія</span><a class="mega__sub" href="catalog.html">Парфуми</a><a class="mega__sub" href="catalog.html">Набори</a><a class="mega__sub" href="catalog.html">Догляд</a></div>
+      </div>
+      <!-- Чоловікам -->
+      <div class="mega__groups mega__panel" data-mega-panel="1">
+        <div><span class="mega__group-title">Одяг</span><a class="mega__sub" href="catalog.html">Футболки й поло</a><a class="mega__sub" href="catalog.html">Сорочки</a><a class="mega__sub" href="catalog.html">Худі й світшоти</a><a class="mega__sub" href="catalog.html">Джинси</a><a class="mega__sub" href="catalog.html">Куртки</a></div>
+        <div><span class="mega__group-title">Взуття</span><a class="mega__sub" href="catalog.html">Кросівки</a><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Лофери</a></div>
+        <div><span class="mega__group-title">Аксесуари</span><a class="mega__sub" href="catalog.html">Годинники</a><a class="mega__sub" href="catalog.html">Гаманці</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Окуляри</a></div>
+        <div><span class="mega__group-title">Парфумерія</span><a class="mega__sub" href="catalog.html">Парфуми</a><a class="mega__sub" href="catalog.html">Догляд</a><a class="mega__sub" href="catalog.html">Набори</a></div>
+      </div>
+      <!-- Взуття -->
+      <div class="mega__groups mega__panel" data-mega-panel="2">
+        <div><span class="mega__group-title">Кросівки</span><a class="mega__sub" href="catalog.html">Nike</a><a class="mega__sub" href="catalog.html">Adidas</a><a class="mega__sub" href="catalog.html">New Balance</a><a class="mega__sub" href="catalog.html">Asics</a></div>
+        <div><span class="mega__group-title">Класичне</span><a class="mega__sub" href="catalog.html">Черевики</a><a class="mega__sub" href="catalog.html">Туфлі</a><a class="mega__sub" href="catalog.html">Лофери</a></div>
+        <div><span class="mega__group-title">Сезонне</span><a class="mega__sub" href="catalog.html">Літнє</a><a class="mega__sub" href="catalog.html">Зимове</a><a class="mega__sub" href="catalog.html">Демісезон</a></div>
+      </div>
+      <!-- Аксесуари -->
+      <div class="mega__groups mega__panel" data-mega-panel="3">
+        <div><span class="mega__group-title">Сумки</span><a class="mega__sub" href="catalog.html">JW Pei</a><a class="mega__sub" href="catalog.html">Michael Kors</a><a class="mega__sub" href="catalog.html">Coach</a></div>
+        <div><span class="mega__group-title">Годинники</span><a class="mega__sub" href="catalog.html">Jomashop</a><a class="mega__sub" href="catalog.html">Fossil</a><a class="mega__sub" href="catalog.html">Casio</a></div>
+        <div><span class="mega__group-title">Інше</span><a class="mega__sub" href="catalog.html">Окуляри</a><a class="mega__sub" href="catalog.html">Ремені</a><a class="mega__sub" href="catalog.html">Гаманці</a><a class="mega__sub" href="catalog.html">Прикраси</a></div>
+      </div>
+      <!-- Парфумерія -->
+      <div class="mega__groups mega__panel" data-mega-panel="4">
+        <div><span class="mega__group-title">Бренди</span><a class="mega__sub" href="catalog.html">Rituals</a><a class="mega__sub" href="catalog.html">Armani</a><a class="mega__sub" href="catalog.html">Dior</a><a class="mega__sub" href="catalog.html">Versace</a></div>
+        <div><span class="mega__group-title">Категорії</span><a class="mega__sub" href="catalog.html">Жіночі</a><a class="mega__sub" href="catalog.html">Чоловічі</a><a class="mega__sub" href="catalog.html">Унісекс</a><a class="mega__sub" href="catalog.html">Набори</a></div>
+      </div>
+      <!-- Бренди -->
+      <div class="mega__groups mega__panel" data-mega-panel="5">
+        <div><span class="mega__group-title">США</span><a class="mega__sub" href="brand.html">Nike</a><a class="mega__sub" href="brand.html">Levi’s</a><a class="mega__sub" href="brand.html">Lacoste</a><a class="mega__sub" href="brand.html">Coach</a><a class="mega__sub" href="brand.html">Michael Kors</a></div>
+        <div><span class="mega__group-title">Європа</span><a class="mega__sub" href="brand.html">Rituals</a><a class="mega__sub" href="brand.html">Armani Exchange</a><a class="mega__sub" href="brand.html">JW Pei</a><a class="mega__sub" href="brand.html">Versace</a></div>
+      </div>
+      <!-- Акції -->
+      <div class="mega__groups mega__panel" data-mega-panel="6">
+        <div><span class="mega__group-title">Розпродаж</span><a class="mega__sub" href="sale.html">До -50%</a><a class="mega__sub" href="sale.html">Останні розміри</a><a class="mega__sub" href="sale.html">Аутлет</a></div>
+        <div><span class="mega__group-title">Сезон</span><a class="mega__sub" href="sale.html">Літній сейл</a><a class="mega__sub" href="sale.html">Чорна п’ятниця</a></div>
+      </div>
     </div>
-    <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav">
-        {% for category in categories %}
-        {% if category.children %}
-        <li class="dropdown"><a href="{{ category.href }}" class="dropdown-toggle" data-toggle="dropdown">{{ category.name }}</a>
-          <div class="dropdown-menu">
-            <div class="dropdown-inner"> {% for children in category.children|batch(category.children|length / category.column|round(1, 'ceil')) %}
-              <ul class="list-unstyled">
-                {% for child in children %}
-                <li><a href="{{ child.href }}">{{ child.name }}</a></li>
-                {% endfor %}
-              </ul>
-              {% endfor %}</div>
-            <a href="{{ category.href }}" class="see-all">{{ text_all }} {{ category.name }}</a> </div>
-        </li>
-        {% else %}
-        <li><a href="{{ category.href }}">{{ category.name }}</a></li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-  </nav>
+  </div>
 </div>
-{% endif %} 

@@ -1,6 +1,7 @@
 <?php
 class ProductFormatter {
     private $registry;
+    private $config;
 
     public function __construct($registry) {
         $this->registry = $registry;

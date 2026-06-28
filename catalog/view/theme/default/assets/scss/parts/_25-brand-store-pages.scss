@@ -1,0 +1,22 @@
+/* brand + store pages */
+.brand-banner__row--mt { margin-top: 20px; }
+.brand-body { max-width: var(--maxw); margin: 0 auto; padding: 32px 20px 64px; }
+.brand-body__bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.brand-body__count { font-size: 14px; color: var(--text-muted); }
+.brand-about { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--border); }
+.brand-about__title { font-size: 24px; font-weight: 600; margin: 0 0 16px; }
+.brand-about__p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin: 0 0 16px; }
+.brand-about__p:last-child { margin-bottom: 0; }
+.input--search { height: 46px; padding-left: 46px; }
+.cat-pills__btn--region { height: 46px; border-radius: var(--radius-pill); font-size: 14px; }
+.inline-cta--mt2 { margin-top: 36px; }
+.store-section { max-width: var(--maxw); margin: 0 auto; padding: 24px 20px 0; }
+.store-section--last { padding-bottom: 56px; padding-top: 32px; }
+.store-flag { font-size: 20px; }
+.store-flag.fi { width: 26px; height: 19px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.06) inset; }
+.calc-opt .fi { width: 20px; height: 15px; border-radius: 2px; vertical-align: -2px; }
+.store-head__btn { height: 50px; }
+.store-cats-title { display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+.store-cats { display: flex; flex-wrap: wrap; gap: 8px; }
+.store-prods-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.store-prods-title { font-size: 22px; font-weight: 600; margin: 0; }

@@ -1,24 +1,11 @@
-{% if languages|length > 1 %}
-<div class="pull-left">
-  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-language">
-    <div class="btn-group">
-      <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-      {% for language in languages %}
-      {% if language.code == code %} 
-      <img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}">
-      {% endif %}
-      {% endfor %}
-      <span class="hidden-xs hidden-sm hidden-md">{{ text_language }}</span>&nbsp;<i class="fa fa-caret-down"></i></button>
-      <ul class="dropdown-menu">
-        {% for language in languages %}
-        <li>
-          <button class="btn btn-link btn-block language-select" type="button" name="{{ language.code }}"><img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}" /> {{ language.name }}</button>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <input type="hidden" name="code" value="" />
-    <input type="hidden" name="redirect" value="{{ redirect }}" />
-  </form>
+<div class="dropdown">
+  <button class="dropdown__trigger" type="button" data-dropdown="" aria-label="Мова">
+    <span>UA</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+  </button>
+  <div class="dropdown__menu" data-popover="" hidden="">
+    <button class="dropdown__item is-active" type="button">Українська</button>
+    <button class="dropdown__item" type="button">Русский</button>
+    <button class="dropdown__item" type="button">English</button>
+  </div>
 </div>
-{% endif %}

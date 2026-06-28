@@ -1,6 +1,38 @@
-<div id="search" class="input-group">
-  <input type="text" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control input-lg" />
-  <span class="input-group-btn">
-    <button type="button" class="btn btn-default btn-lg"><i class="fa fa-search"></i></button>
-  </span>
+<div class="search">
+  <form class="search__box" data-form="search" role="search">
+    <input class="search__input" type="search" name="search" data-search-input="" placeholder="Пошук" aria-label="Пошук">
+    <button class="search__clear" type="button" data-search-clear aria-label="Очистити" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><button class="search__submit" type="submit" aria-label="Знайти"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
+  </form>
+
+  <!-- Живі результати (демо-розмітка; на бойовому — підставляє OpenCart) -->
+  <div class="search__results" id="search-results" data-popover="" hidden="">
+    <div class="search__results-head"><span>Товари · знайдено 4</span><a class="search__more" href="search.html">Усі результати →</a></div>
+
+    <a class="search__result" href="product.html">
+      <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+      <span class="search__result-body"><span class="search__result-brand">Lacoste · LC-BH1585</span><span class="search__result-name">Чоловічий жилет BH1585</span></span>
+      <span class="search__result-price">8 648 ₴</span>
+    </a>
+    <a class="search__result" href="product.html">
+      <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+      <span class="search__result-body"><span class="search__result-brand">Nike · NK-DQ5733</span><span class="search__result-name">Жіночий світшот Phoenix Fleece</span></span>
+      <span class="search__result-price">3 272 ₴</span>
+    </a>
+    <a class="search__result" href="product.html">
+      <span class="search__result-thumb" style="background-image:url(https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&amp;fit=crop&amp;w=200&amp;q=70)"></span>
+      <span class="search__result-body"><span class="search__result-brand">Lacoste · LC-44SMA0047</span><span class="search__result-name">Чоловічі шкіряні кросівки Courtderby</span></span>
+      <span class="search__result-price">6 311 ₴</span>
+    </a>
+
+    <div class="search__section">
+      <div class="search__section-head"><span>Бренди</span><a class="search__more" href="brands.html">Усі 1 240 →</a></div>
+      <div class="search__brands">
+        <a class="search__brand" href="brand.html">Lacoste</a>
+        <a class="search__brand" href="brand.html">Nike</a>
+        <a class="search__brand" href="brand.html">adidas</a>
+        <a class="search__brand" href="brand.html">Tommy Hilfiger</a>
+        <a class="search__brand" href="brand.html">Calvin Klein</a>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,545 +1,839 @@
 {{ header }}
-<div id="product-product" class="container">
-  <ul class="breadcrumb">
-    {% for breadcrumb in breadcrumbs %}
-    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-    {% endfor %}
-  </ul>
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <div class="row"> {% if column_left or column_right %}
-        {% set class = 'col-sm-6' %}
-        {% else %}
-        {% set class = 'col-sm-8' %}
-        {% endif %}
-        <div class="{{ class }}"> {% if thumb or images %}
-          <ul class="thumbnails">
-            {% if thumb %}
-            <li><a class="thumbnail" href="{{ popup }}" title="{{ heading_title }}"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a></li>
-            {% endif %}
-            {% if images %}
-            {% for image in images %}
-            <li class="image-additional"><a class="thumbnail" href="{{ image.popup }}" title="{{ heading_title }}"> <img src="{{ image.thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a></li>
-            {% endfor %}
-            {% endif %}
-          </ul>
-          {% endif %}
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab-description" data-toggle="tab">{{ tab_description }}</a></li>
-            {% if attribute_groups %}
-            <li><a href="#tab-specification" data-toggle="tab">{{ tab_attribute }}</a></li>
-            {% endif %}
-            {% if review_status %}
-            <li><a href="#tab-review" data-toggle="tab">{{ tab_review }}</a></li>
-            {% endif %}
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="tab-description">{{ description }}</div>
-            {% if attribute_groups %}
-            <div class="tab-pane" id="tab-specification">
-              <table class="table table-bordered">
-                {% for attribute_group in attribute_groups %}
-                <thead>
-                  <tr>
-                    <td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for attribute in attribute_group.attribute %}
-                <tr>
-                  <td>{{ attribute.name }}</td>
-                  <td>{{ attribute.text }}</td>
-                </tr>
-                {% endfor %}
-                  </tbody>
-                {% endfor %}
-              </table>
-            </div>
-            {% endif %}
-            {% if review_status %}
-            <div class="tab-pane" id="tab-review">
-              <form class="form-horizontal" id="form-review">
-                <div id="review"></div>
-                <h2>{{ text_write }}</h2>
-                {% if review_guest %}
-                <div class="form-group required">
-                  <div class="col-sm-12">
-                    <label class="control-label" for="input-name">{{ entry_name }}</label>
-                    <input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" />
-                  </div>
-                </div>
-                <div class="form-group required">
-                  <div class="col-sm-12">
-                    <label class="control-label" for="input-review">{{ entry_review }}</label>
-                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                    <div class="help-block">{{ text_note }}</div>
-                  </div>
-                </div>
-                <div class="form-group required">
-                  <div class="col-sm-12">
-                    <label class="control-label">{{ entry_rating }}</label>
-                    &nbsp;&nbsp;&nbsp; {{ entry_bad }}&nbsp;
-                    <input type="radio" name="rating" value="1" />
-                    &nbsp;
-                    <input type="radio" name="rating" value="2" />
-                    &nbsp;
-                    <input type="radio" name="rating" value="3" />
-                    &nbsp;
-                    <input type="radio" name="rating" value="4" />
-                    &nbsp;
-                    <input type="radio" name="rating" value="5" />
-                    &nbsp;{{ entry_good }}</div>
-                </div>
-                {{ captcha }}
-                <div class="buttons clearfix">
-                  <div class="pull-right">
-                    <button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_continue }}</button>
-                  </div>
-                </div>
-                {% else %}
-                {{ text_login }}
-                {% endif %}
-              </form>
-            </div>
-            {% endif %}</div>
-        </div>
-        {% if column_left or column_right %}
-        {% set class = 'col-sm-6' %}
-        {% else %}
-        {% set class = 'col-sm-4' %}
-        {% endif %}
-        <div class="{{ class }}">
-          <div class="btn-group">
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');"><i class="fa fa-heart"></i></button>
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');"><i class="fa fa-exchange"></i></button>
-          </div>
-          <h1>{{ heading_title }}</h1>
-          <ul class="list-unstyled">
-            {% if manufacturer %}
-            <li>{{ text_manufacturer }} <a href="{{ manufacturers }}">{{ manufacturer }}</a></li>
-            {% endif %}
-            <li>{{ text_model }} {{ model }}</li>
-            {% if reward %}
-            <li>{{ text_reward }} {{ reward }}</li>
-            {% endif %}
-            <li>{{ text_stock }} {{ stock }}</li>
-          </ul>
-          {% if price %}
-          <ul class="list-unstyled">
-            {% if not special %}
-            <li>
-              <h2>{{ price }}</h2>
-            </li>
-            {% else %}
-            <li><span style="text-decoration: line-through;">{{ price }}</span></li>
-            <li>
-              <h2>{{ special }}</h2>
-            </li>
-            {% endif %}
-            {% if tax %}
-            <li>{{ text_tax }} {{ tax }}</li>
-            {% endif %}
-            {% if points %}
-            <li>{{ text_points }} {{ points }}</li>
-            {% endif %}
-            {% if discounts %}
-            <li>
-              <hr>
-            </li>
-            {% for discount in discounts %}
-            <li>{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
-            {% endfor %}
-            {% endif %}
-          </ul>
-          {% endif %}
-          <div id="product"> {% if options %}
-            <hr>
-            <h3>{{ text_option }}</h3>
-            {% for option in options %}
-            {% if option.type == 'select' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <select name="option[{{ option.product_option_id }}]" id="input-option{{ option.product_option_id }}" class="form-control">
-                <option value="">{{ text_select }}</option>
-                {% for option_value in option.product_option_value %}
-                <option value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
-                {% if option_value.price %}
-                ({{ option_value.price_prefix }}{{ option_value.price }})
-                {% endif %} </option>
-                {% endfor %}
-              </select>
-            </div>
-            {% endif %}
-            {% if option.type == 'radio' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label">{{ option.name }}</label>
-              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
-                <div class="radio">
-                  <label>
-                    <input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" />
-                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}                  
-                    {{ option_value.name }}
-                    {% if option_value.price %}
-                    ({{ option_value.price_prefix }}{{ option_value.price }})
-                    {% endif %} </label>
-                </div>
-                {% endfor %} </div>
-            </div>
-            {% endif %}
-            {% if option.type == 'checkbox' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label">{{ option.name }}</label>
-              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" />
-                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}
-                    {{ option_value.name }}
-                    {% if option_value.price %}
-                    ({{ option_value.price_prefix }}{{ option_value.price }})
-                    {% endif %} </label>
-                </div>
-                {% endfor %} </div>
-            </div>
-            {% endif %}
-            {% if option.type == 'text' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" />
-            </div>
-            {% endif %}
-            {% if option.type == 'textarea' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <textarea name="option[{{ option.product_option_id }}]" rows="5" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
-            </div>
-            {% endif %}
-            {% if option.type == 'file' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label">{{ option.name }}</label>
-              <button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block"><i class="fa fa-upload"></i> {{ button_upload }}</button>
-              <input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
-            </div>
-            {% endif %}
-            {% if option.type == 'date' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <div class="input-group date">
-                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-option{{ option.product_option_id }}" class="form-control" />
-                <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-                </span></div>
-            </div>
-            {% endif %}
-            {% if option.type == 'datetime' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <div class="input-group datetime">
-                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
-                <span class="input-group-btn">
-                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                </span></div>
-            </div>
-            {% endif %}
-            {% if option.type == 'time' %}
-            <div class="form-group{% if option.required %} required {% endif %}">
-              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
-              <div class="input-group time">
-                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
-                <span class="input-group-btn">
-                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-                </span></div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            {% if recurrings %}
-            <hr>
-            <h3>{{ text_payment_recurring }}</h3>
-            <div class="form-group required">
-              <select name="recurring_id" class="form-control">
-                <option value="">{{ text_select }}</option>
-                {% for recurring in recurrings %}
-                <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="help-block" id="recurring-description"></div>
-            </div>
-            {% endif %}
-            <div class="form-group">
-              <label class="control-label" for="input-quantity">{{ entry_qty }}</label>
-              <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" />
-              <input type="hidden" name="product_id" value="{{ product_id }}" />
-              <br/>
-              <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
-            </div>
-            {% if minimum > 1 %}
-            <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
-            {% endif %}</div>
-          {% if review_status %}
-          <div class="rating">
-            <p>{% for i in 1..5 %}
-              {% if rating < i %}<span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>{% else %}<span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>{% endif %}
-              {% endfor %} <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">{{ reviews }}</a> / <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">{{ text_write }}</a></p>
-          </div>
-          {% endif %} </div>
+
+<main>
+  
+  <div class="pdp-nav">
+    <div class="pdp-nav__list"><a class="pdp-nav__link is-active" href="#about">Про товар</a><a class="pdp-nav__link"
+        href="#desc">Опис</a><a class="pdp-nav__link" href="#reviews">Відгуки (24)</a><a class="pdp-nav__link"
+        href="#delivery">Доставка та оплата</a><a class="pdp-nav__link" href="#related">Рекомендовані</a></div>
+  </div>
+  <div class="pdp" id="about">
+    <div class="gallery">
+      <div class="gallery__thumbs">
+        <button class="gallery__thumb is-active" type="button" data-gallery-thumb="0"
+          data-img="url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"
+          aria-label="Фото 1"></button>
+        <button class="gallery__thumb" type="button" data-gallery-thumb="1"
+          data-img="url(https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=75)"
+          style="background-image:url(https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=75)"
+          aria-label="Фото 2"></button>
+        <button class="gallery__thumb" type="button" data-gallery-thumb="2"
+          data-img="url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=75)"
+          style="background-image:url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=75)"
+          aria-label="Фото 3"></button>
+        <button class="gallery__thumb" type="button" data-gallery-thumb="3"
+          data-img="url(https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=75)"
+          style="background-image:url(https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=75)"
+          aria-label="Фото 4"></button>
+        <button class="gallery__thumb" type="button" data-gallery-thumb="4"
+          data-img="url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=75)"
+          style="background-image:url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=75)"
+          aria-label="Фото 5"></button>
       </div>
-      {% if products %}
-      <h3>{{ text_related }}</h3>
-      <div class="row"> {% set i = 0 %}
-        {% for product in products %}
-        {% if column_left and column_right %}
-        {% set class = 'col-xs-8 col-sm-6' %}
-        {% elseif column_left or column_right %}
-        {% set class = 'col-xs-6 col-md-4' %}
-        {% else %}
-        {% set class = 'col-xs-6 col-sm-3' %}
-        {% endif %}
-        <div class="{{ class }}">
-          <div class="product-thumb transition">
-            <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
-            <div class="caption">
-              <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
-              <p>{{ product.description }}</p>
-              {% if product.rating %}
-              <div class="rating"> {% for j in 1..5 %}
-                {% if product.rating < j %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> {% endif %}
-                {% endfor %} </div>
-              {% endif %}
-              {% if product.price %}
-              <p class="price"> {% if not product.special %}
-                {{ product.price }}
-                {% else %} <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span> {% endif %}
-                {% if product.tax %} <span class="price-tax">{{ text_tax }} {{ product.tax }}</span> {% endif %} </p>
-              {% endif %} </div>
-            <div class="button-group">
-              <button type="button" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span> <i class="fa fa-shopping-cart"></i></button>
-              <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart"></i></button>
-              <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="fa fa-exchange"></i></button>
+      <div class="gallery__stage">
+        <button class="gallery__main" id="gallery-main" type="button" data-current="0" data-modal-open="lightbox"
+          aria-label="Збільшити"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"></button>
+        <div class="gallery__tools"><button class="gallery__tool" type="button" data-pdp-wish aria-label="В обране"><svg
+              width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+              </path>
+            </svg></button><button class="gallery__tool" type="button" aria-label="Поділитися"><svg width="18"
+              height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+              <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+            </svg></button></div>
+        <button class="gallery__nav gallery__nav--prev" type="button" data-gallery-prev aria-label="Попереднє"><svg
+            width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg></button>
+        <button class="gallery__nav gallery__nav--next" type="button" data-gallery-next aria-label="Наступне"><svg
+            width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg></button>
+        <span class="gallery__counter" data-gallery-counter>1/5</span>
+      </div>
+    </div>
+    <div class="pdp-info">
+      <div class="pdp-brand-line"><span class="pdp-brand"><span></span>Lacoste</span><span class="stock-badge">В
+          наявності</span></div>
+      <h1 class="pdp-title">Чоловічий жилет Lacoste · BH1585-51-QIN</h1>
+      <p class="pdp-sku">Код 3709 · Модель BH1585-51-QIN</p>
+      <div class="pdp-rating"><span class="pdp-rating__stars"><svg width="15" height="15" viewBox="0 0 24 24"
+            fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></span><span class="pdp-rating__label">4.9 · 24 відгуки</span></div>
+      <button class="store-src" type="button" data-modal-open="buyback"><span class="store-src__store">Магазин: <strong
+            class="store-src__name">Lacoste US</strong></span><span class="store-src__more">Як ми викуповуємо <svg
+            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg></span></button>
+      <div class="pdp-price"><span class="pdp-price__now">8 648 ₴</span><span class="pdp-price__old">10 230
+          ₴</span><span class="pdp-price__disc">-15%</span></div>
+      <div class="eta-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 6v6l4 2"></path>
+        </svg>Замовлення · прийде через 7–15 днів</div>
+      <div class="pdp-actions"><button class="btn btn--primary" type="button" data-pdp-add>Викупити і
+          доставити</button><button class="btn btn--dark" type="button" data-modal-open="oneclick">В 1 клік</button>
+      </div>
+      <div class="opt-group"><span class="opt-group__label">Колір: <span data-color-label>Camel</span></span>
+        <div class="opt-colors">
+          <button class="opt-color opt-color--camel is-active" type="button" data-color="0" data-color-name="Camel"
+            aria-label="Camel"></button>
+          <button class="opt-color opt-color--black" type="button" data-color="1" data-color-name="Black"
+            aria-label="Black"></button>
+          <button class="opt-color opt-color--green" type="button" data-color="2" data-color-name="Green"
+            aria-label="Green"></button>
+          <button class="opt-color opt-color--dark" type="button" data-color="3" data-color-name="Dark"
+            aria-label="Dark"></button>
+        </div>
+      </div>
+      <div class="opt-group">
+        <div class="opt-group__head"><span class="opt-group__label">Розмір: <span data-size-label>L</span></span><button
+            class="opt-group__link" type="button" data-modal-open="size"><svg width="15" height="15" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z">
+              </path>
+              <path d="m14.5 12.5 2-2"></path>
+              <path d="m11.5 9.5 2-2"></path>
+              <path d="m8.5 6.5 2-2"></path>
+              <path d="m17.5 15.5 2-2"></path>
+            </svg>Таблиця розмірів</button></div>
+        <div class="opt-sizes">
+          <button class="opt-size" type="button" data-size="XS">XS</button>
+          <button class="opt-size" type="button" data-size="S">S</button>
+          <button class="opt-size" type="button" data-size="M">M</button>
+          <button class="opt-size is-active" type="button" data-size="L">L</button>
+          <button class="opt-size" type="button" data-size="XL">XL</button>
+          <button class="opt-size is-disabled" type="button" data-size="XXL">XXL</button>
+        </div>
+      </div>
+      <div class="customs"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warning)"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+          <path d="M12 9v4"></path>
+          <path d="M12 17h.01"></path>
+        </svg><span><strong>72 € митні платежі та доставка</strong> сплачуються додатково, після прибуття товару в
+          Україну. <a href="info.html">Повернення та обмін →</a></span></div>
+      <div class="info-table" id="delivery">
+        <div class="info-table__head"><span>Доставка з магазину в Україну</span><button class="info-table__more"
+            type="button" data-modal-open="delivery">Інформація про доставку →</button></div>
+        <div class="info-table__row"><span class="info-table__row-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 22h20"></path>
+              <path
+                d="M6.36 17.4 4 17l-2-4 1.1-.55a2 2 0 0 1 1.8 0l.17.1a2 2 0 0 0 1.8 0L8 12 5 6l.9-.45a2 2 0 0 1 2.09.2l4.02 3a2 2 0 0 0 2.1.2l4.19-2.06a2.41 2.41 0 0 1 1.73-.17L21 7a1.4 1.4 0 0 1 .87 1.99l-.38.76c-.23.46-.6.84-1.07 1.08L7.58 17.2a2 2 0 0 1-1.22.18Z">
+              </path>
+            </svg></span>
+          <div class="info-table__row-body"><span class="info-table__row-name">Авіа · 8–10 днів</span><span
+              class="info-table__row-sub">Орієнтовна дата: 31 травня 2026 р.</span></div><span
+            class="info-table__row-price">≈ 424 ₴</span>
+        </div>
+        <div class="info-table__row"><span class="info-table__row-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 10.189V14"></path>
+              <path d="M12 2v3"></path>
+              <path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6"></path>
+              <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-8.188-3.639a2 2 0 0 0-1.624 0L3 14a11.6 11.6 0 0 0 2.81 7.76">
+              </path>
+              <path
+                d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1">
+              </path>
+            </svg></span>
+          <div class="info-table__row-body"><span class="info-table__row-name">Морем · 26–36 днів</span><span
+              class="info-table__row-sub">Орієнтовна дата: 26 червня 2026 р.</span></div><span
+            class="info-table__row-price">≈ 207 ₴</span>
+        </div>
+        <div class="info-table__row"><span class="info-table__row-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+              <path d="M15 18H9"></path>
+              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+              <circle cx="17" cy="18" r="2"></circle>
+              <circle cx="7" cy="18" r="2"></circle>
+            </svg></span>
+          <div class="info-table__row-body"><span class="info-table__row-name">Наземна · 14–21 день</span><span
+              class="info-table__row-sub">Орієнтовна дата: 14 червня 2026 р.</span></div><span
+            class="info-table__row-price">≈ 315 ₴</span>
+        </div>
+        <div class="info-table__row"><span class="info-table__row-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m7.5 4.27 9 5.15"></path>
+              <path
+                d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z">
+              </path>
+              <path d="m3.3 7 8.7 5 8.7-5"></path>
+              <path d="M12 22V12"></path>
+            </svg></span>
+          <div class="info-table__row-body"><span class="info-table__row-name">Нова Пошта · 1–3 дні</span><span
+              class="info-table__row-sub">До найближчого відділення</span></div><span class="info-table__row-price">≈ 80
+            ₴ в Україні</span>
+        </div>
+      </div>
+      <div class="info-table">
+        <div class="info-table__head"><span>Оплата</span><button class="info-table__more" type="button"
+            data-modal-open="payment">Інформація про оплату →</button></div>
+        <div class="info-table__pays"><span class="pay-badge"><span class="pay-text">VISA</span></span><span
+            class="pay-badge"><svg width="34" height="22" viewBox="0 0 34 22">
+              <circle cx="14" cy="11" r="7" fill="#EB001B"></circle>
+              <circle cx="20" cy="11" r="7" fill="#F79E1B" opacity=".9"></circle>
+            </svg></span><span class="pay-badge pay-badge--wide"><span class="paypal"><span
+                class="paypal__pay">Pay</span><span class="paypal__pal">Pal</span></span></span></div><span
+          class="info-table__note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--success)"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>Безпечна оплата · захист 3D Secure, повна передоплата</span>
+      </div>
+    </div>
+  </div>
+  <div class="pdp-lower">
+    <div class="pdp-col" id="desc">
+      <div class="card-block">
+        <h2 class="card-block__title">Опис</h2>
+        <p class="desc-text">Цей ергономічний водонепроникний жилет оснащений капюшоном, який можна сховати. Наповнений
+          утеплювачем із перероблених волокон для тепла: ідеально підходить поверх світшота або під пальто для
+          додаткового шару комфорту.</p>
+        <ul class="desc-list">
+          <li><span>Капюшон складається в комір</span></li>
+          <li><span>2 кишені на блискавці на стегнах</span></li>
+          <li><span>Зручні внутрішні кишені</span></li>
+          <li><span>Фірмова петля для підвішування</span></li>
+          <li><span>Вишитий крокодил на грудях</span></li>
+        </ul>
+        <h2 class="card-block__title card-block__title--mt">Характеристики</h2>
+        <div class="specs">
+          <div class="specs__row"><span class="specs__k">Матеріал верху</span><span class="specs__v">Поліестер
+              (100%)</span></div>
+          <div class="specs__row specs__row--alt"><span class="specs__k">Підкладка</span><span
+              class="specs__v">Поліестер (100%)</span></div>
+          <div class="specs__row"><span class="specs__k">Наповнювач</span><span class="specs__v">Поліестер (100%) ·
+              rPET</span></div>
+          <div class="specs__row specs__row--alt"><span class="specs__k">Сезон</span><span class="specs__v">Демісезон ·
+              легка зима</span></div>
+          <div class="specs__row"><span class="specs__k">Стать</span><span class="specs__v">Чоловіча</span></div>
+          <div class="specs__row specs__row--alt"><span class="specs__k">Колекція</span><span class="specs__v">Lacoste ·
+              Active 2026</span></div>
+          <div class="specs__row"><span class="specs__k">Країна виробництва</span><span class="specs__v">В’єтнам</span>
+          </div>
+          <div class="specs__row specs__row--alt"><span class="specs__k">Догляд</span><span class="specs__v">Прання при
+              30° · без сушильної машини</span></div>
+        </div>
+        <p class="desc-note">В описі можливі неточності. Якщо щось потрібно уточнити — напишіть нам, і радо допоможемо.
+        </p>
+      </div>
+      <div class="card-block" id="reviews">
+        <div class="reviews__head">
+          <h2 class="card-block__title">Відгуки (24)</h2><button class="btn btn--dark reviews__add-btn" type="button"
+            data-modal-open="review"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="M12 5v14"></path>
+            </svg>Додати відгук</button>
+        </div>
+        <div class="reviews__summary">
+          <div class="reviews__score"><span class="reviews__score-num">4.9</span><span class="reviews__score-stars"><svg
+                width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                </polygon>
+              </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                </polygon>
+              </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                </polygon>
+              </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                </polygon>
+              </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                </polygon>
+              </svg></span><span class="reviews__score-count">24 відгуки</span></div>
+          <div class="reviews__bars">
+            <div class="rating-bar"><span class="rating-bar__n">5 ★</span><span class="rating-bar__track"><span
+                  class="rating-bar__fill rating-bar__fill--w88"></span></span><span class="rating-bar__cnt">21</span>
+            </div>
+            <div class="rating-bar"><span class="rating-bar__n">4 ★</span><span class="rating-bar__track"><span
+                  class="rating-bar__fill rating-bar__fill--w12"></span></span><span class="rating-bar__cnt">3</span>
+            </div>
+            <div class="rating-bar"><span class="rating-bar__n">3 ★</span><span class="rating-bar__track"><span
+                  class="rating-bar__fill rating-bar__fill--w0"></span></span><span class="rating-bar__cnt">0</span>
+            </div>
+            <div class="rating-bar"><span class="rating-bar__n">2 ★</span><span class="rating-bar__track"><span
+                  class="rating-bar__fill rating-bar__fill--w0"></span></span><span class="rating-bar__cnt">0</span>
+            </div>
+            <div class="rating-bar"><span class="rating-bar__n">1 ★</span><span class="rating-bar__track"><span
+                  class="rating-bar__fill rating-bar__fill--w0"></span></span><span class="rating-bar__cnt">0</span>
             </div>
           </div>
         </div>
-        {% if column_left and column_right and (i + 1) % 2 == 0 %}
-        <div class="clearfix visible-md visible-sm"></div>
-        {% elseif column_left or column_right and (i + 1) % 3 == 0 %}
-        <div class="clearfix visible-md"></div>
-        {% elseif (i + 1) % 4 == 0 %}
-        <div class="clearfix visible-md"></div>
-        {% endif %}
-        {% set i = i + 1 %}
-        {% endfor %} </div>
-        {% endif %}
-        {% if tags %}
-        <p>{{ text_tags }}
-        {% for i in 0..tags|length - 1 %}
-        {% if i < (tags|length - 1) %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
-        {% else %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a> {% endif %}
-        {% endfor %} </p>
-        {% endif %}
-      {{ content_bottom }}</div>
-    {{ column_right }}</div>
+        <div class="reviews__list">
+          <div class="review">
+            <div class="review__head"><span class="review__avatar">М</span>
+              <div class="review__who"><span class="review__name">Михайло Т.</span><span class="review__meta">18 травня
+                  · L · Camel</span></div><span class="review__stars"><svg width="15" height="15" viewBox="0 0 24 24"
+                  fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg></span>
+            </div>
+            <p class="review__text">Жилет супер, точно за розміром. Капюшон ідеально ховається в комір. Тепло і легко —
+              навіть у +5 комфортно поверх світшота. Однозначно рекомендую!</p>
+          </div>
+          <div class="review">
+            <div class="review__head"><span class="review__avatar">Д</span>
+              <div class="review__who"><span class="review__name">Денис К.</span><span class="review__meta">4 травня · M
+                  · Чорний</span></div><span class="review__stars"><svg width="15" height="15" viewBox="0 0 24 24"
+                  fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg></span>
+            </div>
+            <p class="review__text">Все швидко: 9 днів і вже забрав з НП. Запах нового і фірмова коробка — все як треба.
+              Дякую!</p>
+          </div>
+          <div class="review">
+            <div class="review__head"><span class="review__avatar">О</span>
+              <div class="review__who"><span class="review__name">Ольга Б.</span><span class="review__meta">28 квітня ·
+                  L · Camel</span></div><span class="review__stars"><svg width="15" height="15" viewBox="0 0 24 24"
+                  fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+                  </polygon>
+                </svg></span>
+            </div>
+            <p class="review__text">Купувала чоловіку. Якість супер, але розмір L виявився трохи більшим — раджу
+              замовляти на розмір менше якщо стандартна статура.</p>
+          </div>
+          <a class="btn btn--ghost reviews__all-btn" href="reviews.html">Показати всі 24 відгуки</a>
+        </div>
+      </div>
+    </div>
+    <aside class="buy-card">
+      <div class="buy-card__top"><span class="buy-card__thumb"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"></span>
+        <div><span class="buy-card__name">Lacoste · Чоловічий жилет</span><span class="buy-card__opts">L · Camel + Black
+            · Код 3709</span></div>
+      </div>
+      <span class="eta-badge eta-badge--mb"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 6v6l4 2"></path>
+        </svg>7–15 днів</span>
+      <div class="buy-card__row"><span class="buy-card__price"><span class="buy-card__price-now">8 648 ₴</span><span
+            class="buy-card__price-old">10 230 ₴</span></span><button class="btn btn--primary buy-card__add"
+          type="button" data-pdp-add>У кошик</button></div>
+      <div class="buy-card__guarantees"><span class="buy-card__guarantee"><svg width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>Тільки оригінал — фото з посилання</span><span class="buy-card__guarantee"><svg width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>Підтримка з полудня до ночі</span><span class="buy-card__guarantee"><svg width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>Повернення протягом 14 днів</span></div>
+    </aside>
+  </div>
+  <section class="section section--muted section--top" id="related">
+    <div class="section__inner">
+      <div class="rel-head">
+        <h2 class="card-block__title">З цим товаром купують</h2>
+        <div class="rel-head__nav"><button class="rel-head__arrow" type="button" aria-label="Назад"><svg width="17"
+              height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg></button><button class="rel-head__arrow" type="button" aria-label="Далі"><svg width="17" height="17"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg></button></div>
+      </div>
+      <div class="mini-grid">
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Lacoste</span><span class="mini-card__name">Чоловіча
+              куртка-стьобанка</span><span class="mini-card__price">7 770 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Lacoste</span><span class="mini-card__name">Чоловічий
+              жилет BH1585</span><span class="mini-card__price">8 648 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Lacoste</span><span class="mini-card__name">Унісекс
+              поло Regular Fit</span><span class="mini-card__price">5 843 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Lacoste</span><span class="mini-card__name">Унісекс
+              худі Loose Fit</span><span class="mini-card__price">7 713 ₴</span></span></a>
+      </div>
+    </div>
+  </section>
+  <section class="section section--top section--plain">
+    <div class="section__inner">
+      <h2 class="card-block__title viewed-title">Переглянуті товари</h2>
+      <div class="mini-grid">
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Nike</span><span class="mini-card__name">Жіночий
+              світшот Phoenix Fleece</span><span class="mini-card__price">3 272 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=72)"><span
+              class="mini-card__badge">-14%</span></span><span class="mini-card__body"><span
+              class="mini-card__brand">Nike</span><span class="mini-card__name">Жіноча футболка Southern</span><span
+              class="mini-card__price">1 401 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=400&q=72)"><span
+              class="mini-card__badge">-39%</span></span><span class="mini-card__body"><span
+              class="mini-card__brand">Nike</span><span class="mini-card__name">Жіночі кросівки Waffle Debut</span><span
+              class="mini-card__price">2 289 ₴</span></span></a>
+        <a class="mini-card" href="product.html"><span class="mini-card__media"
+            style="background-image:url(https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=72)"></span><span
+            class="mini-card__body"><span class="mini-card__brand">Lacoste</span><span class="mini-card__name">Унісекс
+              сумка на пояс LCST</span><span class="mini-card__price">5 516 ₴</span></span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal-payment" data-popover hidden>
+  <div class="modal__dialog">
+    <div class="modal__head"><span class="modal__title">Інформація про оплату</span><button class="modal__close"
+        type="button" data-modal-close aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <div class="modal__body">
+      <div class="modal__rows">
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+              <line x1="2" x2="22" y1="10" y2="10"></line>
+            </svg></span>
+          <div><span class="modal__row-title">Банківські картки</span><span class="modal__row-text">Приймаємо Visa,
+              Mastercard будь-якого українського банку. Оплата захищена 3D Secure.</span></div>
+        </div>
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+              <path d="M12 18h.01"></path>
+            </svg></span>
+          <div><span class="modal__row-title">Apple Pay / Google Pay</span><span class="modal__row-text">Миттєва оплата
+              з телефону без введення даних картки.</span></div>
+        </div>
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1">
+              </path>
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
+            </svg></span>
+          <div><span class="modal__row-title">PayPal</span><span class="modal__row-text">Для міжнародних платежів та
+              додаткового захисту покупця.</span></div>
+        </div>
+      </div>
+      <div class="modal__callout modal__callout--success"><span class="modal__callout-icon"><svg width="19" height="19"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg></span><span><strong>Безпечна оплата</strong><br><span class="modal__callout-text">Всі платежі
+            шифруються SSL. Дані карток не зберігаються на наших серверах.</span></span></div>
+    </div>
+  </div>
 </div>
-<script type="text/javascript"><!--
-$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
-	$.ajax({
-		url: 'index.php?route=product/product/getRecurringDescription',
-		type: 'post',
-		data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
-		dataType: 'json',
-		beforeSend: function() {
-			$('#recurring-description').html('');
-		},
-		success: function(json) {
-			$('.alert-dismissible, .text-danger').remove();
 
-			if (json['success']) {
-				$('#recurring-description').html(json['success']);
-			}
-		}
-	});
-});
-//--></script> 
-<script type="text/javascript"><!--
-$('#button-cart').on('click', function() {
-	$.ajax({
-		url: 'index.php?route=checkout/cart/add',
-		type: 'post',
-		data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
-		dataType: 'json',
-		beforeSend: function() {
-			$('#button-cart').button('loading');
-		},
-		complete: function() {
-			$('#button-cart').button('reset');
-		},
-		success: function(json) {
-			$('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
+<div class="modal" id="modal-delivery" data-popover hidden>
+  <div class="modal__dialog">
+    <div class="modal__head"><span class="modal__title">Інформація про доставку</span><button class="modal__close"
+        type="button" data-modal-close aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <div class="modal__body">
+      <div class="modal__rows">
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 4.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z">
+              </path>
+            </svg></span>
+          <div><span class="modal__row-title">Авіа доставка (8–10 днів)</span><span class="modal__row-text">Найшвидший
+              спосіб. Товар летить літаком з США/Європи напряму в Україну. Рекомендуємо для легких товарів до 2
+              кг.</span></div>
+        </div>
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+              <path d="M15 18H9"></path>
+              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+              <circle cx="17" cy="18" r="2"></circle>
+              <circle cx="7" cy="18" r="2"></circle>
+            </svg></span>
+          <div><span class="modal__row-title">Наземна доставка (14–21 день)</span><span
+              class="modal__row-text">Оптимальний баланс ціни та швидкості. Товар їде автотранспортом через
+              Європу.</span></div>
+        </div>
+        <div class="modal__row"><span class="modal__row-icon"><svg width="21" height="21" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+              <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"></path>
+            </svg></span>
+          <div><span class="modal__row-title">Морська доставка (26–36 днів)</span><span
+              class="modal__row-text">Найдешевший варіант. Рекомендуємо для великих та важких посилок.</span></div>
+        </div>
+      </div>
+      <div class="modal__callout modal__callout--success"><span class="modal__callout-icon"><svg width="19" height="19"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
+            <path d="M15 18H9"></path>
+            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+            <circle cx="17" cy="18" r="2"></circle>
+            <circle cx="7" cy="18" r="2"></circle>
+          </svg></span><span><strong>Безкоштовна доставка</strong><br><span class="modal__callout-text">Авіа від 5 000 ₴
+            · Наземна від 4 000 ₴ · Морем від 10 000 ₴</span></span></div><a class="section-head__link modal__foot-link"
+        href="how-it-works.html">Детальніше про доставку та тарифи <svg width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg></a>
+    </div>
+  </div>
+</div>
 
-			if (json['error']) {
-				if (json['error']['option']) {
-					for (i in json['error']['option']) {
-						var element = $('#input-option' + i.replace('_', '-'));
+<div class="modal" id="modal-buyback" data-popover hidden>
+  <div class="modal__dialog">
+    <div class="modal__head"><span class="modal__title">Як ми викуповуємо товари</span><button class="modal__close"
+        type="button" data-modal-close aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <div class="modal__body">
+      <p class="desc-text">Ми викуповуємо товари з офіційних магазинів США, Європи та Азії. Весь процес прозорий і
+        безпечний для вас.</p><span class="modal__subhead">Як це працює:</span>
+      <div class="modal__checklist">
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Ви обираєте товар і оформлюєте замовлення на нашому сайті</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Ми викуповуємо товар напряму з офіційного магазину бренду</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Товар приходить на наш склад у США або Європі</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Перевіряємо якість та відповідність замовленню</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Відправляємо в Україну обраним способом доставки</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Ви отримуєте товар в Новій Пошті або кур’єром</span></div>
+      </div><span class="modal__subhead">Чому це вигідно:</span>
+      <div class="modal__checklist">
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Ціни нижчі ніж в Україні — американські знижки та розпродажі</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>100% оригінал — викуповуємо лише з офіційних джерел</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Повне супроводження — від замовлення до отримання</span></div>
+        <div class="modal__check"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+            stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg><span>Можливість замовити фото товару до відправки</span></div>
+      </div>
+      <div class="modal__callout modal__callout--spaced"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+        </svg><span class="modal__callout-text"><strong>Є питання?</strong><br>Напишіть нам у <a class="modal__link"
+            href="support.html">Telegram</a> або <a class="modal__link" href="support.html">Viber</a> — відповімо
+          протягом 5 хвилин з 10:00 до 00:00.</span></div>
+    </div>
+  </div>
+</div>
 
-						if (element.parent().hasClass('input-group')) {
-							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
-						} else {
-							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
-						}
-					}
-				}
+<div class="modal" id="modal-size" data-popover hidden>
+  <div class="modal__dialog modal__dialog--lg">
+    <div class="modal__head"><span class="modal__title">Таблиця розмірів — Lacoste чоловічі куртки</span><button
+        class="modal__close" type="button" data-modal-close aria-label="Закрити"><svg width="18" height="18"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <div class="modal__body">
+      <p class="desc-text modal__lead">Всі розміри вказані в сантиметрах. Виміряйте улюблену річ і порівняйте.</p>
+      <div class="size-table">
+        <div class="size-table__head"><span class="size-table__cell">Розмір</span><span
+            class="size-table__cell">Груди</span><span class="size-table__cell">Талія</span><span
+            class="size-table__cell">Довжина</span><span class="size-table__cell">Рукав</span></div>
+        <div class="size-table__row"><span class="size-table__cell">XS</span><span
+            class="size-table__cell">86–90</span><span class="size-table__cell">72–76</span><span
+            class="size-table__cell">64</span><span class="size-table__cell">62</span></div>
+        <div class="size-table__row"><span class="size-table__cell">S</span><span
+            class="size-table__cell">90–96</span><span class="size-table__cell">76–82</span><span
+            class="size-table__cell">66</span><span class="size-table__cell">63</span></div>
+        <div class="size-table__row"><span class="size-table__cell">M</span><span
+            class="size-table__cell">96–102</span><span class="size-table__cell">82–88</span><span
+            class="size-table__cell">68</span><span class="size-table__cell">64</span></div>
+        <div class="size-table__row is-active"><span class="size-table__cell">L</span><span
+            class="size-table__cell">102–108</span><span class="size-table__cell">88–94</span><span
+            class="size-table__cell">70</span><span class="size-table__cell">65</span></div>
+        <div class="size-table__row"><span class="size-table__cell">XL</span><span
+            class="size-table__cell">108–114</span><span class="size-table__cell">94–100</span><span
+            class="size-table__cell">72</span><span class="size-table__cell">66</span></div>
+        <div class="size-table__row"><span class="size-table__cell">XXL</span><span
+            class="size-table__cell">114–120</span><span class="size-table__cell">100–106</span><span
+            class="size-table__cell">74</span><span class="size-table__cell">67</span></div>
+      </div>
+      <p class="desc-text modal__lead modal__lead--spaced"><strong>Порада:</strong> Якщо ваші заміри між розмірами —
+        обирайте більший. Lacoste зазвичай маломірить на пів-розміру.</p><a class="section-head__link modal__foot-link"
+        href="size-charts.html">Повна сітка Lacoste · усі бренди <svg width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg></a>
+    </div>
+  </div>
+</div>
 
-				if (json['error']['recurring']) {
-					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
-				}
+<div class="modal" id="modal-review" data-popover hidden>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="modal__head"><span class="modal__title">Додати відгук</span><button class="modal__close" type="button"
+        data-modal-close aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <form class="modal__body" data-form="review"><input type="hidden" id="review-rating" value="5"><label
+        class="field__label modal__field-label">Ваша оцінка</label>
+      <div class="star-rate">
+        <button class="star-rate__btn" type="button" data-star="1" aria-label="Оцінка 1"><svg width="32" height="32"
+            viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></button>
+        <button class="star-rate__btn" type="button" data-star="2" aria-label="Оцінка 2"><svg width="32" height="32"
+            viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></button>
+        <button class="star-rate__btn" type="button" data-star="3" aria-label="Оцінка 3"><svg width="32" height="32"
+            viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></button>
+        <button class="star-rate__btn" type="button" data-star="4" aria-label="Оцінка 4"><svg width="32" height="32"
+            viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></button>
+        <button class="star-rate__btn" type="button" data-star="5" aria-label="Оцінка 5"><svg width="32" height="32"
+            viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26">
+            </polygon>
+          </svg></button>
+      </div><label class="field__label modal__field-label">Ваше ім'я</label><input class="input input--mb"
+        placeholder="Як вас звати?"><label class="field__label modal__field-label">Ваш відгук</label><textarea
+        class="input input--area input--mb" placeholder="Розкажіть про товар: якість, розмір, відповідність фото…"
+        rows="4"></textarea><button class="btn btn--primary btn--block modal__submit" type="submit">Надіслати
+        відгук</button>
+    </form>
+  </div>
+</div>
 
-				// Highlight any found errors
-				$('.text-danger').parent().addClass('has-error');
-			}
+<div class="modal" id="modal-oneclick" data-popover hidden>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="modal__head"><span class="modal__title">Замовлення в 1 клік</span><button class="modal__close"
+        type="button" data-modal-close aria-label="Закрити"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <form class="modal__body" data-form="oneclick">
+      <div class="oneclick__product"><span class="buy-card__thumb"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"></span>
+        <div><span class="buy-card__name">Чоловічий жилет Lacoste · BH1585-51-QIN</span><span
+            class="buy-card__opts">Колір: Camel · Розмір: L</span><span class="oneclick__price">8 648 ₴</span></div>
+      </div><label class="field__label modal__field-label">Телефон <span class="req">*</span></label><input
+        class="input input--mb" type="tel" required placeholder="+380 (___) ___ __ __"><label
+        class="field__label modal__field-label">Ім'я</label><input class="input input--mb"
+        placeholder="Як до вас звертатися?"><label class="field__label modal__field-label">Коментар</label><textarea
+        class="input input--area input--mb" rows="3" placeholder="Уточнення до замовлення…"></textarea><button
+        class="btn btn--primary btn--block modal__submit" type="submit">Замовити зворотній дзвінок</button>
+      <p class="oneclick__note">Менеджер зателефонує вам протягом 5 хвилин · працюємо з 10:00 до 00:00</p>
+    </form>
+  </div>
+</div>
 
-			if (json['success']) {
-				$('.breadcrumb').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+<div class="modal" id="modal-added" data-popover hidden>
+  <div class="modal__dialog modal__dialog--sm">
+    <div class="modal__head"><span class="modal__title modal__title--icon"><svg width="22" height="22"
+          viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>Додано в кошик</span><button class="modal__close" type="button" data-modal-close aria-label="Закрити"><svg
+          width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg></button></div>
+    <div class="modal__body">
+      <div class="oneclick__product"><span class="buy-card__thumb"
+          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"></span>
+        <div><span class="buy-card__name">Чоловічий жилет Lacoste · BH1585-51-QIN</span><span class="buy-card__opts"
+            data-added-opts>Колір: Camel · Розмір: L</span><span class="oneclick__price">8 648 ₴</span></div>
+      </div>
+      <div class="cart-added__actions"><a class="btn btn--primary btn--block" href="cart.html">Перейти в
+          кошик</a><button class="btn btn--ghost btn--block" type="button" data-modal-close>Продовжити покупки</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+<div class="modal modal--lightbox" id="modal-lightbox" data-popover hidden><button class="modal__lightbox-close"
+    type="button" data-modal-close aria-label="Закрити"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 6 6 18"></path>
+      <path d="m6 6 12 12"></path>
+    </svg></button>
+  <div class="modal__lightbox-img" data-lightbox-img
+    style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)">
+  </div>
+</div>
 
-				$('html, body').animate({ scrollTop: 0 }, 'slow');
 
-				$('#cart > ul').load('index.php?route=common/cart/info ul li');
-			}
-		},
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-	});
-});
-//--></script> 
-<script type="text/javascript"><!--
-$('.date').datetimepicker({
-	language: '{{ datepicker }}',
-	pickTime: false
-});
-
-$('.datetime').datetimepicker({
-	language: '{{ datepicker }}',
-	pickDate: true,
-	pickTime: true
-});
-
-$('.time').datetimepicker({
-	language: '{{ datepicker }}',
-	pickDate: false
-});
-
-$('button[id^=\'button-upload\']').on('click', function() {
-	var node = this;
-
-	$('#form-upload').remove();
-
-	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-
-	$('#form-upload input[name=\'file\']').trigger('click');
-
-	if (typeof timer != 'undefined') {
-    	clearInterval(timer);
-	}
-
-	timer = setInterval(function() {
-		if ($('#form-upload input[name=\'file\']').val() != '') {
-			clearInterval(timer);
-
-			$.ajax({
-				url: 'index.php?route=tool/upload',
-				type: 'post',
-				dataType: 'json',
-				data: new FormData($('#form-upload')[0]),
-				cache: false,
-				contentType: false,
-				processData: false,
-				beforeSend: function() {
-					$(node).button('loading');
-				},
-				complete: function() {
-					$(node).button('reset');
-				},
-				success: function(json) {
-					$('.text-danger').remove();
-
-					if (json['error']) {
-						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
-					}
-
-					if (json['success']) {
-						alert(json['success']);
-
-						$(node).parent().find('input').val(json['code']);
-					}
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-				}
-			});
-		}
-	}, 500);
-});
-//--></script> 
-<script type="text/javascript"><!--
-$('#review').delegate('.pagination a', 'click', function(e) {
-    e.preventDefault();
-
-    $('#review').fadeOut('slow');
-
-    $('#review').load(this.href);
-
-    $('#review').fadeIn('slow');
-});
-
-$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
-
-$('#button-review').on('click', function() {
-	$.ajax({
-		url: 'index.php?route=product/product/write&product_id={{ product_id }}',
-		type: 'post',
-		dataType: 'json',
-		data: $("#form-review").serialize(),
-		beforeSend: function() {
-			$('#button-review').button('loading');
-		},
-		complete: function() {
-			$('#button-review').button('reset');
-		},
-		success: function(json) {
-			$('.alert-dismissible').remove();
-
-			if (json['error']) {
-				$('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
-			}
-
-			if (json['success']) {
-				$('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
-
-				$('input[name=\'name\']').val('');
-				$('textarea[name=\'text\']').val('');
-				$('input[name=\'rating\']:checked').prop('checked', false);
-			}
-		}
-	});
-});
-
-$(document).ready(function() {
-	$('.thumbnails').magnificPopup({
-		type:'image',
-		delegate: 'a',
-		gallery: {
-			enabled: true
-		}
-	});
-});
-//--></script> 
-{{ footer }} 
+{{ footer }}

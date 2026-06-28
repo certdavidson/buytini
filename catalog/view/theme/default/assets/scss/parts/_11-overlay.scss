@@ -1,0 +1,5 @@
+/* -------- overlay -------- */
+.overlay { position: fixed; inset: 0; background: rgba(27, 24, 21, .36); backdrop-filter: blur(2px); z-index: 150; animation: dcFade .18s ease; }
+.overlay--search { top: 110px; }
+.overlay--cart { z-index: 300; }
+.overlay--auth { z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; }

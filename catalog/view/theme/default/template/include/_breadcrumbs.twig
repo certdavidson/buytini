@@ -1,0 +1,13 @@
+<div class="pdp-bar">
+    <nav class="breadcrumb">
+        {% set i = 1 %}
+        {% for breadcrumb in breadcrumbs %}
+        {% if i < breadcrumbs|length %}
+        <a class="breadcrumb__link" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+        <span>/</span>
+        {% else %}
+        <span class="breadcrumb__current">{{ breadcrumb.text }}</span>
+        {% endif %}
+        {% set i = i + 1 %}
+    </nav>
+</div>

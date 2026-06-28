@@ -1,26 +1,90 @@
-<div class="slideshow swiper-viewport">
-  <div id="slideshow{{ module }}" class="swiper-container">
-    <div class="swiper-wrapper"> {% for banner in banners %}
-      <div class="swiper-slide text-center">{% if banner.link %}<a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" /></a>{% else %}<img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />{% endif %}</div>
-      {% endfor %} </div>
+{{ module }}
+{% if banner.link %}{% endif %}
+
+<section class="homed-sec homed-sec--hero">
+  <div class="swiper heroSwiper">
+    <div class="swiper-wrapper">
+      {% for banner in banners %}
+      <div class="swiper-slide homed-slide" style="background-image:url(https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay" style="background:linear-gradient(90deg,rgba(20,16,12,.82) 0%,rgba(20,16,12,.45) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">До 31 травня · 1 200+ моделей</span>
+          <h1 class="homed-slide__title">Чорна п’ятниця по-нашому: −40% на взуття</h1>
+          <p class="homed-slide__text">Більше тисячі пар кросівок і черевиків зі складів US та EU. Встигніть забрати
+            пару мрії за півціни.</p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">Перейти до акцій</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Каталог взуття</a></div>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="swiper-slide homed-slide"
+        style="background-image:url(https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay"
+          style="background:linear-gradient(90deg,rgba(20,16,12,.8) 0%,rgba(20,16,12,.4) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">Нова колекція осінь 2026</span>
+          <h1 class="homed-slide__title">Streetwear зі США вже в дорозі</h1>
+          <p class="homed-slide__text">Худі, оверсайз і денім від Nike, Carhartt і Levi’s. Оригінал з офіційних
+            магазинів, доставка авіа за 7–15 днів.</p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">Дивитися новинки</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Усі бренди</a></div>
+        </div>
+      </div>
+      <div class="swiper-slide homed-slide"
+        style="background-image:url(https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay"
+          style="background:linear-gradient(90deg,rgba(20,16,12,.8) 0%,rgba(20,16,12,.42) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">Аромати та парфуми</span>
+          <h1 class="homed-slide__title">Європейська парфумерія — лише оригінал</h1>
+          <p class="homed-slide__text">Rituals, Dior, Versace та інші бренди, яких не знайти в Україні. Рахуємо мита
+            наперед — без сюрпризів.</p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">Обрати аромат</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Як це працює</a></div>
+        </div>
+      </div>
+      <div class="swiper-slide homed-slide"
+        style="background-image:url(https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay"
+          style="background:linear-gradient(90deg,rgba(20,16,12,.82) 0%,rgba(20,16,12,.45) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">Жіночий гардероб</span>
+          <h1 class="homed-slide__title">Європейські бренди для неї</h1>
+          <p class="homed-slide__text">Сукні, верхній одяг і взуття брендів, яких немає в Україні. Нові надходження
+            щотижня.</p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">Дивитися жіноче</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Усі категорії</a></div>
+        </div>
+      </div>
+      <div class="swiper-slide homed-slide"
+        style="background-image:url(https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay"
+          style="background:linear-gradient(90deg,rgba(20,16,12,.82) 0%,rgba(20,16,12,.45) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">Сумки та аксесуари</span>
+          <h1 class="homed-slide__title">Знижки до −30% на аксесуари</h1>
+          <p class="homed-slide__text">Coach, Michael Kors, JW Pei та інші. Оригінальні сумки, гаманці й годинники з
+            доставкою в Україну.</p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">До акцій</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Каталог сумок</a></div>
+        </div>
+      </div>
+      <div class="swiper-slide homed-slide"
+        style="background-image:url(https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1400&q=75)">
+        <span class="homed-slide__overlay"
+          style="background:linear-gradient(90deg,rgba(20,16,12,.82) 0%,rgba(20,16,12,.45) 55%,rgba(20,16,12,.1) 100%)"></span>
+        <div class="homed-slide__body"><span class="homed-slide__kicker">Дім і побут</span>
+          <h1 class="homed-slide__title">Затишок для вашої оселі</h1>
+          <p class="homed-slide__text">Техніка, декор і дрібниці для дому з американських та європейських магазинів.
+          </p>
+          <div class="homed-slide__actions"><a class="btn btn--primary" href="sale.html">Перейти в каталог</a><a
+              class="homed-slide__btn-ghost" href="catalog.html">Дізнатись більше</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-prev" role="button" aria-label="Назад"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6" />
+      </svg></div>
+    <div class="hero-next" role="button" aria-label="Далі"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 6l6 6-6 6" />
+      </svg></div>
+    <div class="hero-dots swiper-pagination"></div>
   </div>
-  <div class="swiper-pagination slideshow{{ module }}"></div>
-  <div class="swiper-pager">
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-  </div>
-</div>
-<script type="text/javascript"><!--
-$('#slideshow{{ module }}').swiper({
-	mode: 'horizontal',
-	slidesPerView: 1,
-	pagination: '.slideshow{{ module }}',
-	paginationClickable: true,
-	nextButton: '.slideshow .swiper-button-next',
-    prevButton: '.slideshow .swiper-button-prev',
-    spaceBetween: 30,
-	autoplay: 2500,
-    autoplayDisableOnInteraction: true,
-	loop: true
-});
-//--></script>
+</section>

@@ -1,26 +1,11 @@
-{% if currencies|length > 1 %}
-<div class="pull-left">
-  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-currency">
-    <div class="btn-group">
-      <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">{% for currency in currencies %}
-      {% if currency.symbol_left and currency.code == code %} <strong>{{ currency.symbol_left }}</strong> {% elseif currency.symbol_right and currency.code == code %} <strong>{{ currency.symbol_right }}</strong> {% endif %}
-      {% endfor %} <span class="hidden-xs hidden-sm hidden-md">{{ text_currency }}</span>&nbsp;<i class="fa fa-caret-down"></i></button>
-      <ul class="dropdown-menu">
-        {% for currency in currencies %}
-        {% if currency.symbol_left %}
-        <li>
-          <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">{{ currency.symbol_left }} {{ currency.title }}</button>
-        </li>
-        {% else %}
-        <li>
-          <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">{{ currency.symbol_right }} {{ currency.title }}</button>
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-    <input type="hidden" name="code" value="" />
-    <input type="hidden" name="redirect" value="{{ redirect }}" />
-  </form>
+<div class="dropdown">
+  <button class="dropdown__trigger" type="button" data-dropdown="" aria-label="Валюта">
+    <span>₴ UAH</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+  </button>
+  <div class="dropdown__menu" data-popover="" hidden="">
+    <button class="dropdown__item is-active" type="button">₴ UAH</button>
+    <button class="dropdown__item" type="button">$ USD</button>
+    <button class="dropdown__item" type="button">€ EUR</button>
+  </div>
 </div>
-{% endif %} 

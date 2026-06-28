@@ -1,0 +1,18 @@
+/* contacts page extras */
+.contacts-bar { max-width: var(--maxw); margin: 0 auto; padding: 24px 20px 12px; }
+.contacts-head { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+.contacts-head__title { font-size: 34px; font-weight: 600; margin: 0 0 6px; }
+.contacts-head__sub { font-size: 15px; color: var(--text-muted); margin: 0 0 32px; }
+.contacts-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 48px; }
+.co-section__title--mb { margin-bottom: 20px; }
+.co-row--mb { margin-bottom: 14px; }
+.input--mb { margin-bottom: 14px; }
+.ct-submit { height: 52px; font-size: 16px; }
+.ct-side { display: flex; flex-direction: column; gap: 14px; }
+.ct-hours { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+.ct-hours__label { display: block; font-size: 13px; color: var(--text-subtle); margin-bottom: 6px; }
+.ct-hours__value { display: block; font-size: 15px; font-weight: 500; }
+.section__inner--tight { padding-top: 48px; padding-bottom: 48px; }
+.ct-loc-title { font-size: 26px; font-weight: 600; margin: 0 0 6px; }
+.ct-loc-sub { font-size: 14px; color: var(--text-muted); margin: 0 0 24px; }
+.loc-list { display: flex; flex-direction: column; gap: 10px; }

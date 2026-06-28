@@ -1,0 +1,13 @@
+/* account inner-page helpers */
+.account__h1 { font-size: 30px; font-weight: 600; margin: 0 0 24px; }
+.account__col { display: flex; flex-direction: column; gap: 20px; }
+.section-card__title--lg { font-size: 18px; margin-bottom: 20px; }
+.section-card__sub { display: block; font-size: 13px; color: var(--text-subtle); margin-bottom: 18px; }
+.form-btn { margin-top: 20px; height: 48px; }
+.btn--outline { border: 1px solid var(--accent); background: transparent; color: var(--accent); }
+.btn--outline:hover { background: var(--accent-soft); }
+.pass-fields { display: flex; flex-direction: column; gap: 16px; max-width: 420px; }
+.notif-list { display: flex; flex-direction: column; gap: 14px; }
+.addr-card__line--addr { margin-top: 6px; line-height: 1.5; }
+.form-grid__full { grid-column: 1 / -1; }
+.orders-list { display: flex; flex-direction: column; gap: 14px; }
