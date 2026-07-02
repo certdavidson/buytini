@@ -1,0 +1,2164 @@
+// EasyCheckout — admin SCSS
+// © 2026 oc-kit.com | https://oc-kit.com
+//
+// Префікс класів — okec-* (oc-kit easycheckout). Спільні стилі (ok-panel, ok-layout,
+// ok-toggle-wrap, ok-form-row тощо) приходять зі спільного admin/view/javascript/ockit/assets/css/styles.css.
+
+.oc-kit.okec {
+
+  .okec-section {
+    // padding: 16px 24px;
+  }
+
+  .okec-dev-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    color: #5d4037;
+    padding: 12px 16px;
+    border-radius: 6px;
+
+    [data-lucide] {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  }
+
+  .okec-code {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+    font-size: 13px;
+    color: #2196F3;
+  }
+
+  // Sidebar — disabled (coming soon) item
+  .ok-tabs-sidebar-item.is-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+
+    .okec-soon {
+      margin-left: auto;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .ok-badge-muted {
+    background: #eceff1;
+    color: #607d8b;
+  }
+
+  // Coming-soon empty state
+  .okec-empty {
+    padding: 80px 32px;
+    text-align: center;
+    color: #607d8b;
+
+    &__icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      color: #b0bec5;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin: 8px 0;
+      color: #455a64;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    &__hint code {
+      background: #f5f5f5;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      color: #455a64;
+    }
+  }
+
+  // Sidebar lucide icons
+  .ok-tabs-sidebar-item [data-lucide] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  // ── Filter bar ───────────────────────────────────────────────────────
+  .okec-filter {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: center;
+
+    &__search {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+
+      [data-lucide] {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: #90a4ae;
+        pointer-events: none;
+      }
+
+      input {
+        padding-left: 34px;
+      }
+    }
+
+    &__select {
+      width: 220px;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── Table ────────────────────────────────────────────────────────────
+  .okec-loading {
+    text-align: center;
+    padding: 40px 0;
+
+    [data-lucide] {
+      width: 32px;
+      height: 32px;
+      color: #90a4ae;
+    }
+  }
+
+  .okec-spin {
+    animation: okec-spin 1s linear infinite;
+  }
+
+  @keyframes okec-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  // ── Modal ────────────────────────────────────────────────────────────
+  .okec-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+
+    &__backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(38, 50, 56, 0.55);
+      backdrop-filter: blur(2px);
+    }
+
+    &__dialog {
+      position: relative;
+      background: #fff;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 860px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 80px);
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #eceff1;
+
+      h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #263238;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        [data-lucide] {
+          width: 20px;
+          height: 20px;
+          color: #1976d2;
+        }
+      }
+    }
+
+    &__close {
+      background: none;
+      border: none;
+      color: #90a4ae;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      line-height: 0;
+
+      &:hover {
+        background: #eceff1;
+        color: #455a64;
+      }
+
+      [data-lucide] { width: 20px; height: 20px; }
+    }
+
+    &__body {
+      padding: 16px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    &__footer {
+      padding: 12px 24px;
+      border-top: 1px solid #eceff1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+  }
+
+  .okec-modal-panel {
+    margin-bottom: 16px;
+    border: 1px solid #eceff1;
+    border-radius: 6px;
+
+    .ok-panel-header {
+      padding: 10px 16px;
+      background: #fafbfc;
+      border-bottom: 1px solid #eceff1;
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ok-panel-body {
+      padding: 16px;
+    }
+  }
+
+  .okec-section-disabled {
+    opacity: 0.6;
+  }
+
+  .okec-modal-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 6px;
+    margin-top: 8px;
+    border: 1px solid #ef9a9a;
+
+    [data-lucide] { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+
+    &--top {
+      margin: 0 0 16px;
+      animation: okec-shake 0.4s ease-in-out;
+    }
+
+    &__title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
+      font-size: 13px;
+
+      li {
+        padding: 2px 0;
+      }
+
+      strong {
+        color: #b71c1c;
+      }
+    }
+  }
+
+  @keyframes okec-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  // Підсвічування проблемної панелі
+  .okec-modal-panel.okec-panel-invalid {
+    border-color: #ef5350 !important;
+    box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.15);
+
+    .ok-panel-header {
+      background: #ffebee;
+      color: #c62828;
+    }
+  }
+
+  // ── Multilingual blocks (компактна версія) ───────────────────────────
+  .okec-lang-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eceff1;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .okec-lang-flag {
+    flex-shrink: 0;
+    width: 28px;
+    padding-top: 6px;
+    text-align: center;
+
+    img {
+      width: 22px;
+      height: 14px;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #eceff1;
+      border-radius: 2px;
+    }
+
+    span {
+      display: none; /* мовний код у tooltip-і прапора замість підпису */
+    }
+  }
+
+  .okec-lang-fields {
+    flex: 1;
+    min-width: 0;
+
+    .ok-form-row {
+      display: block;        // лейбл і control один над одним — економимо горизонтальне місце
+      margin-bottom: 6px;
+
+      &:last-child { margin-bottom: 0; }
+
+      > .form-label {
+        flex: none;
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: #78909c;
+        padding: 0;
+        margin: 0 0 2px;
+      }
+
+      > .ok-form-control {
+        flex: none;
+        width: 100%;
+      }
+
+      .ok-input, .ok-select {
+        font-size: 13px;
+        padding: 6px 10px;
+        height: auto;
+        min-height: 32px;
+      }
+
+      textarea.ok-input, .ok-select {
+        min-height: 50px;
+      }
+    }
+  }
+
+  // ── Options rows (select/radio/segmented) ────────────────────────────
+  .okec-option-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+
+    &__value {
+      flex: 0 0 30%;
+    }
+
+    &__label {
+      flex: 1;
+    }
+  }
+
+  // ── Code input ───────────────────────────────────────────────────────
+  .okec-code-input {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  .okec-error {
+    color: #c62828;
+    font-size: 12px;
+    margin: 4px 0 0;
+  }
+
+  .ok-input.is-invalid, .ok-select.is-invalid,
+  .okec-code-input.is-invalid {
+    border-color: #ef5350 !important;
+    background: #fff5f5;
+  }
+
+  // ── Radio inline ─────────────────────────────────────────────────────
+  .ok-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 16px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+  // ── Form rows (тонке покращення для полів) ───────────────────────────
+  .ok-form-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+
+    > .form-label {
+      flex: 0 0 200px;
+      padding-top: 0;
+      font-weight: 500;
+      color: #455a64;
+      margin: 0;
+    }
+
+    > .ok-form-control {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  // ── Validation rules ─────────────────────────────────────────────────
+  .okec-rules-empty {
+    padding: 16px;
+    background: #fafbfc;
+    border: 1px dashed #cfd8dc;
+    border-radius: 6px;
+    color: #607d8b;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 12px;
+
+    p { margin: 0; }
+  }
+
+  .okec-rule {
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    background: #fff;
+    overflow: hidden;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f5f7fa;
+      border-bottom: 1px solid #e0e6ed;
+    }
+
+    &__type-badge {
+      font-weight: 600;
+      font-size: 13px;
+      color: #1976d2;
+      background: #e3f2fd;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    &__body {
+      padding: 12px;
+    }
+
+    &__errors {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #eceff1;
+    }
+
+    &__errors-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #607d8b;
+      margin-bottom: 6px;
+    }
+
+    &__error-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+
+      &:last-child { margin-bottom: 0; }
+
+      input {
+        flex: 1;
+      }
+    }
+  }
+
+  .okec-rule-params {
+    display: flex;
+    gap: 12px;
+
+    &__col {
+      flex: 1;
+
+      .form-label {
+        font-size: 12px;
+        color: #607d8b;
+      }
+    }
+  }
+
+  .okec-lang-flag-inline {
+    width: 20px;
+    height: 14px;
+    flex-shrink: 0;
+    border: 1px solid #eceff1;
+    border-radius: 2px;
+  }
+
+  // ── Add-rule dropdown (fixed — escapes modal overflow) ───────────────
+  .okec-add-rule {
+    display: inline-block;
+    margin-top: 8px;
+
+    &__menu {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #e0e6ed;
+      border-radius: 6px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      min-width: 220px;
+      z-index: 10001;            // вище за .okec-modal (9999)
+      padding: 4px 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    &__item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 14px;
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: #455a64;
+      cursor: pointer;
+
+      &:hover {
+        background: #f5f7fa;
+        color: #1976d2;
+      }
+    }
+  }
+
+  // Upward variant — тінь з нижньої сторони (бо меню над тригером)
+  .okec-block-picker--upward {
+    box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.18) !important;
+  }
+
+  // ── Integration hint (поки інтеграції не у General) ─────────────────
+  .okec-integration-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    background: #e8f4fd;
+    border: 1px solid #bbdefb;
+    border-radius: 6px;
+    color: #1565c0;
+    font-size: 12px;
+
+    [data-lucide] {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── ISO2 input (країна) ─────────────────────────────────────────────
+  .okec-iso2-input {
+    width: 80px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  // ── Integration setup block (in General section) ────────────────────
+  .okec-integration-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .okec-integration-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 600;
+
+    [data-lucide] { width: 14px; height: 14px; }
+
+    &--active {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+    &--inactive {
+      background: #fafafa;
+      color: #757575;
+      border: 1px solid #e0e0e0;
+    }
+  }
+
+  .okec-integration-checks {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    font-size: 12px;
+
+    & > * {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
+
+  // ── Group selector (in panel header) ────────────────────────────────
+  .okec-group-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 8px 0 0;
+    padding: 4px 10px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 6px;
+
+    [data-lucide] {
+      width: 14px;
+      height: 14px;
+      color: #e65100;
+    }
+
+    &__label {
+      font-size: 11px;
+      color: #5d4037;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    &__select {
+      width: 160px !important;
+      padding: 3px 8px !important;
+      font-size: 13px !important;
+      height: auto !important;
+      min-height: 28px !important;
+      background: #fff;
+    }
+  }
+
+  .okec-default-badge {
+    background: #fff8e1;
+    color: #e65100;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #ffb74d;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+
+    [data-lucide] {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  .okec-url-example {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: #607d8b;
+    background: #f5f7fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  // ── Native field badge (OC built-in) ────────────────────────────────
+  .okec-native-badge {
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    border: 1px solid #ffb74d;
+  }
+
+  // ── Block fields list (inside settings modal) ───────────────────────
+  .okec-fields-empty {
+    padding: 14px;
+    background: #fafbfc;
+    border: 1px dashed #cfd8dc;
+    border-radius: 6px;
+    color: #607d8b;
+    font-size: 13px;
+    text-align: center;
+
+    p { margin: 0; }
+  }
+
+  .okec-fieldset {
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .okec-fieldset__item {
+    border-bottom: 1px solid #eceff1;
+    background: #fff;
+
+    &:last-child { border-bottom: none; }
+
+    &--ghost {
+      opacity: 0.4;
+      background: #e3f2fd !important;
+    }
+    &--chosen { cursor: grabbing; }
+  }
+
+  .okec-fieldset__row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+
+    &:hover { background: #fafcff; }
+  }
+
+  .okec-fieldset__handle {
+    color: #b0bec5;
+    padding: 2px;
+    cursor: grab;
+    flex-shrink: 0;
+    [data-lucide] { width: 14px; height: 14px; }
+  }
+
+  .okec-fieldset__name {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    span:first-of-type {
+      font-weight: 500;
+      color: #263238;
+    }
+  }
+
+  .okec-fieldset__visibility select {
+    width: 130px;
+    padding: 3px 6px;
+    font-size: 12px;
+    height: auto;
+    min-height: 26px;
+  }
+
+  .okec-fieldset__width select {
+    width: 96px;
+    padding: 3px 6px;
+    font-size: 12px;
+    height: auto;
+    min-height: 26px;
+  }
+
+  .okec-fieldset__toggle {
+    margin: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    input { position: absolute; opacity: 0; pointer-events: none; }
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid #cfd8dc;
+      border-radius: 4px;
+      background: #fff;
+      color: #b0bec5;
+
+      [data-lucide] { width: 14px; height: 14px; }
+    }
+
+    input:checked + span {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: #fff;
+    }
+  }
+
+  .okec-fieldset__add {
+    margin-top: 10px;
+  }
+
+  // ── Condition builder (multi-rule, для блоків і полів) ──────────────
+  .okec-cond-builder {
+    margin: 4px 8px 10px;
+    padding: 10px;
+    background: #f7f9fc;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &__match {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #455a64;
+      .ok-select { width: auto; min-width: 200px; }
+    }
+    &__add { align-self: flex-start; }
+  }
+
+  .okec-condition {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e0e6ed;
+    border-radius: 5px;
+    padding: 6px 8px;
+
+    &__label { font-size: 12px; color: #78909c; flex-shrink: 0; }
+    &__source { min-width: 180px; }
+    &__op     { min-width: 150px; }
+    &__value  { flex: 1; min-width: 120px; }
+  }
+
+  // ── Health-check: detailed result cell ──────────────────────────────
+  .okec-health-result {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    &__msg { font-size: 13px; color: #546e7a; line-height: 1.4; }
+  }
+
+  // ── Block settings: viewport hide-toggles ───────────────────────────
+  .okec-vp-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .ok-toggle-wrap {
+      margin: 0;
+    }
+
+    .ok-toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: normal;
+
+      [data-lucide] {
+        width: 14px;
+        height: 14px;
+        color: #607d8b;
+      }
+    }
+  }
+
+  // ── Mask preview ─────────────────────────────────────────────────────
+  .okec-mask-preview {
+    background: #fffef5;
+    border-color: #ffe082 !important;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+    &:focus {
+      border-color: #ffb300 !important;
+      box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.18);
+    }
+  }
+
+  // ── Subsection title (вторинний заголовок у General) ────────────────
+  .okec-subsection-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 28px 0 6px;
+    padding-top: 16px;
+    border-top: 1px solid #eceff1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #455a64;
+
+    [data-lucide] {
+      width: 18px;
+      height: 18px;
+      color: #1976d2;
+    }
+  }
+
+  // ── Autocomplete (consent information picker) ───────────────────────
+  .okec-autocomplete {
+    position: relative;
+
+    &__field {
+      position: relative;
+
+      input {
+        padding-right: 32px;
+      }
+    }
+
+    &__clear {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #90a4ae;
+      border-radius: 4px;
+
+      &:hover {
+        background: #eceff1;
+        color: #455a64;
+      }
+
+      [data-lucide] { width: 14px; height: 14px; }
+    }
+
+    &__menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e0e6ed;
+      border-radius: 6px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 50;
+    }
+
+    &__item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: #455a64;
+      cursor: pointer;
+
+      &:hover {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+    }
+
+    &__loading,
+    &__empty {
+      padding: 12px;
+      text-align: center;
+      color: #90a4ae;
+
+      [data-lucide] { width: 18px; height: 18px; }
+    }
+  }
+
+  // ── Weekdays multi-toggle grid ───────────────────────────────────────
+  .okec-weekdays {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .okec-weekday-btn {
+    background: #fff;
+    border: 1px solid #cfd8dc;
+    color: #607d8b;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      border-color: #90caf9;
+      color: #1976d2;
+    }
+
+    &.is-active {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: #fff;
+    }
+  }
+
+  // ── Time range row (working hours) ───────────────────────────────────
+  .okec-time-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      font-size: 12px;
+      color: #607d8b;
+    }
+
+    input[type="time"] {
+      width: 110px;
+    }
+  }
+
+  // ── Width-button (per block) ────────────────────────────────────────
+  .okec-width-btn {
+    background: transparent;
+    border: none;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #607d8b;
+    border-radius: 3px;
+    cursor: pointer;
+    min-width: 22px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.6);
+      color: #455a64;
+    }
+
+    &.is-active {
+      background: #1976d2;
+      color: #fff;
+    }
+  }
+
+  // ── Viewport toggle (Desktop / Tablet / Mobile preview) ────────────
+  .okec-viewport-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    background: #eceff1;
+    border-radius: 6px;
+  }
+
+  .okec-viewport-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #78909c;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.7);
+      color: #455a64;
+    }
+
+    &.is-active {
+      background: #1976d2;
+      color: #fff;
+    }
+
+    [data-lucide] { width: 16px; height: 16px; }
+  }
+
+  // ── Columns config bar ──────────────────────────────────────────────
+  .okec-columns-config {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    background: #f5f7fa;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+
+    &__label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #607d8b;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    &__sep {
+      color: #cfd8dc;
+      margin: 0 4px;
+    }
+
+    &__select {
+      width: 70px !important;
+      padding: 4px 8px !important;
+      font-size: 13px !important;
+      height: auto !important;
+      min-height: 30px !important;
+    }
+  }
+
+  // ── Block layout builder ────────────────────────────────────────────
+  .okec-builder {
+    padding: 4px 0;
+  }
+
+  .okec-step {
+    background: #f8fafd;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .okec-step__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #eef3f8;
+    border-bottom: 1px solid #e0e6ed;
+
+    [data-lucide].okec-step__icon {
+      width: 18px;
+      height: 18px;
+      color: #1976d2;
+      flex-shrink: 0;
+    }
+
+    .okec-step__title-input {
+      flex: 1;
+      font-weight: 500;
+      background: transparent;
+      border: 1px dashed transparent;
+
+      &:focus {
+        background: #fff;
+        border-color: #cfd8dc;
+      }
+    }
+
+    .okec-step__num {
+      font-size: 11px;
+      color: #78909c;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+  }
+
+  // ── Step rows wrapper (sortable) ─────────────────────────────────────
+  .okec-step__rows {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 60px;
+  }
+
+  .okec-step__toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px 12px;
+    border-top: 1px dashed #d6e4ee;
+    background: #fcfdfe;
+  }
+
+  // ── Row ──────────────────────────────────────────────────────────────
+  .okec-row {
+    border: 1px solid #d6e4ee;
+    border-radius: 6px;
+    background: #fcfdfe;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: #eef3f8;
+      border-bottom: 1px solid #d6e4ee;
+      border-radius: 6px 6px 0 0;
+      font-size: 12px;
+    }
+
+    &__drag {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: grab;
+      color: #b0bec5;
+      display: flex;
+      align-items: center;
+
+      &:hover { color: #607d8b; }
+
+      [data-lucide] { width: 14px; height: 14px; }
+    }
+
+    &__cols-label {
+      display: inline-block;
+      color: #607d8b;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      font-weight: 600;
+      font-size: 10px;
+      text-align: center;
+      align-self: center;
+    }
+
+    &__cols-toggle {
+      display: inline-flex;
+      gap: 2px;
+      padding: 2px;
+      background: #fff;
+      border: 1px solid #cfd8dc;
+      border-radius: 4px;
+    }
+
+    &__remove {
+      margin-left: auto;
+    }
+
+    &__viewport-hint {
+      font-size: 11px;
+      color: #78909c;
+      font-style: italic;
+    }
+
+    &__cells {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    // Sortable row states
+    &--ghost {
+      opacity: 0.4;
+      background: #e3f2fd;
+    }
+    &--chosen { cursor: grabbing; }
+    &--drag {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    }
+  }
+
+  // ── Cell ─────────────────────────────────────────────────────────────
+  .okec-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px dashed #cfd8dc;
+    border-radius: 4px;
+    padding: 8px;
+    background: #fff;
+    // min-height не потрібен — `.okec-cell__blocks` має 40px (для drop-zone),
+    // зовнішня обгортка тільки border + padding.
+  }
+
+  .okec-cell__width {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px dashed #e0e4eb;
+
+    [data-lucide] { width: 14px; height: 14px; color: #90a4ae; flex-shrink: 0; }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 0;
+      height: 4px;
+      accent-color: #508EF5;
+      cursor: pointer;
+    }
+  }
+  .okec-cell__width-val {
+    font-size: 11px;
+    font-weight: 600;
+    color: #508EF5;
+    min-width: 34px;
+    text-align: right;
+  }
+
+  .okec-cell__blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-height: 40px;
+
+    // empty (Sortable не вставить ghost у "пустий" контейнер без min-height)
+    &:empty::before {
+      content: '—';
+      display: block;
+      text-align: center;
+      color: #b0bec5;
+      padding: 6px;
+      font-size: 12px;
+    }
+  }
+
+  .okec-cell__override-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 4px;
+    color: #5d4037;
+    font-size: 11px;
+    margin-bottom: 4px;
+
+    [data-lucide] {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .okec-cell__reset {
+      margin-left: auto;
+      background: none;
+      border: none;
+      padding: 2px;
+      color: #c62828;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: #b71c1c;
+      }
+
+      [data-lucide] { width: 12px; height: 12px; }
+    }
+  }
+
+  // ── Add-row picker ───────────────────────────────────────────────────
+  .okec-cols-btn {
+    background: transparent;
+    border: none;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #607d8b;
+    border-radius: 3px;
+    cursor: pointer;
+    min-width: 24px;
+
+    &:hover { color: #1976d2; }
+    &.is-active { background: #1976d2; color: #fff; }
+  }
+
+  .okec-row-picker {
+    &__item {
+      display: flex !important;
+      align-items: center;
+      gap: 12px;
+    }
+
+    &__cols {
+      display: inline-flex;
+      gap: 2px;
+      width: 36px;
+      height: 22px;
+      flex-shrink: 0;
+
+      span {
+        flex: 1;
+        background: #1976d2;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  .okec-block-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover {
+      border-color: #90caf9;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    }
+
+    &__drag {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: grab;
+      color: #b0bec5;
+      display: flex;
+      align-items: center;
+
+      &:hover { color: #607d8b; }
+
+      [data-lucide] { width: 16px; height: 16px; }
+    }
+
+    &__icon {
+      width: 16px;
+      height: 16px;
+      color: #455a64;
+      flex-shrink: 0;
+    }
+
+    &__body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    &__title {
+      font-weight: 500;
+      color: #263238;
+    }
+
+    &__id {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: #90a4ae;
+      background: #f5f7fa;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    &__width {
+      display: inline-flex;
+      gap: 2px;
+      padding: 2px;
+      background: #eceff1;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    &__actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    // Sortable states
+    &--ghost {
+      opacity: 0.4;
+      background: #e3f2fd;
+    }
+
+    &--chosen {
+      cursor: grabbing;
+    }
+
+    &--drag {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    }
+  }
+
+  .okec-add-step {
+    margin: 16px auto 0;
+    padding: 8px 18px;
+  }
+
+  // Block picker dropdown — використовує спільний .okec-add-rule__menu клас
+  .okec-block-picker {
+    &__item {
+      display: flex !important;
+      align-items: center;
+      gap: 10px;
+
+      [data-lucide] {
+        width: 18px;
+        height: 18px;
+        color: #1976d2;
+        flex-shrink: 0;
+      }
+
+      span:first-of-type {
+        flex: 1;
+      }
+    }
+
+    &__hint {
+      font-size: 10px;
+      color: #90a4ae;
+      background: #eceff1;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    &__empty {
+      color: #90a4ae !important;
+      font-style: italic;
+      cursor: default !important;
+
+      &:hover {
+        background: transparent !important;
+      }
+    }
+  }
+
+  // Address-format template preview
+  .okec-format-preview {
+    margin: 0; padding: 4px 8px; background: #f5f7fa;
+    border-radius: 4px; font-size: 11px; color: #455a64;
+    font-family: ui-monospace, monospace; white-space: pre;
+    max-width: 360px; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  // Range row in restrictions modal: min — max
+  .okec-range-row {
+    display: flex; align-items: center; gap: 8px;
+    .ok-input, .ok-select { flex: 1; }
+    span { color: #90a4ae; }
+  }
+
+  // Presets gallery
+  .okec-presets {
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      align-items: stretch;          // картки рівної висоти
+    }
+
+    // Картка = flex-колонка на всю висоту комірки гріда
+    .ok-panel { display: flex; flex-direction: column; height: 100%; }
+  }
+
+  .okec-preset-card {
+    &__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    &__desc { flex: 1; }             // опис розтягується
+    &__btn  { margin-top: 16px; align-self: flex-start; } // кнопка притиснута донизу
+  }
+
+  // ── Custom methods: master-detail ──
+  .okec-cm {
+    &__layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    &__master {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    &__section {
+      border: 1px solid #e3e6eb;
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+    }
+    &__section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600; color: #37474f; margin-bottom: 8px;
+      [data-lucide] { width: 16px; height: 16px; color: #1976d2; }
+    }
+    &__section-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+
+    &__group {
+      border: 1px dashed #cfd8dc;
+      border-radius: 6px;
+      padding: 6px;
+      margin-bottom: 8px;
+    }
+    &__group-head {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #607d8b; margin-bottom: 4px;
+      [data-lucide] { width: 14px; height: 14px; }
+      .ok-btn { margin-left: auto; }
+    }
+
+    &__item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 9px;
+      border: 1px solid #e3e6eb;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      background: #fff;
+      transition: border-color .12s, background .12s;
+
+      &:hover { border-color: #b0bec5; background: #fafcff; }
+      &.is-active { border-color: #1976d2; background: #eaf2fe; }
+      &.is-off { opacity: .55; }
+    }
+    &__item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    &__item-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+    &__icon-btn {
+      border: none; background: none; cursor: pointer; padding: 3px;
+      color: #90a4ae; border-radius: 4px;
+      &:hover { background: #eceff1; color: #455a64; }
+      &--danger:hover { background: #ffebee; color: #c62828; }
+      [data-lucide] { width: 14px; height: 14px; }
+    }
+    &__add {
+      width: 100%;
+      border: 1px dashed #b0bec5;
+      background: #f7f9fc;
+      border-radius: 6px;
+      padding: 6px;
+      font-size: 12px; color: #1976d2;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      &:hover { background: #eaf2fe; }
+      [data-lucide] { width: 14px; height: 14px; }
+    }
+
+    &__detail {
+      border: 1px solid #e3e6eb;
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px 18px;
+      min-height: 200px;
+    }
+    &__placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; padding: 48px 16px; color: #90a4ae; text-align: center;
+      [data-lucide] { width: 40px; height: 40px; color: #cfd8dc; }
+    }
+    &__form-head {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; border-bottom: 1px solid #eceff1; margin-bottom: 4px;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .okec-cm__layout { grid-template-columns: 1fr; }
+  }
+
+  // Subtotal rows editor
+  .okec-cm__sub-card {
+    border: 1px solid #e3e6eb;
+    border-radius: 8px;
+    background: #fff;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .okec-cm__sub-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    @media (max-width: 760px) { grid-template-columns: 1fr 1fr; }
+  }
+  .okec-cm__sub-methods {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+    padding: 8px 0; border-top: 1px dashed #eceff1;
+    .ok-help { margin-right: 4px; }
+  }
+  .okec-cm__sub-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 1px solid #cfd8dc; border-radius: 5px;
+    padding: 3px 8px; font-size: 12px; cursor: pointer;
+    input { margin: 0; }
+    &.is-on { border-color: #1976d2; background: #eaf2fe; color: #1565c0; }
+  }
+  .okec-cm__sub-actions {
+    display: flex; align-items: center; gap: 8px;
+    padding-top: 10px; border-top: 1px solid #eceff1;
+  }
+  .okec-cm__sub-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+
+  // ── Backup actions (export/import settings) ──
+  .okec-backup-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  // ── Modules tables (payment + shipping) — однакові ширини колонок ──
+  .okec-modules-table {
+    table-layout: fixed;
+    width: 100%;
+
+    th, td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+    // 1 Code | 2 Status | 3 Title | 4 Description | 5 Icon | 6 Sort | 7 Hide | 8 Actions
+    th:nth-child(1), td:nth-child(1) { width: 130px; }
+    th:nth-child(2), td:nth-child(2) { width: 80px;  text-align: center; }
+    th:nth-child(3), td:nth-child(3) { width: auto; }
+    th:nth-child(4), td:nth-child(4) { width: auto; }
+    th:nth-child(5), td:nth-child(5) { width: 90px;  text-align: center; }
+    th:nth-child(6), td:nth-child(6) { width: 80px; }
+    th:nth-child(7), td:nth-child(7) { width: 80px;  text-align: center; }
+    th:nth-child(8), td:nth-child(8) { width: 64px;  text-align: center; }
+
+    // інпути не вилазять за фіксовану ширину
+    .ok-input { width: 100%; max-width: 100%; box-sizing: border-box; }
+    td:nth-child(2) .ok-badge,
+    td:nth-child(7) .ok-toggle-wrap,
+    td:nth-child(5) .okec-module-icon-cell { justify-content: center; }
+  }
+
+  // Health check table
+  .okec-health {
+    &__icon { width: 48px; text-align: center; }
+    &__row--ok   .okec-health__icon [data-lucide] { color: #2e7d32; }
+    &__row--warn .okec-health__icon [data-lucide] { color: #ef6c00; }
+    &__row--fail .okec-health__icon [data-lucide] { color: #c62828; }
+    &__row--fail { background: #ffebee; }
+    &__row--warn { background: #fff8e1; }
+  }
+
+  // Layout lint warnings panel
+  .okec-warnings {
+    margin: 0 0 16px;
+    border: 1px solid #ffe082;
+    background: #fff8e1;
+    border-radius: 6px;
+    overflow: hidden;
+    &__head {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; cursor: pointer;
+      color: #5d4037; font-size: 13px;
+      [data-lucide] { width: 16px; height: 16px; color: #ef6c00; }
+      .okec-warnings__chev { margin-left: auto; }
+    }
+    &__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid #ffe082; }
+    &__item {
+      display: flex; gap: 12px; padding: 6px 14px; font-size: 12px;
+      border-bottom: 1px dashed #ffe082;
+      &:last-child { border-bottom: none; }
+    }
+    &__msg   { flex: 1; color: #455a64; }
+    &__where { color: #90a4ae; font-family: ui-monospace, monospace; }
+    &__item--field_missing,
+    &__item--heading_missing,
+    &__item--block_condition_broken,
+    &__item--field_condition_broken {
+      background: #ffebee;
+      .okec-warnings__msg { color: #c62828; }
+    }
+  }
+
+  // Reminder-sent badge in abandoned table row
+  .okec-notified-at {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    color: #1976d2;
+    [data-lucide] { width: 12px; height: 12px; }
+  }
+
+  // Customer cell (name + email у одній td)
+  .okec-cust-cell {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+
+    &__name  { color: #263238; }
+    &__email,
+    &__phone { font-size: 12px; color: #78909c; }
+  }
+
+  // Total cell (сума + badge товарів у одній td)
+  .okec-total-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    strong { white-space: nowrap; }
+    &__products {
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      gap: 4px;
+      [data-lucide] { width: 12px; height: 12px; }
+    }
+  }
+
+  // Cron heartbeat indicator (abandoned section)
+  .okec-cron-status {
+    margin: 8px 0 16px;
+    .ok-badge {
+      [data-lucide] { width: 14px; height: 14px; margin-right: 4px; }
+    }
+    .ok-help { margin-top: 6px; }
+  }
+
+  // ── ID cell with drag handle (fields/headings tables) — vertical center
+  .okec-id-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .okec-drag-handle { width: 14px; height: 14px; flex-shrink: 0; }
+  }
+
+  // ── Integration card (in integrations marketplace) ──
+  .okec-integration-card {
+    margin-bottom: 0;
+
+    .ok-panel-header {
+      gap: 12px;
+
+      .ok-panel-title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        [data-lucide] { width: 18px; height: 18px; color: #1976d2; }
+        .okec-integration-icon { width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0; }
+      }
+    }
+
+    .ok-panel-body {
+      min-height: 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      .ok-help { margin: 0; }
+    }
+
+    .ok-panel-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 12px;
+      border-top: 1px solid var(--ok-border, #e3e6eb);
+
+      .ok-btn { flex: 1 0 auto; }
+    }
+
+    .okec-card-meta {
+      padding: 6px 12px 10px;
+      .ok-badge { font-size: 11px; }
+    }
+  }
+
+  .okec-license-wrap { max-width: 480px; }
+  .okec-license-badge { margin-bottom: 16px; }
+  .okec-license-meta { font-size: 13px; color: var(--ok-muted, #6c757d); margin-bottom: 6px; }
+
+  .okec-int-page {
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid var(--ok-border, #e3e6eb);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+    &__title {
+      flex: 1;
+      display: flex; align-items: center; gap: 10px;
+      h2 { margin: 0; font-size: 18px; font-weight: 600; }
+      .okec-integration-icon { width: 28px; height: 28px; border-radius: 4px; }
+      [data-lucide] { width: 22px; height: 22px; color: #1976d2; }
+    }
+    &__actions { display: flex; gap: 8px; }
+    &__body { display: flex; flex-direction: column; gap: 16px; }
+  }
+  .okec-int-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  // ── Module icon cell (modules tab) — thumb / placeholder + path input ──
+  .okec-module-icon-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  // Native OC filemanager thumb picker
+  .okec-module-icon-pick {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    padding: 3px;
+    border: 1px solid #e0e4eb;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .12s;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  // ── Reminder toolbar — preview / test / reset single row ──
+  .okec-reminder-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+
+    .ok-input { flex: 1; min-width: 200px; max-width: 280px; }
+  }
+
+  // ── Stats / search / filter / export bar (above stats grid) ──
+  .okec-stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    background: #f7f9fc;
+    border: 1px solid #e3e6eb;
+    border-radius: 6px;
+
+    > .form-label { margin: 0; font-size: 12px; color: #607d8b; white-space: nowrap; }
+
+    // Усі контроли — компактні (висота ~32px, дрібніший шрифт)
+    .ok-input, .ok-select {
+      height: 32px;
+      padding: 4px 8px;
+      font-size: 13px;
+    }
+
+    &__search    { flex: 1; min-width: 160px; }
+    &__status    { width: 130px; flex-shrink: 0; }
+    &__range     {
+      display: flex; align-items: center; gap: 4px;
+      .ok-input { width: 84px; }
+      .ok-muted { color: #b0bec5; }
+    }
+    &__export {
+      display: flex; align-items: center; gap: 4px; margin-left: auto;
+      .ok-input { width: 124px; }
+    }
+  }
+
+  // ── Address-format placeholder cheat-sheet (clickable chips) ────────
+  .okec-placeholders {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+
+    &__label { font-size: 12px; color: #607d8b; margin-right: 2px; }
+    &__chip {
+      border: 1px solid #cfd8dc;
+      background: #f7f9fc;
+      border-radius: 5px;
+      padding: 2px 4px;
+      cursor: pointer;
+      transition: all .12s;
+ 
+      code {
+        font-family: 'SF Mono', 'Fira Mono', monospace;
+        font-size: 12px;
+        background: none;
+        padding: 0;
+      }
+      &:hover { background: #e9f1fe; }
+    }
+  }
+
+  // ── Component-only classes (use shared ok-* utilities from styleguide) ──
+  .okec-modal__dialog--lg { max-width: 760px; }
+  .okec-editable          { cursor: text; }
+
+  // Layout-builder preview modal (full-screen iframe)
+  .okec-preview-modal { z-index: 11050; }
+  .okec-preview-dialog {
+    width: 95vw;
+    max-width: 95vw;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    // Дозволяємо ресайз вікна перегляду користувачем
+    resize: both;
+    overflow: auto;
+    min-width: 480px;
+    min-height: 400px;
+  }
+  .okec-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    .ok-modal-title { flex-shrink: 0; }
+    .ok-modal-close { margin-left: auto; }
+  }
+  .okec-preview-devices {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+  }
+  .okec-preview-device {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border: 1px solid #cfd8dc;
+    border-radius: 6px;
+    background: #fff;
+    color: #607d8b;
+    cursor: pointer;
+    transition: all .12s;
+    [data-lucide] { width: 16px; height: 16px; }
+    &:hover { border-color: #90a4ae; color: #37474f; }
+    &.is-active { background: #1976d2; border-color: #1976d2; color: #fff; }
+  }
+  .okec-preview-dims {
+    font-size: 12px;
+    color: #78909c;
+    margin-left: 4px;
+    min-width: 48px;
+  }
+  .okec-preview-body {
+    padding: 0;
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    background: #eceff1;        // сірий «стіл» навколо вьюпорта
+  }
+  .okec-preview-frame-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    padding: 0;
+    &--tablet, &--mobile { padding: 16px 0; }
+  }
+  .okec-preview-iframe {
+    border: 0;
+    height: 100%;
+    background: #fff;
+    .okec-preview-frame-wrap--tablet &,
+    .okec-preview-frame-wrap--mobile & {
+      box-shadow: 0 0 0 1px #cfd8dc, 0 10px 40px rgba(0,0,0,.12);
+      border-radius: 4px;
+    }
+  }
+
+  // Reminder action bar (settings tab)
+  .okec-reminder-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  // Reminder preview block (settings tab) — inline-row of select + button
+  .okec-reminder-preview-row {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  // Reminder preview modal — full-frame iframe
+  .okec-reminder-preview-frame {
+    width: 100%;
+    height: 420px;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  // Abandoned-cart product row (image + meta)
+  .okec-product-cell {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .okec-product-thumb {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #e0e4eb;
+  }
+
+  // Field-modal options-row inline editor
+  .okec-options-row {
+    display: flex;
+    gap: 6px;
+    .ok-input, .ok-select { flex: 1; }
+  }
+
+  // Hide cloak elements until Alpine init
+  [x-cloak] { display: none !important; }
+}
+

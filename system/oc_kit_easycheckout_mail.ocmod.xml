@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EasyCheckout — додаємо oc-kit custom fields в email-сповіщення про замовлення
+  (customer-side mail/order_add та admin-side mail/order_alert).
+  © 2026 oc-kit.com | https://oc-kit.com
+-->
+<modification>
+    <name>EasyCheckout (oc-kit) — order email custom fields</name>
+    <code>oc_kit_easycheckout_mail</code>
+    <version>0.1.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <!-- Customer email (order_add) -->
+    <file path="catalog/controller/mail/order.php">
+        <operation>
+            <search><![CDATA[$mail->setHtml($this->load->view('mail/order_add', $data));]]></search>
+            <add position="before"><![CDATA[
+            // EasyCheckout (oc-kit) — додаємо custom-fields у email
+            $this->load->model('extension/easycheckout/order');
+            $data['oc_kit_easycheckout_fields'] = $this->model_extension_easycheckout_order->getCustomFields((int)$order_info['order_id']);
+            $this->load->language('easycheckout/checkout');
+            $data['text_easycheckout_summary'] = $this->language->get('text_easycheckout_summary');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$mail->setText($this->load->view('mail/order_alert', $data));]]></search>
+            <add position="before"><![CDATA[
+            // EasyCheckout (oc-kit) — admin email також збагачуємо
+            $this->load->model('extension/easycheckout/order');
+            $data['oc_kit_easycheckout_fields'] = $this->model_extension_easycheckout_order->getCustomFields((int)$order_info['order_id']);
+            $this->load->language('easycheckout/checkout');
+            $data['text_easycheckout_summary'] = $this->language->get('text_easycheckout_summary');
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- Render у customer-email (HTML-версія) — анкоримося на </body> -->
+    <file path="catalog/view/theme/*/template/mail/order_add.twig">
+        <operation error="skip">
+            <search><![CDATA[</body>]]></search>
+            <add position="before"><![CDATA[
+{% if oc_kit_easycheckout_fields|default([])|length > 0 %}
+<table style="width:100%;border-collapse:collapse;margin:20px 0;">
+  <thead>
+    <tr><td colspan="2" style="padding:8px 0;font-weight:bold;border-bottom:1px solid #ddd;">{{ text_easycheckout_summary }}</td></tr>
+  </thead>
+  <tbody>
+    {% for f in oc_kit_easycheckout_fields %}
+      <tr>
+        <td style="padding:6px 8px;width:30%;color:#555;">{{ f.name }}</td>
+        <td style="padding:6px 8px;color:#222;white-space: pre-line;">{{ f.value }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- Render у admin-email (text version) -->
+    <file path="catalog/view/theme/*/template/mail/order_alert.twig">
+        <operation error="skip">
+            <search><![CDATA[{% if comment %}]]></search>
+            <add position="before"><![CDATA[
+{% if oc_kit_easycheckout_fields|default([])|length > 0 %}
+
+{{ text_easycheckout_summary }}:
+{% for f in oc_kit_easycheckout_fields %}- {{ f.name }}: {{ f.value }}
+{% endfor %}{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>

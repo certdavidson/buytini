@@ -1,0 +1,93 @@
+{
+    "code": "classic_3step",
+    "name": "Класичний 3-step",
+    "description": "Контакти → Адреса+Доставка → Оплата+Підтвердження. Класичний multi-step flow.",
+    "layout": {
+        "mode": "multi_step",
+        "steps": [
+            {
+                "id": "step1",
+                "title": { "uk-ua": "Контакти", "ru-ru": "Контакты", "en-gb": "Contacts" },
+                "rows": [
+                    {
+                        "id": "row_s1", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell_s1",
+                                "blocks": [
+                                    {
+                                        "id": "customer", "type": "customer",
+                                        "settings": {
+                                            "registration_mode": "optional",
+                                            "fields": [
+                                                { "field_id": -1, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -2, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -3, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -4, "visibility": "always", "required": true, "reload_on_change": false }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "step2",
+                "title": { "uk-ua": "Адреса і доставка", "ru-ru": "Адрес и доставка", "en-gb": "Address & shipping" },
+                "rows": [
+                    {
+                        "id": "row_s2", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell_s2",
+                                "blocks": [
+                                    {
+                                        "id": "shipping_address", "type": "shipping_address",
+                                        "settings": {
+                                            "fields": [
+                                                { "field_id": -24, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -26, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -27, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -28, "visibility": "always", "required": true, "reload_on_change": true  },
+                                                { "field_id": -29, "visibility": "always", "required": true, "reload_on_change": false }
+                                            ]
+                                        }
+                                    },
+                                    { "id": "shipping", "type": "shipping", "settings": { "display_mode": "radio", "auto_select_first": true } }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "step3",
+                "title": { "uk-ua": "Оплата і підтвердження", "ru-ru": "Оплата и подтверждение", "en-gb": "Payment & confirm" },
+                "rows": [
+                    {
+                        "id": "row_s3", "columns": { "desktop": 2, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell_s3a",
+                                "blocks": [
+                                    { "id": "payment",   "type": "payment",   "settings": { "display_mode": "radio", "auto_select_first": true } },
+                                    { "id": "comment",   "type": "comment" },
+                                    { "id": "agreement", "type": "agreement", "settings": { "required": true } },
+                                    { "id": "buttons__1","type": "buttons" }
+                                ]
+                            },
+                            {
+                                "id": "cell_s3b",
+                                "blocks": [
+                                    { "id": "cart", "type": "cart", "settings": { "show_image": true } }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

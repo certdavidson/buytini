@@ -1,0 +1,12 @@
+<select name="{{ form_name }}" id="okec-f-{{ field.code }}"
+        class="ok-select okec-field--address-select"
+        data-okec-address-select="1"
+        autocomplete="{{ autocomplete_attr }}">
+  <option value="">{{ field.placeholder|default('— New address —') }}</option>
+  {% if address_book is defined %}
+    {% for addr in address_book %}
+      <option value="{{ addr.address_id }}"
+              {% if addr.address_id == prefill_value %} selected{% endif %}>{{ addr.formatted }}</option>
+    {% endfor %}
+  {% endif %}
+</select>

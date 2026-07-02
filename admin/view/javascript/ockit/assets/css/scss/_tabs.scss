@@ -1,0 +1,169 @@
+// oc-kit Design System — Tabs
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  // ── Horizontal underline tabs ─────────────────────────────────────────────
+
+  .ok-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    border-bottom: 1px solid $ok-border;
+    margin-bottom: 20px;
+
+    &-item {
+      padding: 10px 16px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: $ok-text2;
+      cursor: pointer;
+      background: transparent;
+      margin-bottom: -1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color $ok-trans, border-color $ok-trans;
+
+      .fa { font-size: 13px; color: $ok-muted; }
+
+      &:hover { color: $ok-text; }
+      &.active {
+        color: $ok-accent;
+        border-bottom-color: $ok-accent;
+        .fa { color: $ok-accent; }
+      }
+    }
+
+    &-panel { display: none; &.active { display: block; } }
+  }
+
+  // ── Pills ─────────────────────────────────────────────────────────────────
+
+  .ok-tabs-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+
+    &-item {
+      padding: 6px 16px;
+      border-radius: $ok-radius-full;
+      border: 1px solid $ok-border;
+      background: $ok-white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: $ok-text2;
+      transition: all $ok-trans;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      &:hover { border-color: $ok-accent; color: $ok-accent; }
+      &.active { background: $ok-accent; border-color: $ok-accent; color: #fff; }
+    }
+  }
+
+  // ── Sidebar (vertical) tabs ───────────────────────────────────────────────
+
+  .ok-tabs-sidebar {
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $ok-text2;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background $ok-trans, color $ok-trans;
+      text-align: left;
+
+      i { width: 16px; text-align: center; color: $ok-muted; flex-shrink: 0; transition: color $ok-trans; }
+
+      &:hover { background: $ok-bg; color: $ok-text; i { color: $ok-accent; } }
+
+      &.active {
+        background: $ok-bg;
+        color: $ok-text;
+        font-weight: 600;
+        i { color: $ok-accent; }
+      }
+    }
+  }
+
+  // ── Lang tabs ─────────────────────────────────────────────────────────────
+
+  .ok-lang-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+
+    &-item {
+      padding: 5px 14px;
+      border-radius: $ok-radius-full;
+      border: 1px solid $ok-border;
+      background: $ok-white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: $ok-text2;
+      transition: all $ok-trans;
+
+      &.active, &:hover { background: $ok-accent; border-color: $ok-accent; color: #fff; }
+    }
+  }
+
+  .ok-lang-panel { display: none; &.active { display: block; } }
+
+  // ── Horizontal sub-tabs (within content panels) ───────────────────────────
+
+  .ok-htabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    border-bottom: 2px solid $ok-border;
+    margin-bottom: 16px;
+
+    &-sm {
+      border-bottom-width: 1px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .ok-htab {
+    padding: 8px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: $ok-text2;
+    cursor: pointer;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: color $ok-trans, border-color $ok-trans;
+
+    &:hover { color: $ok-text; }
+    &.active { color: $ok-accent; border-bottom-color: $ok-accent; }
+  }
+
+  .ok-htabs-sm .ok-htab {
+    padding: 6px 12px;
+    font-size: 12px;
+    margin-bottom: -1px;
+    border-bottom-width: 1px;
+  }
+
+  .ok-htab-panel { display: none; &.active { display: block; } }
+}

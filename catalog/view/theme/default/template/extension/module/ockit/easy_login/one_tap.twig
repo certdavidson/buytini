@@ -1,0 +1,26 @@
+<style>
+  #g_id_onload, #credential_picker_container, #credential_picker_iframe {
+    {{ prompt_css }}
+  }
+</style>
+<div id="g_id_onload"
+     data-client_id="{{ client_id }}"
+     data-callback="elGoogleOneTapCallback"
+     data-nonce="{{ one_tap_nonce }}"
+     data-prompt_parent_id="g_id_onload"
+     data-cancel_on_tap_outside="false"
+     data-itp_support="true"></div>
+<script>
+  window.elOneTapCallbackUrl = "{{ callback_url }}";
+  window.elGoogleOneTapCallback = function (response) {
+    if (!response || !response.credential) return;
+    fetch(window.elOneTapCallbackUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ credential: response.credential })
+    }).then(function (r) { return r.json(); }).then(function (json) {
+      if (json && json.success && json.redirect_url) location.href = json.redirect_url;
+    });
+  };
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>

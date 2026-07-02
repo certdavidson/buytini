@@ -1,0 +1,190 @@
+// oc-kit Design System — Buttons (flat style)
+// © 2026 oc-kit.com | https://oc-kit.com
+
+@keyframes ok-spin {
+  to { transform: rotate(360deg); }
+}
+
+.oc-kit {
+
+  .ok-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: $ok-radius;
+    border: 1px solid transparent;
+    font-family: $ok-font;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 40px;
+    padding: 10px 22px;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background $ok-trans, border-color $ok-trans, color $ok-trans, opacity $ok-trans;
+    position: relative;
+
+    &:focus { outline: none; }
+    &:active { opacity: .88; }
+    &:disabled,
+    &[disabled] {
+      opacity: .5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    // ── Loading state ────────────────────────────────────────────────────────
+    &.is-loading {
+      pointer-events: none;
+      opacity: .75;
+      &::after {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: ok-spin .6s linear infinite;
+        flex-shrink: 0;
+      }
+    }
+
+    // ── Sizes ────────────────────────────────────────────────────────────────
+    &-lg  { min-height: 48px; padding: 13px 28px; font-size: 16px; }
+    &-sm  {
+      min-height: 34px; padding: 7px 16px;  font-size: 13px;
+
+      .lucide {
+        width: 18px !important;
+        height: 18px !important;
+      }
+    }
+    &-xs  {
+      min-height: 28px; padding: 4px 10px;  font-size: 12px; border-radius: 6px;
+
+      .lucide {
+        width: 16px !important;
+        height: 16px !important;
+      }
+    }
+    &-icon { padding: 10px 11px; min-width: 40px; }
+    .lucide { width: 20px; height: 20px; }
+
+    // ── Solid variants ────────────────────────────────────────────────────────
+
+    &-primary {
+      background: $ok-accent2;
+      color: #fff;
+      border-color: $ok-accent2;
+      font-weight: 500;
+      .lucide { color: #fff; }
+      &:hover { background: darken($ok-accent2, 9%); border-color: darken($ok-accent2, 9%); color: #fff; }
+    }
+
+    &-success {
+      background: $ok-success;
+      color: #fff;
+      border-color: $ok-success;
+      .lucide { color: #fff; }
+      &:hover { background: $ok-success2; border-color: $ok-success2; color: #fff; }
+    }
+
+    &-danger {
+      background: $ok-danger;
+      color: #fff;
+      border-color: $ok-danger;
+      .lucide { color: #fff; }
+      &:hover { background: $ok-danger2; border-color: $ok-danger2; color: #fff; }
+    }
+
+    &-warning {
+      background: $ok-warning;
+      color: #fff;
+      border-color: $ok-warning;
+      .lucide { color: #fff; }
+      &:hover { background: $ok-warning2; border-color: $ok-warning2; color: #fff; }
+    }
+
+    &-info {
+      background: $ok-info;
+      color: #fff;
+      border-color: $ok-info;
+      .lucide { color: #fff; }
+      &:hover { background: $ok-info2; border-color: $ok-info2; color: #fff; }
+    }
+
+    // ── Default / ghost ───────────────────────────────────────────────────────
+
+    &-default {
+      background: $ok-white;
+      border-color: $ok-border2;
+      color: $ok-text2;
+      &:hover  { background: $ok-bg; border-color: darken($ok-border2, 8%); color: $ok-text; }
+      &.active { background: $ok-accent2; border-color: $ok-accent2; color: #fff; }
+    }
+
+    &-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: $ok-text2;
+      &:hover { background: $ok-bg2; color: $ok-text; }
+    }
+
+    // ── Outline variants ──────────────────────────────────────────────────────
+
+    &-outline-primary {
+      background: transparent;
+      border-color: $ok-accent;
+      color: $ok-accent;
+      &:hover { background: $ok-accent; color: #fff; }
+    }
+
+    &-outline-danger {
+      background: transparent;
+      border-color: $ok-danger;
+      color: $ok-danger;
+      &:hover { background: $ok-danger; color: #fff; }
+    }
+
+    &-outline-success {
+      background: transparent;
+      border-color: $ok-success;
+      color: $ok-success;
+      &:hover { background: $ok-success; color: #fff; }
+    }
+
+    &-outline-default {
+      background: transparent;
+      border-color: $ok-border2;
+      color: $ok-text2;
+      &:hover { background: $ok-bg; color: $ok-text; }
+    }
+  }
+
+  // ── Button group ─────────────────────────────────────────────────────────────
+
+  .ok-btn-group {
+    display: inline-flex;
+
+    .ok-input {
+      border-radius: 0 $ok-radius $ok-radius 0;
+    }
+
+    .cb-device-prepend {
+      padding: 0;
+      width: 30px;
+      height: auto;
+      min-height: unset;
+      background-color: rgba(0,0,0,.075);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:first-child { border-radius: $ok-radius 0 0 $ok-radius !important; }
+    &:last-child  { border-radius: 0 $ok-radius $ok-radius 0 !important; }
+    &:not(:first-child) { margin-left: -1px; }
+  }
+}

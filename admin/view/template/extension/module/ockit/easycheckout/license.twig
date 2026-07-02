@@ -1,0 +1,113 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extensions }}</a></li>
+            <li><a href="{{ license_url }}">{{ heading_title }}</a></li>
+            <li><a href="#">{{ tab_license }}</a></li>
+          </ul>
+        </div>
+
+        <div class="ok-block">
+          <div class="ok-block-title"><i class="fa fa-key"></i> {{ tab_license }}</div>
+          <div class="ok-block-body">
+            <div class="okec-license-wrap">
+
+              <div class="okec-license-badge">
+                {% if license_info.status == 'active' %}
+                  <span class="ok-badge ok-badge-success"><i class="fa fa-check-circle"></i> {{ text_license_active }}</span>
+                {% elseif license_info.status == 'trial' %}
+                  <span class="ok-badge ok-badge-warning"><i class="fa fa-clock-o"></i> {{ text_license_trial|format(license_info.trial_days_left ?? 0) }}</span>
+                {% elseif license_info.status == 'expired' %}
+                  <span class="ok-badge ok-badge-danger"><i class="fa fa-times-circle"></i> {{ text_license_expired }}</span>
+                {% elseif license_info.status == 'invalid' %}
+                  <span class="ok-badge ok-badge-danger"><i class="fa fa-times-circle"></i> {{ text_license_invalid }}</span>
+                {% elseif license_info.status == 'grace' %}
+                  <span class="ok-badge ok-badge-warning"><i class="fa fa-exclamation-triangle"></i> {{ text_license_grace }}</span>
+                {% elseif license_info.status == 'api_error' %}
+                  <span class="ok-badge ok-badge-warning"><i class="fa fa-exclamation-triangle"></i> {{ text_license_api_error }}</span>
+                {% else %}
+                  <span class="ok-badge ok-badge-default"><i class="fa fa-question-circle"></i> {{ text_license_not_validated }}</span>
+                {% endif %}
+              </div>
+
+              {% if license_info.version is defined %}
+                <div class="okec-license-meta">{{ text_license_version }}: <strong>{{ license_info.version }}</strong></div>
+              {% endif %}
+              {% if license_info.domain is defined and license_info.domain %}
+                <div class="okec-license-meta">{{ text_license_domain }}: <strong>{{ license_info.domain }}</strong></div>
+              {% endif %}
+
+              <label class="form-label ok-fw-600 ok-mt-2 ok-mb-1">{{ entry_license_key }}</label>
+              <div class="ok-input-inline ok-mb-2">
+                <input type="text" id="ec-license-key"
+                       name="module_oc_kit_easycheckout_license_key"
+                       class="ok-input ok-flex-1"
+                       value="{{ license_key }}"
+                       placeholder="XXXX-XXXX-XXXX-XXXX"
+                       autocomplete="off">
+                <button type="button" id="ec-btn-activate" class="ok-btn ok-btn-primary"
+                        data-url="{{ action_activate }}"
+                        data-redirect="{{ index_url }}">
+                  <i class="fa fa-check"></i> {{ button_activate }}
+                </button>
+              </div>
+
+              <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                <i class="fa fa-shopping-cart"></i> {{ text_license_buy }}
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  function okPost(url, payload, cb) {
+    var f = new FormData();
+    Object.keys(payload).forEach(function (k) { f.append(k, payload[k]); });
+    fetch(url, { method: 'POST', body: f, credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(cb)
+      .catch(function () { cb({ success: false, message: 'Network error' }); });
+  }
+  function notify(msg, type) {
+    if (window.okNotify) return window.okNotify(msg, type);
+    alert((type === 'error' ? '[!] ' : '') + msg);
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('#ec-btn-activate');
+    if (!btn) return;
+    var keyInput = document.getElementById('ec-license-key');
+    var key  = keyInput ? keyInput.value : '';
+    var url  = btn.dataset.url;
+    var redirect = btn.dataset.redirect;
+    var orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+    okPost(url, { license_key: key }, function (data) {
+      btn.disabled = false;
+      btn.innerHTML = orig;
+      if (data && data.success) {
+        notify(data.message || 'OK', 'success');
+        setTimeout(function () { location.href = data.redirect_url || redirect; }, 700);
+      } else {
+        notify((data && data.message) ? data.message : 'Activation failed', 'error');
+      }
+    });
+  });
+}());
+</script>
+{{ footer }}

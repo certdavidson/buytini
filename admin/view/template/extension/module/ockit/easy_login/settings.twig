@@ -1,0 +1,775 @@
+{# Easy Login | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <form id="form-el" class="ok-panel ok-panel-sticky" action="{{ action_save }}">
+        <input type="hidden" name="csrf" value="{{ admin_csrf }}">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ cancel }}">{{ text_extension }}</a></li>
+            <li><a href="#">{{ heading_title }}</a></li>
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="btn-save" class="ok-btn ok-btn-primary ok-btn-sm">
+              <i data-lucide="save" class="ok-icon-xs"></i> {{ button_save }}
+            </button>
+            <a href="{{ cancel }}" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</a>
+          </div>
+        </div>
+
+        <div class="ok-layout">
+
+          {# ── Sidebar ──────────────────────────────────────────────────── #}
+          <div class="ok-sidebar">
+            <div class="ok-brand">
+              <div class="ok-brand-icon"><i data-lucide="log-in"></i></div>
+              <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+              <span class="ok-brand-name">{{ text_module_name }} <span class="ok-brand-version">v1.0.0</span></span>
+            </div>
+
+            <div id="el-layout-sidebar" class="ok-tabs-sidebar">
+              <button type="button" class="ok-tabs-sidebar-item active" data-tab="layout-general">
+                <i data-lucide="settings" class="ok-icon-xs"></i> {{ tab_general }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-google">
+                <i data-lucide="chrome" class="ok-icon-xs"></i> {{ tab_google }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-telegram">
+                <i data-lucide="send" class="ok-icon-xs"></i> {{ tab_telegram }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-apple">
+                <i data-lucide="apple" class="ok-icon-xs"></i> {{ tab_apple }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-facebook">
+                <i data-lucide="facebook" class="ok-icon-xs"></i> {{ tab_facebook }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-email-magic">
+                <i data-lucide="mail" class="ok-icon-xs"></i> {{ tab_email_magic }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-sms-otp">
+                <i data-lucide="smartphone" class="ok-icon-xs"></i> {{ tab_sms_otp }}
+              </button>
+              <hr class="ok-divider el-divider-tight">
+              <a href="{{ log_url }}" class="ok-tabs-sidebar-item">
+                <i data-lucide="list" class="ok-icon-xs"></i> {{ tab_log }}
+              </a>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-faq">
+                <i data-lucide="help-circle" class="ok-icon-xs"></i> {{ tab_faq }}
+              </button>
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-license">
+                <i data-lucide="key-round" class="ok-icon-xs"></i> {{ tab_license }}
+              </button>
+            </div>
+          </div>
+
+          {# ── Content ──────────────────────────────────────────────────── #}
+          <div class="ok-content">
+
+            {% if not is_https %}
+            <div class="ok-alert ok-alert-warning ok-mb-4">
+              <i data-lucide="shield-alert" class="ok-icon-sm"></i>
+              <div>
+                <strong>{{ text_https_required_title }}</strong>
+                <div>{{ text_https_required_body }}</div>
+              </div>
+            </div>
+            {% endif %}
+
+            {# ─ General ────────────────────────────────────────────────── #}
+            <div class="ok-layout-panel active" id="layout-general">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="power" class="ok-icon-xs"></i> {{ text_section_status }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ text_module_description }}</p>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_status }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_status" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_status" value="1"{% if settings.status %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="layout-grid" class="ok-icon-xs"></i> {{ text_section_display }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_display_in_popup }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_display_in_popup" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_display_in_popup" value="1"{% if settings.display_in_popup %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                      <p class="ok-help">{{ help_display_in_popup }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_display_on_login_page }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_display_on_login_page" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_display_on_login_page" value="1"{% if settings.display_on_login_page %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_display_on_register_page }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_display_on_register_page" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_display_on_register_page" value="1"{% if settings.display_on_register_page %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_display_on_account_page }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_display_on_account_page" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_display_on_account_page" value="1"{% if settings.display_on_account_page %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                      <p class="ok-help">{{ help_display_on_account_page }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="shield-check" class="ok-icon-xs"></i> {{ text_section_policies }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_require_phone_after_oauth }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_require_phone_after_oauth" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_require_phone_after_oauth" value="1"{% if settings.require_phone_after_oauth %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                      <p class="ok-help">{{ help_require_phone_after_oauth }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_default_redirect_route }}</label>
+                    <div>
+                      <input type="text" name="module_oc_kit_easy_login_default_redirect_route" value="{{ settings.default_redirect_route }}" class="ok-input" placeholder="account/account" class="el-w-320">
+                      <p class="ok-help">{{ help_default_redirect_route }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="gauge" class="ok-icon-xs"></i> {{ text_section_rate_limits }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_rate_limit_per_ip_per_hour }}</label>
+                    <div><input type="number" min="0" name="module_oc_kit_easy_login_rate_limit_per_ip_per_hour" value="{{ settings.rate_limit_per_ip_per_hour }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_rate_limit_per_email_per_hour }}</label>
+                    <div><input type="number" min="0" name="module_oc_kit_easy_login_rate_limit_per_email_per_hour" value="{{ settings.rate_limit_per_email_per_hour }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_trust_cf_ip }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_trust_cf_ip" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_trust_cf_ip" value="1"{% if settings.trust_cf_ip %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                      <p class="ok-help">{{ help_trust_cf_ip }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="archive" class="ok-icon-xs"></i> {{ text_section_log_settings }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_log_retention_days }}</label>
+                    <div>
+                      <input type="number" min="0" name="module_oc_kit_easy_login_log_retention_days" value="{{ settings.log_retention_days }}" class="ok-input el-w-120">
+                      <p class="ok-help">{{ help_log_retention_days }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ Google ────────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-google">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="chrome" class="ok-icon-xs"></i> {{ tab_google }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_google_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_google_enabled" value="1"{% if settings.google_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_mode }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_google_mode" class="ok-select el-w-240">
+                        <option value="button"  {% if settings.google_mode == 'button'  %}selected{% endif %}>{{ mode_button }}</option>
+                        <option value="one_tap" {% if settings.google_mode == 'one_tap' %}selected{% endif %}>{{ mode_one_tap }}</option>
+                        <option value="both"    {% if settings.google_mode == 'both'    %}selected{% endif %}>{{ mode_both }}</option>
+                      </select>
+                      <p class="ok-help">{{ help_google_mode }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key" class="ok-icon-xs"></i> {{ text_section_google_credentials }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_client_id }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_google_client_id" value="{{ settings.google_client_id }}" class="ok-input" autocomplete="off"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_client_secret }}</label>
+                    <div><input type="password" name="module_oc_kit_easy_login_google_client_secret" value="{{ settings.google_client_secret }}" class="ok-input" autocomplete="new-password"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">Callback URL</label>
+                    <div><input type="text" value="{{ callback_urls.google }}" class="ok-input" readonly onclick="this.select()">
+                      <p class="ok-help">{{ help_google_callback_url }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="palette" class="ok-icon-xs"></i> {{ text_section_google_appearance }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_one_tap_position }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_google_one_tap_position" class="ok-select el-w-240">
+                        <option value="top_right"    {% if settings.google_one_tap_position == 'top_right'    %}selected{% endif %}>{{ pos_top_right }}</option>
+                        <option value="top_left"     {% if settings.google_one_tap_position == 'top_left'     %}selected{% endif %}>{{ pos_top_left }}</option>
+                        <option value="bottom_right" {% if settings.google_one_tap_position == 'bottom_right' %}selected{% endif %}>{{ pos_bottom_right }}</option>
+                        <option value="bottom_left"  {% if settings.google_one_tap_position == 'bottom_left'  %}selected{% endif %}>{{ pos_bottom_left }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_one_tap_top_offset }}</label>
+                    <div><input type="number" min="0" name="module_oc_kit_easy_login_google_one_tap_top_offset" value="{{ settings.google_one_tap_top_offset }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_one_tap_side_offset }}</label>
+                    <div>
+                      <input type="number" min="0" name="module_oc_kit_easy_login_google_one_tap_side_offset" value="{{ settings.google_one_tap_side_offset }}" class="ok-input el-w-120">
+                      <p class="ok-help">{{ help_one_tap_offset }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_button_theme }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_google_button_theme" class="ok-select el-w-240">
+                        <option value="outline"      {% if settings.google_button_theme == 'outline'      %}selected{% endif %}>{{ theme_outline }}</option>
+                        <option value="filled_blue"  {% if settings.google_button_theme == 'filled_blue'  %}selected{% endif %}>{{ theme_filled_blue }}</option>
+                        <option value="filled_black" {% if settings.google_button_theme == 'filled_black' %}selected{% endif %}>{{ theme_filled_black }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_google_button_text }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_google_button_text" class="ok-select el-w-240">
+                        <option value="signin_with"   {% if settings.google_button_text == 'signin_with'   %}selected{% endif %}>{{ btn_text_signin_with }}</option>
+                        <option value="signup_with"   {% if settings.google_button_text == 'signup_with'   %}selected{% endif %}>{{ btn_text_signup_with }}</option>
+                        <option value="continue_with" {% if settings.google_button_text == 'continue_with' %}selected{% endif %}>{{ btn_text_continue_with }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ Telegram ──────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-telegram">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="send" class="ok-icon-xs"></i> {{ tab_telegram }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_telegram_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_telegram_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_telegram_enabled" value="1"{% if settings.telegram_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key" class="ok-icon-xs"></i> {{ text_section_telegram_credentials }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_telegram_bot_token }}</label>
+                    <div>
+                      <input type="password" name="module_oc_kit_easy_login_telegram_bot_token" value="{{ settings.telegram_bot_token }}" class="ok-input" autocomplete="new-password">
+                      <p class="ok-help">{{ help_telegram_setup }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_telegram_bot_username }}</label>
+                    <div>
+                      <input type="text" name="module_oc_kit_easy_login_telegram_bot_username" value="{{ settings.telegram_bot_username }}" class="ok-input" placeholder="MyShopBot">
+                      <p class="ok-help">{{ help_telegram_bot_username }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">Callback URL</label>
+                    <div>
+                      <input type="text" value="{{ callback_urls.telegram }}" class="ok-input" readonly onclick="this.select()">
+                      <p class="ok-help">{{ help_telegram_domain }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="palette" class="ok-icon-xs"></i> {{ text_section_telegram_appearance }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_telegram_button_size }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_telegram_button_size" class="ok-select el-w-240">
+                        <option value="large"  {% if settings.telegram_button_size == 'large'  %}selected{% endif %}>{{ btn_size_large }}</option>
+                        <option value="medium" {% if settings.telegram_button_size == 'medium' %}selected{% endif %}>{{ btn_size_medium }}</option>
+                        <option value="small"  {% if settings.telegram_button_size == 'small'  %}selected{% endif %}>{{ btn_size_small }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_telegram_request_phone }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_telegram_request_phone" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_telegram_request_phone" value="1"{% if settings.telegram_request_phone %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                      <p class="ok-help">{{ help_telegram_request_phone }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ Apple ─────────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-apple">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="apple" class="ok-icon-xs"></i> {{ tab_apple }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_apple_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_apple_enabled" value="1"{% if settings.apple_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key" class="ok-icon-xs"></i> {{ text_section_apple_credentials }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ help_apple_setup }}</p>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_service_id }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_apple_service_id" value="{{ settings.apple_service_id }}" class="ok-input" placeholder="com.example.signin"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_team_id }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_apple_team_id" value="{{ settings.apple_team_id }}" class="ok-input" placeholder="ABCDE12345"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_key_id }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_apple_key_id" value="{{ settings.apple_key_id }}" class="ok-input"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_private_key }}</label>
+                    <div>
+                      <textarea name="module_oc_kit_easy_login_apple_private_key" class="ok-input ok-mono" rows="8" placeholder="-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----">{{ settings.apple_private_key }}</textarea>
+                      <p class="ok-help">{{ help_apple_private_key }}</p>
+                    </div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">Callback URL</label>
+                    <div><input type="text" value="{{ callback_urls.apple }}" class="ok-input" readonly onclick="this.select()"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="palette" class="ok-icon-xs"></i> {{ text_section_apple_appearance }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_apple_button_theme }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_apple_button_theme" class="ok-select el-w-240">
+                        <option value="black"         {% if settings.apple_button_theme == 'black'         %}selected{% endif %}>{{ theme_black }}</option>
+                        <option value="white"         {% if settings.apple_button_theme == 'white'         %}selected{% endif %}>{{ theme_white }}</option>
+                        <option value="white-outline" {% if settings.apple_button_theme == 'white-outline' %}selected{% endif %}>{{ theme_white_outline }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ Facebook ──────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-facebook">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="facebook" class="ok-icon-xs"></i> {{ tab_facebook }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_facebook_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_facebook_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_facebook_enabled" value="1"{% if settings.facebook_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key" class="ok-icon-xs"></i> {{ text_section_facebook_credentials }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ help_facebook_setup }}</p>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_facebook_app_id }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_facebook_app_id" value="{{ settings.facebook_app_id }}" class="ok-input"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_facebook_app_secret }}</label>
+                    <div><input type="password" name="module_oc_kit_easy_login_facebook_app_secret" value="{{ settings.facebook_app_secret }}" class="ok-input" autocomplete="new-password"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">Callback URL</label>
+                    <div><input type="text" value="{{ callback_urls.facebook }}" class="ok-input" readonly onclick="this.select()"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="palette" class="ok-icon-xs"></i> {{ text_section_facebook_appearance }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_facebook_button_size }}</label>
+                    <div>
+                      <select name="module_oc_kit_easy_login_facebook_button_size" class="ok-select el-w-240">
+                        <option value="large"  {% if settings.facebook_button_size == 'large'  %}selected{% endif %}>{{ btn_size_large }}</option>
+                        <option value="medium" {% if settings.facebook_button_size == 'medium' %}selected{% endif %}>{{ btn_size_medium }}</option>
+                        <option value="small"  {% if settings.facebook_button_size == 'small'  %}selected{% endif %}>{{ btn_size_small }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ Email Magic Link ──────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-email-magic">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="mail" class="ok-icon-xs"></i> {{ tab_email_magic }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ text_email_magic_description }}</p>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_email_magic_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_email_magic_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_email_magic_enabled" value="1"{% if settings.email_magic_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="settings" class="ok-icon-xs"></i> {{ text_section_email_magic_settings }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_email_magic_token_ttl_minutes }}</label>
+                    <div><input type="number" min="1" name="module_oc_kit_easy_login_email_magic_token_ttl_minutes" value="{{ settings.email_magic_token_ttl_minutes }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_email_magic_from_name }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_email_magic_from_name" value="{{ settings.email_magic_from_name }}" class="ok-input"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="file-text" class="ok-icon-xs"></i> {{ text_section_email_magic_template }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ help_email_magic_template }}</p>
+                  {% for lang in ['uk-ua','ru-ru','en-gb'] %}
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_email_magic_subject }} ({{ lang }})</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_email_magic_subject_{{ lang }}" value="{{ settings['email_magic_subject_' ~ lang] }}" class="ok-input"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_email_magic_template }} ({{ lang }})</label>
+                    <div><textarea name="module_oc_kit_easy_login_email_magic_template_{{ lang }}" class="ok-input" rows="6">{{ settings['email_magic_template_' ~ lang] }}</textarea></div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ SMS OTP ───────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-sms-otp">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="smartphone" class="ok-icon-xs"></i> {{ tab_sms_otp }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_enabled }}</label>
+                    <div>
+                      <input type="hidden" name="module_oc_kit_easy_login_sms_otp_enabled" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easy_login_sms_otp_enabled" value="1"{% if settings.sms_otp_enabled %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="settings" class="ok-icon-xs"></i> {{ text_section_sms_otp_settings }}</div>
+                <div class="ok-block-body">
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_token }}</label>
+                    <div><input type="password" name="module_oc_kit_easy_login_sms_otp_token" value="{{ settings.sms_otp_token }}" class="ok-input" autocomplete="new-password"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_sender }}</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_sms_otp_sender" value="{{ settings.sms_otp_sender }}" class="ok-input el-w-240"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_code_length }}</label>
+                    <div><input type="number" min="4" max="8" name="module_oc_kit_easy_login_sms_otp_code_length" value="{{ settings.sms_otp_code_length }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_ttl_minutes }}</label>
+                    <div><input type="number" min="1" name="module_oc_kit_easy_login_sms_otp_ttl_minutes" value="{{ settings.sms_otp_ttl_minutes }}" class="ok-input el-w-120"></div>
+                  </div>
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_max_attempts }}</label>
+                    <div><input type="number" min="1" max="10" name="module_oc_kit_easy_login_sms_otp_max_attempts" value="{{ settings.sms_otp_max_attempts }}" class="ok-input el-w-120"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="message-square" class="ok-icon-xs"></i> {{ text_section_sms_otp_text }}</div>
+                <div class="ok-block-body">
+                  <p class="ok-help">{{ help_sms_otp_message }}</p>
+                  {% for lang in ['uk-ua','ru-ru','en-gb'] %}
+                  <div class="ok-form-row">
+                    <label class="ok-label form-label">{{ entry_sms_otp_message }} ({{ lang }})</label>
+                    <div><input type="text" name="module_oc_kit_easy_login_sms_otp_message_{{ lang }}" value="{{ settings['sms_otp_message_' ~ lang] }}" class="ok-input"></div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ FAQ ──────────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-faq">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="chrome" class="ok-icon-xs"></i> Google</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li>Перейти на <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console → Credentials</a>.</li>
+                    <li>Create Project → OAuth consent screen → External → заповнити app name, support email.</li>
+                    <li>Credentials → <code>+ Create credentials</code> → <code>OAuth client ID</code> → Application type: <strong>Web application</strong>.</li>
+                    <li>Authorized JavaScript origins: <code>{{ catalog_origin }}</code></li>
+                    <li>Authorized redirect URIs: скопіювати з поля Callback URL у вкладці Google.</li>
+                    <li>Save → скопіювати Client ID + Client Secret → вставити в налаштування модуля.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="send" class="ok-icon-xs"></i> Telegram</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li>Відкрити <a href="https://t.me/BotFather" target="_blank">@BotFather</a> у Telegram.</li>
+                    <li><code>/newbot</code> → ввести назву + username (закінчується на <code>bot</code>).</li>
+                    <li>Зберегти отриманий <strong>токен</strong>.</li>
+                    <li><code>/setdomain</code> → бот → ввести домен <strong>без https://</strong>.</li>
+                    <li>Вставити Bot Token + Bot Username (без <code>@</code>) у вкладку Telegram.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="apple" class="ok-icon-xs"></i> Apple</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li><a href="https://developer.apple.com/account" target="_blank">Apple Developer</a> ($99/рік).</li>
+                    <li>Identifiers → Services IDs → reverse-domain (напр. <code>com.example.signin</code>) — Service ID.</li>
+                    <li>Service ID → Configure → Sign In with Apple → Web Domain + Return URL = Callback URL.</li>
+                    <li>Keys → Sign In with Apple → завантажити <code>.p8</code>, записати Key ID.</li>
+                    <li>Membership → знайти Team ID.</li>
+                    <li>Вставити Service ID, Team ID, Key ID, вміст .p8 у вкладку Apple.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="facebook" class="ok-icon-xs"></i> Facebook</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li><a href="https://developers.facebook.com/apps/" target="_blank">Meta for Developers</a> → Create App → Type: Consumer.</li>
+                    <li>Add Product → Facebook Login for Business.</li>
+                    <li>Settings → Valid OAuth Redirect URIs: вставити Callback URL.</li>
+                    <li>App settings → Basic: скопіювати App ID + App Secret.</li>
+                    <li>App Mode → Live (для реальних користувачів).</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="mail" class="ok-icon-xs"></i> Email Magic Link</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li>Перевірити, що в OC Mail Engine налаштований (System → Settings → Server → Mail).</li>
+                    <li>Увімкнути провайдер у вкладці Email Magic Link.</li>
+                    <li>Налаштувати TTL посилання, шаблон листа (плейсхолдери <code>{magic_url}</code>, <code>{ttl_minutes}</code>, <code>{store_name}</code>).</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="smartphone" class="ok-icon-xs"></i> SMS OTP (TurboSMS)</div>
+                <div class="ok-block-body">
+                  <ol>
+                    <li>Зареєструватися на <a href="https://turbosms.ua" target="_blank">turbosms.ua</a>, поповнити рахунок.</li>
+                    <li>Кабінет → API → згенерувати Bearer токен.</li>
+                    <li>Зареєструвати alpha-name (до 11 латинських символів, модерується).</li>
+                    <li>Вставити токен + alpha-name у вкладку SMS OTP.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="clock" class="ok-icon-xs"></i> Cron</div>
+                <div class="ok-block-body">
+                  <p>Додати в crontab для щоденного очищення старого журналу і прострочених OTP:</p>
+                  <pre class="ok-mono el-cron-block">0 3 * * * /usr/bin/php {{ cron_path }}</pre>
+                </div>
+              </div>
+
+            </div>
+
+            {# ─ License ──────────────────────────────────────────────── #}
+            <div class="ok-layout-panel" id="layout-license">
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key-round" class="ok-icon-xs"></i> {{ tab_license }}</div>
+                <div class="ok-block-body">
+
+                  <div class="ok-mb-4">
+                    {% set s = license_info.status %}
+                    {% if s == 'active' %}
+                      <span class="ok-badge ok-badge-success"><i data-lucide="check-circle" class="ok-icon-xs"></i> {{ text_license_status_active }}</span>
+                    {% elseif s == 'trial' %}
+                      <span class="ok-badge ok-badge-warning"><i data-lucide="clock" class="ok-icon-xs"></i> {{ text_license_status_trial }}{% if license_info.trial_days_left is defined %} — {{ license_info.trial_days_left }}{% endif %}</span>
+                    {% elseif s == 'expired' %}
+                      <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle" class="ok-icon-xs"></i> {{ text_license_status_expired }}</span>
+                    {% elseif s == 'invalid' %}
+                      <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle" class="ok-icon-xs"></i> {{ text_license_status_invalid }}</span>
+                    {% elseif s == 'grace' %}
+                      <span class="ok-badge ok-badge-warning"><i data-lucide="alert-triangle" class="ok-icon-xs"></i> {{ text_license_status_grace }}</span>
+                    {% else %}
+                      <span class="ok-badge ok-badge-muted"><i data-lucide="help-circle" class="ok-icon-xs"></i> {{ text_license_status_not_validated }}</span>
+                    {% endif %}
+                  </div>
+
+                  {% if license_info.version is defined %}
+                  <div class="ok-text-sm ok-text-muted ok-mb-1">{{ text_license_version }}: <strong>{{ license_info.version }}</strong></div>
+                  {% endif %}
+                  {% if license_info.domain is defined and license_info.domain %}
+                  <div class="ok-text-sm ok-text-muted ok-mb-4">{{ text_license_domain }}: <code>{{ license_info.domain }}</code></div>
+                  {% endif %}
+
+                  <label class="form-label ok-fw-600 ok-mb-1">{{ entry_license_key }}</label>
+                  <div class="ok-input-inline ok-mb-3">
+                    <input type="text" id="el-license-key"
+                           name="module_oc_kit_easy_login_license_key"
+                           class="ok-input ok-mono ok-flex-1"
+                           value="{{ settings.license_key }}"
+                           placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
+                           autocomplete="off">
+                    <button type="button" id="el-btn-activate" class="ok-btn ok-btn-primary"
+                            data-url="{{ action_activate_license }}">
+                      <i data-lucide="check" class="ok-icon-xs"></i> {{ button_activate }}
+                    </button>
+                  </div>
+
+                  <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                    <i data-lucide="shopping-cart" class="ok-icon-xs"></i> {{ text_license_get_key }}
+                  </a>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+window.elI18n = {{ js_lang|json_encode }};
+</script>
+{{ footer }}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EasyCheckout — Admin order info tab з custom-полями oc-kit.
+  © 2026 oc-kit.com | https://oc-kit.com
+-->
+<modification>
+    <name>EasyCheckout (oc-kit) — admin order tab</name>
+    <code>oc_kit_easycheckout_order_tab</code>
+    <version>0.1.6</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <file path="admin/controller/sale/order.php">
+        <operation>
+            <search><![CDATA[$data['catalog'] = $this->request->server['HTTPS']]]></search>
+            <add position="before"><![CDATA[
+            // EasyCheckout (oc-kit) — додатковий таб з custom-полями замовлення
+            if ($this->user->hasPermission('access', 'extension/module/oc_kit_easycheckout')) {
+                $this->load->model('extension/module/oc_kit_easycheckout');
+                if (method_exists($this->model_extension_module_oc_kit_easycheckout, 'renderOrderCustomFieldsHtml')) {
+                    $okec_html = $this->model_extension_module_oc_kit_easycheckout->renderOrderCustomFieldsHtml((int)$order_info['order_id']);
+                    if ($okec_html) {
+                        $data['tabs'][] = [
+                            'code'    => 'oc_kit_easycheckout',
+                            'title'   => 'EasyCheckout',
+                            'content' => $okec_html,
+                        ];
+                    }
+                }
+            }
+            ]]></add>
+        </operation>
+    </file>
+</modification>

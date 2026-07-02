@@ -1,0 +1,199 @@
+// Field renderer + form controls. `.ok-input` / `.ok-select` come from the
+// field partials; `.form-control` is the theme's bootstrap input reused inside
+// the checkout (coupon, comment, login). All restyled to the design language.
+
+#easycheckout-page {
+
+  .ok-input,
+  .ok-select,
+  .form-control,
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"],
+  select,
+  textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border: 1.5px solid $ec-input-line;
+    border-radius: $ec-r-input;
+    background: $ec-card;
+    color: $ec-ink;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.2;
+    box-shadow: none;
+    transition: border-color .15s, box-shadow .15s;
+
+    &::placeholder { color: $ec-muted-2; }
+
+    &:focus {
+      outline: none;
+      border-color: $ec-accent;
+    }
+  }
+
+  textarea,
+  textarea.form-control {
+    height: auto;
+    min-height: 92px;
+    padding: 12px 14px;
+    line-height: 1.5;
+  }
+
+  // Custom checkboxes (native appearance off) — matches the design.
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border: 1.5px solid #c9c9d4;
+    border-radius: 6px;
+    background: #fff no-repeat center;
+    cursor: pointer;
+    transition: background-color .15s, border-color .15s;
+
+    &:checked {
+      background-color: $ec-accent;
+      border-color: $ec-accent;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    }
+  }
+
+  // Native select chevron.
+  .ok-select,
+  select,
+  select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+  }
+}
+
+// ── Field grid (per-field width: full / half / third / two_thirds) ──
+.okec-block-fields {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px 16px;
+  align-items: start;
+}
+.okec-block-fields > .okec-field            { grid-column: span 6; } // full (default)
+.okec-block-fields > .okec-field--w-two_thirds { grid-column: span 4; }
+.okec-block-fields > .okec-field--w-half    { grid-column: span 3; }
+.okec-block-fields > .okec-field--w-third   { grid-column: span 2; }
+.okec-block-fields > :not(.okec-field)      { grid-column: 1 / -1; }  // pickers, hints
+
+@media (max-width: $ec-bp-mobile) {
+  .okec-block-fields { grid-template-columns: 1fr; }
+  .okec-block-fields > * { grid-column: 1 / -1; }
+}
+
+// ── Field wrapper ─────────────────────────────────────────────────
+.okec-field { margin-bottom: 0; }
+
+.okec-field__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 7px;
+  font-size: 13px;
+  color: $ec-ink-soft;
+}
+.okec-field__required {
+  color: $ec-danger;
+  margin-left: 2px;
+}
+.okec-field__tooltip {
+  display: block;
+  font-size: 12px;
+  color: $ec-muted;
+  margin-top: 5px;
+}
+
+.okec-field__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  cursor: pointer;
+  font-weight: 400;
+  margin: 0;
+  font-size: 14px;
+  color: $ec-ink-soft;
+}
+.okec-field__checkbox input[type=checkbox] {
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  accent-color: $ec-accent;
+}
+
+// ── Error states ──────────────────────────────────────────────────
+// #easycheckout-page prefix to outweigh the base (ID-scoped) input rules.
+#easycheckout-page .okec-field--error {
+  input, select, textarea {
+    border-color: $ec-danger;
+    &:focus { border-color: $ec-danger; }
+  }
+}
+.okec-field__error {
+  display: block;
+  margin-top: 6px;
+  color: $ec-danger;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+// ── File upload ───────────────────────────────────────────────────
+.okec-field__file { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.okec-field__file-status { font-size: 12px; color: $ec-muted; }
+.okec-field__file-status--ok  { color: $ec-green; }
+.okec-field__file-status--err { color: $ec-danger; }
+
+// ── Address-book picker / same-as-shipping helpers ────────────────
+.okec-address-picker {
+  margin-bottom: 4px;
+  padding: 14px 16px;
+  background: $ec-accent-soft;
+  border: 1px solid rgba($ec-accent, .18);
+  border-radius: 12px;
+}
+.okec-address-picker__label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: $ec-accent-dark;
+  margin-bottom: 7px;
+}
+
+.okec-same-as-shipping {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: $ec-accent-soft;
+  border: 1px solid rgba($ec-accent, .18);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: $ec-accent-dark;
+}
+.okec-same-as-shipping input[type="checkbox"] {
+  margin: 0;
+  width: 17px;
+  height: 17px;
+  accent-color: $ec-accent;
+}

@@ -14,9 +14,10 @@
 .store-section--last { padding-bottom: 56px; padding-top: 32px; }
 .store-flag { font-size: 20px; }
 .store-flag.fi { width: 26px; height: 19px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.06) inset; }
-.calc-opt .fi { width: 20px; height: 15px; border-radius: 2px; vertical-align: -2px; }
+.calc-opt .fi { width: 20px; height: 15px; border-radius: 2px; flex-shrink: 0; }
 .store-head__btn { height: 50px; }
 .store-cats-title { display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px; }
 .store-cats { display: flex; flex-wrap: wrap; gap: 8px; }
 .store-prods-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
 .store-prods-title { font-size: 22px; font-weight: 600; margin: 0; }
+

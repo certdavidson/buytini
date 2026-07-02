@@ -1,0 +1,117 @@
+{# Translater Pro | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extension }}</a></li>
+            <li><a href="{{ license_url }}">{{ heading_title }}</a></li>
+            <li><a href="#">{{ tab_license }}</a></li>
+          </ul>
+        </div>
+
+        <div style="display:flex; justify-content:center; align-items:flex-start; min-height:60vh; padding: 40px 20px;">
+          <div style="width:100%; max-width:520px;">
+
+            <div style="text-align:center; margin-bottom:32px;">
+              <div style="font-size:48px; color:#6366f1; margin-bottom:8px;"><i data-lucide="key-round"></i></div>
+              <div style="font-size:20px; font-weight:700; color:#1e293b;">{{ heading_title }}</div>
+              <div style="font-size:13px; color:#64748b; margin-top:4px;">
+                <a href="https://oc-kit.com" target="_blank" style="color:#6366f1; text-decoration:none;">oc-kit.com</a>
+              </div>
+            </div>
+
+            <div class="ok-panel" style="margin-bottom:24px; padding:20px 24px;">
+
+              <div style="margin-bottom:16px;">
+                {% if license_info.status == 'trial' %}
+                  <span class="ok-badge ok-badge-warning" style="font-size:14px; padding:6px 12px;">
+                    <i data-lucide="clock"></i> {{ text_license_trial | format(license_info.trial_days_left) }}
+                  </span>
+                {% elseif license_info.status == 'expired' %}
+                  <span class="ok-badge ok-badge-danger" style="font-size:14px; padding:6px 12px;">
+                    <i data-lucide="x-circle"></i> {{ text_license_expired }}
+                  </span>
+                {% elseif license_info.status == 'invalid' %}
+                  <span class="ok-badge ok-badge-danger" style="font-size:14px; padding:6px 12px;">
+                    <i data-lucide="x-circle"></i> {{ text_license_invalid }}
+                  </span>
+                {% elseif license_info.status == 'api_error' %}
+                  <span class="ok-badge ok-badge-warning" style="font-size:14px; padding:6px 12px;">
+                    <i data-lucide="alert-triangle"></i> {{ text_license_api_error }}
+                  </span>
+                {% else %}
+                  <span class="ok-badge ok-badge-default" style="font-size:14px; padding:6px 12px;">
+                    <i data-lucide="help-circle"></i> {{ text_license_not_validated }}
+                  </span>
+                {% endif %}
+              </div>
+
+              <div style="margin-bottom:8px; font-size:13px; color:#475569;">
+                {{ text_license_version }}: <strong>{{ license_info.version }}</strong>
+              </div>
+
+              <label class="form-label" style="font-size:13px; color:#374151; font-weight:600; display:block; margin-bottom:6px;">
+                {{ entry_license_key }}
+              </label>
+              <div class="ok-input-inline" style="margin-bottom:12px;">
+                <input type="text" id="tp-license-key" class="ok-input"
+                       style="flex:1; max-width:320px;"
+                       value="{{ license_key }}"
+                       placeholder="XXXX-XXXX-XXXX-XXXX-XXXX">
+                <button type="button" id="tp-btn-activate" class="ok-btn ok-btn-primary"
+                        data-url="{{ action_activate }}">
+                  <i data-lucide="check"></i> {{ button_activate }}
+                </button>
+              </div>
+
+              <div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                  <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="view/javascript/ockit/assets/js/lucide.min.js"></script>
+<script>
+(function () {
+  lucide.createIcons();
+  var lang = {{ lang_js }};
+  var btn  = document.getElementById('tp-btn-activate');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var key = document.getElementById('tp-license-key').value.trim();
+    if (!key) return;
+    btn.disabled = true;
+    btn.textContent = lang.js_license_activating;
+    okPost(btn.dataset.url, { key: key }, function (res) {
+      btn.disabled = false;
+      btn.textContent = lang.button_activate;
+      if (res.success) {
+        okNotify(res.message || lang.text_license_activated, 'success');
+        if (res.redirect_url) {
+          setTimeout(function () { window.location.href = res.redirect_url; }, 1200);
+        }
+      } else {
+        okNotify(res.error || lang.text_license_error, 'error');
+        setTimeout(function () { window.location.reload(); }, 1500);
+      }
+    });
+  });
+})();
+</script>
+{{ footer }}

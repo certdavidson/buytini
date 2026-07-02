@@ -1,0 +1,24 @@
+{# Easy Login | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="el-linked" data-csrf="{{ csrf_token }}">
+  <div>{{ heading_linked }}</div>
+  {% if identities is empty %}
+    <p class="ok-text-muted">{{ text_no_identities }}</p>
+  {% else %}
+    {% for it in identities %}
+      <div class="el-linked-item" id="el-id-{{ it.identity_id }}">
+        <div class="el-prov">
+          <strong>{{ it.label|e }}</strong>
+          {% if it.email %}<span class="ok-text-muted">{{ it.email|e }}</span>{% endif %}
+        </div>
+        <button type="button" class="el-unlink" data-id="{{ it.identity_id }}" data-url="{{ unlink_url }}" data-confirm="{{ text_confirm_unlink|e('html_attr') }}">{{ button_unlink }}</button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if has_addable %}
+  <div class="el-link-more">
+    <p class="ok-text-muted">{{ text_link_more }}</p>
+    {{ buttons_block }}
+  </div>
+  {% endif %}
+</div>

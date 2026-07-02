@@ -1,0 +1,85 @@
+// oc-kit Design System — Sortable List
+// © 2026 oc-kit.com | https://oc-kit.com
+
+// ── Sortable list ─────────────────────────────────────────────────────────────
+
+.oc-kit .ok-sortable-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oc-kit .ok-sortable-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: $ok-white;
+  border: 1px solid $ok-border;
+  border-radius: $ok-radius;
+  transition: background $ok-trans, border-color $ok-trans, box-shadow $ok-trans;
+  user-select: none;
+
+  &:hover {
+    border-color: $ok-border2;
+    background: $ok-bg;
+  }
+
+  &.ok-sortable-ghost {
+    opacity: 0.4;
+  }
+}
+
+.oc-kit .ok-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: $ok-muted;
+  flex-shrink: 0;
+  width: 20px;
+  padding: 2px 0;
+  transition: color $ok-trans;
+
+  &:active { cursor: grabbing; }
+
+  .lucide {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  &:hover { color: $ok-text; }
+}
+
+.oc-kit .ok-sortable-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: $ok-text;
+  cursor: pointer;
+  flex: 1;
+
+  input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: $ok-accent2;
+  }
+}
+
+.oc-kit .ok-indent {
+  color: $ok-muted;
+  font-size: 13px;
+}
+
+.oc-kit .ok-mb-12 {
+  margin-bottom: 12px;
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EasyCheckout — customer-side order_info: показуємо oc-kit custom fields.
+  © 2026 oc-kit.com | https://oc-kit.com
+-->
+<modification>
+    <name>EasyCheckout (oc-kit) — customer order info panel</name>
+    <code>oc_kit_easycheckout_account_order</code>
+    <version>0.1.2</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <file path="catalog/controller/account/order.php">
+        <operation>
+            <search><![CDATA[$this->response->setOutput($this->load->view('account/order_info', $data));]]></search>
+            <add position="before"><![CDATA[
+            // EasyCheckout (oc-kit) — load custom-fields for this order
+            $this->load->model('extension/easycheckout/order');
+            $data['oc_kit_easycheckout_fields'] = $this->model_extension_easycheckout_order->getCustomFields((int)$order_id);
+            $this->load->language('easycheckout/checkout');
+            $data['text_easycheckout_summary'] = $this->language->get('text_easycheckout_summary');
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/*/template/account/order_info.twig">
+        <operation>
+            <search><![CDATA[{{ content_bottom }}]]></search>
+            <add position="before"><![CDATA[
+{% if oc_kit_easycheckout_fields|default([])|length > 0 %}
+<div class="okec-account-fields panel panel-default" style="margin-top:20px;">
+  <div class="panel-heading"><h3 class="panel-title">{{ text_easycheckout_summary }}</h3></div>
+  <div class="panel-body">
+    <table class="table table-bordered">
+      <tbody>
+        {% for f in oc_kit_easycheckout_fields %}
+          <tr>
+            <td style="width:30%;"><strong>{{ f.name }}</strong></td>
+            <td style="white-space: pre-line;">{{ f.value }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>

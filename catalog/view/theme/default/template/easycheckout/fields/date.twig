@@ -1,0 +1,8 @@
+<input type="date" name="{{ form_name }}" id="okec-f-{{ field.code }}"
+       class="ok-input"
+       value="{{ prefill_value }}"
+       autocomplete="off"
+       {% if field.date_min %}min="{{ field.date_min }}"{% endif %}
+       {% if field.date_max %}max="{{ field.date_max }}"{% endif %}
+       {% if field.date_weekends|length > 0 %}data-okec-date-weekends="{{ field.date_weekends|join(',') }}"{% endif %}
+       {% if required %}required{% endif %}>

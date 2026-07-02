@@ -1,0 +1,384 @@
+// oc-kit Design System — Cards
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  // ── Panel card (header + border + body) ───────────────────────────────────
+  // Matches the screenshot reference style
+
+  .ok-panel {
+    background: $ok-white;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    margin-bottom: 16px;
+    overflow: hidden;
+
+    &-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid $ok-border;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      .breadcrumb { margin: 0; }
+
+      h3, .ok-panel-title {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: $ok-text;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        .fa { color: $ok-text2; }
+        .ok-btn .fa { color: inherit; }
+      }
+    }
+
+    &-body {
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    &-footer {
+      padding: 13px 18px;
+      border-top: 1px solid $ok-border;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: $ok-bg;
+      border-radius: 0 0 $ok-radius $ok-radius;
+    }
+  }
+
+  // ── Sticky panel header modifier ─────────────────────────────────────────
+  // Usage: <div class="ok-panel ok-panel-sticky">
+  // The panel-header stays visible while scrolling through long forms.
+
+  .ok-panel-sticky > .ok-panel-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: $ok-white;
+  }
+
+  // ── Base card (no header separator) ──────────────────────────────────────
+
+  .ok-card {
+    background: $ok-white;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $ok-border;
+    }
+
+    &-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: $ok-text;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      .fa { color: $ok-text2; }
+      .ok-btn .fa { color: inherit; }
+    }
+
+    &-footer {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid $ok-border;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  // ── Block (section wrapper with title) ────────────────────────────────────
+
+  .ok-block {
+    background: $ok-white;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    margin-bottom: 16px;
+
+    &-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: $ok-text;
+      padding: 13px 18px;
+      border-bottom: 1px solid $ok-border;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      .fa { color: $ok-text2; }
+      .ok-btn .fa { color: inherit; }
+    }
+
+    &-subtitle {
+      font-size: 13px;
+      font-weight: 600;
+      color: $ok-text2;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    &-body {
+      padding: 18px;
+    }
+  }
+
+  // ── Panel actions toolbar (right side of ok-panel-header) ────────────────
+
+  .ok-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  // ── Stat cards grid ───────────────────────────────────────────────────────
+
+  .ok-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0;
+    border-radius: $ok-radius;
+    overflow: hidden;
+
+    .ok-stat-card {
+      border-radius: 0;
+      margin: 0;
+
+      &:last-child { border-right: none; }
+    }
+  }
+
+  // ── Stat cards ────────────────────────────────────────────────────────────
+
+  .ok-stat-card {
+    background: $ok-white;
+    border: 1px solid $ok-border;
+    padding: 14px 16px;
+    text-align: center;
+
+    &-label { font-size: 13px; color: $ok-muted; margin: 0 0 6px; font-weight: 600; }
+    &-value { font-size: 28px; font-weight: 700; color: $ok-text; line-height: 1; &--sm { font-size: 15px; } }
+    &-sub   { font-size: 13px; color: $ok-muted; margin-top: 5px; }
+
+    &-accent  { border-top: 3px solid $ok-accent; }
+    &-success { border-top: 3px solid $ok-success; }
+    &-info    { border-top: 3px solid $ok-info; }
+    &-danger  { border-top: 3px solid $ok-danger; }
+    &-warning { border-top: 3px solid $ok-warning; }
+
+    // Dashboard stat card variants (label + badge row)
+    .ok-stat-label {
+      font-size: 12px;
+      color: $ok-text2;
+      margin: 0 0 10px;
+    }
+
+    .ok-stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+  }
+
+  // ── Alert / info box ──────────────────────────────────────────────────────
+
+  .ok-alert {
+    padding: 12px 16px;
+    border-radius: 0;
+    border-left: 4px solid transparent;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+
+    // Modifier: force single-line (for short alerts next to inline controls)
+    &.nowrap { flex-wrap: nowrap; }
+
+    .fa { flex-shrink: 0; }
+
+    &-info    { background: #e8f4fd; border-color: $ok-info;    color: #1a5276; .fa { color: $ok-info; } }
+    &-success { background: #eafaf1; border-color: $ok-success; color: #1e8449; .fa { color: $ok-success; } }
+    &-warning { background: #fef9e7; border-color: $ok-warning; color: #784212; .fa { color: $ok-warning; } }
+    &-danger  { background: #fdedec; border-color: $ok-danger;  color: #922b21; .fa { color: $ok-danger; } }
+  }
+
+  // ── Field row (label + value in panel body) ───────────────────────────────
+
+  .ok-field-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid $ok-bg2;
+    font-size: 14px;
+
+    &-label {
+      font-weight: 600;
+      color: $ok-text;
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    &-value {
+      color: $ok-text2;
+    }
+  }
+
+  // ── License card ─────────────────────────────────────────────────────────
+
+  .ok-license-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 60vh;
+    padding: 40px 20px;
+  }
+
+  .ok-license-card {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .ok-license-brand {
+    text-align: center;
+    margin-bottom: 32px;
+
+    .ok-license-icon {
+      color: $ok-accent;
+      margin-bottom: 8px;
+    }
+  }
+
+  .ok-license-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $ok-text;
+    margin-bottom: 4px;
+  }
+
+  .ok-license-link {
+    font-size: 13px;
+    color: $ok-text2;
+
+    a {
+      color: $ok-accent;
+      text-decoration: none;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  .ok-license-status {
+    margin-bottom: 16px;
+  }
+
+  .ok-license-version {
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: $ok-text2;
+  }
+
+  .ok-license-key-wrap {
+    margin-bottom: 16px;
+  }
+
+  // ── KPI cards grid (icon + value + label, distinct cards) ──
+  // Distinct from .ok-stat-card (joined cells in a bordered grid) — this is a
+  // 4-up responsive grid of detached cards with tinted icon circles.
+  // Variants: --total (blue) / --ok (green) / --lost (red) / --info (orange).
+  .ok-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0 24px;
+
+    @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 600px)  { grid-template-columns: 1fr; }
+  }
+
+  // 6-up density: chain with .ok-kpi-grid for compact dashboards (log stats etc.)
+  .ok-kpi-grid-6 {
+    grid-template-columns: repeat(6, 1fr);
+
+    @media (max-width: 1400px) { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 1100px) { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 800px)  { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 480px)  { grid-template-columns: 1fr; }
+  }
+
+  .ok-kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: $ok-white;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius-lg;
+    transition: border-color $ok-trans, box-shadow $ok-trans;
+
+    &:hover { border-color: $ok-accent2; box-shadow: 0 2px 8px rgba(25,118,210,0.08); }
+
+    &__icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: $ok-bg;
+      [data-lucide] { width: 22px; height: 22px; }
+    }
+    &__body {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    &__value {
+      font-size: 22px;
+      font-weight: 700;
+      color: $ok-text;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    &__sub {
+      font-size: 13px;
+      color: $ok-muted;
+      font-weight: 500;
+    }
+    &__label {
+      font-size: 12px;
+      color: $ok-text2;
+    }
+    &__hint {
+      font-size: 11px;
+      color: $ok-muted;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+    }
+
+    &--total .ok-kpi-card__icon { background: #e3f2fd; color: #1976d2; }
+    &--ok    .ok-kpi-card__icon { background: #e8f5e9; color: #2e7d32; }
+    &--lost  .ok-kpi-card__icon { background: #ffebee; color: #c62828; }
+    &--info  .ok-kpi-card__icon { background: #fff8e1; color: #ef6c00; }
+  }
+}

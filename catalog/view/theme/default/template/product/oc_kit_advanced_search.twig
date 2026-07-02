@@ -1,0 +1,144 @@
+{{ header }}
+
+<style>
+    .asp-facets { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .asp-facet { border: 1px solid #e6e8ef; border-radius: 10px; padding: 12px; background: #fff; }
+    .asp-facet-title { font-weight: 600; margin-bottom: 8px; }
+    .asp-facet-list { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+    .asp-facet-list a { color: #0f766e; text-decoration: none; font-weight: 600; }
+    .asp-facet-form { display: grid; gap: 8px; grid-template-columns: 1fr 1fr auto; align-items: center; }
+    .asp-facet-hint { margin-top: 6px; font-size: 12px; color: #6b7280; }
+</style>
+
+<div class="category-page">
+    <div class="container">
+        {% include "/default/template/include/_breadcrumbs.twig" %}
+
+        <h1 class="page-heading mb-4">{{ heading_title }}</h1>
+
+        {{ content_top }}
+
+        <div class="row">
+            {{ column_left }}
+
+            <div class="col-12 {{ column_left ? ' column-content' : '' }}">
+                <div data-asp-results-root data-asp-filter-mode="{{ asp_filter_ajax_mode|default('own') }}">
+                {% if products %}
+
+                    {% if facets %}
+                        <div class="asp-facets mb-4">
+                            {% if facets.categories %}
+                                <div class="asp-facet">
+                                    <div class="asp-facet-title">Категорії</div>
+                                    <div class="asp-facet-list">
+                                        {% for c in facets.categories %}
+                                            <a href="{{ c.href }}">{{ c.name }} ({{ c.total }})</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if facets.manufacturers %}
+                                <div class="asp-facet">
+                                    <div class="asp-facet-title">Виробники</div>
+                                    <div class="asp-facet-list">
+                                        {% for m in facets.manufacturers %}
+                                            <a href="{{ m.href }}">{{ m.name }} ({{ m.total }})</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="asp-facet">
+                                <div class="asp-facet-title">Ціна</div>
+                                <form action="{{ facet_price_action }}" method="get" class="asp-facet-form">
+                                    <input type="number" name="price_min" value="{{ price_min }}" placeholder="від" class="form-control">
+                                    <input type="number" name="price_max" value="{{ price_max }}" placeholder="до" class="form-control">
+                                    <button class="btn btn-primary" type="submit">OK</button>
+                                </form>
+                                <div class="asp-facet-hint">Діапазон: {{ facets.price.min|round(2) }} – {{ facets.price.max|round(2) }}</div>
+                            </div>
+
+                            <div class="asp-facet">
+                                <div class="asp-facet-title">Наявність</div>
+                                <div class="asp-facet-list">
+                                    <a href="{{ facet_stock_link_all }}">Всі</a>
+                                    <a href="{{ facet_stock_link_in }}">В наявності ({{ facets.stock.in }})</a>
+                                    <a href="{{ facet_stock_link_out }}">Немає ({{ facets.stock.out }})</a>
+                                </div>
+                            </div>
+
+                            <div class="asp-facet">
+                                <div class="asp-facet-title">Рейтинг</div>
+                                <div class="asp-facet-list">
+                                    {% for r in 5..1 %}
+                                        <a href="{{ facet_rating_links[r] }}">{{ r }}+ ({{ facets.ratings[r] }})</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {% if facets.attributes %}
+                                {% for a in facets.attributes %}
+                                    <div class="asp-facet">
+                                        <div class="asp-facet-title">{{ a.name }}</div>
+                                        <div class="asp-facet-list">
+                                            {% for v in a.values %}
+                                                <a href="{{ v.href }}">{{ v.value }} ({{ v.total }})</a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="sort-block">
+                        <select id="input-sort" class="form-select form-sort" onchange="location = this.value;">
+                            {% for sorts in sorts %}
+                                {% if sorts.value == '%s-%s'|format(sort, order) %}
+                                    <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+                                {% else %}
+                                    <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <div class="btn-filter">
+                            <div class="btn--filter fv-mobile_btn_mini fv_mobile_close_switch">{{ button_filter }}</div>
+                        </div>
+                    </div>
+
+                    <div class="products__wrapper">
+                        <div class="product__items flex-wrap row gx-3 gy-3 gx-lg-3 gy-lg-5">
+                            {% for product in products %}
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    {% include "/default/template/include/product/_product_widget.twig" %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="page-pagination">{{ pagination }}</div>
+
+                    {% if description %}<div class="page-description">{{ description }}</div>{% endif %}
+
+                {% else %}
+                    {% if asp_did_you_mean %}
+                    <p>{{ text_did_you_mean }} <a href="{{ asp_did_you_mean_url }}"><strong>{{ asp_did_you_mean }}</strong></a>?</p>
+                    {% endif %}
+                    <p>{{ text_empty }}</p>
+                    <div class="buttons mb-5 mb-lg-0">
+                        <a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{ content_bottom }}
+
+{{ products_recent }}
+
+{{ footer }}

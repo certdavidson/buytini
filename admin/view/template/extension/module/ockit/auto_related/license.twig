@@ -1,0 +1,132 @@
+{# Auto Related Products | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extension }}</a></li>
+            <li><a href="{{ license_url }}">{{ heading_title }}</a></li>
+            <li><a href="#">{{ tab_license }}</a></li>
+          </ul>
+        </div>
+
+        <div class="ok-license-wrap">
+          <div class="ok-license-card">
+
+            <div class="ok-license-brand">
+              <div class="ok-license-icon">
+                <i data-lucide="key" style="width:48px;height:48px;"></i>
+              </div>
+              <div class="ok-license-title">{{ heading_title }}</div>
+              <div class="ok-license-link">
+                <a href="https://oc-kit.com" target="_blank">oc-kit.com</a>
+              </div>
+            </div>
+
+            <div class="ok-panel ok-panel-body">
+
+              <div class="ok-license-status">
+                {% if license_info.status == 'trial' %}
+                  <span class="ok-badge ok-badge-warning-soft">
+                    <i data-lucide="clock" style="width:14px;height:14px;"></i>
+                    {{ text_license_trial | format(license_info.trial_days_left) }}
+                  </span>
+                {% elseif license_info.status == 'expired' %}
+                  <span class="ok-badge ok-badge-danger-soft">
+                    <i data-lucide="x-circle" style="width:14px;height:14px;"></i>
+                    {{ text_license_expired }}
+                  </span>
+                {% elseif license_info.status == 'invalid' %}
+                  <span class="ok-badge ok-badge-danger-soft">
+                    <i data-lucide="x-circle" style="width:14px;height:14px;"></i>
+                    {{ text_license_invalid }}
+                  </span>
+                {% elseif license_info.status == 'grace' %}
+                  <span class="ok-badge ok-badge-warning-soft">
+                    <i data-lucide="alert-triangle" style="width:14px;height:14px;"></i>
+                    {{ text_license_grace }}
+                  </span>
+                {% elseif license_info.status == 'api_error' %}
+                  <span class="ok-badge ok-badge-warning-soft">
+                    <i data-lucide="wifi-off" style="width:14px;height:14px;"></i>
+                    {{ text_license_api_error }}
+                  </span>
+                {% else %}
+                  <span class="ok-badge ok-badge-muted">
+                    <i data-lucide="help-circle" style="width:14px;height:14px;"></i>
+                    {{ text_license_not_validated }}
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="ok-license-version">
+                {{ text_license_version }}: <strong>{{ license_info.version }}</strong>
+              </div>
+
+              <div class="ok-license-key-wrap">
+                <label class="form-label" for="ar-license-key">{{ entry_license_key }}</label>
+                <div class="ok-input-inline">
+                  <input type="text" id="ar-license-key" class="ok-input"
+                         value="{{ license_key }}"
+                         placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
+                         autocomplete="off">
+                  <button type="button" id="ar-btn-activate" class="ok-btn ok-btn-primary"
+                          data-url="{{ action_activate }}">
+                    <i data-lucide="check" style="width:16px;height:16px;"></i>
+                    {{ button_activate }}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                  <i data-lucide="shopping-cart" style="width:14px;height:14px;"></i>
+                  {{ text_license_buy }}
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+window.arI18n = {{ lang_js }};
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    var btn   = document.getElementById('ar-btn-activate');
+    var input = document.getElementById('ar-license-key');
+    if (!btn || !input) return;
+    btn.addEventListener('click', function () {
+        var key = input.value.trim();
+        if (!key) return;
+        btn.disabled = true;
+        var fd = new FormData();
+        fd.append('license_key', key);
+        fetch(btn.dataset.url, { method: 'POST', body: fd })
+            .then(function (r) { return r.json(); })
+            .then(function (json) {
+                if (json.success && json.redirect_url) {
+                    window.location.href = json.redirect_url;
+                } else {
+                    var msg = json.message || (window.arI18n && window.arI18n.text_license_invalid) || 'Invalid key';
+                    if (window.okNotify) window.okNotify(msg, 'error');
+                    else alert(msg);
+                    btn.disabled = false;
+                }
+            })
+            .catch(function () { btn.disabled = false; });
+    });
+});
+</script>
+{{ footer }}

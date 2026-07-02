@@ -1,0 +1,170 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            {# ── Bulk fill ── #}
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="zap"></i> {{ text_bulk_fill }}</div>
+              <div class="ok-block-body">
+                <div class="ok-filter-bar">
+                  <div>
+                    <label class="ok-label form-label">{{ label_regen_type }}</label>
+                    <select id="ok-bulk-type" class="ok-select">
+                      <option value="product">{{ text_type_product }}</option>
+                      <option value="category">{{ text_type_category }}</option>
+                      <option value="manufacturer">{{ text_type_manufacturer }}</option>
+                      <option value="information">{{ text_type_information }}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="ok-label form-label">{{ label_regen_lang }}</label>
+                    <select id="ok-bulk-lang" class="ok-select">
+                      {% for lang in languages %}
+                      <option value="{{ lang.language_id }}">{{ lang.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="ok-label form-label">{{ label_regen_mode }}</label>
+                    <select id="ok-bulk-mode" class="ok-select">
+                      <option value="empty">{{ text_mode_empty }}</option>
+                      <option value="all">{{ text_mode_all }}</option>
+                    </select>
+                  </div>
+                  <div class="ok-flex ok-align-end">
+                    <button type="button" id="ok-bulk-start" class="ok-btn ok-btn-primary ok-btn-sm">
+                      <i data-lucide="zap"></i> {{ button_bulk_start }}
+                    </button>
+                  </div>
+                </div>
+
+                <div id="ok-bulk-progress" class="ok-progress-wrap" style="display:none">
+                  <div class="ok-progress-bar-track">
+                    <div class="ok-progress-bar-fill" id="ok-bulk-bar" style="width:0%"></div>
+                  </div>
+                  <div id="ok-bulk-status" class="ok-progress-status">0 / 0</div>
+                </div>
+              </div>
+            </div>
+
+            {# ── Overrides table ── #}
+            <div class="ok-panel">
+              <div class="ok-panel-header">
+                <span>{{ text_meta_overrides }}</span>
+              </div>
+
+              <div class="ok-filter-bar">
+                <input type="text" id="ok-meta-search" class="ok-input" placeholder="{{ label_search_meta }}">
+                <select id="ok-meta-filter-type" class="ok-select ok-filter-select">
+                  <option value="">{{ text_all_types }}</option>
+                  <option value="product">{{ text_type_product }}</option>
+                  <option value="category">{{ text_type_category }}</option>
+                  <option value="manufacturer">{{ text_type_manufacturer }}</option>
+                  <option value="information">{{ text_type_information }}</option>
+                </select>
+                <select id="ok-meta-filter-lang" class="ok-select ok-filter-select">
+                  <option value="">{{ text_all_langs }}</option>
+                  {% for lang in languages %}
+                  <option value="{{ lang.language_id }}">{{ lang.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <table class="ok-table">
+                <thead>
+                  <tr>
+                    <th class="ok-col-sm">{{ column_type }}</th>
+                    <th class="ok-col-sm">ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th class="ok-col-sm">{{ label_regen_lang }}</th>
+                    <th class="ok-col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody id="ok-meta-tbody">
+                  <tr><td colspan="6" class="text-center ok-loading">{{ text_loading }}</td></tr>
+                </tbody>
+              </table>
+
+              <div id="ok-meta-pagination" class="ok-pagination"></div>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+
+      {# ── Edit modal ── #}
+      <div id="ok-meta-modal" class="ok-modal-backdrop" style="display:none">
+        <div class="ok-modal ok-modal-lg">
+          <div class="ok-modal-header">
+            <span id="ok-meta-modal-title">{{ text_meta_modal_title }}</span>
+            <button type="button" id="ok-meta-modal-close" class="ok-modal-close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ok-modal-body">
+            <input type="hidden" id="ok-meta-edit-id"   value="0">
+            <input type="hidden" id="ok-meta-edit-type" value="">
+            <input type="hidden" id="ok-meta-edit-eid"  value="0">
+            <input type="hidden" id="ok-meta-edit-lang" value="0">
+            <div class="mb-3">
+              <label class="ok-label form-label">Title</label>
+              <input type="text" id="ok-meta-edit-title" class="ok-input" maxlength="255">
+              <p class="ok-hint">{{ text_title_hint }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">Description</label>
+              <textarea id="ok-meta-edit-desc" class="ok-input" rows="3" maxlength="512"></textarea>
+              <p class="ok-hint">{{ text_desc_hint }}</p>
+            </div>
+            {% if supports_h1 %}
+            <div class="mb-3">
+              <label class="ok-label form-label">H1</label>
+              <input type="text" id="ok-meta-edit-h1" class="ok-input" maxlength="255">
+            </div>
+            {% endif %}
+            <div class="mb-3">
+              <label class="ok-label form-label">Robots</label>
+              <input type="text" id="ok-meta-edit-robots" class="ok-input" placeholder="noindex,follow">
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">Canonical URL</label>
+              <input type="text" id="ok-meta-edit-canonical" class="ok-input" placeholder="https://...">
+            </div>
+          </div>
+          <div class="ok-modal-footer">
+            <button type="button" id="ok-meta-modal-save"   class="ok-btn ok-btn-primary">{{ button_save }}</button>
+            <button type="button" id="ok-meta-modal-cancel" class="ok-btn ok-btn-default">{{ button_cancel }}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  metaListUrl:       '{{ meta_list_url }}',
+  metaSaveUrl:       '{{ meta_save_url }}',
+  metaDeleteUrl:     '{{ meta_delete_url }}',
+  bulkFillUrl:       '{{ bulk_fill_url }}',
+  bulkCandidatesUrl: '{{ bulk_candidates_url }}',
+  userToken:         '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

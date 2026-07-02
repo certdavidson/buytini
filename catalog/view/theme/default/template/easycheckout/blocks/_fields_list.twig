@@ -1,0 +1,18 @@
+{# Спільний рендер блоку зі списком полів (customer, payment_address, shipping_address, shipping, payment) #}
+<div class="okec-block__inner okec-block-fields">
+  {% if block.settings.fields|length == 0 %}
+    <p class="okec-block-fields__empty">{# Адмін не додав жодного поля — нічого не показуємо #}</p>
+  {% else %}
+    {% for cfg in block.settings.fields %}
+      {% set show = cfg.visibility == 'always' or
+                    (cfg.visibility == 'guests'    and not logged) or
+                    (cfg.visibility == 'logged_in' and logged) %}
+      {% if show %}
+        {% set field = fields_map[cfg.field_id] %}
+        {% if field %}
+          {% include template_dir ~ 'easycheckout/_field.twig' %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>

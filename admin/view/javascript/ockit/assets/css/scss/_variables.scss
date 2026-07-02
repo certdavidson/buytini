@@ -1,0 +1,59 @@
+// oc-kit Design System — Variables
+// © 2026 oc-kit.com | https://oc-kit.com
+
+// ─── Colors ───────────────────────────────────────────────────────────────────
+
+$ok-white:    #ffffff;
+$ok-bg:       #f4f6f9;
+$ok-bg2:      #eef0f5;
+$ok-border:   #e0e4eb;
+$ok-border2:  #c8d0db;
+
+$ok-text:     #2c3e50;
+$ok-text2:    #5a6474;
+$ok-muted:    #8a94a6;
+
+$ok-accent:   #7EB2FF;
+$ok-accent2:  #508EF5;
+
+$ok-success:  #22bb6a;
+$ok-success2: #1aa05a;
+$ok-danger:   #e74c3c;
+$ok-danger2:  #c0392b;
+$ok-warning:  #f39c12;
+$ok-warning2: #d68910;
+$ok-info:     #3498db;
+$ok-info2:    #2980b9;
+
+// ─── Soft badge colors ────────────────────────────────────────────────────────
+
+$ok-success-soft-bg:  #d4edda;
+$ok-success-soft-clr: #155724;
+$ok-danger-soft-bg:   #f8d7da;
+$ok-danger-soft-clr:  #721c24;
+$ok-warning-soft-bg:  #fff3cd;
+$ok-warning-soft-clr: #856404;
+$ok-info-soft-bg:     #cce5ff;
+$ok-info-soft-clr:    #004085;
+
+// ─── Typography ───────────────────────────────────────────────────────────────
+
+$ok-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$ok-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+// ─── Shape ────────────────────────────────────────────────────────────────────
+
+$ok-radius:      8px;
+$ok-radius-lg:   10px;
+$ok-radius-xl:   14px;
+$ok-radius-full: 999px;
+
+// ─── Shadows ──────────────────────────────────────────────────────────────────
+
+$ok-shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+$ok-shadow:    0 2px 8px rgba(0,0,0,.08);
+$ok-shadow-lg: 0 4px 16px rgba(0,0,0,.10);
+
+// ─── Transitions ──────────────────────────────────────────────────────────────
+
+$ok-trans: .15s ease;

@@ -1,0 +1,32 @@
+/* Advanced Search Pro — loading state for the AJAX filter swap.
+   © 2024-2026 oc-kit.com */
+[data-asp-results-root] { position: relative; transition: opacity .15s ease; }
+[data-asp-results-root].asp-ajax-loading { opacity: .55; pointer-events: none; }
+[data-asp-results-root].asp-ajax-loading::after {
+    content: '';
+    position: absolute; left: 50%; top: 80px;
+    width: 36px; height: 36px;
+    margin-left: -18px;
+    border: 3px solid rgba(0,0,0,.12);
+    border-top-color: #0f766e;
+    border-radius: 50%;
+    animation: asp-spin .8s linear infinite;
+    z-index: 100;
+}
+@keyframes asp-spin { to { transform: rotate(360deg); } }
+
+/* Results pagination — private class (not ul.pagination) so theme pagination
+   JS doesn't hijack our module-route links. Plain full-page navigation. */
+.asp-pagination { margin: 24px 0; display: flex; justify-content: center; }
+.asp-pag { display: inline-flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; margin: 0; }
+.asp-pag-item { display: inline-block; }
+.asp-pag-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 38px; height: 38px; padding: 0 10px;
+    border: 1px solid #e0e4eb; border-radius: 8px;
+    color: #2c3e50; text-decoration: none; font-size: 14px; line-height: 1;
+    transition: background .15s, border-color .15s;
+}
+.asp-pag-link:hover { background: #f0f6ff; border-color: #b9d3f5; }
+.asp-pag-active .asp-pag-link { background: #2c3e50; border-color: #2c3e50; color: #fff; cursor: default; }
+.asp-pag-ellipsis { display: inline-flex; align-items: center; padding: 0 6px; color: #9aa5b5; }

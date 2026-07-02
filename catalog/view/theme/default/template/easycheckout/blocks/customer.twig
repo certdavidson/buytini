@@ -1,0 +1,7 @@
+{% if block.settings.show_login_link and not logged %}
+  <p class="okec-block-customer__login-hint">
+    <span data-okec-account-exists style="display:none;">{{ text_account_exists }}</span>
+    <a href="#" data-okec-action="login">{{ text_login }}</a>
+  </p>
+{% endif %}
+{% include template_dir ~ 'easycheckout/blocks/_fields_list.twig' %}

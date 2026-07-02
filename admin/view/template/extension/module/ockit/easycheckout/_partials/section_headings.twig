@@ -1,0 +1,136 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ headings_heading }}</h2>
+<p class="ok-help">{{ headings_help }}</p>
+
+<div class="ok-filter-bar okec-filter">
+  <div class="okec-filter__search">
+    <i data-lucide="search"></i>
+    <input type="text" class="ok-input" x-model.debounce.250ms="headings.filter.search"
+           placeholder="{{ headings_filter_search }}">
+  </div>
+  {% set tag_labels = {
+    'none':   heading_tag_none,
+    'h1':     heading_tag_h1,
+    'h2':     heading_tag_h2,
+    'h3':     heading_tag_h3,
+    'h4':     heading_tag_h4,
+    'h5':     heading_tag_h5,
+    'p':      heading_tag_p,
+    'legend': heading_tag_legend
+  } %}
+  <select class="ok-select okec-filter__select" x-model="headings.filter.tag">
+    <option value="">{{ fields_filter_all }} — {{ headings_filter_tag }}</option>
+    {% for tag in heading_tags %}
+      <option value="{{ tag }}">{{ tag_labels[tag] }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="ok-panel" x-show="!headings.loading && headings.items.length > 0" x-cloak>
+  <div class="ok-panel-header"><span><i data-lucide="heading"></i> {{ headings_heading }}</span></div>
+  <div class="ok-table-wrap">
+  <table class="ok-table">
+    <thead>
+      <tr>
+        <th class="okec-col-check">
+          <label class="ok-checkbox">
+            <input type="checkbox" @change="headings.toggleAll($event.target.checked)"
+                   :checked="headings.items.length > 0 && headings.selected.length === headings.items.length">
+          </label>
+        </th>
+        <th>{{ headings_col_id }}</th>
+        <th>{{ headings_col_code }}</th>
+        <th>{{ headings_col_tag }}</th>
+        <th>{{ headings_col_text }}</th>
+        <th class="okec-col-usage">{{ fields_col_usage }}</th>
+        <th class="okec-col-langs">{{ fields_col_langs }}</th>
+        <th>{{ headings_col_modified }}</th>
+        <th class="okec-col-actions">{{ headings_col_actions }}</th>
+      </tr>
+    </thead>
+    <tbody x-ref="headingsTbody" data-okec-sortable-headings>
+      <template x-for="item in headings.items" :key="item.heading_id">
+        <tr :data-heading-id="item.heading_id">
+          <td>
+            <label class="ok-checkbox">
+              <input type="checkbox" :value="item.heading_id" x-model="headings.selected">
+            </label>
+          </td>
+          <td>
+            <div class="ok-flex ok-gap-6">
+            <i class="okec-drag-handle" data-lucide="grip-vertical" :title="t('groups_drag_hint')"></i>
+            <span x-text="item.heading_id"></span>
+            </div>
+          </td>
+          <td><code class="ok-code" x-text="item.code"></code></td>
+          <td>
+            <select class="ok-select okec-inline-edit okec-tag-select"
+                    x-init="$el.value = item.tag"
+                    @change="headings.inlineTagChange(item, $event.target.value)">
+              <option value="none">{{ heading_tag_none }}</option>
+              <option value="h1">h1</option>
+              <option value="h2">h2</option>
+              <option value="h3">h3</option>
+              <option value="h4">h4</option>
+              <option value="h5">h5</option>
+              <option value="p">p</option>
+              <option value="legend">legend</option>
+            </select>
+          </td>
+          <td>
+            <span x-show="!item._editing"
+                  x-text="headings.primaryText(item)"
+                  @dblclick="item._editing = true; $nextTick(() => $event.target.parentNode.querySelector('input').focus())"
+                  class="okec-editable"
+                  :title="t('groups_inline_rename_hint')"></span>
+            <input x-show="item._editing" x-cloak type="text"
+                   class="ok-input okec-inline-edit"
+                   :value="headings.primaryText(item)"
+                   @blur="headings.inlineRename(item, $event.target.value); item._editing = false;"
+                   @keydown.enter.prevent="$event.target.blur()"
+                   @keydown.escape="item._editing = false">
+          </td>
+          <td class="okec-col-usage">
+            <span class="ok-badge"
+                  :class="(item.layouts_count > 0) ? 'ok-badge-info-soft' : 'ok-badge-muted'"
+                  :title="t('fields_col_usage_layouts_tooltip')"
+                  x-text="(item.layouts_count || 0) + ' ' + t('fields_col_usage_layouts_short')"></span>
+          </td>
+          <td class="okec-col-langs">
+            <span class="ok-badge"
+                  :class="(item._langs_filled >= context.languages.length) ? 'ok-badge-success-soft' : ((item._langs_filled === 0) ? 'ok-badge-danger-soft' : 'ok-badge-warning-soft')"
+                  :title="t('fields_col_langs_tooltip')"
+                  x-text="(item._langs_filled || 0) + '/' + context.languages.length"></span>
+          </td>
+          <td class="okec-col-modified" x-text="headings.formatDate(item.date_modified)"></td>
+          <td class="okec-col-actions">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="headings.openEdit(item.heading_id)" :title="t('button_edit')">
+              <i data-lucide="pencil"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="headings.cloneHeading(item.heading_id)" :title="t('button_clone')">
+              <i data-lucide="copy"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                    @click="headings.confirmDelete(item.heading_id)" :title="t('button_delete')">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div class="okec-empty" x-show="!headings.loading && headings.items.length === 0" x-cloak>
+  <p>{{ headings_empty }}</p>
+  <button type="button" class="ok-btn ok-btn-primary ok-mt-3" @click="headings.openCreate()">
+    <i data-lucide="plus"></i> {{ headings_btn_add }}
+  </button>
+</div>
+
+<div class="okec-loading" x-show="headings.loading">
+  <i data-lucide="loader" class="okec-spin"></i>
+</div>

@@ -1,5 +1,5 @@
 /* -------- header: main -------- */
-.header { position: sticky; top: 0; z-index: 200; background: var(--surface); border-bottom: 1px solid var(--border); }
+.header { position: sticky; top: 0; z-index: 200; background: var(--surface-muted); border-bottom: 1px solid var(--border); }
 .header__inner { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; height: 72px; display: flex; align-items: center; gap: 20px; }
 .header__logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .header__logo-img { height: 38px; width: auto; display: block; flex-shrink: 0; }
@@ -19,3 +19,4 @@
 .catalog-btn.is-open .catalog-btn__open { display: none; }
 .catalog-btn.is-open .catalog-btn__close { display: flex; }
 @media (max-width: 860px) { .catalog-btn__label { display: none; } }
+

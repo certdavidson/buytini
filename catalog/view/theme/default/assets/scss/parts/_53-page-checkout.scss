@@ -50,6 +50,7 @@
 .select-card.is-active .select-card__ico { background: var(--accent); color: var(--on-accent); }
 .select-card__est { font-size: 15px; font-weight: 500; color: var(--text); white-space: nowrap; flex-shrink: 0; }
 .co-pay { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
+@media (max-width: 520px) { .co-pay { grid-template-columns: 1fr; } }
 .co-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
 .co-item { display: flex; gap: 12px; }
 .co-item__thumb { width: 52px; height: 64px; border-radius: var(--radius-sm); background: var(--surface-sunken) center / cover no-repeat; flex-shrink: 0; }
@@ -61,3 +62,4 @@
 .co-item__opts { display: block; font-size: 13px; color: var(--text-subtle); }
 .co-item__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
 .co-item__price { font-size: 14px; font-weight: 600; white-space: nowrap; }
+

@@ -1,0 +1,92 @@
+{# Sitemap Generator | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extension }}</a></li>
+            <li><a href="{{ license_url }}">{{ heading_title }}</a></li>
+            <li><a href="#">{{ tab_license }}</a></li>
+          </ul>
+        </div>
+
+        <div style="display:flex; justify-content:center; align-items:flex-start; min-height:60vh; padding: 40px 20px;">
+          <div style="width:100%; max-width:520px;">
+
+            {# Brand #}
+            <div style="text-align:center; margin-bottom:32px;">
+              <div style="font-size:48px; color:#6366f1; margin-bottom:8px;"><i class="fa fa-sitemap"></i></div>
+              <div style="font-size:20px; font-weight:700; color:#1e293b;">{{ heading_title }}</div>
+              <div style="font-size:13px; color:#64748b; margin-top:4px;">
+                <a href="https://oc-kit.com" target="_blank" style="color:#6366f1; text-decoration:none;">oc-kit.com</a>
+              </div>
+            </div>
+
+            {# Status card #}
+            <div class="ok-panel" style="margin-bottom:24px; padding:20px 24px;">
+
+              <div style="margin-bottom:16px;">
+                {% if license_info.status == 'active' %}
+                  <span class="ok-badge ok-badge-success" style="font-size:14px; padding:6px 12px;">
+                    <i class="fa fa-check-circle"></i> {{ text_license_status_active }}
+                  </span>
+                {% elseif license_info.status == 'grace' %}
+                  <span class="ok-badge ok-badge-warning" style="font-size:14px; padding:6px 12px;">
+                    <i class="fa fa-exclamation-triangle"></i> {{ text_license_status_grace }}
+                  </span>
+                {% elseif license_info.status == 'invalid' %}
+                  <span class="ok-badge ok-badge-danger" style="font-size:14px; padding:6px 12px;">
+                    <i class="fa fa-times-circle"></i> {{ text_license_status_invalid }}
+                  </span>
+                {% else %}
+                  <span class="ok-badge ok-badge-default" style="font-size:14px; padding:6px 12px;">
+                    <i class="fa fa-question-circle"></i> {{ text_license_status_not_validated }}
+                  </span>
+                {% endif %}
+              </div>
+
+              <div style="margin-bottom:8px; font-size:13px; color:#475569;">
+                {{ text_license_version }}: <strong>{{ license_info.version ?? '1.0.0' }}</strong>
+              </div>
+
+              {# License key input #}
+              <label class="form-label" style="font-size:13px; color:#374151; font-weight:600; display:block; margin-bottom:6px;">
+                {{ entry_license_key }}
+              </label>
+              <div class="ok-input-inline" style="margin-bottom:12px;">
+                <input type="text" id="sg-license-key" class="ok-input"
+                       style="flex:1; max-width:320px;"
+                       value="{{ license_key }}"
+                       placeholder="XXXX-XXXX-XXXX-XXXX">
+                <button type="button" id="sg-btn-activate" class="ok-btn ok-btn-primary"
+                        data-url="{{ action_activate }}">
+                  <i class="fa fa-check"></i> {{ button_activate }}
+                </button>
+              </div>
+
+              <div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                  <i class="fa fa-shopping-cart"></i> {{ text_license_buy }}
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>{# /container-fluid #}
+</div>{# /content #}
+
+<script>
+window.sgI18n = {{ lang_js|json_encode|raw }};
+window.sgAjax = { activate: '{{ action_activate }}' };
+</script>
+{{ footer }}

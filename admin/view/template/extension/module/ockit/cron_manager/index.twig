@@ -1,0 +1,336 @@
+{# Cron Manager | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit" id="cm">
+
+      <div class="ok-panel ok-panel-sticky">
+
+        {# ── Header ───────────────────────────────────────────────────────── #}
+        <div class="ok-panel-header">
+          <div>
+            <i data-lucide="clock" class="ok-icon-sm"></i>
+            <span class="ok-module-name">{{ heading_title_simple }}</span>
+            <span class="ok-badge ok-badge-muted" id="cm-total-badge">{{ jobs|length }}</span>
+            <ul class="breadcrumb">
+              {% for breadcrumb in breadcrumbs %}
+              <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="ok-panel-actions">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="cm-btn-scan">
+              <i data-lucide="scan-line"></i> {{ button_scan }}
+            </button>
+            <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="cm-btn-add">
+              <i data-lucide="plus"></i> {{ button_add }}
+            </button>
+          </div>
+        </div>
+
+        {# ── Bootstrap cron hint ──────────────────────────────────────────── #}
+        <div class="ok-cron-setup-bar">
+          <i data-lucide="terminal" class="ok-icon-xs ok-muted"></i>
+          <span class="ok-muted ok-text-sm">{{ text_cron_setup }}</span>
+          <code id="cm-cron-cmd" class="ok-mono ok-text-sm">* * * * * {{ php_binary }} {{ cron_bootstrap_path }}</code>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-xs ok-copy-btn ok-p-0" data-target="cm-cron-cmd">
+            <i data-lucide="copy"></i>
+          </button>
+        </div>
+
+        {# ── Table ────────────────────────────────────────────────────────── #}
+        <div class="ok-table-container">
+          {% if jobs %}
+          <table class="ok-table" id="cm-jobs-table">
+            <thead>
+              <tr>
+                <th>{{ column_name }}</th>
+                <th width="70">{{ column_type }}</th>
+                <th>{{ column_command }}</th>
+                <th width="150">{{ column_schedule }}</th>
+                <th width="140">{{ column_last_run }}</th>
+                <th width="110">{{ column_next_run }}</th>
+                <th width="100">{{ column_status }}</th>
+                <th width="60" class="ok-text-center">{{ column_enabled }}</th>
+                <th width="130" class="ok-text-right">{{ column_actions }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for job in jobs %}
+              <tr id="cm-row-{{ job.job_id }}" data-job-id="{{ job.job_id }}">
+                <td>
+                  <strong class="cm-job-name">{{ job.name }}</strong>
+                  {% if job.description %}
+                  <div class="ok-muted ok-text-sm">{{ job.description }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if job.type == 'php' %}
+                  <span class="ok-badge ok-badge-info-soft">PHP</span>
+                  {% elseif job.type == 'shell' %}
+                  <span class="ok-badge ok-badge-warning-soft">Shell</span>
+                  {% else %}
+                  <span class="ok-badge ok-badge-muted">URL</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="ok-mono ok-text-sm cm-command" title="{{ job.command }}">{{ job.command|slice(0,60) }}{% if job.command|length > 60 %}…{% endif %}</span>
+                </td>
+                <td>
+                  <span class="ok-mono ok-text-sm">{{ job.schedule }}</span>
+                </td>
+                <td>
+                  {% if job.last_run %}
+                  <span class="ok-text-sm">{{ job.last_run|date('d.m.y H:i') }}</span>
+                  {% if job.last_duration %}
+                  <div class="ok-muted ok-text-sm">{{ job.last_duration }} мс</div>
+                  {% endif %}
+                  {% else %}
+                  <span class="ok-muted ok-text-sm">—</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if job.status %}
+                  <span class="ok-text-sm cm-next-label">{{ job.next_run_label }}</span>
+                  {% else %}
+                  <span class="ok-muted ok-text-sm">—</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if job.last_status == 'success' %}
+                  <span class="ok-badge ok-badge-success-soft">{{ text_status_success }}</span>
+                  {% elseif job.last_status == 'error' %}
+                  <span class="ok-badge ok-badge-danger-soft">{{ text_status_error }}</span>
+                  {% elseif job.last_status == 'running' %}
+                  <span class="ok-badge ok-badge-info-soft">{{ text_status_running }}</span>
+                  {% else %}
+                  <span class="ok-badge ok-badge-muted">{{ text_status_never }}</span>
+                  {% endif %}
+                </td>
+                <td class="ok-text-center">
+                  <label class="ok-toggle-wrap ok-toggle-sm">
+                    <input type="checkbox" class="ok-toggle-input cm-toggle" data-job-id="{{ job.job_id }}" value="1" {% if job.status %}checked{% endif %}>
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                </td>
+                <td class="ok-text-right ok-nowrap">
+                  <button type="button" class="ok-btn ok-btn-default ok-btn-xs cm-btn-run" data-job-id="{{ job.job_id }}" title="{{ button_run }}">
+                    <i data-lucide="play"></i>
+                  </button>
+                  <button type="button" class="ok-btn ok-btn-default ok-btn-xs cm-btn-logs" data-job-id="{{ job.job_id }}" title="{{ button_logs }}">
+                    <i data-lucide="file-text"></i>
+                  </button>
+                  <button type="button" class="ok-btn ok-btn-default ok-btn-xs cm-btn-edit" data-job-id="{{ job.job_id }}" title="{{ button_edit }}">
+                    <i data-lucide="pencil"></i>
+                  </button>
+                  <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cm-btn-delete" data-job-id="{{ job.job_id }}" title="{{ button_delete }}">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <div class="ok-empty-state" id="cm-empty">
+            <i data-lucide="clock" class="ok-empty-icon"></i>
+            <p>{{ text_no_jobs }}</p>
+            <button type="button" class="ok-btn ok-btn-primary" id="cm-btn-add-empty">
+              <i data-lucide="plus"></i> {{ button_add }}
+            </button>
+          </div>
+          {% endif %}
+        </div>
+
+      </div>{# /ok-panel #}
+
+    </div>{# /oc-kit #}
+  </div>{# /container-fluid #}
+</div>{# /content #}
+
+
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+{# MODAL: Add / Edit Job                                                        #}
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+<div class="ok-modal-backdrop" id="cm-modal-form" hidden>
+  <div class="ok-modal ok-modal-lg oc-kit">
+    <div class="ok-modal-header">
+      <span class="ok-modal-title" id="cm-modal-form-title">{{ button_add }}</span>
+      <button type="button" class="ok-modal-close" data-modal-close="cm-modal-form">&times;</button>
+    </div>
+    <div class="ok-modal-body">
+      <form id="cm-form">
+        <input type="hidden" name="job_id" id="cm-form-job-id" value="0">
+
+        <div class="cm-field-row">
+          <div class="ok-form-group cm-field-grow">
+            <label class="form-label ok-label" for="cm-form-name">{{ entry_name }} <span class="ok-required">*</span></label>
+            <input type="text" id="cm-form-name" name="name" class="ok-input">
+          </div>
+          <div class="ok-form-group cm-field-type">
+            <label class="form-label ok-label" for="cm-form-type">{{ entry_type }}</label>
+            <select id="cm-form-type" name="type" class="ok-select">
+              <option value="php">PHP</option>
+              <option value="shell">Shell</option>
+              <option value="url">URL</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ok-form-group">
+          <label class="form-label ok-label" for="cm-form-command">{{ entry_command }} <span class="ok-required">*</span></label>
+          <input type="text" id="cm-form-command" name="command" class="ok-input ok-input-monospace">
+          <span class="ok-help" id="cm-command-help"></span>
+        </div>
+
+        <div class="ok-form-group">
+          <label class="form-label ok-label" for="cm-form-desc">{{ entry_description }}</label>
+          <textarea id="cm-form-desc" name="description" class="ok-input" rows="2"></textarea>
+        </div>
+
+        <div class="cm-field-row">
+          <div class="ok-form-group cm-field-grow">
+            <label class="form-label ok-label" for="cm-form-schedule">{{ entry_schedule }} <span class="ok-required">*</span></label>
+            <div class="ok-input-group">
+              <input type="text" id="cm-form-schedule" name="schedule" class="ok-input ok-input-monospace" placeholder="* * * * *">
+              <a href="https://crontab.guru/" target="_blank" class="ok-btn ok-btn-default ok-btn-sm ok-input-addon" title="crontab.guru">?</a>
+            </div>
+            <span class="ok-help" id="cm-schedule-preview"></span>
+            <span class="ok-help">{{ help_schedule }}</span>
+          </div>
+          <div class="ok-form-group cm-field-timeout">
+            <label class="form-label ok-label" for="cm-form-timeout">{{ entry_timeout }}</label>
+            <input type="number" id="cm-form-timeout" name="timeout" class="ok-input" value="60" min="1" max="86400">
+          </div>
+        </div>
+
+        <div class="ok-form-group">
+          <label class="form-label ok-label">{{ entry_status }}</label>
+          <label class="ok-toggle-wrap">
+            <input type="hidden" name="status" value="0">
+            <input type="checkbox" id="cm-form-status" name="status" value="1" class="ok-toggle-input" checked>
+            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+            <span class="ok-toggle-label">{{ entry_status }}</span>
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="ok-modal-footer">
+      <button type="button" class="ok-btn ok-btn-default" data-modal-close="cm-modal-form">{{ button_cancel }}</button>
+      <button type="button" class="ok-btn ok-btn-primary" id="cm-btn-save">
+        <i data-lucide="save"></i> {{ button_save }}
+      </button>
+    </div>
+  </div>
+</div>
+
+
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+{# MODAL: Logs                                                                  #}
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+<div class="ok-modal-backdrop" id="cm-modal-logs" hidden>
+  <div class="ok-modal ok-modal-lg oc-kit">
+    <div class="ok-modal-header">
+      <span class="ok-modal-title">
+        <i data-lucide="file-text" class="ok-icon-sm"></i>
+        <span id="cm-logs-title"></span>
+      </span>
+      <button type="button" class="ok-modal-close" data-modal-close="cm-modal-logs">&times;</button>
+    </div>
+    <div class="ok-modal-body" style="padding:0">
+      <div id="cm-logs-loading" class="ok-empty-state ok-py-md">
+        <div class="ok-spinner"></div>
+      </div>
+      <div id="cm-logs-content" hidden>
+        <div class="ok-table-container">
+          <table class="ok-table ok-table-compact">
+            <thead>
+              <tr>
+                <th width="140">{{ column_date }}</th>
+                <th width="80">{{ column_duration }}</th>
+                <th width="90">{{ column_status }}</th>
+                <th width="90">{{ column_triggered_by }}</th>
+                <th>{{ column_output }}</th>
+              </tr>
+            </thead>
+            <tbody id="cm-logs-tbody"></tbody>
+          </table>
+        </div>
+        <div id="cm-logs-empty" class="ok-empty-state ok-py-md" hidden>
+          <p class="ok-muted">{{ text_no_logs }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="ok-modal-footer">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-sm" id="cm-btn-clear-logs">
+        <i data-lucide="trash-2"></i> {{ button_clear_logs }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-default" data-modal-close="cm-modal-logs">{{ button_cancel }}</button>
+    </div>
+  </div>
+</div>
+
+
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+{# MODAL: Run output                                                             #}
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+<div class="ok-modal-backdrop" id="cm-modal-run" hidden>
+  <div class="ok-modal ok-modal-lg oc-kit">
+    <div class="ok-modal-header">
+      <span class="ok-modal-title">
+        <i data-lucide="play" class="ok-icon-sm"></i>
+        <span id="cm-run-title">{{ text_run_output }}</span>
+      </span>
+      <button type="button" class="ok-modal-close" data-modal-close="cm-modal-run">&times;</button>
+    </div>
+    <div class="ok-modal-body">
+      <div id="cm-run-spinner" class="ok-empty-state ok-py-md">
+        <div class="ok-spinner"></div>
+        <p class="ok-muted">{{ text_running }}</p>
+      </div>
+      <div id="cm-run-result" hidden>
+        <div class="ok-flex ok-gap-8 ok-mb-sm">
+          <span id="cm-run-status-badge"></span>
+          <span class="ok-muted ok-text-sm" id="cm-run-duration"></span>
+        </div>
+        <pre id="cm-run-output" class="ok-pre-output"></pre>
+      </div>
+    </div>
+    <div class="ok-modal-footer">
+      <button type="button" class="ok-btn ok-btn-default" data-modal-close="cm-modal-run">{{ button_cancel }}</button>
+    </div>
+  </div>
+</div>
+
+
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+{# MODAL: Scan results                                                           #}
+{# ═══════════════════════════════════════════════════════════════════════════ #}
+<div class="ok-modal-backdrop" id="cm-modal-scan" hidden>
+  <div class="ok-modal oc-kit">
+    <div class="ok-modal-header">
+      <span class="ok-modal-title">
+        <i data-lucide="scan-line" class="ok-icon-sm"></i>
+        {{ text_scan_title }}
+      </span>
+      <button type="button" class="ok-modal-close" data-modal-close="cm-modal-scan">&times;</button>
+    </div>
+    <div class="ok-modal-body" id="cm-scan-body">
+      <div class="ok-empty-state ok-py-md">
+        <i data-lucide="loader" class="ok-spin ok-icon-lg ok-muted"></i>
+      </div>
+    </div>
+    <div class="ok-modal-footer">
+      <button type="button" class="ok-btn ok-btn-default" data-modal-close="cm-modal-scan">{{ button_cancel }}</button>
+    </div>
+  </div>
+</div>
+
+
+{# ── JS config ──────────────────────────────────────────────────────────────── #}
+<script>
+window.cmUrls  = {{ cm_urls }};
+window.cmI18n  = {{ i18n }};
+</script>
+
+{{ footer }}

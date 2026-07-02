@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Auto Related Products — OpenCart 3.x Module
+  © 2026 oc-kit.com | https://oc-kit.com
+-->
+<modification>
+    <name>Auto Related Products — On-Visit Hook</name>
+    <code>oc_kit_auto_related</code>
+    <version>1.0.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <file path="catalog/controller/product/product.php">
+        <operation>
+            <search><![CDATA[$this->response->setOutput($this->load->view('product/product', $data));]]></search>
+            <add position="before"><![CDATA[
+            // ── Auto Related Products hook ────────────────────────────────────
+            if ($this->config->get('module_oc_kit_auto_related_status') && !empty($product_id)) {
+                try {
+                    require_once(DIR_SYSTEM . 'library/ockit/auto_related/AutoRelated.php');
+                    $arLib = \OcKit\AutoRelated\AutoRelated::getInstance($this->registry);
+
+                    // On-visit generation
+                    if ($this->config->get('module_oc_kit_auto_related_on_visit')) {
+                        if ($this->config->get('module_oc_kit_auto_related_visit_mode') === 'sync') {
+                            $arLib->ensureRelated((int)$product_id);
+                        } else {
+                            $data['auto_related_ensure_url'] = $this->url->link(
+                                'extension/module/oc_kit_auto_related/ensure',
+                                'product_id=' . (int)$product_id,
+                                true
+                            );
+                        }
+                    }
+
+                    // Rule blocks URL (always inject when module is active)
+                    $data['auto_related_blocks_url'] = $this->url->link(
+                        'extension/module/oc_kit_auto_related/blocks',
+                        'product_id=' . (int)$product_id,
+                        true
+                    );
+
+                } catch (\Throwable $e) {
+                    // Silently ignore — do not break product page
+                }
+            }
+            // ── /Auto Related Products hook ───────────────────────────────────
+            ]]></add>
+        </operation>
+    </file>
+
+    <!--
+        Патч: catalog/view/theme/default/template/product/product.twig
+        Додаємо JS-сніпет для async-режиму в кінець шаблону.
+    -->
+    <file path="catalog/view/theme/default/template/product/product.twig">
+        <operation>
+            <search><![CDATA[{{ footer }}]]></search>
+            <add position="before"><![CDATA[
+            {% if auto_related_ensure_url is defined and auto_related_ensure_url %}
+            <script>
+            (function(){
+                document.addEventListener('DOMContentLoaded', function(){
+                    fetch('{{ auto_related_ensure_url }}', { method: 'POST' });
+                });
+            }());
+            </script>
+            {% endif %}
+            {% if auto_related_blocks_url is defined and auto_related_blocks_url %}
+            <div id="ar-rule-blocks"></div>
+            <script>
+            (function(){
+                document.addEventListener('DOMContentLoaded', function(){
+                    fetch('{{ auto_related_blocks_url }}')
+                        .then(function(r){ return r.json(); })
+                        .then(function(blocks){
+                            if (!Array.isArray(blocks) || !blocks.length) return;
+                            var container = document.getElementById('ar-rule-blocks');
+                            if (!container) return;
+                            blocks.forEach(function(block){
+                                if (!block.product_ids || !block.product_ids.length) return;
+                                var section = document.createElement('div');
+                                section.className = 'ar-rule-block';
+                                if (block.title) {
+                                    var h = document.createElement('h3');
+                                    h.className = 'ar-rule-block-title';
+                                    h.textContent = block.title;
+                                    section.appendChild(h);
+                                }
+                                var ul = document.createElement('ul');
+                                ul.className = 'ar-rule-block-products';
+                                block.product_ids.forEach(function(pid){
+                                    var li = document.createElement('li');
+                                    li.dataset.productId = pid;
+                                    ul.appendChild(li);
+                                });
+                                section.appendChild(ul);
+                                container.appendChild(section);
+                            });
+                        })
+                        .catch(function(){});
+                });
+            }());
+            </script>
+            {% endif %}
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>

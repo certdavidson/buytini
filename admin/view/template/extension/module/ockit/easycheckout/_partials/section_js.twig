@@ -1,0 +1,92 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ js_heading }}</h2>
+<p class="ok-help">{{ js_help }}</p>
+
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="code"></i> {{ js_heading }}
+    </div>
+  </div>
+  <div class="ok-panel-body">
+
+    <div class="ok-form-row ok-form-row--block">
+      <label class="form-label" for="input-js-before-init">{{ entry_js_before_init }}</label>
+      <div class="ok-form-control">
+        <textarea id="input-js-before-init" class="ok-input ok-input-monospace" rows="6"
+                  name="module_oc_kit_easycheckout_js_before_init">{{ module_oc_kit_easycheckout_js_before_init }}</textarea>
+        <p class="ok-help">{{ help_js_before_init }}</p>
+      </div>
+    </div>
+
+    <div class="ok-form-row ok-form-row--block">
+      <label class="form-label" for="input-js-after-init">{{ entry_js_after_init }}</label>
+      <div class="ok-form-control">
+        <textarea id="input-js-after-init" class="ok-input ok-input-monospace" rows="6"
+                  name="module_oc_kit_easycheckout_js_after_init">{{ module_oc_kit_easycheckout_js_after_init }}</textarea>
+        <p class="ok-help">{{ help_js_after_init }}</p>
+      </div>
+    </div>
+
+    <div class="ok-form-row ok-form-row--block">
+      <label class="form-label" for="input-js-before-confirm">{{ entry_js_before_confirm }}</label>
+      <div class="ok-form-control">
+        <textarea id="input-js-before-confirm" class="ok-input ok-input-monospace" rows="6"
+                  name="module_oc_kit_easycheckout_js_before_confirm">{{ module_oc_kit_easycheckout_js_before_confirm }}</textarea>
+        <p class="ok-help">{{ help_js_before_confirm }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{# ── API documentation cheat-sheet ─────────────────────────────────── #}
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="book-open"></i> {{ js_api_heading }}
+    </div>
+  </div>
+  <div class="ok-panel-body">
+    <p class="ok-help">{{ js_api_help }}</p>
+
+    <h4 class="ok-mt-3"><strong>{{ js_api_events_heading }}</strong></h4>
+    <table class="ok-table">
+      <thead>
+        <tr><th>Event</th><th>Payload</th><th>{{ js_api_when_heading }}</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code class="ok-code">okec:ready</code></td><td><code class="ok-code">{state}</code></td><td>{{ js_event_ready }}</td></tr>
+        <tr><td><code class="ok-code">okec:fieldChange</code></td><td><code class="ok-code">{code, value}</code></td><td>{{ js_event_field_change }}</td></tr>
+        <tr><td><code class="ok-code">okec:fieldFocus</code></td><td><code class="ok-code">{code}</code></td><td>{{ js_event_field_focus }}</td></tr>
+        <tr><td><code class="ok-code">okec:fieldBlur</code></td><td><code class="ok-code">{code, value}</code></td><td>{{ js_event_field_blur }}</td></tr>
+        <tr><td><code class="ok-code">okec:paymentSelect</code></td><td><code class="ok-code">{code}</code></td><td>{{ js_event_payment_select }}</td></tr>
+        <tr><td><code class="ok-code">okec:shippingSelect</code></td><td><code class="ok-code">{code}</code></td><td>{{ js_event_shipping_select }}</td></tr>
+        <tr><td><code class="ok-code">okec:beforeReload</code></td><td><code class="ok-code">{blockIds, postedFields}</code></td><td>{{ js_event_before_reload }}</td></tr>
+        <tr><td><code class="ok-code">okec:afterReload</code></td><td><code class="ok-code">{blockIds, data}</code></td><td>{{ js_event_after_reload }}</td></tr>
+        <tr><td><code class="ok-code">okec:abandonedSaved</code></td><td><code class="ok-code">{abandoned_id}</code></td><td>{{ js_event_abandoned_saved }}</td></tr>
+        <tr><td><code class="ok-code">okec:beforeConfirm</code></td><td><code class="ok-code">{state}</code></td><td>{{ js_event_before_confirm }}</td></tr>
+        <tr><td><code class="ok-code">okec:orderConfirmed</code></td><td><code class="ok-code">{order_id}</code></td><td>{{ js_event_order_confirmed }}</td></tr>
+      </tbody>
+    </table>
+
+    <h4 class="ok-mt-3"><strong>{{ js_api_methods_heading }}</strong></h4>
+    <pre class="ok-code-block">// Subscribe / unsubscribe
+window.OkEasyCheckout.on('okec:fieldChange', function (p) { console.log(p); });
+window.OkEasyCheckout.off(event, handler);
+window.OkEasyCheckout.once(event, handler);
+
+// State
+window.OkEasyCheckout.getState();         // → { code: value, ... }
+window.OkEasyCheckout.getField('email');  // → 'foo@bar.com'
+window.OkEasyCheckout.setField('telephone', '+380...');
+
+// Actions
+window.OkEasyCheckout.reloadBlocks(['shipping', 'payment']);
+window.OkEasyCheckout.submit();
+
+// Custom field/block types
+window.OkEasyCheckout.registerFieldType('my_type', { ... });
+window.OkEasyCheckout.registerBlockType('my_block', { ... });</pre>
+  </div>
+</div>

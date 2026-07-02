@@ -1,0 +1,5 @@
+<textarea name="{{ form_name }}" id="okec-f-{{ field.code }}"
+          class="ok-input" rows="3"
+          placeholder="{{ field.placeholder }}"
+          autocomplete="{{ autocomplete_attr }}"
+          {% if required %}required{% endif %}>{{ prefill_value }}</textarea>

@@ -1,0 +1,271 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+
+{# ── Products-snapshot modal ──────────────────────────────────── #}
+<div class="ok-modal-backdrop" x-cloak x-show="abandoned.productsModal.open"
+     @click.self="abandoned.closeProducts()" @keydown.escape.window="abandoned.closeProducts()">
+  <div class="ok-modal ok-modal-lg">
+    <div class="ok-modal-header">
+      <h3 class="ok-modal-title">
+        <i data-lucide="package"></i> {{ abandoned_show_products }}
+        <span class="ok-muted" x-text="'#' + abandoned.productsModal.id"></span>
+      </h3>
+      <button type="button" class="ok-modal-close" @click="abandoned.closeProducts()">×</button>
+    </div>
+    <div class="ok-modal-body">
+      <div x-show="abandoned.productsModal.loading" class="okec-loading">
+        <i data-lucide="loader" class="okec-spin"></i>
+      </div>
+      <table class="ok-table" x-show="!abandoned.productsModal.loading && abandoned.productsModal.items.length > 0" x-cloak>
+        <thead><tr>
+          <th>{{ abandoned_col_name }}</th>
+          <th>{{ abandoned_col_total }}</th>
+          <th>×</th>
+        </tr></thead>
+        <tbody>
+          <template x-for="p in abandoned.productsModal.items" :key="p.product_id + '-' + p.name">
+            <tr>
+              <td class="okec-product-cell">
+                <img :src="p.thumb" x-show="p.thumb" alt=""
+                     class="okec-product-thumb">
+                <div>
+                  <strong x-text="p.name"></strong>
+                  <small class="ok-muted" x-show="p.model" x-text="' [' + p.model + ']'"></small>
+                  <div class="ok-muted" x-show="p.options" x-text="p.options"></div>
+                </div>
+              </td>
+              <td><span x-text="p.price.toFixed(2)"></span></td>
+              <td x-text="p.quantity"></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      <p class="ok-muted" x-show="!abandoned.productsModal.loading && abandoned.productsModal.items.length === 0" x-cloak>—</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="ok-section-title">{{ abandoned_heading }}</h2>
+<p class="ok-help">{{ abandoned_help }}</p>
+
+<div class="okec-cron-status">
+  {% if cron_last_run %}
+    <span class="ok-badge ok-badge-success-soft">
+      <i data-lucide="check-circle"></i>
+      {{ cron_last_run_label }} {{ cron_last_run }}
+    </span>
+  {% else %}
+    <div class="ok-alert ok-alert-warning">
+      <i data-lucide="alert-triangle"></i>
+      <strong>{{ cron_never_ran }}</strong>
+    </div>
+    <p class="ok-help">{{ cron_never_ran_help }}</p>
+    <div class="ok-copyable ok-col-12">
+      <div class="ok-code-block" id="okec-cron-cmd-abandoned">*/15 * * * * php {{ cron_path }} > /dev/null 2>&amp;1</div>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs ok-copy-btn" data-target="okec-cron-cmd-abandoned">
+        <i class="fa fa-copy"></i>
+      </button>
+    </div>
+  {% endif %}
+</div>
+
+<div class="okec-stats-bar">
+  <label class="form-label" for="okec-stats-days">{{ abandoned_stats_days }}</label>
+  <select id="okec-stats-days" class="ok-select" x-model.number="abandoned.statsDays" @change="abandoned.load()">
+    <option value="7">7</option>
+    <option value="14">14</option>
+    <option value="30">30</option>
+    <option value="60">60</option>
+    <option value="90">90</option>
+  </select>
+
+  <input type="search" class="ok-input okec-stats-bar__search"
+         :placeholder="t('abandoned_search_ph')"
+         x-model="abandoned.search" @input="abandoned.onSearchInput()">
+
+  <select class="ok-select okec-stats-bar__status" x-model="abandoned.status" @change="abandoned.load()">
+    <option value="pending">{{ abandoned_filter_pending }}</option>
+    <option value="notified">{{ abandoned_filter_notified }}</option>
+    <option value="recovered">{{ abandoned_filter_recovered }}</option>
+    <option value="all">{{ abandoned_filter_all }}</option>
+  </select>
+
+  <div class="okec-stats-bar__range">
+    <input type="text" inputmode="decimal" class="ok-input" min="0" step="0.01"
+           :placeholder="t('abandoned_filter_min_total')"
+           x-model.number="abandoned.minTotal" @change="abandoned.load()">
+    <span class="ok-muted">—</span>
+    <input type="text" inputmode="decimal" class="ok-input" min="0" step="0.01"
+           :placeholder="t('abandoned_filter_max_total')"
+           x-model.number="abandoned.maxTotal" @change="abandoned.load()">
+  </div>
+
+  <div class="okec-stats-bar__export" x-data="{ from: abandoned.exportFrom, to: abandoned.exportTo }">
+    <input type="date" class="ok-input" x-model="from">
+    <input type="date" class="ok-input" x-model="to">
+    <a class="ok-btn ok-btn-primary ok-btn-sm" :href="abandoned.exportUrl(from, to)" target="_blank">
+      <i data-lucide="download"></i> {{ button_export_csv }}
+    </a>
+  </div>
+</div>
+
+<div class="ok-kpi-grid" x-show="abandoned.stats" x-cloak>
+  <div class="ok-kpi-card ok-kpi-card--total">
+    <div class="ok-kpi-card__icon"><i data-lucide="shopping-cart"></i></div>
+    <div class="ok-kpi-card__body">
+      <div class="ok-kpi-card__value" x-text="abandoned.stats ? abandoned.stats.abandoned_count : 0"></div>
+      <div class="ok-kpi-card__label">{{ abandoned_stats_total }}</div>
+    </div>
+  </div>
+
+  <div class="ok-kpi-card ok-kpi-card--ok">
+    <div class="ok-kpi-card__icon"><i data-lucide="check-circle"></i></div>
+    <div class="ok-kpi-card__body">
+      <div class="ok-kpi-card__value" x-text="abandoned.stats ? abandoned.stats.recovered_count : 0"></div>
+      <div class="ok-kpi-card__label">
+        {{ abandoned_stats_recovered }}
+        <span class="ok-kpi-card__hint" x-text="'· ' + (abandoned.stats ? abandoned.stats.conversion_rate : 0) + '%'"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ok-kpi-card ok-kpi-card--lost">
+    <div class="ok-kpi-card__icon"><i data-lucide="trending-down"></i></div>
+    <div class="ok-kpi-card__body">
+      <div class="ok-kpi-card__value" x-text="abandoned.stats ? (abandoned.stats.lost_amount_display || abandoned.formatMoney(abandoned.stats.lost_amount)) : 0"></div>
+      <div class="ok-kpi-card__label">{{ abandoned_stats_lost }}</div>
+    </div>
+  </div>
+
+  <div class="ok-kpi-card ok-kpi-card--info">
+    <div class="ok-kpi-card__icon"><i data-lucide="bell-ring"></i></div>
+    <div class="ok-kpi-card__body">
+      <div class="ok-kpi-card__value">
+        <span x-text="abandoned.stats ? abandoned.stats.notified_recovered : 0"></span>
+        <small class="ok-kpi-card__sub" x-text="'/ ' + (abandoned.stats ? abandoned.stats.notified_count : 0)"></small>
+      </div>
+      <div class="ok-kpi-card__label">
+        {{ abandoned_stats_reminder }}
+        <span class="ok-kpi-card__hint" x-text="'· ' + (abandoned.stats ? abandoned.stats.reminder_efficiency : 0) + '%'"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="okec-loading" x-show="abandoned.loading">
+  <i data-lucide="loader" class="okec-spin"></i>
+</div>
+
+<div x-show="!abandoned.loading" x-cloak>
+
+  <div class="okec-empty" x-show="abandoned.items.length === 0">
+    <h3>{{ abandoned_empty }}</h3>
+  </div>
+
+  <div class="okec-bulk-bar ok-mb-3" x-show="abandoned.selected.length > 0" x-cloak>
+    <span x-text="abandoned.selected.length + ' ' + t('text_selected')"></span>
+    <button type="button" class="ok-btn ok-btn-danger ok-btn-sm" @click="abandoned.deleteSelected()">
+      <i data-lucide="trash-2"></i> {{ button_delete_selected }}
+    </button>
+  </div>
+
+  <div class="ok-panel" x-show="abandoned.items.length > 0">
+    <div class="ok-panel-header">
+      <div class="ok-panel-title">
+        <i data-lucide="shopping-cart"></i> {{ abandoned_heading }}
+      </div>
+      <small class="ok-hint" x-text="t('text_total') + ': ' + abandoned.total"></small>
+    </div>
+    <table class="ok-table">
+      <thead>
+        <tr>
+          <th class="ok-table-checkbox">
+            <label class="ok-checkbox">
+              <input type="checkbox" :checked="abandoned.allSelected()" @click="abandoned.toggleSelectAll($event)">
+            </label>
+          </th>
+          <th>ID</th>
+          <th>{{ abandoned_col_customer }}</th>
+          <th>{{ abandoned_col_total }}</th>
+          <th>{{ abandoned_col_modified }}</th>
+          <th>{{ abandoned_col_note }}</th>
+          <th class="ok-table-actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="item in abandoned.items" :key="item.abandoned_id">
+          <tr :class="{ 'is-selected': abandoned.isSelected(item.abandoned_id) }">
+            <td class="ok-table-checkbox">
+              <label class="ok-checkbox">
+                <input type="checkbox" :checked="abandoned.isSelected(item.abandoned_id)"
+                       @click="abandoned.toggleSelect(item.abandoned_id)">
+              </label>
+            </td>
+            <td x-text="item.abandoned_id"></td>
+            <td>
+              <div class="okec-cust-cell">
+                <strong class="okec-cust-cell__name" x-text="(item.firstname + ' ' + item.lastname).trim() || '—'"></strong>
+                <span class="okec-cust-cell__email ok-mono" x-text="item.email"></span>
+                <span class="okec-cust-cell__phone ok-mono" x-show="item.telephone" x-text="item.telephone"></span>
+              </div>
+            </td>
+            <td>
+              <div class="okec-total-cell">
+                <strong x-text="item.total_display || (item.total + ' ' + item.currency_code)"></strong>
+                <button type="button" class="ok-badge ok-badge-info-soft ok-d-inline-flex okec-total-cell__products"
+                        :title="t('abandoned_show_products')"
+                        @click="abandoned.openProducts(item.abandoned_id)">
+                  <i data-lucide="package"></i>
+                  <span x-text="item.products_count"></span>
+                </button>
+              </div>
+            </td>
+            <td>
+              <small class="ok-muted" x-text="item.date_modified"></small>
+              <template x-if="item.notified_at">
+                <small class="ok-muted okec-notified-at"
+                       :title="t('abandoned_notified_at_tooltip')">
+                  <i data-lucide="bell"></i>
+                  <span x-text="item.notified_at"></span>
+                  <span class="ok-badge ok-badge-info-soft" x-show="item.reminder_count > 0"
+                        x-text="'×' + item.reminder_count"></span>
+                </small>
+              </template>
+            </td>
+            <td>
+              <textarea class="ok-input okec-note-input" rows="1"
+                        :placeholder="t('abandoned_note_ph')"
+                        x-model="item.admin_notes"
+                        @blur="abandoned.saveNote(item)"></textarea>
+            </td>
+            <td class="ok-table-actions">
+              <a class="ok-btn ok-btn-success ok-btn-xs"
+                 x-show="item.recovered_order_id"
+                 :href="item.order_admin_url"
+                 :title="t('abandoned_view_order') + ' #' + item.recovered_order_id">
+                <i data-lucide="external-link"></i>
+                <span x-text="'#' + item.recovered_order_id"></span>
+              </a>
+              <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                      x-show="item.recovery_url && !item.recovered_order_id"
+                      :title="t('text_copy_recovery_url')"
+                      @click="abandoned.copyRecoveryUrl(item)">
+                <i data-lucide="copy"></i>
+              </button>
+              <button type="button" class="ok-btn ok-btn-primary ok-btn-xs"
+                      x-show="!item.recovered_order_id && item.email"
+                      :title="t('abandoned_send_reminder_now')"
+                      @click="abandoned.sendReminder(item)">
+                <i data-lucide="send"></i>
+              </button>
+              <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                      :title="t('button_delete')"
+                      @click="abandoned.delete(item.abandoned_id)">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>

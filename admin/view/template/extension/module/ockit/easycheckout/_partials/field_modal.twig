@@ -1,0 +1,779 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="okec-modal" x-show="fields.modal.open" x-cloak @keydown.escape.window="fields.closeModal()">
+  <div class="okec-modal__backdrop" @click="fields.closeModal()"></div>
+  <div class="okec-modal__dialog">
+    <div class="okec-modal__header">
+      <h3 x-text="fields.modal.editing ? t('fields_modal_title_edit') : t('fields_modal_title_add')"></h3>
+      <button type="button" class="okec-modal__close" @click="fields.closeModal()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="okec-modal__body" @scroll="$dispatch('okec-modal-scroll')" x-ref="modalBody">
+
+      {# ── Error banner на самому верху модалки ─────────────────────────── #}
+      <div class="okec-modal-error okec-modal-error--top"
+           x-show="fields.errors._global || fields.hasFieldErrors()" x-cloak>
+        <i data-lucide="alert-circle"></i>
+        <div>
+          <div class="okec-modal-error__title" x-text="fields.errors._global || t('text_field_validation_error')"></div>
+          <ul class="okec-modal-error__list" x-show="fields.hasFieldErrors()" x-cloak>
+            <template x-for="(code, key) in fields.fieldErrors()" :key="key">
+              <li>
+                <strong x-text="fields.errorFieldLabel(key) + ': '"></strong>
+                <span x-text="fields.errorText(key)"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+
+
+      {# Section: parameters #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-header"><strong>{{ fields_section_params }}</strong></div>
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_type }}</label>
+            <div class="ok-form-control">
+              <select class="ok-select" x-model="fields.form.type" @change="fields.onTypeChange()">
+                {% for group in field_type_groups %}
+                  <optgroup label="{{ group.label }}">
+                    {% for item in group.items %}
+                      <option value="{{ item.code }}">{{ item.label }}</option>
+                    {% endfor %}
+                  </optgroup>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_belongs_to }}</label>
+            <div class="ok-form-control">
+              <label class="ok-radio">
+                <input type="radio" value="order" x-model="fields.form.belongs_to"> {{ belongs_to_order }}
+              </label>
+              <label class="ok-radio">
+                <input type="radio" value="customer" x-model="fields.form.belongs_to"> {{ belongs_to_customer }}
+              </label>
+              <label class="ok-radio">
+                <input type="radio" value="address" x-model="fields.form.belongs_to"> {{ belongs_to_address }}
+              </label>
+            </div>
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_save_to_comment }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="fields.form.save_to_comment">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <p class="ok-help">{{ help_field_save_to_comment }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Section: text (multilang) #}
+      <div class="ok-panel okec-modal-panel" :class="{ 'okec-panel-invalid': fields.errors.name }">
+        <div class="ok-panel-header"><strong>{{ fields_section_text }}</strong></div>
+        <div class="ok-panel-body">
+          <template x-for="lang in context.languages" :key="lang.language_id">
+            <div class="okec-lang-block">
+              <div class="okec-lang-flag" :title="lang.name">
+                <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                     onerror="this.style.display='none'">
+                <span x-text="lang.name"></span>
+              </div>
+              <div class="okec-lang-fields">
+                <div class="ok-form-row">
+                  <label class="form-label">{{ entry_field_name }}</label>
+                  <div class="ok-form-control">
+                    <input type="text" class="ok-input"
+                           :class="{ 'is-invalid': fields.errors.name }"
+                           x-model="fields.form.descriptions[lang.language_id].name"
+                           @input="fields.errors.name && (fields.errors.name = null)">
+                  </div>
+                </div>
+                <div class="ok-form-row" x-show="fields.currentTypeMeta && fields.currentTypeMeta.has_tooltip">
+                  <label class="form-label">{{ entry_field_tooltip }}</label>
+                  <div class="ok-form-control">
+                    <textarea class="ok-input" rows="2"
+                              x-model="fields.form.descriptions[lang.language_id].tooltip"></textarea>
+                  </div>
+                </div>
+                <div class="ok-form-row" x-show="fields.currentTypeMeta && fields.currentTypeMeta.has_placeholder">
+                  <label class="form-label">{{ entry_field_placeholder }}</label>
+                  <div class="ok-form-control">
+                    <input type="text" class="ok-input"
+                           x-model="fields.form.descriptions[lang.language_id].placeholder">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      {# Section: mask (за замовчуванням схована, доступна тільки для типу text) #}
+      <div class="ok-panel okec-modal-panel" x-show="fields.currentTypeMeta && fields.currentTypeMeta.has_mask">
+        <div class="ok-panel-header">
+          <strong>{{ fields_section_mask }}</strong>
+        </div>
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_use_mask }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="fields.useMask" @change="fields.onUseMaskToggle()">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <p class="ok-help">{{ help_field_use_mask }}</p>
+            </div>
+          </div>
+          <div x-show="fields.useMask" x-cloak>
+            <div class="ok-form-row">
+              <label class="form-label">{{ entry_field_mask_mode }}</label>
+              <div class="ok-form-control">
+                <label class="ok-radio">
+                  <input type="radio" value="manual" x-model="fields.form.mask_mode"> {{ mode_manual }}
+                </label>
+                <label class="ok-radio">
+                  <input type="radio" value="api" x-model="fields.form.mask_mode"> {{ mode_api }}
+                </label>
+              </div>
+            </div>
+            <div class="ok-form-row" x-show="fields.form.mask_mode === 'manual'">
+              <label class="form-label">{{ entry_field_mask_value }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input" x-model="fields.form.mask_value"
+                       placeholder="+38(999) 999-99-99">
+                <p class="ok-help">{{ help_field_mask }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row" x-show="fields.form.mask_mode === 'api'">
+              <label class="form-label">{{ entry_field_api_method }}</label>
+              <div class="ok-form-control">
+                <div class="ok-d-inline-flex" style="align-items:center;gap:6px;flex-wrap:wrap;">
+                  <span class="ok-badge ok-badge-info-soft">catalog/model/tool/easycheckoutapi.php</span>
+                  <span class="ok-muted">::</span>
+                  <input type="text" class="ok-input ok-code-input"
+                         placeholder="getMyMask"
+                         x-model="fields.form.mask_value">
+                </div>
+                <p class="ok-help">{{ help_field_api_method }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row" x-show="fields.form.mask_mode === 'manual' && fields.form.mask_value">
+              <label class="form-label">{{ mask_preview_label }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input okec-mask-preview"
+                       placeholder="{{ mask_preview_placeholder }}"
+                       x-effect="fields.applyMaskPreview($el)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Section: type-specific parameters #}
+      <div class="ok-panel okec-modal-panel" x-show="fields.hasTypeParams(fields.form.type)">
+        <div class="ok-panel-header"><strong>{{ fields_section_type_params }}</strong></div>
+        <div class="ok-panel-body">
+
+          {# ── Consent (інформаційна сторінка через autocomplete) ── #}
+          <template x-if="fields.form.type === 'consent' && fields.form.params.consent">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_consent_information_id }}</label>
+                <div class="ok-form-control">
+                  <div class="okec-autocomplete" @click.outside="fields.consentSearch.open = false">
+                    <div class="okec-autocomplete__field">
+                      <input type="text" class="ok-input"
+                             placeholder="{{ placeholder_information_search }}"
+                             :value="fields.consentSearch.query"
+                             @input="fields.consentSearchInput($event.target.value)"
+                             @focus="fields.consentSearch.query && (fields.consentSearch.open = true)">
+                      <button type="button" class="okec-autocomplete__clear"
+                              x-show="fields.form.params.consent.information_id > 0" x-cloak
+                              @click="fields.consentClear()" title="{{ button_close }}">
+                        <i data-lucide="x"></i>
+                      </button>
+                    </div>
+                    <div class="okec-autocomplete__menu"
+                         x-show="fields.consentSearch.open && fields.consentSearch.query.length > 0"
+                         x-cloak>
+                      <div class="okec-autocomplete__loading" x-show="fields.consentSearch.loading">
+                        <i data-lucide="loader" class="okec-spin"></i>
+                      </div>
+                      <template x-for="item in fields.consentSearch.items" :key="item.information_id">
+                        <button type="button" class="okec-autocomplete__item"
+                                @click="fields.consentPick(item)" x-text="item.title"></button>
+                      </template>
+                      <div class="okec-autocomplete__empty"
+                           x-show="!fields.consentSearch.loading && fields.consentSearch.items.length === 0">
+                        —
+                      </div>
+                    </div>
+                  </div>
+                  <p class="ok-help">{{ help_consent_information_id }}</p>
+                </div>
+              </div>
+
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_consent_custom_label }}</label>
+                <div class="ok-form-control">
+                  <p class="ok-help">{{ help_consent_custom_label }}</p>
+                  <template x-for="lang in context.languages" :key="lang.language_id">
+                    <div class="okec-lang-block">
+                      <div class="okec-lang-flag" :title="lang.name">
+                        <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                             onerror="this.style.display='none'">
+                        <span x-text="lang.name"></span>
+                      </div>
+                      <div class="okec-lang-fields">
+                        <input type="text" class="ok-input"
+                               x-model="fields.form.params.consent.custom_label[lang.language_id]">
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_consent_version }}</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input"
+                         x-model="fields.form.params.consent.version">
+                  <p class="ok-help">{{ help_consent_version }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_consent_store_meta }}</label>
+                <div class="ok-form-control">
+                  <label class="ok-toggle-wrap ok-toggle-sm">
+                    <input type="checkbox" class="ok-toggle-input" x-model="fields.form.params.consent.store_meta">
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Country / Zone / City — мінімальні параметри ──────── #}
+          <template x-if="fields.form.type === 'country' && fields.form.params.country">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">ISO2 фільтр (опційно)</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input"
+                         placeholder="UA, PL, US"
+                         x-model="fields.form.params.country.restrict_to_iso">
+                  <p class="ok-help">Якщо вказано — у списку будуть лише ці країни (ISO2-коди через кому).</p>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <template x-if="(fields.form.type === 'zone' || fields.form.type === 'city') && fields.form.params[fields.form.type]">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">Залежить від поля</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input"
+                         placeholder="country або zone"
+                         x-model="fields.form.params[fields.form.type].depends_on_field">
+                  <p class="ok-help">Код поля від якого залежить це. Якщо вказане поле не виведене — береться значення з «Загальні налаштування → Інтеграції → Країна за замовчуванням».</p>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Integration field cascade (np_warehouse → np_city, up_district → up_region etc) #}
+          <template x-if="fields.form.type && (fields.form.type.startsWith('np_') || fields.form.type.startsWith('up_'))">
+            <div class="ok-form-row">
+              <label class="form-label">Залежне поле (cascade)</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input ok-code-input"
+                       placeholder="наприклад np_city"
+                       x-model="fields.form.params.integration_depends_on">
+                <p class="ok-help">Код поля від якого підвантажується цей список (наприклад, для «НП: Відділення» → np_city). Залишайте порожнім для верхнього рівня каскаду.</p>
+              </div>
+            </div>
+          </template>
+
+          {# ── Date constraints (для типу date) ──────────────────── #}
+          <template x-if="fields.form.type === 'date' && fields.form.params.date">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_date_disable_past }}</label>
+                <div class="ok-form-control">
+                  <label class="ok-toggle-wrap ok-toggle-sm">
+                    <input type="checkbox" class="ok-toggle-input" x-model="fields.form.params.date.disable_past">
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_date_min_days_ahead }}</label>
+                <div class="ok-form-control">
+                  <input type="text" inputmode="decimal" min="0" class="ok-input okec-iso2-input"
+                         x-model.number="fields.form.params.date.min_days_ahead">
+                  <p class="ok-help">{{ help_date_min_days_ahead }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_date_max_days_ahead }}</label>
+                <div class="ok-form-control">
+                  <input type="text" inputmode="decimal" min="0" class="ok-input okec-iso2-input"
+                         x-model.number="fields.form.params.date.max_days_ahead">
+                  <p class="ok-help">{{ help_date_max_days_ahead }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_date_weekends }}</label>
+                <div class="ok-form-control">
+                  <div class="okec-weekdays">
+                    {% for day in [1, 2, 3, 4, 5, 6, 0] %}
+                      <button type="button" class="okec-weekday-btn"
+                              :class="{ 'is-active': fields.isWeekend('date', {{ day }}) }"
+                              @click="fields.toggleWeekend('date', {{ day }})">
+                        {{ attribute(_context, 'weekday_' ~ day) }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                  <p class="ok-help">{{ help_date_weekends }}</p>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Time params ───────────────────────────────────────── #}
+          <template x-if="fields.form.type === 'time' && fields.form.params.time">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_time_working_hours }}</label>
+                <div class="ok-form-control">
+                  <div class="okec-time-range">
+                    <span>{{ entry_time_working_from }}</span>
+                    <input type="time" class="ok-input" x-model="fields.form.params.time.working_from">
+                    <span>{{ entry_time_working_to }}</span>
+                    <input type="time" class="ok-input" x-model="fields.form.params.time.working_to">
+                  </div>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_time_slot_minutes }}</label>
+                <div class="ok-form-control">
+                  <select class="ok-select okec-iso2-input" x-model.number="fields.form.params.time.slot_minutes">
+                    <option :value="15">15</option>
+                    <option :value="20">20</option>
+                    <option :value="30">30</option>
+                    <option :value="45">45</option>
+                    <option :value="60">60</option>
+                  </select>
+                  <p class="ok-help">{{ help_time_slot_minutes }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_time_min_hours_ahead }}</label>
+                <div class="ok-form-control">
+                  <input type="text" inputmode="decimal" min="0" class="ok-input okec-iso2-input"
+                         x-model.number="fields.form.params.time.min_hours_ahead">
+                  <p class="ok-help">{{ help_time_min_hours_ahead }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_time_weekends }}</label>
+                <div class="ok-form-control">
+                  <div class="okec-weekdays">
+                    {% for day in [1, 2, 3, 4, 5, 6, 0] %}
+                      <button type="button" class="okec-weekday-btn"
+                              :class="{ 'is-active': fields.isWeekend('time', {{ day }}) }"
+                              @click="fields.toggleWeekend('time', {{ day }})">
+                        {{ attribute(_context, 'weekday_' ~ day) }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Tel-intl ───────────────────────────────────────────── #}
+          <template x-if="fields.form.type === 'tel_intl' && fields.form.params.tel_intl">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_tel_default_country }}</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input okec-iso2-input"
+                         maxlength="2" placeholder="UA"
+                         x-model="fields.form.params.tel_intl.default_country">
+                </div>
+              </div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_tel_preferred_countries }}</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input"
+                         placeholder="UA, PL, US, DE"
+                         x-model="fields.form.params.tel_intl.preferred_countries">
+                  <p class="ok-help">{{ help_tel_preferred }}</p>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Nova Poshta autocomplete ──────────────────────────── #}
+          <template x-if="fields.form.type === 'autocomplete_np' && fields.form.params.autocomplete_np">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_np_scope }}</label>
+                <div class="ok-form-control">
+                  <label class="ok-radio">
+                    <input type="radio" value="city" x-model="fields.form.params.autocomplete_np.scope">
+                    {{ np_scope_city }}
+                  </label>
+                  <label class="ok-radio">
+                    <input type="radio" value="warehouse" x-model="fields.form.params.autocomplete_np.scope">
+                    {{ np_scope_warehouse }}
+                  </label>
+                </div>
+              </div>
+              <p class="ok-help okec-integration-hint">
+                <i data-lucide="info"></i>
+                {{ help_integration_global_keys }}
+              </p>
+            </div>
+          </template>
+
+          {# ── Computed hidden ───────────────────────────────────── #}
+          <template x-if="fields.form.type === 'computed_hidden' && fields.form.params.computed_hidden">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_computed_source }}</label>
+                <div class="ok-form-control">
+                  <select class="ok-select" x-model="fields.form.params.computed_hidden.source">
+                    <option value="utm_source">{{ computed_source_utm_source }}</option>
+                    <option value="utm_medium">{{ computed_source_utm_medium }}</option>
+                    <option value="utm_campaign">{{ computed_source_utm_campaign }}</option>
+                    <option value="utm_content">{{ computed_source_utm_content }}</option>
+                    <option value="utm_term">{{ computed_source_utm_term }}</option>
+                    <option value="referrer">{{ computed_source_referrer }}</option>
+                    <option value="cookie">{{ computed_source_cookie }}</option>
+                    <option value="expression">{{ computed_source_expression }}</option>
+                  </select>
+                  <p class="ok-help">{{ help_computed_source }}</p>
+                </div>
+              </div>
+              <div class="ok-form-row"
+                   x-show="['cookie','expression'].includes(fields.form.params.computed_hidden.source)">
+                <label class="form-label">{{ entry_computed_extra }}</label>
+                <div class="ok-form-control">
+                  <input type="text" class="ok-input ok-code-input"
+                         :placeholder="fields.form.params.computed_hidden.source === 'cookie' ? '_ga' : 'window.__myValue'"
+                         x-model="fields.form.params.computed_hidden.extra">
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# ── Group columns ─────────────────────────────────────── #}
+          <template x-if="fields.form.type === 'group' && fields.form.params.group">
+            <div>
+              <div class="ok-form-row">
+                <label class="form-label">{{ entry_group_columns }}</label>
+                <div class="ok-form-control">
+                  <label class="ok-radio">
+                    <input type="radio" :value="1" x-model.number="fields.form.params.group.columns"> 1
+                  </label>
+                  <label class="ok-radio">
+                    <input type="radio" :value="2" x-model.number="fields.form.params.group.columns"> 2
+                  </label>
+                  <label class="ok-radio">
+                    <input type="radio" :value="3" x-model.number="fields.form.params.group.columns"> 3
+                  </label>
+                </div>
+              </div>
+            </div>
+          </template>
+
+        </div>
+      </div>
+
+      {# Section: default (за замовчуванням теж схована за toggle) #}
+      <div class="ok-panel okec-modal-panel" x-show="fields.currentTypeMeta && fields.currentTypeMeta.has_default">
+        <div class="ok-panel-header">
+          <strong>{{ fields_section_default }}</strong>
+        </div>
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_use_default }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="fields.useDefault" @change="fields.onUseDefaultToggle()">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <p class="ok-help">{{ help_field_use_default }}</p>
+            </div>
+          </div>
+          <div x-show="fields.useDefault" x-cloak>
+            <div class="ok-form-row">
+              <label class="form-label">{{ entry_field_default_mode }}</label>
+              <div class="ok-form-control">
+                <label class="ok-radio">
+                  <input type="radio" value="manual" x-model="fields.form.default_mode"> {{ mode_manual }}
+                </label>
+                <label class="ok-radio">
+                  <input type="radio" value="api" x-model="fields.form.default_mode"> {{ mode_api }}
+                </label>
+              </div>
+            </div>
+            <div class="ok-form-row" x-show="fields.form.default_mode === 'manual'">
+              <label class="form-label">{{ entry_field_default_value }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input" x-model="fields.form.default_value">
+                <p class="ok-help">{{ help_field_default }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row" x-show="fields.form.default_mode === 'api'">
+              <label class="form-label">{{ entry_field_api_method }}</label>
+              <div class="ok-form-control">
+                <div class="ok-d-inline-flex" style="align-items:center;gap:6px;flex-wrap:wrap;">
+                  <span class="ok-badge ok-badge-info-soft">catalog/model/tool/easycheckoutapi.php</span>
+                  <span class="ok-muted">::</span>
+                  <input type="text" class="ok-input ok-code-input"
+                         placeholder="getDefaultValue"
+                         x-model="fields.form.default_value">
+                </div>
+                <p class="ok-help">{{ help_field_api_method }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Section: options #}
+      <div class="ok-panel okec-modal-panel" x-show="fields.currentTypeMeta && fields.currentTypeMeta.has_options">
+        <div class="ok-panel-header"><strong>{{ fields_section_options }}</strong></div>
+        <div class="ok-panel-body">
+          <p class="ok-help">{{ help_field_options }}</p>
+          <template x-for="(opt, idx) in fields.form.params.options || []" :key="idx">
+            <div class="okec-option-row okec-option-row--multilang">
+              <input type="text" class="ok-input okec-option-row__value"
+                     :placeholder="t('option_value')" x-model="fields.form.params.options[idx].value">
+              <div class="okec-option-row__labels">
+                <template x-for="lang in context.languages" :key="lang.language_id">
+                  <div class="okec-option-row__label-input">
+                    <img class="okec-lang-flag-inline"
+                         :src="'language/' + lang.code + '/' + lang.code + '.png'"
+                         :alt="lang.code"
+                         onerror="this.style.display='none'">
+                    <input type="text" class="ok-input"
+                           :placeholder="lang.code"
+                           x-model="fields.form.params.options[idx].labels[lang.language_id]">
+                  </div>
+                </template>
+              </div>
+              <button type="button" class="ok-btn ok-btn-danger ok-btn-xs" @click="fields.removeOption(idx)">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+          </template>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="fields.addOption()">
+            {{ option_add }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                  @click="fields.optionsImport.open = true">
+            <i data-lucide="upload"></i> {{ option_bulk_import }}
+          </button>
+
+          {# Bulk-import sub-modal #}
+          <div class="okec-bulk-import" x-show="fields.optionsImport.open" x-cloak
+               @click.self="fields.optionsImport.open = false"
+               @keydown.escape.window="fields.optionsImport.open = false">
+            <div class="okec-bulk-import__dialog">
+              <h4>{{ option_bulk_import }}</h4>
+              <p class="ok-help" x-text="t('option_bulk_import_help').replace('{order}', context.languages.map(function (l) { return l.code; }).join(','))"></p>
+              <textarea class="ok-input okec-bulk-import__textarea" rows="10"
+                        :placeholder="t('option_bulk_import_ph')"
+                        x-model="fields.optionsImport.text"></textarea>
+              <div class="okec-bulk-import__actions">
+                <label class="ok-checkbox-wrap">
+                  <input type="checkbox" x-model="fields.optionsImport.replace">
+                  {{ option_bulk_import_replace }}
+                </label>
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        @click="fields.optionsImport.open = false">{{ button_close }}</button>
+                <button type="button" class="ok-btn ok-btn-primary ok-btn-sm"
+                        @click="fields.applyBulkImport()">
+                  <i data-lucide="check"></i> {{ button_apply }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Section: validation rules #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-header"><strong>{{ fields_section_validation }}</strong></div>
+        <div class="ok-panel-body">
+          <p class="ok-help">{{ rules_help }}</p>
+
+          {# Empty state #}
+          <div class="okec-rules-empty"
+               x-show="!fields.form.validation_rules || fields.form.validation_rules.length === 0">
+            <p>{{ rules_empty }}</p>
+          </div>
+
+          {# List of rules #}
+          <template x-for="(rule, idx) in fields.form.validation_rules" :key="rule.id">
+            <div class="okec-rule">
+              <div class="okec-rule__header">
+                <span class="okec-rule__type-badge" x-text="fields.ruleLabel(rule.type)"></span>
+                <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                        :title="t('rules_remove')" @click="fields.removeRule(idx)">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+
+              <div class="okec-rule__body">
+                {# Type-specific params #}
+                <template x-if="rule.type === 'length'">
+                  <div class="okec-rule-params">
+                    <div class="okec-rule-params__col">
+                      <label class="form-label">{{ rule_param_min }}</label>
+                      <input type="text" inputmode="decimal" min="0" class="ok-input" x-model.number="rule.params.min">
+                    </div>
+                    <div class="okec-rule-params__col">
+                      <label class="form-label">{{ rule_param_max }}</label>
+                      <input type="text" inputmode="decimal" min="0" class="ok-input" x-model.number="rule.params.max">
+                    </div>
+                  </div>
+                </template>
+
+                <template x-if="rule.type === 'regex'">
+                  <div class="ok-form-row">
+                    <label class="form-label">{{ rule_param_pattern }}</label>
+                    <div class="ok-form-control">
+                      <input type="text" class="ok-input ok-code-input"
+                             placeholder="{{ placeholder_rule_pattern }}"
+                             x-model="rule.params.pattern">
+                    </div>
+                  </div>
+                </template>
+
+                <template x-if="rule.type === 'api'">
+                  <div class="ok-form-row">
+                    <label class="form-label">{{ rule_param_method }}</label>
+                    <div class="ok-form-control">
+                      <input type="text" class="ok-input ok-code-input"
+                             placeholder="validateMyField"
+                             x-model="rule.params.method">
+                    </div>
+                  </div>
+                </template>
+
+                <template x-if="rule.type === 'match'">
+                  <div class="ok-form-row">
+                    <label class="form-label">{{ rule_param_field_code }}</label>
+                    <div class="ok-form-control">
+                      <input type="text" class="ok-input ok-code-input"
+                             placeholder="password"
+                             x-model="rule.params.field_code">
+                    </div>
+                  </div>
+                </template>
+
+                {# Multilang error text #}
+                <div class="okec-rule__errors">
+                  <label class="form-label okec-rule__errors-label">{{ rules_error_text }}</label>
+                  <template x-for="lang in context.languages" :key="lang.language_id">
+                    <div class="okec-rule__error-row">
+                      <img class="okec-lang-flag-inline"
+                           :src="'language/' + lang.code + '/' + lang.code + '.png'"
+                           :alt="lang.code"
+                           onerror="this.style.display='none'">
+                      <input type="text" class="ok-input"
+                             :placeholder="t('placeholder_rule_error')"
+                             x-model="rule.error_text[lang.language_id]">
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          {# Add rule dropdown — fixed-positioned, escapes modal overflow #}
+          <div class="okec-add-rule"
+               x-data="{
+                 open: false,
+                 pos:  { top: 0, left: 0, width: 220 },
+                 toggle() {
+                   if (!this.open) this.recalc();
+                   this.open = !this.open;
+                 },
+                 recalc() {
+                   var r = this.$refs.trigger.getBoundingClientRect();
+                   this.pos = { top: r.bottom + 4, left: r.left, width: Math.max(220, r.width) };
+                 }
+               }"
+               @click.outside="open = false"
+               @keydown.escape.window="open = false"
+               @okec-modal-scroll.window="open = false"
+               @scroll.window="open = false">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                    x-ref="trigger" @click="toggle()">
+              <i data-lucide="plus"></i> {{ rules_btn_add }}
+            </button>
+            <div class="okec-add-rule__menu"
+                 x-show="open" x-cloak x-transition.duration.150ms
+                 :style="`top:${pos.top}px;left:${pos.left}px;min-width:${pos.width}px;`">
+              <template x-for="rt in fields.ruleTypes" :key="rt">
+                <button type="button" class="okec-add-rule__item"
+                        @click="fields.addRule(rt); open = false">
+                  <span x-text="fields.ruleLabel(rt)"></span>
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Footer with code #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_code }}</label>
+            <div class="ok-form-control">
+              <div class="okec-options-row">
+                <input type="text" class="ok-input ok-code-input" x-model="fields.form.code"
+                       :class="{ 'is-invalid': fields.errors.code }" :disabled="fields.modal.editing">
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        :title="t('button_field_code_regen')"
+                        :disabled="fields.modal.editing"
+                        @click="fields.regenerateCodeFromName()">
+                  <i data-lucide="refresh-cw"></i>
+                </button>
+              </div>
+              <p class="ok-help">{{ help_field_code }}</p>
+              <p class="okec-error" x-show="fields.errors.code" x-text="fields.errorText('code')"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="fields.closeModal()">
+        {{ button_close }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="fields.save()" :disabled="fields.saving">
+        <i data-lucide="save" x-show="!fields.saving"></i>
+        <i data-lucide="loader" class="okec-spin" x-show="fields.saving"></i>
+        <span x-text="fields.saving ? t('js_saving') : t('button_save')"></span>
+      </button>
+    </div>
+  </div>
+</div>

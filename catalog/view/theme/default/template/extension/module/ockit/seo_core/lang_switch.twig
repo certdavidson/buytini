@@ -1,0 +1,8 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{% if languages|length > 1 %}
+<div class="ok-lang-switch page-header__language d-lg-flex align-items-center">
+  {% for language in languages %}
+    <a href="{{ language.url }}" class="page-header__language_item{% if language.code == code %} page-header__language_item--active{% endif %}">{{ language.name }}</a>
+  {% endfor %}
+</div>
+{% endif %}

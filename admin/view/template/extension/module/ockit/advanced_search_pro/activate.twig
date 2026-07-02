@@ -1,0 +1,75 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="asp">
+        <div class="asp-license-center">
+          <div class="asp-license-card">
+
+            <div class="asp-license-brand">
+              <div class="asp-license-icon"><i data-lucide="key-round"></i></div>
+              <div class="asp-license-title">{{ heading_title }}</div>
+              <div class="asp-license-sub"><a href="https://oc-kit.com" target="_blank">oc-kit.com</a> · v{{ asp_module_version }}</div>
+            </div>
+
+            <div class="ok-block">
+              <div class="ok-block-body">
+
+                <p class="ok-help ok-mb-3">{{ text_activate_intro }}</p>
+
+                <div class="asp-license-badge">
+                  {% if asp_license_status == 'expired' %}
+                    <span class="ok-badge ok-badge-warning"><i data-lucide="clock"></i> {{ text_license_expired }}</span>
+                  {% elseif asp_license_status == 'invalid' %}
+                    <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle"></i> {{ text_license_invalid }}</span>
+                  {% else %}
+                    <span class="ok-badge ok-badge-default"><i data-lucide="help-circle"></i> {{ text_license_no_key }}</span>
+                  {% endif %}
+                </div>
+
+                {% if asp_license_domain %}
+                  <div class="asp-license-meta">{{ text_license_domain }}: <strong>{{ asp_license_domain }}</strong></div>
+                {% endif %}
+
+                {% if activation_error %}
+                  <div class="ok-alert ok-alert-danger ok-mt-2 ok-mb-2"><i data-lucide="alert-triangle"></i> {{ activation_error }}</div>
+                {% endif %}
+
+                <form method="post" action="{{ action }}">
+                  <input type="hidden" name="asp_activate" value="1">
+                  <label class="form-label ok-fw-600 ok-mt-2 ok-mb-1">{{ entry_license_key }}</label>
+                  <div class="ok-input-inline ok-mb-2">
+                    <input type="text" name="license_key" value="{{ module_oc_kit_advanced_search_pro_license_key }}" class="ok-input ok-flex-1" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" autofocus>
+                    <button type="submit" class="ok-btn ok-btn-primary"><i data-lucide="check"></i> {{ button_activate }}</button>
+                  </div>
+                  <p class="ok-help ok-mb-3">{{ help_license_key }}</p>
+                </form>
+
+                <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                  <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                </a>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="view/javascript/ockit/assets/js/lucide.min.js"></script>
+<script>if (window.lucide) lucide.createIcons();</script>
+{{ footer }}

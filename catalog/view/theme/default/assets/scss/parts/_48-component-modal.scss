@@ -18,3 +18,4 @@
 .modal--lightbox { background: rgba(15, 12, 10, .92); backdrop-filter: none; padding: 40px; }
 .modal__lightbox-close { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border: none; background: rgba(255, 255, 255, .14); border-radius: var(--radius-pill); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .modal__lightbox-img { max-width: 600px; width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-lg); background: center / cover no-repeat; animation: dcPop .22s cubic-bezier(.22, .61, .36, 1); }
+

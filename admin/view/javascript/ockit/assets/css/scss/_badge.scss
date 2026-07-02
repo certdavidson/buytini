@@ -1,0 +1,46 @@
+// oc-kit Design System — Badges
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  .ok-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: $ok-radius-full;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    // ── Solid vivid (for status: green/red/orange) ────────────────────────────
+    &-success { background: $ok-success; color: #fff; }
+    &-danger  { background: $ok-danger;  color: #fff; }
+    &-warning { background: $ok-warning; color: #fff; }
+    &-info    { background: $ok-info;    color: #fff; }
+    &-primary { background: $ok-accent;  color: #fff; }
+    &-dark    { background: $ok-text;    color: #fff; }
+
+    // ── Soft (for secondary labels) ───────────────────────────────────────────
+    &-success-soft { background: $ok-success-soft-bg; color: $ok-success-soft-clr; }
+    &-danger-soft  { background: $ok-danger-soft-bg;  color: $ok-danger-soft-clr; }
+    &-warning-soft { background: $ok-warning-soft-bg; color: $ok-warning-soft-clr; }
+    &-info-soft    { background: $ok-info-soft-bg;    color: $ok-info-soft-clr; }
+    &-muted        { background: #e9ecef; color: #5a6474; }
+
+    // ── Dot prefix (opt-in) ───────────────────────────────────────────────────
+    &-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    // ── Sizes ─────────────────────────────────────────────────────────────────
+    &-sm { padding: 2px 8px; font-size: 11px; }
+    &-lg { padding: 5px 14px; font-size: 13px; }
+  }
+}

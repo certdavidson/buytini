@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    OcKit SEO Core — OCMOD patches
+    @author    oc-kit.com
+    @copyright Copyright (c) 2026 oc-kit.com. All rights reserved.
+    @link      https://oc-kit.com
+-->
+<modification>
+    <name>OcKit SEO Core</name>
+    <code>oc_kit_seo_core</code>
+    <version>1.0.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <!-- ── Patch -1: system/library/template/twig.php ── -->
+    <!-- Chain a FilesystemLoader after the ArrayLoader so SEO Core admin
+         templates can use `{% include "...nav.twig" %}`. OpenCart's default
+         loader is ArrayLoader-only, which makes the include tag throw
+         "Template not defined". Safe for vanilla OpenCart: when no extra
+         paths exist, behaviour is identical to the original. -->
+
+    <file path="system/library/template/twig.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$loader = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));]]></search>
+            <add position="replace"><![CDATA[//$loader = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));
+            $loader1 = new \Twig\Loader\ArrayLoader(array($filename . '.twig' => $code));
+$loader2 = new \Twig\Loader\FilesystemLoader([DIR_TEMPLATE]);
+$loader = new \Twig\Loader\ChainLoader([$loader1, $loader2]);]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 0: system/config/catalog.php ── -->
+    <!-- Register our pre-startup language detector BEFORE startup/startup -->
+
+    <file path="system/config/catalog.php">
+        <operation>
+            <search><![CDATA['startup/maintenance',]]></search>
+            <add position="before"><![CDATA[
+	'startup/oc_kit_seo_core_lang',]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 1: catalog/controller/startup/seo_url.php ── -->
+    <!-- Make SeoCore the sole SEO authority when active.
+         When SCF is OFF, fall back cleanly to seopro (or vanilla OC). -->
+
+    <file path="catalog/controller/startup/seo_url.php">
+
+        <!-- 1a. Declare $seoCore property next to $seo_pro -->
+        <operation>
+            <search><![CDATA[private $seo_pro;]]></search>
+            <add position="after"><![CDATA[
+		//seo_core property
+		private $seoCore = null;]]></add>
+        </operation>
+
+        <!-- 1b. Conditional constructor: SCF init OR seopro init, never both.
+             When SCF is on, seopro library is never instantiated. -->
+        <operation>
+            <search><![CDATA[$this->seo_pro = new SeoPro($registry);]]></search>
+            <add position="replace"><![CDATA[
+			if ($this->config->get('module_oc_kit_seo_core_status')) {
+				$scf_base = DIR_SYSTEM . 'library/ockit/seo_core/';
+				require_once $scf_base . 'Autoloader.php';
+				\OcKit\SeoCore\Autoloader::register($scf_base);
+				$this->seoCore = new \OcKit\SeoCore\SeoCore($registry);
+				$registry->set('seo_core', $this->seoCore);
+			} elseif ($this->config->get('config_seo_pro')) {
+				$this->seo_pro = new SeoPro($registry);
+			}]]></add>
+        </operation>
+
+        <!-- 1c. Replace seopro prepareRoute call with SCF-first dispatch -->
+        <operation>
+            <search><![CDATA[$parts = $this->seo_pro->prepareRoute($parts);]]></search>
+            <add position="replace"><![CDATA[
+			if ($this->config->get('module_oc_kit_seo_core_status') && $this->seoCore) {
+				$parts = $this->seoCore->prepareRoute($parts);
+			} elseif ($this->config->get('config_seo_pro') && $this->seo_pro) {
+				$parts = $this->seo_pro->prepareRoute($parts);
+			}]]></add>
+        </operation>
+
+        <!-- 1d. Replace seopro validate call -->
+        <operation>
+            <search><![CDATA[$this->seo_pro->validate();]]></search>
+            <add position="replace"><![CDATA[
+			if ($this->config->get('module_oc_kit_seo_core_status') && $this->seoCore) {
+				$this->seoCore->validate();
+			} elseif ($this->config->get('config_seo_pro') && $this->seo_pro) {
+				$this->seo_pro->validate();
+			}]]></add>
+        </operation>
+
+        <!-- 1e. Replace seopro baseRewrite line — SCF either rewrites (return URL)
+             or signals "not rewritable" (return original $link unchanged). -->
+        <operation>
+            <search><![CDATA[list($url, $data, $postfix) =  $this->seo_pro->baseRewrite($data, (int)$this->config->get('config_language_id'));]]></search>
+            <add position="replace"><![CDATA[
+			if ($this->config->get('module_oc_kit_seo_core_status') && $this->seoCore) {
+				$scf_rewritten = $this->seoCore->rewrite($link);
+				return $scf_rewritten !== null ? $scf_rewritten : $link;
+			} elseif ($this->config->get('config_seo_pro') && $this->seo_pro) {
+				list($url, $data, $postfix) = $this->seo_pro->baseRewrite($data, (int)$this->config->get('config_language_id'));
+			}]]></add>
+        </operation>
+
+        <!-- 1f. Open the seopro outer gates so the SCF/seopro switch above runs
+             even when config_seo_pro is disabled in admin -->
+        <operation>
+            <search><![CDATA[if($this->config->get('config_seo_pro')){]]></search>
+            <add position="replace"><![CDATA[if ($this->config->get('config_seo_pro') || $this->config->get('module_oc_kit_seo_core_status')) {]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[if($this->config->get('config_seo_pro')) {]]></search>
+            <add position="replace"><![CDATA[if ($this->config->get('config_seo_pro') || $this->config->get('module_oc_kit_seo_core_status')) {]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ── Patch 2: catalog/controller/common/header.php ── -->
+    <!-- Inject injectHeadTags() after document is ready -->
+
+    <file path="catalog/controller/common/header.php">
+
+        <operation error="skip">
+            <search><![CDATA[$data['title'] = $this->document->getTitle();]]></search>
+            <add position="before"><![CDATA[
+        require_once DIR_SYSTEM . 'library/ockit/seo_core/SeoCore.php';
+        $data['scf_head_extra'] = \OcKit\SeoCore\SeoCore::renderForHeader($this->registry);
+]]></add>
+        </operation>
+
+    </file>
+
+    <!-- ── Patch 3: catalog/controller/product/category.php ── -->
+    <!-- PaginationGuard: 404 or noindex for empty / paginated pages -->
+
+    <file path="catalog/controller/product/category.php">
+        <operation>
+            <search><![CDATA[$pagination->total = $product_total;]]></search>
+            <add position="before"><![CDATA[
+            //seo_core pagination guard
+            if (isset($product_total) && $this->config->get('module_oc_kit_seo_core_status')) {
+                $scf_guard = new \OcKit\SeoCore\Libs\PaginationGuard($this->config, $this->response, $this->document, $this->registry);
+                $scf_page  = (int)($this->request->get['page'] ?? 1);
+                $scf_guard->apply($scf_page, (int)$product_total, (int)(isset($limit) ? $limit : 0));
+            }
+            //seo_core pagination guard end
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 4: catalog/controller/blog/category.php ── -->
+
+    <file path="catalog/controller/blog/category.php" error="skip">
+        <operation>
+            <search><![CDATA[$pagination->total = $article_total;]]></search>
+            <add position="before"><![CDATA[
+            //seo_core pagination guard
+            if (isset($article_total) && $this->config->get('module_oc_kit_seo_core_status')) {
+                $scf_guard = new \OcKit\SeoCore\Libs\PaginationGuard($this->config, $this->response, $this->document, $this->registry);
+                $scf_page  = (int)($this->request->get['page'] ?? 1);
+                $scf_guard->apply($scf_page, (int)$article_total, (int)(isset($limit) ? $limit : 0));
+            }
+            //seo_core pagination guard end
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 5: catalog/controller/product/search.php ── -->
+
+    <file path="catalog/controller/product/search.php" error="skip">
+        <operation>
+            <search><![CDATA[$pagination->total = $product_total;]]></search>
+            <add position="before"><![CDATA[
+            //seo_core pagination guard
+            if (isset($product_total) && $this->config->get('module_oc_kit_seo_core_status')) {
+                $scf_guard = new \OcKit\SeoCore\Libs\PaginationGuard($this->config, $this->response, $this->document, $this->registry);
+                $scf_page  = (int)($this->request->get['page'] ?? 1);
+                $scf_guard->apply($scf_page, (int)$product_total, (int)(isset($limit) ? $limit : 0));
+            }
+            //seo_core pagination guard end
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 6a: catalog/controller/common/header.php ── -->
+    <!-- Replace the OC default `common/language` widget call with our own
+         module widget that pre-computes a per-language SEO URL. Lets us
+         own the controller + template fully, no fragile patches. -->
+
+    <file path="catalog/controller/common/header.php">
+        <operation>
+            <search><![CDATA[$data['language'] = $this->load->controller('common/language');]]></search>
+            <add position="replace"><![CDATA[$data['language'] = $this->config->get('module_oc_kit_seo_core_status')
+            ? $this->load->controller('extension/module/oc_kit_seo_core_lang_switch')
+            : $this->load->controller('common/language');]]></add>
+        </operation>
+    </file>
+
+<!-- ── Patch 6: catalog/view/theme/*/template/common/header.twig ── -->
+    <!-- Emit accumulated <meta>/<link hreflang>/JSON-LD tags before </head> -->
+
+    <file path="catalog/view/theme/*/template/common/header.twig" error="skip">
+        <operation>
+            <search><![CDATA[</head>]]></search>
+            <add position="before"><![CDATA[
+{% if scf_head_extra %}{{ scf_head_extra|raw }}{% endif %}
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 7: SEO URL history widget in entity edit forms ────────────── -->
+    <!-- Injects a small JS-driven banner above the page body that, when the
+         current URL contains a known entity ID, fetches and displays the
+         keyword change history for that entity. Works for product, category,
+         manufacturer, information edit pages. -->
+
+    <file path="admin/view/template/catalog/product_form.twig">
+        <operation>
+            <search><![CDATA[<div class="tab-pane" id="tab-seo">]]></search>
+            <add position="after"><![CDATA[
+              <div data-scf-history-widget data-entity-type="product" data-id-param="product_id" data-target-name="product_seo_url"></div>]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/catalog/category_form.twig">
+        <operation>
+            <search><![CDATA[<div class="tab-pane" id="tab-seo">]]></search>
+            <add position="after"><![CDATA[
+              <div data-scf-history-widget data-entity-type="category" data-id-param="category_id" data-target-name="category_seo_url"></div>]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/catalog/manufacturer_form.twig">
+        <operation>
+            <search><![CDATA[<div class="tab-pane" id="tab-seo">]]></search>
+            <add position="after"><![CDATA[
+              <div data-scf-history-widget data-entity-type="manufacturer" data-id-param="manufacturer_id" data-target-name="manufacturer_seo_url"></div>]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/catalog/information_form.twig">
+        <operation>
+            <search><![CDATA[<div class="tab-pane" id="tab-seo">]]></search>
+            <add position="after"><![CDATA[
+              <div data-scf-history-widget data-entity-type="information" data-id-param="information_id" data-target-name="information_seo_url"></div>]]></add>
+        </operation>
+    </file>
+
+    <!-- Inject the JS that drives all widgets — runs once per admin page. -->
+    <file path="admin/view/template/common/footer.twig" error="skip">
+        <operation>
+            <search><![CDATA[</body>]]></search>
+            <add position="before"><![CDATA[
+<style>
+.scf-hw{background:#fff8e1;border:1px solid #f1c40f;padding:10px 14px;margin:0 0 14px;border-radius:4px;font-size:13px;}
+.scf-hw summary{cursor:pointer;font-weight:600;color:#7a6500;outline:none;}
+.scf-hw table{width:100%;margin-top:8px;border-collapse:collapse;table-layout:fixed;background:#fff;}
+.scf-hw thead th{background:#fef5d2;font-weight:600;color:#5a4d12;text-align:left;padding:6px 8px;border-bottom:1px solid #e9d785;font-size:12px;}
+.scf-hw tbody td{padding:6px 8px;border-bottom:1px solid #f1eccd;vertical-align:middle;word-break:break-all;}
+.scf-hw tbody tr:hover{background:#fffbea;}
+.scf-hw .scf-col-lang{width:70px;}
+.scf-hw .scf-col-old,.scf-hw .scf-col-new{width:auto;}
+.scf-hw .scf-col-arrow{width:24px;text-align:center;color:#999;}
+.scf-hw .scf-col-date{width:140px;color:#888;font-size:11px;white-space:nowrap;}
+.scf-hw .scf-col-action{width:90px;text-align:right;}
+.scf-hw code{background:transparent;color:#3a4a5e;font-family:Consolas,monospace;font-size:12px;}
+.scf-hw .scf-cur td{background:#f8fff0;}
+.scf-hw .scf-cur strong{color:#2f7a5b;}
+.scf-hw .scf-fill-btn{padding:3px 10px;font-size:11px;background:#fff;border:1px solid #d4c89e;border-radius:3px;cursor:pointer;color:#7a6500;}
+.scf-hw .scf-fill-btn:hover{background:#fef5d2;border-color:#b8a854;}
+.scf-flash{animation:scfFlash 1.2s ease-out;}
+@keyframes scfFlash{0%{background:#ffe66d}100%{background:transparent}}
+</style>
+<script>
+(function () {
+  var nodes = document.querySelectorAll('[data-scf-history-widget]');
+  if (!nodes.length) return;
+  var url = new URL(location.href);
+  var token = url.searchParams.get('user_token') || '';
+  var routeBase = '/admin/index.php?route=extension/module/oc_kit_seo_core/urlHistoryWidget&user_token=' + encodeURIComponent(token);
+
+  // Lazy-load: widget sits inside #tab-seo (display:none until user opens
+  // SEO tab), so IntersectionObserver fires only when tab becomes visible.
+  // No DB query / no fetch on initial page render — keeps form snappy.
+  var loaded = new WeakSet();
+  function scheduleLoad(host, run) {
+    if (loaded.has(host)) return;
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting || loaded.has(host)) return;
+          loaded.add(host); io.disconnect();
+          (window.requestIdleCallback || function (cb) { setTimeout(cb, 200); })(run, { timeout: 1500 });
+        });
+      }, { rootMargin: '120px' });
+      io.observe(host);
+    } else {
+      loaded.add(host);
+      (window.requestIdleCallback || function (cb) { setTimeout(cb, 800); })(run, { timeout: 2500 });
+    }
+  }
+
+  nodes.forEach(function (host) {
+    var entityType = host.getAttribute('data-entity-type');
+    var idParam    = host.getAttribute('data-id-param');
+    var targetName = host.getAttribute('data-target-name') || '';
+    var entityId   = url.searchParams.get(idParam);
+    if (!entityId) return;
+
+    var run = function () {
+      fetch(routeBase + '&entity_type=' + encodeURIComponent(entityType) + '&entity_id=' + encodeURIComponent(entityId), {credentials:'same-origin'})
+        .then(function (r) { return r.json(); })
+        .then(function (d) { render(host, d, targetName); })
+        .catch(function () {});
+    };
+
+    scheduleLoad(host, run);
+  });
+
+  // ── DOM rendering (no innerHTML, no string escaping) ────────────────────
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v == null || v === false) return;
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v;
+        else if (k.indexOf('data-') === 0 || k === 'title' || k === 'colspan' || k === 'type') node.setAttribute(k, v);
+        else node[k] = v;
+      });
+    }
+    (children || []).forEach(function (c) {
+      if (c == null) return;
+      node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  function render(host, d, targetName) {
+    var hist = (d && d.history) || [];
+    var cur  = (d && d.current) || [];
+    if (!hist.length && !cur.length) return;
+
+    var langMap = (d && d.languages) || {};
+    function langLabel(id) {
+      var l = langMap[id];
+      return l && l.code ? (l.name || '') + ' (' + l.code + ')' : 'lang ' + id;
+    }
+
+    var tbody = el('tbody');
+
+    cur.forEach(function (c) {
+      tbody.appendChild(el('tr', { class: 'scf-cur', 'data-lang': c.language_id }, [
+        el('td', { class: 'scf-col-lang', text: langLabel(c.language_id) }),
+        el('td', { class: 'scf-col-old', colspan: 3 }, [
+          el('strong', null, [ el('code', { text: c.keyword }) ]),
+        ]),
+        el('td', { class: 'scf-col-date' }, [ el('em', { text: 'поточний' }) ]),
+        el('td', { class: 'scf-col-action' }),
+      ]));
+    });
+
+    hist.forEach(function (h) {
+      var actionCell = el('td', { class: 'scf-col-action' });
+      if (targetName) {
+        actionCell.appendChild(el('button', {
+          type: 'button',
+          class: 'scf-fill-btn',
+          'data-fill': h.old_keyword,
+          'data-lang': h.language_id,
+          title: 'Підставити старий keyword у поле',
+          text: '↩ підставити',
+        }));
+      }
+      tbody.appendChild(el('tr', { 'data-lang': h.language_id }, [
+        el('td', { class: 'scf-col-lang', text: langLabel(h.language_id) }),
+        el('td', { class: 'scf-col-old' },  [ el('code', { text: h.old_keyword }) ]),
+        el('td', { class: 'scf-col-arrow', text: '→' }),
+        el('td', { class: 'scf-col-new' },  [ el('code', { text: h.new_keyword }) ]),
+        el('td', { class: 'scf-col-date',   text: h.changed_at }),
+        actionCell,
+      ]));
+    });
+
+    var colgroup = el('colgroup', null, ['lang','old','arrow','new','date','action'].map(function (n) {
+      return el('col', { class: 'scf-col-' + n });
+    }));
+    var thead = el('thead', null, [ el('tr', null, ['Мова','Старий','','Новий','Дата',''].map(function (t) {
+      return el('th', { text: t });
+    })) ]);
+    var table = el('table', null, [colgroup, thead, tbody]);
+
+    var details = el('details', hist.length ? null : { open: true }, [
+      el('summary', { text: 'SEO URL: ' + cur.length + ' поточних, ' + hist.length + ' змін(и) в історії' }),
+      table,
+    ]);
+
+    var wrap = el('div', { class: 'scf-hw' }, [details]);
+    while (host.firstChild) host.removeChild(host.firstChild);
+    host.appendChild(wrap);
+
+    if (targetName) {
+      host.addEventListener('click', function (e) {
+        var btn = e.target.closest('.scf-fill-btn');
+        if (!btn) return;
+        e.preventDefault();
+        var fill = btn.getAttribute('data-fill') || '';
+        var lang = btn.getAttribute('data-lang') || '';
+        // Match all inputs `<targetName>[<store>][<lang>]` for this language across stores
+        var sel = 'input[name^="' + targetName + '["][name$="][' + lang + ']"]';
+        document.querySelectorAll(sel).forEach(function (inp) {
+          inp.value = fill;
+          inp.classList.add('scf-flash');
+          setTimeout(function () { inp.classList.remove('scf-flash'); }, 1200);
+          inp.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    }
+  }
+})();
+</script>
+]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 8: allow identical seo_url across languages of one entity ── -->
+    <!-- OC3 blocks same keyword for multiple languages within ONE entity with
+         'error_unique'. SEO Core gates this with `allow_duplicate_keywords`
+         setting: when ON, the cross-language error is suppressed (cross-ENTITY
+         duplicate check stays untouched). When OFF / module not installed,
+         OC's default behaviour stands. -->
+
+    <file path="admin/controller/catalog/product.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique');]]></search>
+            <add position="replace"><![CDATA[if (!$this->config->get('module_oc_kit_seo_core_allow_duplicate_keywords')) { $this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique'); }]]></add>
+        </operation>
+    </file>
+    <file path="admin/controller/catalog/category.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique');]]></search>
+            <add position="replace"><![CDATA[if (!$this->config->get('module_oc_kit_seo_core_allow_duplicate_keywords')) { $this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique'); }]]></add>
+        </operation>
+    </file>
+    <file path="admin/controller/catalog/manufacturer.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique');]]></search>
+            <add position="replace"><![CDATA[if (!$this->config->get('module_oc_kit_seo_core_allow_duplicate_keywords')) { $this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique'); }]]></add>
+        </operation>
+    </file>
+    <file path="admin/controller/catalog/information.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique');]]></search>
+            <add position="replace"><![CDATA[if (!$this->config->get('module_oc_kit_seo_core_allow_duplicate_keywords')) { $this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique'); }]]></add>
+        </operation>
+    </file>
+
+    <!-- ── Patch 9: product image alt/title from configurable mask ── -->
+    <!-- After OC builds $data for product/product, run ProductImageMetaApplier
+         to compute alt/title strings from admin-configured masks and inject
+         them into $data (main image + gallery). Theme picks them up if it
+         renders {{ image.alt }} / scf_image_alt_main. -->
+
+    <file path="catalog/controller/product/product.php" error="skip">
+        <operation error="skip">
+            <search><![CDATA[$this->response->setOutput($this->load->view('product/product', $data));]]></search>
+            <add position="before"><![CDATA[
+            // seo_core image meta applier
+            if ($this->config->get('module_oc_kit_seo_core_status')) {
+                $scf_base = DIR_SYSTEM . 'library/ockit/seo_core/';
+                if (file_exists($scf_base . 'libs/ProductImageMetaApplier.php')) {
+                    require_once $scf_base . 'libs/ProductImageMetaApplier.php';
+                    $scf_applier = new \OcKit\SeoCore\Libs\ProductImageMetaApplier($this->db, $this->config);
+                    $scf_applier->apply(
+                        $data,
+                        (int)$this->request->get['product_id'],
+                        (int)$this->config->get('config_language_id'),
+                        (int)$this->config->get('config_store_id')
+                    );
+                }
+            }
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>

@@ -1,0 +1,124 @@
+<div id="ajax-search-container" class="asp-search page-header__search ajax-search-container" data-asp
+    data-asp-i18n-no-results="{{ text_no_results }}"
+    data-asp-i18n-recent="{{ text_recent }}"
+    data-asp-i18n-clear="{{ text_clear_history }}"
+    data-asp-i18n-loading="{{ text_loading }}"
+    data-asp-i18n-in-stock="{{ text_in_stock }}"
+    data-asp-i18n-out-of-stock="{{ text_out_of_stock }}"
+    data-asp-i18n-category="{{ text_category }}"
+    data-asp-i18n-brand="{{ text_brand }}"
+    data-asp-i18n-popular="{{ text_popular }}"
+    data-asp-i18n-sale="{{ text_sale }}"
+    data-asp-i18n-did-you-mean="{{ text_did_you_mean }}"
+    data-asp-i18n-view-all="{{ text_view_all }}"
+    data-asp-i18n-voice-listen="{{ text_voice_listen }}"
+    data-asp-i18n-popular-tags="{{ text_popular_tags }}"
+    data-asp-i18n-id="{{ text_id }}"
+    data-asp-i18n-model="{{ text_model }}"
+    data-asp-popular-tags-b64="{{ popular_tags_b64 }}">
+    <div class="sp-input-wrap input-group">
+        <button class="page-header__search_btn-close" id="search-close" type="button"></button>
+        <input id="ajax-search-input" name="search" type="text"
+            class="form-control page-header__search_input asp-input"
+            placeholder="{{ text_placeholder }}"
+            data-asp-input autocomplete="off"
+            aria-autocomplete="list" aria-haspopup="listbox" />
+        <button type="button" class="asp-mic-btn" data-asp-mic aria-label="{{ text_voice_search }}" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <button id="button-search" type="button" class="btn btn-primary page-header__search_btn asp-button" data-asp-submit aria-label="{{ heading_title }}">
+{#            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>#}
+            {{ button_search }}
+        </button>
+    </div>
+    <div id="ajax-search-results" class="asp-results" data-asp-results role="listbox" aria-label="{{ heading_title }}">
+        <div class="asp-spinner" data-asp-loading aria-hidden="true">
+            <span class="asp-spinner-dot"></span>
+            <span class="asp-spinner-dot"></span>
+            <span class="asp-spinner-dot"></span>
+        </div>
+        <div class="asp-history-wrap" data-asp-history style="display:none"></div>
+        <div class="asp-popular-tags-wrap" data-asp-popular-tags-wrap style="display:none"></div>
+        <div class="asp-empty" data-asp-empty style="display:none"></div>
+        <div class="asp-list" data-asp-list role="group"></div>
+        <div class="asp-facets" data-asp-facets style="display:none"></div>
+        <div class="asp-footer" data-asp-footer style="display:none">
+            <a href="#" data-asp-view-all>{{ text_view_all }}</a>
+        </div>
+    </div>
+    <div class="search-overlay" id="asp-overlay" style="display:none"></div>
+    <input type="hidden" data-asp-endpoint value="{{ endpoint }}" />
+    <input type="hidden" data-asp-min value="{{ min_chars }}" />
+    <input type="hidden" data-asp-delay value="{{ delay }}" />
+</div>
+<script>
+(function () {
+    var toggle  = document.getElementById('search-toggle');
+    var block   = document.getElementById('search-block');
+    var close   = document.getElementById('search-close');
+    var overlay = document.getElementById('asp-overlay');
+    var results = document.getElementById('ajax-search-results');
+
+    // Sync overlay: visible when input focused OR dropdown open
+    var inp = document.getElementById('ajax-search-input');
+
+    // Mobile search block toggle
+    if (toggle && block) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            block.classList.toggle('active');
+            if (block.classList.contains('active') && inp) inp.focus();
+        });
+    }
+    if (close && block) {
+        close.addEventListener('click', function (e) {
+            e.preventDefault();
+            block.classList.remove('active');
+        });
+    }
+    var inputFocused = false;
+
+    function syncOverlay() {
+        if (!overlay) return;
+        var open = results && results.classList.contains('open');
+        overlay.style.display = (open || inputFocused) ? 'block' : 'none';
+    }
+
+    function closeSearch() {
+        inputFocused = false;
+        if (results) results.classList.remove('open');
+        if (inp) inp.blur();
+        if (block) block.classList.remove('active');
+        syncOverlay();
+    }
+
+    // Track clicks inside the search container so blur doesn't hide overlay prematurely
+    var container = document.getElementById('ajax-search-container');
+    var clickingInside = false;
+    if (container) {
+        container.addEventListener('mousedown', function () {
+            clickingInside = true;
+            setTimeout(function () { clickingInside = false; }, 300);
+        });
+    }
+
+    if (inp) {
+        inp.addEventListener('focus', function () { inputFocused = true;  syncOverlay(); });
+        inp.addEventListener('blur',  function () {
+            if (clickingInside) return; // blur caused by click inside container — ignore
+            inputFocused = false;
+            syncOverlay();
+        });
+    }
+
+    if (results && overlay) {
+        // Watch for ASP adding/removing "open" class during load/show/hide
+        new MutationObserver(syncOverlay).observe(results, { attributes: true, attributeFilter: ['class'] });
+
+        overlay.addEventListener('click', closeSearch);
+    }
+}());
+</script>
+
+<link href="catalog/view/javascript/advanced_search_pro_classic.css" rel="stylesheet">
+<script src="catalog/view/javascript/advanced_search_pro_classic.js" defer></script>

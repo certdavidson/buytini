@@ -1,0 +1,990 @@
+{# Auto Related Products | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+              <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="ar-btn-save" class="ok-btn ok-btn-primary ok-btn-sm">
+              <i data-lucide="save"></i> {{ button_save }}
+            </button>
+            <a href="{{ cancel_url }}" class="ok-btn ok-btn-default ok-btn-sm">
+              <i data-lucide="x"></i> {{ button_cancel }}
+            </a>
+          </div>
+        </div>
+
+        <div id="ar">
+          <div class="ok-layout">
+
+            {# ── Sidebar ──────────────────────────────────────────────────────── #}
+            <div class="ok-sidebar">
+
+              <div class="ok-brand">
+                <div class="ok-brand-icon"><i data-lucide="git-branch"></i></div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+                <span class="ok-brand-name">Auto Related Products <span class="ok-brand-version">v1.0.0</span></span>
+              </div>
+
+              <div class="ok-tabs-sidebar">
+                <button type="button" class="ok-tabs-sidebar-item active" data-tab="layout-general">
+                  <i data-lucide="settings-2"></i> {{ tab_general }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-weights">
+                  <i data-lucide="git-merge"></i> {{ tab_weights }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-performance">
+                  <i data-lucide="zap"></i> {{ tab_performance }}
+                </button>
+                <hr class="ok-divider">
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-generate">
+                  <i data-lucide="play-circle"></i> {{ tab_generate }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-stats">
+                  <i data-lucide="bar-chart-2"></i> {{ tab_stats }}
+                </button>
+                <hr class="ok-divider">
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-rules">
+                  <i data-lucide="list-filter"></i> {{ tab_rules }}
+                </button>
+              </div>
+
+            </div>
+
+            {# ── Content ──────────────────────────────────────────────────────── #}
+            <div class="ok-content">
+
+              {# ══ Tab: General ════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel active" id="layout-general">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="settings-2"></i> {{ tab_general }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_status }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-status" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_status ?? 0 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-related-limit">{{ entry_related_limit }}</label>
+                      <div>
+                        <input type="number" id="ar-related-limit" min="1" max="50"
+                          value="{{ module_oc_kit_auto_related_related_limit ?? 8 }}"
+                          class="ok-input ok-w-80">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_overwrite }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-overwrite" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_overwrite ?? 0 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_exclude_oos }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-exclude-oos" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_exclude_oos ?? 1 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_exclude_disabled }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-exclude-disabled" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_exclude_disabled ?? 1 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_brand_priority }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-brand-priority" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_brand_priority ?? 0 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ text_brand_priority_help }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-result-sort">{{ entry_result_sort }}</label>
+                      <div>
+                        <select id="ar-result-sort" class="ok-select ok-w-300">
+                          <option value="score"      {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'score'      %}selected{% endif %}>{{ entry_result_sort_score }}</option>
+                          <option value="random"     {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'random'     %}selected{% endif %}>{{ entry_result_sort_random }}</option>
+                          <option value="price_asc"  {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'price_asc'  %}selected{% endif %}>{{ entry_result_sort_price_asc }}</option>
+                          <option value="price_desc" {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'price_desc' %}selected{% endif %}>{{ entry_result_sort_price_desc }}</option>
+                          <option value="new"        {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'new'        %}selected{% endif %}>{{ entry_result_sort_new }}</option>
+                          <option value="name"       {% if (module_oc_kit_auto_related_result_sort ?? 'score') == 'name'       %}selected{% endif %}>{{ entry_result_sort_name }}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_only_special }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-only-special" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_only_special ?? 0 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ text_only_special_help }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="database"></i> {{ entry_cache }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cache }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-cache" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_cache ?? 1 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-cache-ttl">{{ entry_cache_ttl }}</label>
+                      <div>
+                        <input type="number" id="ar-cache-ttl" min="1" max="8760"
+                          value="{{ module_oc_kit_auto_related_cache_ttl ?? 72 }}"
+                          class="ok-input ok-w-80">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="eye"></i> {{ entry_on_visit }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_on_visit }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-on-visit" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_on_visit ?? 0 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_visit_mode }}</label>
+                      <div>
+                        <label class="ok-flex ok-align-center ok-gap-8 ok-mb-8">
+                          <input type="radio" name="ar-visit-mode" value="async"
+                            {% if (module_oc_kit_auto_related_visit_mode ?? 'async') == 'async' %}checked{% endif %}>
+                          {{ entry_visit_mode_async }}
+                        </label>
+                        <label class="ok-flex ok-align-center ok-gap-8">
+                          <input type="radio" name="ar-visit-mode" value="sync"
+                            {% if (module_oc_kit_auto_related_visit_mode ?? 'async') == 'sync' %}checked{% endif %}>
+                          {{ entry_visit_mode_sync }}
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="ban"></i> {{ entry_blacklist_products }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <p class="ok-help ok-mb-12">{{ text_blacklist_help }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_blacklist_products }}</label>
+                      <div>
+                        <div id="ar-blacklist-products" class="ok-multitag" data-url="{{ action_autocomplete_product }}">
+                          <div class="ok-multitag-inner">
+                            {% for pid in (module_oc_kit_auto_related_blacklist_products ?? []) %}
+                            <span class="ok-multitag-tag" data-id="{{ pid }}">
+                              #{{ pid }}<span class="ok-multitag-tag-remove" data-id="{{ pid }}">×</span>
+                            </span>
+                            {% endfor %}
+                            <input type="text" class="ok-multitag-input" id="ar-blacklist-prod-search"
+                              placeholder="{{ text_preview_product }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-blacklist-prod-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_blacklist_categories }}</label>
+                      <div>
+                        <div id="ar-blacklist-categories" class="ok-multitag" data-url="{{ action_autocomplete_cat }}">
+                          <div class="ok-multitag-inner">
+                            {% for cid in (module_oc_kit_auto_related_blacklist_categories ?? []) %}
+                            <span class="ok-multitag-tag" data-id="{{ cid }}">
+                              #{{ cid }}<span class="ok-multitag-tag-remove" data-id="{{ cid }}">×</span>
+                            </span>
+                            {% endfor %}
+                            <input type="text" class="ok-multitag-input" id="ar-blacklist-cat-search"
+                              placeholder="{{ entry_blacklist_categories }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-blacklist-cat-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-general #}
+
+              {# ══ Tab: Weights ════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-weights">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="git-merge"></i> {{ tab_weights }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    {% set signals = [
+                      { id: 'category',     label: entry_weight_category,     default: 30 },
+                      { id: 'name',         label: entry_weight_name,         default: 20 },
+                      { id: 'neighbor_id',  label: entry_weight_neighbor_id,  default: 5  },
+                      { id: 'fields',       label: entry_weight_fields,       default: 25 },
+                      { id: 'manufacturer', label: entry_weight_manufacturer, default: 20 },
+                      { id: 'attributes',   label: entry_weight_attributes,   default: 30 },
+                      { id: 'coorders',     label: entry_weight_coorders,     default: 40 },
+                      { id: 'price_range',  label: entry_weight_price_range,  default: 0  }
+                    ] %}
+
+                    {% for s in signals %}
+                    {% set cfgKey = 'module_oc_kit_auto_related_weight_' ~ s.id %}
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ s.label }}</label>
+                      <div class="ok-range-group">
+                        <input type="range" class="ok-range" id="ar-w-{{ s.id }}"
+                          min="0" max="100"
+                          value="{{ attribute(_context, cfgKey) is defined ? attribute(_context, cfgKey) : s.default }}">
+                        <input type="number" class="ok-input ok-text-center ok-w-80 ok-range-val" id="ar-wn-{{ s.id }}"
+                          min="0" max="100"
+                          value="{{ attribute(_context, cfgKey) is defined ? attribute(_context, cfgKey) : s.default }}">
+                      </div>
+                    </div>
+                    {% endfor %}
+
+                    <p class="ok-help">{{ text_weights_help }}</p>
+
+                  </div>
+                </div>
+
+                {# Presets #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="zap"></i> {{ text_presets }}
+                  </div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-12">{{ text_preset_help }}</p>
+                    <div class="ok-flex ok-gap-8 ok-flex-wrap">
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm ar-preset"
+                        data-preset='{"category":50,"name":20,"neighbor_id":5,"fields":10,"manufacturer":15,"attributes":20,"coorders":15,"price_range":0}'>
+                        <i data-lucide="layers"></i> {{ text_preset_balanced }}
+                      </button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm ar-preset"
+                        data-preset='{"category":20,"name":10,"neighbor_id":0,"fields":5,"manufacturer":10,"attributes":10,"coorders":80,"price_range":0}'>
+                        <i data-lucide="shopping-cart"></i> {{ text_preset_coorders }}
+                      </button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm ar-preset"
+                        data-preset='{"category":80,"name":10,"neighbor_id":0,"fields":5,"manufacturer":5,"attributes":5,"coorders":10,"price_range":0}'>
+                        <i data-lucide="folder"></i> {{ text_preset_category }}
+                      </button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm ar-preset"
+                        data-preset='{"category":30,"name":40,"neighbor_id":10,"fields":40,"manufacturer":20,"attributes":40,"coorders":0,"price_range":20}'>
+                        <i data-lucide="copy"></i> {{ text_preset_variants }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {# Price Range signal config #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="circle-dollar-sign"></i> {{ entry_weight_price_range }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-price-range-pct">{{ entry_price_range_pct }}</label>
+                      <div>
+                        <input type="number" id="ar-price-range-pct" min="1" max="200"
+                          value="{{ module_oc_kit_auto_related_price_range_pct ?? 20 }}"
+                          class="ok-input ok-w-80">
+                        <p class="ok-help">{{ text_price_range_pct_help }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Fields signal #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="list"></i> {{ entry_weight_fields }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_field_list }}</label>
+                      <div class="ok-flex ok-flex-col ok-gap-8">
+                        {% for fid, flabel in { sku: field_sku, mpn: field_mpn, ean: field_ean, jan: field_jan, isbn: field_isbn, upc: field_upc } %}
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" class="ok-toggle-input ar-field-check" value="{{ fid }}"
+                            {% if fid in (module_oc_kit_auto_related_field_list ?? ['sku','mpn']) %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          <span class="ok-toggle-label">{{ flabel }}</span>
+                        </label>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-field-sep">{{ entry_field_separator }}</label>
+                      <div>
+                        <input type="text" id="ar-field-sep" maxlength="5"
+                          value="{{ module_oc_kit_auto_related_field_separator ?? ',' }}"
+                          class="ok-input ok-w-60" placeholder=",">
+                        <p class="ok-help">{{ text_field_separator_help }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Neighbor ID signal #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="move-horizontal"></i> {{ entry_weight_neighbor_id }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_neighbor_enabled }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-neighbor-enabled" class="ok-toggle-input" value="1"
+                            {% if module_oc_kit_auto_related_neighbor_enabled ?? 1 %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div id="ar-neighbor-config">
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label" for="ar-neighbor-range">{{ entry_neighbor_range }}</label>
+                        <div>
+                          <input type="number" id="ar-neighbor-range" min="1" max="10000"
+                            value="{{ module_oc_kit_auto_related_neighbor_range ?? 50 }}"
+                            class="ok-input ok-w-100">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Attributes signal #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="tag"></i> {{ entry_weight_attributes }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_attribute_ids }}</label>
+                      <div>
+                        <div id="ar-attribute-tags" class="ok-multitag" data-url="{{ action_autocomplete_attr }}">
+                          <div class="ok-multitag-inner">
+                            {% for attr_id in (module_oc_kit_auto_related_attribute_ids ?? []) %}
+                            <span class="ok-multitag-tag" data-id="{{ attr_id }}">
+                              #{{ attr_id }}<span class="ok-multitag-tag-remove" data-id="{{ attr_id }}">×</span>
+                            </span>
+                            {% endfor %}
+                            <input type="text" class="ok-multitag-input" id="ar-attr-search"
+                              placeholder="{{ entry_attribute_ids }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-attr-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-attr-min-match">{{ entry_attribute_min_match }}</label>
+                      <div>
+                        <input type="number" id="ar-attr-min-match" min="1" max="50"
+                          value="{{ module_oc_kit_auto_related_attribute_min_match ?? 1 }}"
+                          class="ok-input ok-w-80">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Co-orders signal #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="shopping-cart"></i> {{ entry_weight_coorders }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-coorders-days">{{ entry_coorders_days }}</label>
+                      <div>
+                        <input type="number" id="ar-coorders-days" min="1" max="3650"
+                          value="{{ module_oc_kit_auto_related_coorders_days ?? 365 }}"
+                          class="ok-input ok-w-100">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-coorders-min">{{ entry_coorders_min }}</label>
+                      <div>
+                        <input type="number" id="ar-coorders-min" min="1" max="1000"
+                          value="{{ module_oc_kit_auto_related_coorders_min ?? 2 }}"
+                          class="ok-input ok-w-80">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_coorders_statuses }}</label>
+                      <div>
+                        <select id="ar-coorders-statuses" class="ok-select ok-w-300" multiple size="6">
+                          {% for status in order_statuses %}
+                          <option value="{{ status.order_status_id }}"
+                            {% if status.order_status_id in (module_oc_kit_auto_related_coorders_statuses ?? []) %}selected{% endif %}>
+                            {{ status.name }}
+                          </option>
+                          {% endfor %}
+                        </select>
+                        <p class="ok-help">{{ text_coorders_statuses_help }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-weights #}
+
+              {# ══ Tab: Performance ════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-performance">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="zap"></i> {{ tab_performance }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="ar-candidate-limit">{{ entry_candidate_limit }}</label>
+                      <div>
+                        <input type="number" id="ar-candidate-limit" min="100" max="10000"
+                          value="{{ module_oc_kit_auto_related_candidate_limit ?? 1000 }}"
+                          class="ok-input ok-w-100">
+                        <p class="ok-help">{{ text_candidate_limit_help }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="terminal"></i> {{ text_cron }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_schedule }}</label>
+                      <div>
+                        <select id="ar-cron-schedule" class="ok-select ok-w-200">
+                          <option value="0 2 * * *">{{ text_cron_daily_2 }}</option>
+                          <option value="0 3 * * *">{{ text_cron_daily_3 }}</option>
+                          <option value="0 4 * * *">{{ text_cron_daily_4 }}</option>
+                          <option value="0 */6 * * *">{{ text_cron_every_6h }}</option>
+                          <option value="0 * * * *">{{ text_cron_every_1h }}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_param_limit }}</label>
+                      <div>
+                        <input type="number" id="ar-cron-limit" min="1" max="10000" value="200" class="ok-input ok-w-100">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_param_force }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-cron-force" class="ok-toggle-input">
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_param_category }}</label>
+                      <div>
+                        <div id="ar-cron-categories" class="ok-multitag" data-url="{{ action_autocomplete_cat }}">
+                          <div class="ok-multitag-inner">
+                            <input type="text" class="ok-multitag-input" id="ar-cron-cat-search"
+                              placeholder="{{ text_cron_all }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-cron-cat-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_param_mf }}</label>
+                      <div>
+                        <div id="ar-cron-manufacturers" class="ok-multitag" data-url="{{ action_autocomplete_mf }}">
+                          <div class="ok-multitag-inner">
+                            <input type="text" class="ok-multitag-input" id="ar-cron-mf-search"
+                              placeholder="{{ text_cron_all }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-cron-mf-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_command }}</label>
+                      <div class="ok-copyable ok-col-12">
+                        <div class="ok-code-block" id="ar-cron-cmd" data-php="{{ cron_path }}"></div>
+                        <button type="button" class="ok-btn ok-btn-default ok-btn-xs ok-copy-btn" data-target="ar-cron-cmd">
+                          <i class="fa fa-copy"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-performance #}
+
+              {# ══ Tab: Generate ═══════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-generate">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="play-circle"></i> {{ tab_generate }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_id_from }} / {{ entry_id_to }}</label>
+                      <div class="ok-flex-center ok-gap-8">
+                        <input type="number" id="ar-gen-id-from" min="1" class="ok-input ok-w-100" placeholder="{{ entry_id_from }}">
+                        <span class="ok-text-muted">—</span>
+                        <input type="number" id="ar-gen-id-to" min="1" class="ok-input ok-w-100" placeholder="{{ entry_id_to }}">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_gen_categories }}</label>
+                      <div>
+                        <div id="ar-gen-categories" class="ok-multitag" data-url="{{ action_autocomplete_cat }}">
+                          <div class="ok-multitag-inner">
+                            <input type="text" class="ok-multitag-input" id="ar-cat-search"
+                              placeholder="{{ entry_gen_categories }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-cat-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_gen_manufacturers }}</label>
+                      <div>
+                        <div id="ar-gen-manufacturers" class="ok-multitag" data-url="{{ action_autocomplete_mf }}">
+                          <div class="ok-multitag-inner">
+                            <input type="text" class="ok-multitag-input" id="ar-mf-search"
+                              placeholder="{{ entry_gen_manufacturers }}" autocomplete="off">
+                          </div>
+                          <div class="ok-multitag-dropdown" id="ar-mf-dropdown"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_gen_overwrite }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" id="ar-gen-overwrite" class="ok-toggle-input" value="1">
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label"></label>
+                      <div class="ok-flex ok-gap-8">
+                        <button type="button" id="ar-btn-generate" class="ok-btn ok-btn-primary ok-btn-sm">
+                          <i data-lucide="play"></i> {{ button_generate }}
+                        </button>
+                        <button type="button" id="ar-btn-stop" class="ok-btn ok-btn-danger ok-btn-sm ok-hidden">
+                          <i data-lucide="square"></i> {{ button_stop }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div id="ar-gen-progress-wrap" class="ok-hidden">
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label"></label>
+                        <div>
+                          <div class="ok-progress ok-mb-4">
+                            <div id="ar-gen-progress-bar" class="ok-progress-bar" style="width:0%"></div>
+                          </div>
+                          <div id="ar-gen-status" class="ok-text-sm ok-muted">{{ text_generating }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="eye"></i> {{ tab_preview }}
+                  </div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_preview_product }}</label>
+                      <div class="ok-flex ok-gap-8 ok-align-start">
+                        <div class="ok-preview-autocomplete-wrap">
+                          <input type="text" id="ar-preview-search" class="ok-input ok-w-300"
+                            placeholder="{{ text_preview_product }}" autocomplete="off">
+                          <div id="ar-preview-dropdown" class="ok-multitag-dropdown"></div>
+                          <input type="hidden" id="ar-preview-product-id" value="">
+                        </div>
+                        <button type="button" id="ar-btn-preview" class="ok-btn ok-btn-default ok-btn-sm">
+                          <i data-lucide="search"></i> {{ button_preview }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div id="ar-preview-result" class="ok-hidden">
+                      <p class="ok-help ok-mb-8">{{ text_preview_results }}</p>
+                      <table class="ok-table">
+                        <thead>
+                          <tr>
+                            <th>{{ column_product }}</th>
+                            <th>{{ column_preview_score }}</th>
+                          </tr>
+                        </thead>
+                        <tbody id="ar-preview-tbody">
+                          <tr><td colspan="2" class="ok-text-center ok-muted">—</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-generate #}
+
+              {# ══ Tab: Stats ══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-stats">
+
+
+                <div class="ok-kpi-grid ok-mt-0" id="ar-stats-summary">
+                  <div class="ok-kpi-card ok-kpi-card--total">
+                    <div class="ok-kpi-card__icon"><i data-lucide="package"></i></div>
+                    <div class="ok-kpi-card__body">
+                      <div class="ok-kpi-card__value" id="ar-stat-total">—</div>
+                      <div class="ok-kpi-card__label">{{ text_total_products }}</div>
+                    </div>
+                  </div>
+                  <div class="ok-kpi-card ok-kpi-card--ok">
+                    <div class="ok-kpi-card__icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="ok-kpi-card__body">
+                      <div class="ok-kpi-card__value" id="ar-stat-with">—</div>
+                      <div class="ok-kpi-card__label">{{ text_with_related }}</div>
+                      <div class="ok-kpi-card__sub" id="ar-stat-with-sub"></div>
+                    </div>
+                  </div>
+                  <div class="ok-kpi-card ok-kpi-card--info">
+                    <div class="ok-kpi-card__icon"><i data-lucide="percent"></i></div>
+                    <div class="ok-kpi-card__body">
+                      <div class="ok-kpi-card__value" id="ar-stat-coverage">—</div>
+                      <div class="ok-kpi-card__label">{{ text_coverage }}</div>
+                    </div>
+                  </div>
+                  <div class="ok-kpi-card ok-kpi-card--lost">
+                    <div class="ok-kpi-card__icon"><i data-lucide="alert-triangle"></i></div>
+                    <div class="ok-kpi-card__body">
+                      <div class="ok-kpi-card__value" id="ar-stat-without">—</div>
+                      <div class="ok-kpi-card__label">{{ text_without_related }}</div>
+                      <div class="ok-kpi-card__sub" id="ar-stat-without-sub"></div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="clock"></i> {{ text_recent_generated }}
+                  </div>
+                  <div class="ok-block-body ok-p-0">
+                    <table class="ok-table">
+                      <thead>
+                        <tr>
+                          <th>{{ column_product }}</th>
+                          <th>{{ column_count }}</th>
+                          <th>{{ column_source }}</th>
+                          <th>{{ column_generated_at }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ar-stats-recent">
+                        <tr><td colspan="4" class="ok-text-center ok-muted">…</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>{# /layout-stats #}
+
+              {# ══ Tab: Rules ══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-rules">
+
+                <div class="ok-block">
+                  <div class="ok-panel-header ok-mb-12">
+                    <p class="ok-help">{{ text_rules_intro }}</p>
+                    <button type="button" id="ar-btn-add-rule" class="ok-btn ok-btn-primary ok-btn-sm">
+                      <i data-lucide="plus"></i> {{ button_add_rule }}
+                    </button>
+                  </div>
+
+                  {# ── Rule form (constructor, hidden by default) ─────────────── #}
+                  <div class="ok-block-body">
+                    <div id="ar-rule-form" class="ok-block ok-hidden ok-mb-4">
+                      <div class="ok-block-title" id="ar-rule-form-title">
+                        <i data-lucide="edit-3"></i> {{ button_add_rule }}
+                      </div>
+                      <div class="ok-block-body">
+                        <input type="hidden" id="ar-rule-id" value="0">
+
+                        {# Basic meta #}
+                        <div class="ok-form-row">
+                          <label class="ok-label form-label" for="ar-rule-name">{{ entry_rule_name }}</label>
+                          <div><input type="text" id="ar-rule-name" class="ok-input ok-w-300"></div>
+                        </div>
+                        <div class="ok-form-row">
+                          <label class="ok-label form-label">{{ entry_rule_status }}</label>
+                          <div>
+                            <label class="ok-toggle-wrap ok-toggle-sm">
+                              <input type="checkbox" id="ar-rule-status" class="ok-toggle-input" value="1" checked>
+                              <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="ok-form-row">
+                          <label class="ok-label form-label" for="ar-rule-sort-order">{{ entry_rule_sort_order }}</label>
+                          <div><input type="number" id="ar-rule-sort-order" class="ok-input ok-w-80" value="0" min="0"></div>
+                        </div>
+
+                        {# ── SOURCE CONDITIONS ─────────────────────────────────── #}
+                        <div class="ar-cond-section ok-mt-4 ok-mb-4">
+                          <div class="ar-cond-section-header">
+                            <i data-lucide="map-pin"></i>
+                            <strong>{{ text_source_conditions }}</strong>
+                            <span class="ok-help ok-ml-2">{{ text_source_conditions_help }}</span>
+                          </div>
+                          <div id="ar-src-conds" class="ar-cond-list"></div>
+                          <div class="ok-mt-2">
+                            <select id="ar-add-src-type" class="ok-select ok-w-240">
+                              <option value="">{{ button_add_source_cond }}</option>
+                              <option value="category">{{ cond_src_category }}</option>
+                              <option value="manufacturer">{{ cond_src_manufacturer }}</option>
+                              <option value="attribute">{{ cond_src_attribute }}</option>
+                              <option value="name_contains">{{ cond_src_name_contains }}</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {# ── TARGET CONDITIONS ─────────────────────────────────── #}
+                        <div class="ar-cond-section ok-mt-4 ok-mb-4">
+                          <div class="ar-cond-section-header">
+                            <i data-lucide="target"></i>
+                            <strong>{{ text_target_conditions }}</strong>
+                            <span class="ok-help ok-ml-2">{{ text_target_conditions_help }}</span>
+                          </div>
+                          <div id="ar-tgt-conds" class="ar-cond-list"></div>
+                          <div class="ok-mt-2">
+                            <select id="ar-add-tgt-type" class="ok-select ok-w-280">
+                              <option value="">{{ button_add_target_cond }}</option>
+                              <option value="same_category">{{ cond_tgt_same_category }}</option>
+                              <option value="same_manufacturer">{{ cond_tgt_same_manufacturer }}</option>
+                              <option value="category">{{ cond_tgt_category }}</option>
+                              <option value="manufacturer">{{ cond_tgt_manufacturer }}</option>
+                              <option value="attribute">{{ cond_tgt_attribute }}</option>
+                              <option value="dynamic_attribute">{{ cond_tgt_dynamic_attribute }}</option>
+                              <option value="name_contains">{{ cond_tgt_name_contains }}</option>
+                              <option value="price_range">{{ cond_tgt_price_range }}</option>
+                              <option value="only_special">{{ cond_tgt_only_special }}</option>
+                              <option value="exclude_oos">{{ cond_tgt_exclude_oos }}</option>
+                              <option value="brand_priority">{{ cond_tgt_brand_priority }}</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {# ── DISPLAY settings ──────────────────────────────────── #}
+                        <div class="ok-mt-4">
+                          <div class="ok-form-row">
+                            <label class="ok-label form-label">{{ entry_rule_block_title }}</label>
+                            <div>
+                              {% for lang in languages %}
+                                <div class="ok-flex-center ok-gap-8 ok-mb-2">
+                                  <label class="ok-lang-label form-label">
+                                    <img src="language/{{ lang.code }}/{{ lang.code }}.png" title="{{ lang.name }}" onerror="this.style.display='none'">
+                                    {{ lang.name }}
+                                  </label>
+                                  <input type="text"
+                                    class="ok-input ok-w-280 ar-rule-block-title-input"
+                                    data-lang-id="{{ lang.language_id }}"
+                                    placeholder="{{ lang.name }}">
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                          <div class="ok-form-row">
+                            <label class="ok-label form-label" for="ar-rule-result-limit">{{ entry_rule_result_limit }}</label>
+                            <div><input type="number" id="ar-rule-result-limit" class="ok-input ok-w-80" value="8" min="1" max="50"></div>
+                          </div>
+                          <div class="ok-form-row">
+                            <label class="ok-label form-label" for="ar-rule-result-sort">{{ entry_rule_result_sort }}</label>
+                            <div>
+                              <select id="ar-rule-result-sort" class="ok-select ok-w-300">
+                                <option value="random" selected>{{ entry_result_sort_random }}</option>
+                                <option value="price_asc">{{ entry_result_sort_price_asc }}</option>
+                                <option value="price_desc">{{ entry_result_sort_price_desc }}</option>
+                                <option value="new">{{ entry_result_sort_new }}</option>
+                                <option value="name">{{ entry_result_sort_name }}</option>
+                                <option value="bestseller">{{ entry_result_sort_bestseller }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        {# Buttons #}
+                        <div class="ok-form-row ok-mt-3">
+                          <label class="ok-label form-label"></label>
+                          <div class="ok-flex ok-gap-8">
+                            <button type="button" id="ar-btn-save-rule" class="ok-btn ok-btn-primary ok-btn-sm">
+                              <i data-lucide="save"></i> {{ button_save_rule }}
+                            </button>
+                            <button type="button" id="ar-btn-cancel-rule" class="ok-btn ok-btn-default ok-btn-sm">
+                              <i data-lucide="x"></i> {{ button_cancel_rule }}
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>{# /ar-rule-form #}
+                  </div>
+
+                  {# Rules list #}
+                  <div id="ar-rules-list">
+                    <table class="ok-table">
+                      <thead>
+                        <tr>
+                          <th>{{ column_rule_sort }}</th>
+                          <th>{{ column_rule_name }}</th>
+                          <th>{{ column_rule_source }}</th>
+                          <th>{{ column_rule_target }}</th>
+                          <th>{{ column_rule_status }}</th>
+                          <th>{{ column_rule_actions }}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ar-rules-tbody">
+                        <tr><td colspan="5" class="ok-text-center ok-muted">…</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+
+              </div>{# /layout-rules #}
+
+            </div>{# /ok-content #}
+          </div>{# /ok-layout #}
+        </div>{# /ar #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+  </div>
+</div>
+<script>
+window.arConfig = {
+  saveUrl:                '{{ action_save }}',
+  generateUrl:            '{{ action_generate }}',
+  statsUrl:               '{{ action_stats }}',
+  autocompleteAttr:       '{{ action_autocomplete_attr }}',
+  autocompleteCat:        '{{ action_autocomplete_cat }}',
+  autocompleteMf:         '{{ action_autocomplete_mf }}',
+  autocompleteProductUrl: '{{ action_autocomplete_product }}',
+  previewUrl:             '{{ action_preview }}',
+  listRulesUrl:           '{{ action_list_rules }}',
+  saveRuleUrl:            '{{ action_save_rule }}',
+  deleteRuleUrl:          '{{ action_delete_rule }}'
+};
+window.arI18n = {{ lang_js|json_encode }};
+window.arSourceLabels = {
+  cron:   '{{ source_cron }}',
+  visit:  '{{ source_visit }}',
+  manual: '{{ source_manual }}'
+};
+</script>
+{{ footer }}

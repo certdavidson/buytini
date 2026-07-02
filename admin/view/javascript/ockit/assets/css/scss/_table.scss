@@ -1,0 +1,126 @@
+// oc-kit Design System — Table
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  .ok-table-wrap {
+    border-radius: $ok-radius;
+    border: 1px solid $ok-border;
+    overflow: hidden;
+    overflow-x: auto;
+    background: $ok-white;
+  }
+
+  .ok-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    thead th {
+      background: $ok-bg;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 10px 14px;
+      border-bottom: 2px solid $ok-border;
+      color: $ok-text2;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    tbody {
+      td {
+        padding: 11px 14px;
+        border-bottom: 1px solid $ok-bg2;
+        vertical-align: middle;
+        color: $ok-text;
+
+        a { color: $ok-info; text-decoration: underline; &:hover { text-decoration: none; } }
+      }
+      tr:last-child td { border-bottom: none; }
+      tr:hover td { background: $ok-bg; }
+    }
+
+    &-striped tbody tr:nth-child(even) td { background: $ok-bg; }
+
+    &-sm {
+      thead th { padding: 8px 12px; }
+      tbody td  { padding: 8px 12px; }
+    }
+  }
+
+  // ── Scrollable table container (used in list-panel modules) ──────────────────
+
+  .ok-table-container {
+    overflow-x: auto;
+    border-top: 1px solid $ok-border;
+  }
+
+  // ── Empty state placeholder ────────────────────────────────────────────────────
+
+  .ok-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: $ok-muted;
+
+    .fa { display: block; margin-bottom: 12px; }
+    p   { margin: 0; }
+  }
+
+  // ── Pagination wrapper ─────────────────────────────────────────────────────────
+
+  .ok-pagination-wrap {
+    padding: 14px 18px;
+    border-top: 1px solid $ok-border;
+  }
+
+  .ok-copyable {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ok-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid $ok-border;
+    background: $ok-white;
+    color: $ok-muted;
+    cursor: pointer;
+    transition: background $ok-trans, color $ok-trans, border-color $ok-trans;
+    flex-shrink: 0;
+
+    .fa { font-size: 12px; }
+    &:hover { background: $ok-accent; border-color: $ok-accent; color: #fff; }
+    &.copied { background: $ok-success; border-color: $ok-success; color: #fff; }
+  }
+
+  // ── Inline status icon (used in table rows / health checks / audit issues) ──
+  // Usage:  <div class="ok-stat-icon"><i data-lucide="check"></i></div>
+  // + on parent <tr class="ok-row-error|ok-row-warning|ok-row-info|ok-row-ok">
+  .ok-stat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: $ok-bg;
+    color: $ok-text2;
+
+    [data-lucide], svg { width: 14px; height: 14px; }
+  }
+  tr.ok-row-error    .ok-stat-icon,
+  tr.ok-row-fail     .ok-stat-icon { background: #fdf2f2; color: $ok-danger; }
+  tr.ok-row-warning  .ok-stat-icon,
+  tr.ok-row-warn     .ok-stat-icon { background: #fffbf0; color: $ok-warning; }
+  tr.ok-row-info     .ok-stat-icon { background: #eff8ff; color: $ok-info; }
+  tr.ok-row-ok       .ok-stat-icon,
+  tr.ok-row-success  .ok-stat-icon { background: #eafaf1; color: $ok-success; }
+}

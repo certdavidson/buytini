@@ -1,0 +1,307 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<div x-data="okecIntegrations()" x-init="load(); loadMarket()">
+
+{# ═══════════════════ LIST VIEW ═══════════════════ #}
+<div x-show="view === 'list'" x-cloak>
+  <h2 class="ok-section-title">{{ integrations_heading }}</h2>
+  <p class="ok-help">{{ integrations_help }}</p>
+
+  <div class="okec-loading" x-show="loading"><i data-lucide="loader" class="okec-spin"></i></div>
+
+  <div class="ok-kpi-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));"
+       x-show="!loading && items.length > 0">
+    <template x-for="i in items" :key="i.code">
+      <div class="ok-panel okec-integration-card">
+        <div class="ok-panel-header">
+          <div class="ok-panel-title">
+            <template x-if="i.has_icon">
+              <img class="okec-integration-icon" :src="iconUrl(i.code)" :alt="i.name">
+            </template>
+            <template x-if="!i.has_icon">
+              <i :data-lucide="i.icon"></i>
+            </template>
+            <span x-text="i.name"></span>
+            <template x-if="i.country">
+              <span class="ok-badge ok-badge-info-soft ok-badge-sm" x-text="i.country"></span>
+            </template>
+          </div>
+          <label class="ok-toggle-wrap ok-toggle-sm">
+            <input type="checkbox" class="ok-toggle-input"
+                   :checked="i.enabled"
+                   @change="toggle(i)">
+            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+          </label>
+        </div>
+        <div class="ok-panel-body">
+          <p class="ok-help" x-text="i.description"></p>
+          <span class="ok-badge"
+                :class="i.enabled ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+                x-text="i.enabled ? '{{ integration_status_active }}' : '{{ integration_status_inactive }}'"></span>
+        </div>
+        <div class="ok-panel-footer">
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="openSettings(i.code)">
+            <i data-lucide="settings"></i> {{ button_settings }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                  x-show="i.enabled"
+                  :disabled="busy[i.code]"
+                  @click="refreshCache(i)">
+            <i data-lucide="refresh-cw" :class="busy[i.code] ? 'okec-spin' : ''"></i>
+            {{ integration_refresh_warehouses }}
+          </button>
+        </div>
+        <div class="okec-card-meta" x-show="i.version">
+          <span class="ok-badge ok-badge-muted ok-badge-sm">
+            {{ integration_version }} <span x-text="i.version"></span>
+          </span>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <div class="okec-empty" x-show="!loading && items.length === 0">
+    <p>{{ integrations_empty }}</p>
+  </div>
+
+  {# ── Marketplace ───────────────────────────────────────────────── #}
+  <h3 class="ok-section-title ok-mt-5">
+    <i data-lucide="shopping-bag"></i> {{ marketplace_heading }}
+  </h3>
+  <p class="ok-help">{{ marketplace_help }}</p>
+
+  {# Filters #}
+  <div class="ok-filter-bar ok-mt-2" x-show="market.length > 0">
+    <input type="text" class="ok-input" :placeholder="'{{ marketplace_search_placeholder }}'"
+           x-model="marketFilter.q" style="max-width: 280px;">
+    <select class="ok-select" x-model="marketFilter.country" style="max-width: 160px;">
+      <option value="">{{ marketplace_filter_all_countries }}</option>
+      <template x-for="c in marketCountries()" :key="c">
+        <option :value="c" x-text="c"></option>
+      </template>
+    </select>
+    <select class="ok-select" x-model="marketFilter.category" style="max-width: 180px;">
+      <option value="">{{ marketplace_filter_all_categories }}</option>
+      <template x-for="c in marketCategories()" :key="c">
+        <option :value="c" x-text="c"></option>
+      </template>
+    </select>
+  </div>
+
+  <div class="ok-kpi-grid ok-mt-2" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));"
+       x-show="!loadingMarket && filteredMarket().length > 0">
+    <template x-for="m in filteredMarket()" :key="m.code">
+      <div class="ok-panel okec-integration-card okec-marketplace-card">
+        <div class="ok-panel-header">
+          <div class="ok-panel-title">
+            <i data-lucide="package"></i>
+            <span x-text="m.name"></span>
+            <span class="ok-badge ok-badge-info-soft ok-badge-sm" x-text="m.country"></span>
+            <span class="ok-badge ok-badge-success-soft ok-badge-sm" x-text="'$' + m.price"></span>
+          </div>
+        </div>
+        <div class="ok-panel-body">
+          <p class="ok-help" x-text="m.description"></p>
+          <span class="ok-badge"
+                :class="m.installed ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+                x-text="m.installed ? '{{ marketplace_installed }}' : ('{{ integration_version }} ' + m.version)"></span>
+        </div>
+        <div class="ok-panel-footer">
+          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm"
+                  x-show="!m.installed"
+                  :disabled="busyMarket[m.code]"
+                  @click="install(m)">
+            <i data-lucide="download"></i> {{ marketplace_install }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-warning ok-btn-sm"
+                  x-show="m.installed && m.has_update"
+                  :disabled="busyMarket[m.code]"
+                  @click="update(m)">
+            <i data-lucide="arrow-up-circle"></i>
+            {{ marketplace_update }} <span x-text="m.installed_version + ' → ' + m.version"></span>
+          </button>
+          <button type="button" class="ok-btn ok-btn-danger ok-btn-sm"
+                  x-show="m.installed"
+                  :disabled="busyMarket[m.code]"
+                  @click="uninstall(m)">
+            <i data-lucide="trash-2"></i> {{ marketplace_uninstall }}
+          </button>
+        </div>
+      </div>
+    </template>
+  </div>
+  <div class="ok-help" x-show="!loadingMarket && market.length === 0">
+    {{ integrations_marketplace_hint }}
+  </div>
+</div>
+
+{# ═══════════════════ SETTINGS PAGE VIEW ═══════════════════ #}
+<template x-if="view === 'settings' && current">
+<div class="okec-int-page">
+  {# Sticky header #}
+  <div class="ok-panel-sticky okec-int-page__header">
+    <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="backToList()">
+      <i data-lucide="arrow-left"></i> {{ button_back }}
+    </button>
+    <div class="okec-int-page__title">
+      <template x-if="current && current.has_icon">
+        <img class="okec-integration-icon" :src="iconUrl(current.code)" :alt="current.name">
+      </template>
+      <template x-if="current && !current.has_icon">
+        <i :data-lucide="current ? current.icon : 'puzzle'"></i>
+      </template>
+      <h2 x-text="current ? current.name : ''"></h2>
+      <span class="ok-badge"
+            :class="current && current.enabled ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+            x-text="(current && current.enabled) ? '{{ integration_status_active }}' : '{{ integration_status_inactive }}'"></span>
+    </div>
+    <div class="okec-int-page__actions">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+              @click="runAction(current.code, 'test_connection')" x-show="current">
+        <i data-lucide="zap"></i> {{ integration_test_connection }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" @click="saveSettings()">
+        <i data-lucide="save"></i> {{ button_save }}
+      </button>
+    </div>
+  </div>
+
+  {# Body — sectioned schema #}
+  <div class="okec-int-page__body">
+    <template x-for="(group, gIdx) in schemaSections()" :key="gIdx">
+      <div class="ok-panel">
+        <div class="ok-panel-header">
+          <div class="ok-panel-title">
+            <i :data-lucide="group.icon || 'sliders'"></i>
+            <span x-text="group.label"></span>
+          </div>
+        </div>
+        <div class="ok-panel-body">
+          <template x-for="field in group.fields" :key="field.key">
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label" x-text="field.label"></label>
+              <div class="ok-form-control">
+                <template x-if="['text','password','number'].includes(field.type)">
+                  <input :type="field.type === 'number' ? 'text' : field.type"
+                         :inputmode="field.type === 'number' ? 'numeric' : 'text'"
+                         class="ok-input"
+                         :value="(currentSettings[field.key] !== undefined ? currentSettings[field.key] : (field.default || ''))"
+                         @input="currentSettings[field.key] = $event.target.value">
+                </template>
+                <template x-if="field.type === 'textarea'">
+                  <textarea class="ok-input" rows="4"
+                            @input="currentSettings[field.key] = $event.target.value"
+                            x-text="(currentSettings[field.key] !== undefined ? currentSettings[field.key] : (field.default || ''))"></textarea>
+                </template>
+                <template x-if="field.type === 'toggle'">
+                  <label class="ok-toggle-wrap ok-toggle-sm">
+                    <input type="checkbox" class="ok-toggle-input"
+                           :checked="!!(currentSettings[field.key] !== undefined ? currentSettings[field.key] : field.default)"
+                           @change="currentSettings[field.key] = $event.target.checked ? 1 : 0">
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                </template>
+                <template x-if="field.type === 'select'">
+                  <select class="ok-select" @change="currentSettings[field.key] = $event.target.value">
+                    <template x-for="opt in field.options" :key="opt.value">
+                      <option :value="opt.value"
+                              :selected="(currentSettings[field.key] !== undefined ? currentSettings[field.key] : field.default) === opt.value"
+                              x-text="opt.label"></option>
+                    </template>
+                  </select>
+                </template>
+                <template x-if="field.type === 'multiselect'">
+                  <div class="ok-multitag" @click.outside="fieldPickerOpen[field.key] = false">
+                    <div class="ok-multitag-inner" @click="fieldPickerOpen[field.key] = true">
+                      <template x-for="v in (currentSettings[field.key] || field.default || [])" :key="v">
+                        <span class="ok-multitag-tag">
+                          <span x-text="multiselectOptionLabel(field, v)"></span>
+                          <span class="ok-multitag-tag-remove" @click.stop="multiselectRemove(field, v)">×</span>
+                        </span>
+                      </template>
+                      <input type="text" class="ok-multitag-input" readonly>
+                    </div>
+                    <div class="ok-multitag-dropdown" :class="{ 'open': fieldPickerOpen[field.key] }">
+                      <template x-for="opt in field.options" :key="opt.value">
+                        <div class="ok-multitag-option"
+                             :class="{ 'is-selected': multiselectHas(field, opt.value) }"
+                             @click="multiselectToggle(field, opt.value)">
+                          <input type="checkbox" :checked="multiselectHas(field, opt.value)" @click.stop>
+                          <span x-text="opt.label"></span>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+                <p class="ok-help" x-text="field.help" x-show="field.help"></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    {# Health & cache section — завжди видима для відкритої інтеграції #}
+    <div class="ok-panel" x-show="current">
+      <div class="ok-panel-header">
+        <div class="ok-panel-title"><i data-lucide="activity"></i> {{ integration_section_health }}</div>
+      </div>
+      <div class="ok-panel-body">
+        <p class="ok-help" x-show="current && !current.enabled" x-cloak>
+          {{ integration_status_inactive }}
+        </p>
+        <div class="ok-kpi-grid">
+          <div class="ok-kpi-card ok-kpi-card--info">
+            <div class="ok-kpi-card__icon"><i data-lucide="clock"></i></div>
+            <div class="ok-kpi-card__body">
+              <div class="ok-kpi-card__value" x-text="health.last_refresh_human || '—'"></div>
+              <div class="ok-kpi-card__label">{{ integration_health_last_refresh }}</div>
+            </div>
+          </div>
+          <div class="ok-kpi-card ok-kpi-card--total">
+            <div class="ok-kpi-card__icon"><i data-lucide="database"></i></div>
+            <div class="ok-kpi-card__body">
+              <div class="ok-kpi-card__value" x-text="health.records_total || 0"></div>
+              <div class="ok-kpi-card__label">{{ integration_health_records }}</div>
+            </div>
+          </div>
+          <div class="ok-kpi-card" :class="health.last_success ? 'ok-kpi-card--ok' : 'ok-kpi-card--lost'">
+            <div class="ok-kpi-card__icon">
+              <i :data-lucide="health.last_success ? 'check-circle' : 'alert-triangle'"></i>
+            </div>
+            <div class="ok-kpi-card__body">
+              <div class="ok-kpi-card__value"
+                   x-text="health.last_success ? '{{ integration_health_ok }}' : '{{ integration_health_stale }}'"></div>
+              <div class="ok-kpi-card__label">{{ integration_health_status }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="okec-int-actions ok-mt-3">
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                  :disabled="busy[current.code]"
+                  @click="refreshCache(current)">
+            <i data-lucide="refresh-cw" :class="busy[current.code] ? 'okec-spin' : ''"></i>
+            {{ integration_refresh_warehouses }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                  :disabled="busy[current.code]"
+                  @click="installFields(current)">
+            <i data-lucide="plus-square"></i> {{ integration_install_fields }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm"
+                  :disabled="busy[current.code]"
+                  @click="addToLayout(current)">
+            <i data-lucide="layout"></i> {{ integration_add_to_layout }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-danger ok-btn-sm"
+                  :disabled="busy[current.code]"
+                  @click="purgeData(current)">
+            <i data-lucide="trash-2"></i> {{ integration_purge_data }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+</div>

@@ -1,0 +1,271 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ layout_heading }}</h2>
+<p class="ok-help">{{ layout_help }}</p>
+
+{# Layout warnings panel — broken refs, empty cells etc. #}
+<div class="okec-warnings" x-show="pages.warnings.length > 0" x-cloak>
+  <div class="okec-warnings__head" @click="pages.warningsCollapsed = !pages.warningsCollapsed">
+    <i data-lucide="alert-triangle"></i>
+    <strong x-text="t('layout_warnings_heading') + ' (' + pages.warnings.length + ')'"></strong>
+    <i :data-lucide="pages.warningsCollapsed ? 'chevron-down' : 'chevron-up'" class="okec-warnings__chev"></i>
+  </div>
+  <ul class="okec-warnings__list" x-show="!pages.warningsCollapsed">
+    <template x-for="(w, i) in pages.warnings" :key="i">
+      <li class="okec-warnings__item" :class="'okec-warnings__item--' + w.type">
+        <span class="okec-warnings__msg" x-text="w.message"></span>
+        <span class="okec-warnings__where" x-text="w.where"></span>
+      </li>
+    </template>
+  </ul>
+</div>
+
+{% if stores|length > 1 %}
+  <div class="okec-store-picker">
+    <label class="form-label" for="okec-store-picker">{{ layout_store_label }}</label>
+    <select id="okec-store-picker" class="ok-select" x-model.number="pages.activeStoreId" @change="pages.onStoreChange()">
+      {% for s in stores %}
+        <option value="{{ s.store_id }}">{{ s.name }}</option>
+      {% endfor %}
+    </select>
+    <p class="ok-help">{{ layout_store_help }}</p>
+
+    <div class="okec-store-copy">
+      <label class="form-label" for="okec-store-copy-src">{{ layout_copy_from_label }}</label>
+      <select id="okec-store-copy-src" class="ok-select" x-model.number="pages.copySourceStoreId">
+        {% for s in stores %}
+          <option value="{{ s.store_id }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+              @click="pages.copyFromStore()"
+              :disabled="pages.copySourceStoreId === pages.activeStoreId">
+        <i data-lucide="copy"></i>
+        <span>{{ layout_copy_from_btn }}</span>
+      </button>
+      <p class="ok-help">{{ layout_copy_from_help }}</p>
+    </div>
+  </div>
+{% endif %}
+
+{# ── Viewport preview toggle ───────────────────────────────────── #}
+<div class="okec-columns-config">
+  <span class="okec-columns-config__label">{{ layout_viewport_label }}</span>
+  <div class="okec-viewport-toggle">
+    <button type="button" class="okec-viewport-btn"
+            :class="{ 'is-active': pages.viewport === 'desktop' }"
+            @click="pages.viewport = 'desktop'" title="Desktop">
+      <i data-lucide="monitor"></i>
+    </button>
+    <button type="button" class="okec-viewport-btn"
+            :class="{ 'is-active': pages.viewport === 'tablet' }"
+            @click="pages.viewport = 'tablet'" title="Tablet">
+      <i data-lucide="tablet"></i>
+    </button>
+    <button type="button" class="okec-viewport-btn"
+            :class="{ 'is-active': pages.viewport === 'mobile' }"
+            @click="pages.viewport = 'mobile'" title="Mobile">
+      <i data-lucide="smartphone"></i>
+    </button>
+  </div>
+</div>
+
+<div class="okec-loading" x-show="pages.loading">
+  <i data-lucide="loader" class="okec-spin"></i>
+</div>
+
+<div class="okec-builder" x-show="!pages.loading" x-cloak :class="{ 'okec-builder--collapsed': pages.allCollapsed }">
+
+  {# ── Steps ─────────────────────────────────────────────────────── #}
+  <template x-for="(step, sIdx) in pages.layout.steps" :key="step.id">
+    <div class="okec-step" :data-step-idx="sIdx">
+
+      <div class="okec-step__header">
+        <i data-lucide="layers" class="okec-step__icon"></i>
+        <input type="text" class="ok-input okec-step__title-input"
+               :placeholder="t('layout_step_placeholder').replace('{n}', sIdx + 1)"
+               x-model="step.title['{{ primary_lang_code }}']">
+        <span class="okec-step__num" x-text="'#' + (sIdx + 1)"></span>
+        <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                :title="t('layout_btn_remove_step')"
+                @click="pages.removeStep(sIdx)"
+                x-show="pages.layout.steps.length > 1">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
+
+      {# ── Rows wrapper (sortable rows) ───────────────────────────── #}
+      <div class="okec-step__rows" :data-step-idx="sIdx">
+
+        <template x-for="(row, rIdx) in step.rows" :key="row.id">
+          <div class="okec-row" :data-row-id="row.id"
+               :class="'okec-row--cols-' + pages.rowCols(row)">
+
+            <div class="okec-row__header">
+              <button type="button" class="okec-row__drag" :title="t('button_edit')">
+                <i data-lucide="grip-horizontal"></i>
+              </button>
+              {# Кількість колонок (структурно). Ширину кожної колонки регулюють
+                 слайдери в комірках — окремо для desktop / tablet / mobile. #}
+              <div class="ok-flex ok-gap-8">
+                <span class="okec-row__cols-label" x-text="t('layout_row_cols')"></span>
+                <div class="okec-row__cols-toggle">
+                  <template x-for="n in [1, 2, 3]" :key="n">
+                    <button type="button" class="okec-cols-btn"
+                            :class="{ 'is-active': pages.rowCols(row) === n }"
+                            @click="pages.setRowColumns(row, n)"
+                            x-text="n"></button>
+                  </template>
+                </div>
+              </div>
+              <button type="button" class="ok-btn ok-btn-danger ok-btn-xs okec-row__remove"
+                      :title="t('layout_btn_remove_row')"
+                      @click="pages.removeRow(sIdx, rIdx)">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+
+            <div class="okec-row__cells"
+                 style="grid-template-columns: repeat(12, 1fr);">
+              {# 12-колонкова сітка: кожна комірка займає cellSpan для активного
+                 viewport. span 12 = повна ширина (комірки переносяться = стек). #}
+              <template x-for="cell in row.cells" :key="cell.id">
+                <div class="okec-cell" :data-cell-id="cell.id"
+                     :style="'grid-column: span ' + pages.cellSpan(cell) + ';'">
+
+                  {# Ширина колонки (1..12) для активного viewport.
+                     Коміт на @change (відпускання) — інакше комірка ресайзиться
+                     під час драгу й повзунок (що всередині неї) дьоргається.
+                     Число — live через локальний `live`, синхр. через x-effect. #}
+                  <div class="okec-cell__width" x-show="pages.showWidthControls(row)" x-cloak
+                       x-data="{ live: pages.cellSpan(cell) }"
+                       x-effect="live = pages.cellSpan(cell)">
+                    <i data-lucide="move-horizontal"></i>
+                    <input type="range" min="1" max="12" step="1"
+                           :value="pages.cellSpan(cell)"
+                           @input="live = +$event.target.value"
+                           @change="pages.setCellSpan(cell, $event.target.value)">
+                    <span class="okec-cell__width-val" x-text="live + '/12'"></span>
+                  </div>
+
+                  {# Override-індикатор + reset на tablet/mobile #}
+                  <div class="okec-cell__override-bar"
+                       x-show="pages.hasOrderOverride(cell)" x-cloak>
+                    <i data-lucide="arrow-up-down"></i>
+                    <span x-text="t('layout_custom_order_label')"></span>
+                    <button type="button" class="okec-cell__reset"
+                            @click="pages.resetOrderOverride(cell)"
+                            :title="t('layout_reset_order')">
+                      <i data-lucide="rotate-ccw"></i>
+                    </button>
+                  </div>
+
+                  <div class="okec-cell__blocks" :data-cell-id="cell.id">
+                    <template x-for="block in pages.cellBlocks(cell)" :key="block.id">
+                      <div class="okec-block-card" :data-block-id="block.id">
+                        <button type="button" class="okec-block-card__drag" :title="t('button_edit')">
+                          <i data-lucide="grip-vertical"></i>
+                        </button>
+                        <i class="okec-block-card__icon" :data-lucide="pages.blockIcon(block.type)"></i>
+                        <div class="okec-block-card__body">
+                          <span class="okec-block-card__title" x-text="pages.blockLabel(block.type)"></span>
+                          <code class="okec-block-card__id" x-text="block.id"></code>
+                        </div>
+                        <div class="okec-block-card__actions">
+                          <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                                  :title="t('layout_btn_settings')"
+                                  @click="pages.openBlockSettings(block, cell.id)">
+                            <i data-lucide="settings"></i>
+                          </button>
+                          <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                                  :title="t('layout_btn_clone_block')"
+                                  x-show="!pages.blockMeta(block.type) || !pages.blockMeta(block.type).unique"
+                                  @click="pages.cloneBlockById(cell.id, block.id)">
+                            <i data-lucide="copy"></i>
+                          </button>
+                          <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                                  :title="t('layout_btn_remove_block')"
+                                  @click="pages.removeBlockById(cell.id, block.id)">
+                            <i data-lucide="x"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+
+                </div>
+              </template>
+            </div>
+
+          </div>
+        </template>
+
+      </div>
+
+      {# ── Bottom toolbar: Add block (success) + Add row (default) ──── #}
+      <div class="okec-step__toolbar">
+        <button type="button" class="ok-btn ok-btn-success ok-btn-sm"
+                @click="pages.toggleQuickAddBlock(sIdx, $event.currentTarget)">
+          <i data-lucide="plus"></i> {{ layout_btn_add_block }}
+        </button>
+        <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                @click="pages.toggleAddRow(sIdx, $event.currentTarget)">
+          <i data-lucide="rows-3"></i> {{ layout_btn_add_row }}
+        </button>
+      </div>
+
+    </div>
+  </template>
+
+  {# ── Add step ──────────────────────────────────────────────────── #}
+  <button type="button" class="ok-btn ok-btn-default okec-add-step" @click="pages.addStep()">
+    <i data-lucide="plus"></i> {{ layout_btn_add_step }}
+  </button>
+
+</div>
+
+{# ── Floating dropdowns ───────────────────────────────────────────── #}
+
+{# Add-block dropdown (per cell) #}
+<div class="okec-add-rule" x-show="pages.addBlockOpen.cellId !== null" x-cloak
+     @click.outside="pages.closeAddBlock()"
+     @keydown.escape.window="pages.closeAddBlock()">
+  <div class="okec-add-rule__menu okec-block-picker"
+       :style="`top:${pages.addBlockOpen.pos.top}px;left:${pages.addBlockOpen.pos.left}px;min-width:${pages.addBlockOpen.pos.width}px;`">
+    <template x-for="bt in pages.availableBlocks()" :key="bt.code">
+      <button type="button" class="okec-add-rule__item okec-block-picker__item"
+              @click="pages.addBlock(pages.addBlockOpen.cellId, bt.code)">
+        <i :data-lucide="bt.icon"></i>
+        <span x-text="bt.label"></span>
+        <span class="okec-block-picker__hint" x-show="!bt.unique" x-text="'×N'"></span>
+      </button>
+    </template>
+    <div class="okec-add-rule__item okec-block-picker__empty"
+         x-show="pages.availableBlocks().length === 0">
+      {{ layout_no_more_blocks }}
+    </div>
+  </div>
+</div>
+
+{# Add-row dropdown (per step) — варіанти 1 / 2 / 3 колонки #}
+<div class="okec-add-rule" x-show="pages.addRowOpen.stepIdx >= 0" x-cloak
+     @click.outside="pages.closeAddRow()"
+     @keydown.escape.window="pages.closeAddRow()">
+  <div class="okec-add-rule__menu okec-row-picker"
+       :style="`top:${pages.addRowOpen.pos.top}px;left:${pages.addRowOpen.pos.left}px;min-width:${pages.addRowOpen.pos.width}px;`">
+    <button type="button" class="okec-add-rule__item okec-row-picker__item"
+            @click="pages.addRow(pages.addRowOpen.stepIdx, 1)">
+      <span class="okec-row-picker__cols okec-row-picker__cols--1"><span></span></span>
+      {{ layout_row_1_col }}
+    </button>
+    <button type="button" class="okec-add-rule__item okec-row-picker__item"
+            @click="pages.addRow(pages.addRowOpen.stepIdx, 2)">
+      <span class="okec-row-picker__cols okec-row-picker__cols--2"><span></span><span></span></span>
+      {{ layout_row_2_col }}
+    </button>
+    <button type="button" class="okec-add-rule__item okec-row-picker__item"
+            @click="pages.addRow(pages.addRowOpen.stepIdx, 3)">
+      <span class="okec-row-picker__cols okec-row-picker__cols--3"><span></span><span></span><span></span></span>
+      {{ layout_row_3_col }}
+    </button>
+  </div>
+</div>

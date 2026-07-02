@@ -8,33 +8,32 @@
         href="#delivery">Доставка та оплата</a><a class="pdp-nav__link" href="#related">Рекомендовані</a></div>
   </div>
   <div class="pdp" id="about">
+    {% set gallery_images = [
+      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75',
+      'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=75',
+      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=75',
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=75',
+      'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=75'
+    ] %}
     <div class="gallery">
-      <div class="gallery__thumbs">
-        <button class="gallery__thumb is-active" type="button" data-gallery-thumb="0"
-          data-img="url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"
-          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"
-          aria-label="Фото 1"></button>
-        <button class="gallery__thumb" type="button" data-gallery-thumb="1"
-          data-img="url(https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=75)"
-          style="background-image:url(https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=75)"
-          aria-label="Фото 2"></button>
-        <button class="gallery__thumb" type="button" data-gallery-thumb="2"
-          data-img="url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=75)"
-          style="background-image:url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=75)"
-          aria-label="Фото 3"></button>
-        <button class="gallery__thumb" type="button" data-gallery-thumb="3"
-          data-img="url(https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=75)"
-          style="background-image:url(https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=75)"
-          aria-label="Фото 4"></button>
-        <button class="gallery__thumb" type="button" data-gallery-thumb="4"
-          data-img="url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=75)"
-          style="background-image:url(https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=75)"
-          aria-label="Фото 5"></button>
+      <div class="swiper gallery__thumbs" data-gallery-thumbs>
+        <div class="swiper-wrapper">
+          {% for img in gallery_images %}
+          <div class="swiper-slide gallery__thumb" style="background-image:url({{ img }})"
+            role="button" tabindex="0" aria-label="Фото {{ loop.index }}"></div>
+          {% endfor %}
+        </div>
       </div>
       <div class="gallery__stage">
-        <button class="gallery__main" id="gallery-main" type="button" data-current="0" data-modal-open="lightbox"
-          aria-label="Збільшити"
-          style="background-image:url(https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=75)"></button>
+        <div class="swiper gallery__viewport" data-gallery-main>
+          <div class="swiper-wrapper">
+            {% for img in gallery_images %}
+            <div class="swiper-slide gallery__slide" style="background-image:url({{ img }})"
+              data-img="url({{ img }})" data-modal-open="lightbox" role="button" aria-label="Збільшити"></div>
+            {% endfor %}
+          </div>
+          <span class="gallery__counter swiper-pagination" data-gallery-counter></span>
+        </div>
         <div class="gallery__tools"><button class="gallery__tool" type="button" data-pdp-wish aria-label="В обране"><svg
               width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -60,7 +59,6 @@
             stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6"></path>
           </svg></button>
-        <span class="gallery__counter" data-gallery-counter>1/5</span>
       </div>
     </div>
     <div class="pdp-info">

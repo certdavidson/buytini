@@ -1,0 +1,118 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="ok-redirect-add" class="ok-btn ok-btn-primary ok-btn-sm">
+              <i data-lucide="plus"></i> {{ button_redirect_add }}
+            </button>
+            <button type="button" id="ok-redirect-import" class="ok-btn ok-btn-default ok-btn-sm">
+              <i data-lucide="upload"></i> {{ button_import_csv }}
+            </button>
+          </div>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            <div class="ok-filter-bar">
+              <input type="text" id="ok-redirect-search" class="ok-input" placeholder="{{ placeholder_search_redirects }}">
+            </div>
+
+            <table class="ok-table">
+              <thead>
+                <tr>
+                  <th>{{ column_from }}</th>
+                  <th>{{ column_to }}</th>
+                  <th class="ok-col-xs">{{ column_code }}</th>
+                  <th class="ok-col-xs">{{ column_hits }}</th>
+                  <th class="ok-col-xs">{{ column_date }}</th>
+                  <th class="ok-col-actions"></th>
+                </tr>
+              </thead>
+              <tbody id="ok-redirect-tbody">
+                <tr><td colspan="6" class="text-center ok-loading">{{ text_loading }}</td></tr>
+              </tbody>
+            </table>
+
+            <div id="ok-redirect-pagination" class="ok-pagination"></div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+
+      {# ── Add/Edit modal ── #}
+      <div id="ok-redirect-modal" class="ok-modal-backdrop" style="display:none">
+        <div class="ok-modal">
+          <div class="ok-modal-header">
+            <span id="ok-modal-title">{{ text_redirect_modal_title }}</span>
+            <button type="button" class="ok-modal-close" id="ok-modal-close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ok-modal-body">
+            <input type="hidden" id="ok-edit-id" value="0">
+            <div class="mb-3">
+              <label class="ok-label form-label">{{ text_from_uri }}</label>
+              <input type="text" id="ok-edit-from" class="ok-input" placeholder="/old-url">
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">{{ text_to_url }}</label>
+              <input type="text" id="ok-edit-to" class="ok-input" placeholder="/new-url">
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">{{ column_code }}</label>
+              <select id="ok-edit-code" class="ok-select">
+                <option value="301">301 Permanent</option>
+                <option value="302">302 Temporary</option>
+              </select>
+            </div>
+          </div>
+          <div class="ok-modal-footer">
+            <button type="button" id="ok-modal-save" class="ok-btn ok-btn-primary">{{ button_save }}</button>
+            <button type="button" id="ok-modal-cancel" class="ok-btn ok-btn-default">{{ button_cancel }}</button>
+          </div>
+        </div>
+      </div>
+
+      {# ── Import modal ── #}
+      <div id="ok-import-modal" class="ok-modal-backdrop" style="display:none">
+        <div class="ok-modal">
+          <div class="ok-modal-header">
+            <span>{{ button_import_csv }}</span>
+            <button type="button" class="ok-modal-close" id="ok-import-close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ok-modal-body">
+            <p class="ok-hint">{{ text_from_uri }}, {{ text_to_url }} [, code]</p>
+            <textarea id="ok-import-csv" class="ok-input ok-code-editor" rows="10" placeholder="/old-url, /new-url, 301"></textarea>
+          </div>
+          <div class="ok-modal-footer">
+            <button type="button" id="ok-import-submit" class="ok-btn ok-btn-primary">{{ button_import_csv }}</button>
+            <button type="button" id="ok-import-cancel" class="ok-btn ok-btn-default">{{ button_cancel }}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  redirectsListUrl:  '{{ redirects_list_url }}',
+  redirectSaveUrl:   '{{ redirect_save_url }}',
+  redirectDeleteUrl: '{{ redirect_delete_url }}',
+  redirectImportUrl: '{{ redirect_import_url }}',
+  userToken: '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

@@ -1,0 +1,212 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ groups_heading }}</h2>
+<p class="ok-help">{{ groups_help }}</p>
+
+<div class="okec-loading" x-show="groups.loading">
+  <i data-lucide="loader" class="okec-spin"></i>
+</div>
+
+<div class="ok-panel" x-show="!groups.loading && groups.items.length > 0" x-cloak>
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="layers"></i> {{ groups_heading }}
+    </div>
+  </div>
+  <table class="ok-table">
+    <thead>
+      <tr>
+        <th>{{ groups_col_id }}</th>
+        <th>{{ groups_col_name }}</th>
+        <th>{{ groups_col_slug }}</th>
+        <th>{{ groups_col_default }}</th>
+        <th>{{ groups_col_sort }}</th>
+        <th>{{ groups_col_url_example }}</th>
+        <th class="okec-col-actions">{{ groups_col_actions }}</th>
+      </tr>
+    </thead>
+    <tbody x-ref="groupsTbody" data-okec-sortable-groups>
+      <template x-for="g in groups.items" :key="g.group_id">
+        <tr :data-group-id="g.group_id">
+          <td>
+            <div class="ok-flex ok-gap-6">
+              <i class="okec-drag-handle" data-lucide="grip-vertical"
+                :title="t('groups_drag_hint')"></i>
+              <span x-text="g.group_id"></span>
+            </div>
+          </td>
+          <td>
+            <strong x-show="!g._editing"
+                    x-text="g.name"
+                    @dblclick="g._editing = true; $nextTick(() => $event.target.parentNode.querySelector('input').focus())"
+                    class="okec-editable"
+                    :title="t('groups_inline_rename_hint')"></strong>
+            <input x-show="g._editing" x-cloak type="text"
+                   class="ok-input okec-inline-edit"
+                   :value="g.name"
+                   @blur="groups.inlineRename(g, $event.target.value); g._editing = false;"
+                   @keydown.enter.prevent="$event.target.blur()"
+                   @keydown.escape="g._editing = false">
+          </td>
+          <td><code class="ok-code" x-text="g.slug"></code></td>
+          <td>
+            <span class="ok-badge ok-badge-warning-soft ok-badge-sm" x-show="g.is_default" x-cloak>{{ groups_is_default }}
+            </span>
+          </td>
+          <td x-text="g.sort_order"></td>
+          <td>
+            <code class="okec-url-example"
+                  x-text="g.is_default ? '/easycheckout' : '/easycheckout?group=' + g.slug"></code>
+          </td>
+          <td class="okec-col-actions">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="groups.openClone(g)" :title="t('groups_btn_clone')">
+              <i data-lucide="copy"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="groups.openEdit(g)" :title="t('button_edit')">
+              <i data-lucide="pencil"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                    @click="groups.confirmDelete(g)" :title="t('button_delete')"
+                    :disabled="g.is_default">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+
+<div class="okec-empty" x-show="!groups.loading && groups.items.length === 0" x-cloak>
+  <p>{{ groups_empty }}</p>
+  <button type="button" class="ok-btn ok-btn-primary ok-mt-3" @click="groups.openCreate()">
+    <i data-lucide="plus"></i> {{ groups_btn_add }}
+  </button>
+</div>
+
+{# ── Edit / Create modal ──────────────────────────────────────────── #}
+<div class="okec-modal" x-show="groups.modal.open" x-cloak
+     @keydown.escape.window="groups.closeModal()">
+  <div class="okec-modal__backdrop" @click="groups.closeModal()"></div>
+  <div class="okec-modal__dialog">
+
+    <div class="okec-modal__header">
+      <h3 x-text="groups.modal.mode === 'edit' ? t('groups_modal_title_edit') : t('groups_modal_title_add')"></h3>
+      <button type="button" class="okec-modal__close" @click="groups.closeModal()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="okec-modal__body">
+
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_name }}</label>
+            <div class="ok-form-control">
+              <input type="text" class="ok-input"
+                     x-model="groups.form.name"
+                     @input="groups.autoSlug()"
+                     :class="{ 'is-invalid': groups.errors.name }">
+              <p class="ok-help">{{ help_group_name }}</p>
+            </div>
+          </div>
+
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_slug }}</label>
+            <div class="ok-form-control">
+              <input type="text" class="ok-input ok-code-input"
+                     x-model="groups.form.slug"
+                     :class="{ 'is-invalid': groups.errors.slug }">
+              <p class="ok-help">{{ help_group_slug }}</p>
+            </div>
+          </div>
+
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_is_default }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="groups.form.is_default">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <p class="ok-help">{{ help_group_is_default }}</p>
+            </div>
+          </div>
+
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_sort_order }}</label>
+            <div class="ok-form-control">
+              <input type="text" inputmode="decimal" class="ok-input okec-iso2-input"
+                     min="0" x-model.number="groups.form.sort_order">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="groups.closeModal()">
+        {{ button_close }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="groups.save()" :disabled="groups.saving">
+        <i data-lucide="save" x-show="!groups.saving"></i>
+        <i data-lucide="loader" class="okec-spin" x-show="groups.saving"></i>
+        <span x-text="groups.saving ? t('js_saving') : t('button_save')"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+{# ── Clone modal ─────────────────────────────────────────────────── #}
+<div class="okec-modal" x-show="groups.cloneModal.open" x-cloak
+     @keydown.escape.window="groups.closeClone()">
+  <div class="okec-modal__backdrop" @click="groups.closeClone()"></div>
+  <div class="okec-modal__dialog">
+
+    <div class="okec-modal__header">
+      <h3>
+        <i data-lucide="copy"></i>
+        <span>{{ groups_modal_title_clone }}</span>
+      </h3>
+      <button type="button" class="okec-modal__close" @click="groups.closeClone()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="okec-modal__body">
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-body">
+          <p class="ok-help">{{ groups_clone_help }}</p>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_name }}</label>
+            <div class="ok-form-control">
+              <input type="text" class="ok-input"
+                     x-model="groups.cloneForm.name"
+                     @input="groups.cloneAutoSlug()">
+            </div>
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_group_slug }}</label>
+            <div class="ok-form-control">
+              <input type="text" class="ok-input ok-code-input"
+                     x-model="groups.cloneForm.slug">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="groups.closeClone()">
+        {{ button_close }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="groups.doClone()" :disabled="groups.saving">
+        <i data-lucide="copy" x-show="!groups.saving"></i>
+        <i data-lucide="loader" class="okec-spin" x-show="groups.saving"></i>
+        <span x-text="groups.saving ? t('js_saving') : t('groups_btn_clone_create')"></span>
+      </button>
+    </div>
+  </div>
+</div>

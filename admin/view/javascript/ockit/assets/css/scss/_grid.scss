@@ -1,0 +1,36 @@
+// oc-kit Design System — Grid & Flex
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  .ok-grid    { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .ok-grid-2  { display: grid; grid-template-columns: repeat(2, 1fr);  gap: 16px; }
+  .ok-grid-3  { display: grid; grid-template-columns: repeat(3, 1fr);  gap: 16px; }
+  .ok-grid-4  { display: grid; grid-template-columns: repeat(4, 1fr);  gap: 16px; }
+  .ok-grid-5  { display: grid; grid-template-columns: repeat(5, 1fr);  gap: 16px; }
+
+  .ok-grid-auto-sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .ok-grid-auto-md { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+
+  .ok-col-1  { grid-column: span 1; }
+  .ok-col-2  { grid-column: span 2; }
+  .ok-col-3  { grid-column: span 3; }
+  .ok-col-4  { grid-column: span 4; }
+  .ok-col-6  { grid-column: span 6; }
+  .ok-col-8  { grid-column: span 8; }
+  .ok-col-9  { grid-column: span 9; }
+  .ok-col-12 { grid-column: span 12; }
+
+  .ok-gap-4  { gap: 4px; }
+  .ok-gap-8  { gap: 8px; }
+  .ok-gap-12 { gap: 12px; }
+  .ok-gap-16 { gap: 16px; }
+  .ok-gap-24 { gap: 24px; }
+
+  .ok-flex         { display: flex; }
+  .ok-flex-col     { display: flex; flex-direction: column; }
+  .ok-flex-center  { display: flex; align-items: center; }
+  .ok-flex-between { display: flex; align-items: center; justify-content: space-between; }
+  .ok-flex-end     { display: flex; align-items: center; justify-content: flex-end; }
+  .ok-flex-wrap    { flex-wrap: wrap; }
+}

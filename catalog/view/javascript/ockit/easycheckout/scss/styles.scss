@@ -1,0 +1,18 @@
+/*
+ * EasyCheckout — catalog frontend styles
+ * © 2026 oc-kit.com | https://oc-kit.com
+ *
+ * Source of truth. Compile with:
+ *   cd catalog/view/javascript/ockit/easycheckout && \
+ *   /usr/bin/sass --no-cache --style=compressed scss/styles.scss easycheckout.css
+ */
+
+@import 'tokens';
+@import 'base';
+@import 'blocks';
+@import 'fields';
+@import 'methods';
+@import 'cart';
+@import 'summary';
+@import 'buttons';
+@import 'overlays';

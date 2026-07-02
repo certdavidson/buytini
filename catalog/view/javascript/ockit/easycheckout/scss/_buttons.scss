@@ -1,0 +1,124 @@
+// Buttons: primary CTA, secondary apply buttons, sticky mobile bar.
+
+#easycheckout-page {
+
+  // Primary CTA (place order, login submit).
+  .btn-primary,
+  .okec-block-buttons__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: $ec-r-method; // 13px (= .ok-cta)
+    background: $ec-accent;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color .15s;
+
+    &:hover,
+    &:focus { background: $ec-accent-dark; color: #fff; }
+  }
+
+  // Secondary / apply buttons.
+  .btn-default {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border: 1.5px solid $ec-input-line;
+    border-radius: $ec-r-input;
+    background: $ec-card;
+    color: $ec-ink-soft;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color .15s, color .15s, background-color .15s;
+
+    &:hover,
+    &:focus { border-color: $ec-accent; color: $ec-accent; background: $ec-accent-soft; }
+  }
+}
+
+.okec-block-buttons { align-items: stretch; }
+
+.okec-block-buttons__submit {
+  .okec-block-buttons__icon { flex: 0 0 auto; }
+  // amount slot sits inline with the label (" · {total}")
+  .okec-block-buttons__amount { font-weight: 600; }
+}
+
+// Disabled / gated state
+.okec-btn--gated {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+// Loading spinner overlay
+.okec-btn--loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.okec-btn--loading::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid rgba(255, 255, 255, .45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: okec-spin .7s linear infinite;
+}
+
+// Sticky mobile CTA bar
+@media (max-width: $ec-bp-mobile) {
+  .okec-block-buttons--sticky-mobile {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    background: $ec-card;
+    border-top: 1px solid $ec-line;
+    box-shadow: 0 -6px 20px rgba(17, 24, 39, .08);
+    margin: 0 -16px -18px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+// ── Customer-side group switcher (B2C/B2B/Wholesale) ──────────────
+.okec-group-switcher {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: #eef0f4;
+  border-radius: $ec-r-pill;
+  padding: 4px;
+}
+.okec-group-switcher__btn {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $ec-muted;
+  text-decoration: none;
+  border-radius: $ec-r-pill;
+  transition: background-color .15s, color .15s;
+
+  &:hover { color: $ec-ink; text-decoration: none; }
+  &.is-active {
+    background: $ec-card;
+    color: $ec-accent;
+    box-shadow: 0 1px 3px rgba(17, 24, 39, .08);
+  }
+}

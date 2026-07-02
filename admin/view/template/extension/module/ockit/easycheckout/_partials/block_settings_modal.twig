@@ -1,0 +1,588 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="okec-modal" x-show="pages.settingsModal.open" x-cloak
+     @keydown.escape.window="pages.closeBlockSettings()">
+  <div class="okec-modal__backdrop" @click="pages.closeBlockSettings()"></div>
+  <div class="okec-modal__dialog">
+
+    <div class="okec-modal__header">
+      <h3>
+        <i :data-lucide="pages.blockIcon(pages.settingsModal.block && pages.settingsModal.block.type)"></i>
+        <span x-text="pages.blockLabel(pages.settingsModal.block && pages.settingsModal.block.type)"></span>
+      </h3>
+      <button type="button" class="okec-modal__close" @click="pages.closeBlockSettings()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="okec-modal__body" x-cloak>
+     <template x-if="pages.settingsModal.block">
+      <div>
+
+      {# ── Common: visibility ──────────────────────────────────────── #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-header">
+          <strong>{{ block_settings_visibility }}</strong>
+        </div>
+        <div class="ok-panel-body">
+          <p class="ok-help">{{ block_settings_visibility_help }}</p>
+
+          <div class="ok-form-row">
+            <label class="form-label">{{ block_settings_audience }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input"
+                       x-model="pages.settingsModal.block.settings.hide_for_guests">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label">{{ block_settings_hide_for_guests }}</span>
+              </label>
+            </div>
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label"></label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input"
+                       x-model="pages.settingsModal.block.settings.hide_for_logged_in">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label">{{ block_settings_hide_for_logged_in }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="ok-form-row">
+            <label class="form-label">{{ block_settings_viewports }}</label>
+            <div class="ok-form-control okec-vp-toggles">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.hide_on_desktop">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label"><i data-lucide="monitor"></i> Desktop</span>
+              </label>
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.hide_on_tablet">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label"><i data-lucide="tablet"></i> Tablet</span>
+              </label>
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.hide_on_mobile">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label"><i data-lucide="smartphone"></i> Mobile</span>
+              </label>
+              <p class="ok-help">{{ block_settings_viewports_help }}</p>
+            </div>
+          </div>
+
+          {# Block-level condition editor — multi-rule #}
+          <div class="ok-form-row ok-form-row--block">
+            <label class="form-label">{{ block_settings_block_condition }}</label>
+            <div class="ok-form-control">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input"
+                       :checked="!!pages.settingsModal.block.settings.condition"
+                       @change="pages.toggleBlockCondition()">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label">{{ block_settings_block_condition_enable }}</span>
+              </label>
+              <p class="ok-help">{{ block_settings_block_condition_help }}</p>
+              <template x-if="pages.settingsModal.block.settings.condition">
+                <div class="okec-cond-builder">
+                  <div class="okec-cond-builder__match">
+                    <span>{{ block_settings_condition_match }}</span>
+                    <select class="ok-select" x-model="pages.settingsModal.block.settings.condition.match">
+                      <option value="all">{{ block_settings_condition_match_all }}</option>
+                      <option value="any">{{ block_settings_condition_match_any }}</option>
+                    </select>
+                  </div>
+                  <template x-for="(rule, rIdx) in pages.settingsModal.block.settings.condition.rules" :key="rIdx">
+                    <div class="okec-condition">
+                      <span class="okec-condition__label">{{ block_settings_condition_show_if }}</span>
+                      <select class="ok-select okec-condition__source" x-model="rule.source_code">
+                        <option value="">—</option>
+                        <template x-for="opt in pages.fieldsAvailableForBlockCondition()" :key="opt.code">
+                          <option :value="opt.code" x-text="opt.label"></option>
+                        </template>
+                      </select>
+                      <select class="ok-select okec-condition__op" x-model="rule.operator">
+                        <option value="==">{{ block_settings_condition_op_eq }}</option>
+                        <option value="!=">{{ block_settings_condition_op_neq }}</option>
+                        <option value="not_empty">{{ block_settings_condition_op_not_empty }}</option>
+                        <option value="empty">{{ block_settings_condition_op_empty }}</option>
+                        <option value="in">{{ block_settings_condition_op_in }}</option>
+                      </select>
+                      <input type="text" class="ok-input okec-condition__value"
+                             x-model="rule.value"
+                             x-show="rule.operator !== 'not_empty' && rule.operator !== 'empty'"
+                             :placeholder="t('block_settings_condition_value_ph')">
+                      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                              :title="t('block_settings_condition_remove_rule')"
+                              @click="pages.removeConditionRule(pages.settingsModal.block, pages.settingsModal.block.settings.condition, rIdx)">
+                        <i data-lucide="x"></i>
+                      </button>
+                    </div>
+                  </template>
+                  <button type="button" class="ok-btn ok-btn-default ok-btn-xs okec-cond-builder__add"
+                          @click="pages.addConditionRule(pages.settingsModal.block.settings.condition)">
+                    <i data-lucide="plus"></i> {{ block_settings_condition_add_rule }}
+                  </button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ── Type-specific: text content (comment / help / agreement / custom_html) ── #}
+      <template x-if="pages.blockHasText(pages.settingsModal.block)">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header">
+            <strong x-text="pages.settingsModal.block.type === 'custom_html'
+                          ? t('block_settings_html_content')
+                          : t('block_settings_text_content')"></strong>
+          </div>
+          <div class="ok-panel-body">
+            <template x-for="lang in context.languages" :key="lang.language_id">
+              <div class="okec-lang-block">
+                <div class="okec-lang-flag" :title="lang.name">
+                  <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                       onerror="this.style.display='none'">
+                  <span x-text="lang.name"></span>
+                </div>
+                <div class="okec-lang-fields">
+                  <textarea class="ok-input"
+                            :rows="pages.settingsModal.block.type === 'custom_html' ? 8 : 4"
+                            x-model="pages.settingsModal.block.settings.text[lang.language_id]"></textarea>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      {# ── Type-specific: agreement (text + required) ────────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'agreement'">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_agreement_required }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.required">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+                <p class="ok-help">{{ block_settings_agreement_required_help }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Customer ─────────────────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'customer'">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_registration_mode }}</label>
+              <div class="ok-form-control">
+                <label class="ok-radio">
+                  <input type="radio" value="optional" x-model="pages.settingsModal.block.settings.registration_mode">
+                  {{ registration_mode_optional }}
+                </label>
+                <label class="ok-radio">
+                  <input type="radio" value="required" x-model="pages.settingsModal.block.settings.registration_mode">
+                  {{ registration_mode_required }}
+                </label>
+                <label class="ok-radio">
+                  <input type="radio" value="disabled" x-model="pages.settingsModal.block.settings.registration_mode">
+                  {{ registration_mode_disabled }}
+                </label>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_show_login_link }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_login_link">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Cart ─────────────────────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'cart'">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_display }}</label>
+              <div class="ok-form-control okec-vp-toggles">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_image">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_image }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_model">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_model }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_quantity_controls">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_quantity_controls }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_remove_btn">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_remove_btn }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_subtotal">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_cart_subtotal }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Summary ──────────────────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'summary'">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_display }}</label>
+              <div class="ok-form-control okec-vp-toggles">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_subtotal">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_subtotal }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_taxes">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_taxes }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_coupon_input">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_coupon_input }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_voucher_input">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_voucher_input }}</span>
+                </label>
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_reward_input">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  <span class="ok-toggle-label">{{ block_settings_show_reward_input }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Shipping / Payment ───────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block &&
+                      (pages.settingsModal.block.type === 'shipping' || pages.settingsModal.block.type === 'payment')">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_display_mode }}</label>
+              <div class="ok-form-control">
+                <label class="ok-radio">
+                  <input type="radio" value="radio" x-model="pages.settingsModal.block.settings.display_mode">
+                  {{ block_settings_display_radio }}
+                </label>
+                <label class="ok-radio">
+                  <input type="radio" value="select" x-model="pages.settingsModal.block.settings.display_mode">
+                  {{ block_settings_display_select }}
+                </label>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_auto_select_first }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.auto_select_first">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_show_description }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_description">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Buttons ──────────────────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'buttons'">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_submit_text }}</label>
+              <div class="ok-form-control">
+                <p class="ok-help">{{ block_settings_submit_text_help }}</p>
+                <template x-for="lang in context.languages" :key="lang.language_id">
+                  <div class="okec-lang-block">
+                    <div class="okec-lang-flag" :title="lang.name">
+                      <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                           onerror="this.style.display='none'">
+                      <span x-text="lang.name"></span>
+                    </div>
+                    <div class="okec-lang-fields">
+                      <input type="text" class="ok-input"
+                             x-model="pages.settingsModal.block.settings.submit_text[lang.language_id]">
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_show_agreement_inline }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.show_agreement_inline">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+                <p class="ok-help">{{ block_settings_show_agreement_inline_help }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ block_settings_sticky_on_mobile }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.sticky_on_mobile">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+                <p class="ok-help">{{ block_settings_sticky_on_mobile_help }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Address-only options ─────────────────────────────────── #}
+      <template x-if="pages.settingsModal.block &&
+                      (pages.settingsModal.block.type === 'payment_address' || pages.settingsModal.block.type === 'shipping_address')">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_options }}</strong></div>
+          <div class="ok-panel-body">
+            <p class="ok-help">{{ block_settings_address_fieldset_hint }}</p>
+
+            {# Тільки для payment_address — toggle "Use shipping as billing" UX #}
+            <template x-if="pages.settingsModal.block.type === 'payment_address'">
+              <div class="ok-form-row">
+                <label class="form-label">{{ block_settings_same_as_shipping_toggle }}</label>
+                <div class="ok-form-control">
+                  <label class="ok-toggle-wrap ok-toggle-sm">
+                    <input type="checkbox" class="ok-toggle-input" x-model="pages.settingsModal.block.settings.same_as_shipping_toggle">
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                  <p class="ok-help">{{ help_same_as_shipping_toggle }}</p>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      {# ── Fields section (customer / payment_address / shipping_address / shipping / payment) ── #}
+      <template x-if="pages.blockSupportsFields(pages.settingsModal.block)">
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header"><strong>{{ block_settings_fields }}</strong></div>
+          <div class="ok-panel-body">
+            <p class="ok-help">{{ block_settings_fields_help }}</p>
+
+            {# Empty state #}
+            <div class="okec-fields-empty"
+                 x-show="!pages.settingsModal.block.settings.fields || pages.settingsModal.block.settings.fields.length === 0">
+              <p>{{ block_settings_fields_empty }}</p>
+            </div>
+
+            {# List of attached fields #}
+            <div class="okec-fieldset" x-show="pages.settingsModal.block.settings.fields && pages.settingsModal.block.settings.fields.length > 0">
+              <template x-for="(item, idx) in pages.settingsModal.block.settings.fields" :key="item.field_id">
+                <div class="okec-fieldset__item" :data-field-id="item.field_id">
+                  <div class="okec-fieldset__row">
+                    <div class="okec-fieldset__handle"
+                         :title="t('block_settings_field_reorder')">
+                      <i data-lucide="grip-vertical"></i>
+                    </div>
+
+                    <div class="okec-fieldset__name">
+                      <span x-text="(pages.fieldInfoById(item.field_id) || {}).name || ('#' + item.field_id)"></span>
+                      <code class="okec-block-card__id"
+                            x-text="(pages.fieldInfoById(item.field_id) || {}).code || ''"></code>
+                      <span class="ok-badge okec-native-badge"
+                            x-show="(pages.fieldInfoById(item.field_id) || {}).native"
+                            x-cloak>OC</span>
+                    </div>
+
+                    <div class="okec-fieldset__visibility">
+                      <select class="ok-select" x-model="item.visibility">
+                        <option value="always">{{ block_settings_field_vis_always }}</option>
+                        <option value="guests">{{ block_settings_field_vis_guests }}</option>
+                        <option value="logged_in">{{ block_settings_field_vis_logged }}</option>
+                      </select>
+                    </div>
+
+                    <div class="okec-fieldset__width" :title="t('block_settings_field_width')">
+                      <select class="ok-select" x-model="item.width">
+                        <option value="full">{{ block_settings_field_width_full }}</option>
+                        <option value="two_thirds">{{ block_settings_field_width_two_thirds }}</option>
+                        <option value="half">{{ block_settings_field_width_half }}</option>
+                        <option value="third">{{ block_settings_field_width_third }}</option>
+                      </select>
+                    </div>
+
+                    <label class="okec-fieldset__toggle" :title="t('block_settings_field_required')">
+                      <input type="checkbox" x-model="item.required">
+                      <span><i data-lucide="asterisk"></i></span>
+                    </label>
+
+                    <label class="okec-fieldset__toggle" :title="t('block_settings_field_reload')">
+                      <input type="checkbox" x-model="item.reload_on_change">
+                      <span><i data-lucide="refresh-cw"></i></span>
+                    </label>
+
+                    {# Condition toggle #}
+                    <label class="okec-fieldset__toggle" :title="t('block_settings_field_condition')"
+                           :class="{ 'is-active': !!item.condition }">
+                      <input type="checkbox"
+                             :checked="!!item.condition"
+                             @change="pages.toggleFieldCondition(item)">
+                      <span><i data-lucide="git-branch"></i></span>
+                    </label>
+
+                    <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                            :title="t('block_settings_field_remove')"
+                            @click="pages.removeBlockField(pages.settingsModal.block, item.field_id)">
+                      <i data-lucide="x"></i>
+                    </button>
+                  </div>
+
+                  {# Condition editor — multi-rule, показується коли item.condition увімкнено #}
+                  <template x-if="item.condition">
+                    <div class="okec-cond-builder">
+                      <div class="okec-cond-builder__match">
+                        <span>{{ block_settings_condition_match }}</span>
+                        <select class="ok-select" x-model="item.condition.match">
+                          <option value="all">{{ block_settings_condition_match_all }}</option>
+                          <option value="any">{{ block_settings_condition_match_any }}</option>
+                        </select>
+                      </div>
+                      <template x-for="(rule, rIdx) in item.condition.rules" :key="rIdx">
+                        <div class="okec-condition">
+                          <span class="okec-condition__label">{{ block_settings_condition_show_if }}</span>
+                          <select class="ok-select okec-condition__source" x-model="rule.source_code">
+                            <option value="">—</option>
+                            <template x-for="opt in pages.fieldsAvailableAsConditionSource(pages.settingsModal.block, item.field_id)" :key="opt.code">
+                              <option :value="opt.code" x-text="opt.label"></option>
+                            </template>
+                          </select>
+                          <select class="ok-select okec-condition__op" x-model="rule.operator">
+                            <option value="==">{{ block_settings_condition_op_eq }}</option>
+                            <option value="!=">{{ block_settings_condition_op_neq }}</option>
+                            <option value="not_empty">{{ block_settings_condition_op_not_empty }}</option>
+                            <option value="empty">{{ block_settings_condition_op_empty }}</option>
+                            <option value="in">{{ block_settings_condition_op_in }}</option>
+                          </select>
+                          <input type="text" class="ok-input okec-condition__value"
+                                 x-model="rule.value"
+                                 x-show="rule.operator !== 'not_empty' && rule.operator !== 'empty'"
+                                 :placeholder="t('block_settings_condition_value_ph')">
+                          <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                                  :title="t('block_settings_condition_remove_rule')"
+                                  @click="pages.removeConditionRule(item, item.condition, rIdx)">
+                            <i data-lucide="x"></i>
+                          </button>
+                        </div>
+                      </template>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-xs okec-cond-builder__add"
+                              @click="pages.addConditionRule(item.condition)">
+                        <i data-lucide="plus"></i> {{ block_settings_condition_add_rule }}
+                      </button>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </div>
+
+            {# Add-field button #}
+            <div class="okec-fieldset__add">
+              <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                      @click="pages.toggleAddField($event.currentTarget)">
+                <i data-lucide="plus"></i> {{ block_settings_field_add }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      {# ── Help block (payment_form) — без своїх опцій ──────────── #}
+      <template x-if="pages.settingsModal.block && pages.settingsModal.block.type === 'payment_form'">
+        <div class="ok-panel okec-modal-panel okec-section-disabled">
+          <div class="ok-panel-header">
+            <strong>{{ block_settings_options }}</strong>
+          </div>
+          <div class="ok-panel-body">
+            <p class="ok-help">{{ block_settings_payment_form_hint }}</p>
+          </div>
+        </div>
+      </template>
+
+      </div>
+     </template>
+    </div>
+
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="pages.closeBlockSettings()">
+        {{ button_close }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="pages.closeBlockSettings()">
+        <i data-lucide="check"></i>
+        {{ button_apply }}
+      </button>
+    </div>
+
+  </div>
+
+  {# Add-field dropdown — fixed-positioned (escapes modal body overflow) #}
+  <div class="okec-add-rule"
+       x-show="pages.addFieldOpen" x-cloak
+       @click.outside="pages.closeAddField()"
+       @keydown.escape.window="pages.closeAddField()">
+    <div class="okec-add-rule__menu okec-block-picker okec-block-picker--upward"
+         :style="`bottom:${pages.addFieldPos.bottom}px;left:${pages.addFieldPos.left}px;min-width:${pages.addFieldPos.width}px;`">
+      <template x-for="f in pages.availableFieldsForBlock(pages.settingsModal.block)" :key="f.field_id">
+        <button type="button" class="okec-add-rule__item okec-block-picker__item"
+                @click="pages.addBlockField(pages.settingsModal.block, f.field_id); pages.closeAddField()">
+          <span x-text="f.name"></span>
+          <code class="okec-block-card__id" x-text="f.code"></code>
+          <span class="ok-badge okec-native-badge" x-show="f.native" x-cloak>OC</span>
+        </button>
+      </template>
+      <div class="okec-add-rule__item okec-block-picker__empty"
+           x-show="pages.availableFieldsForBlock(pages.settingsModal.block).length === 0">
+        {{ block_settings_field_no_more }}
+      </div>
+    </div>
+  </div>
+</div>

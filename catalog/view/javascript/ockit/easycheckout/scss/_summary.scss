@@ -1,0 +1,128 @@
+// Order summary card (totals, coupon/voucher/reward, trust line).
+
+// Stick the summary card to the viewport on desktop multi-column layouts.
+@media (min-width: #{$ec-bp-tablet + 1}) {
+  .okec-block--summary {
+    // position: sticky;
+    // top: 20px;
+  }
+}
+
+.okec-block-summary__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.okec-block-summary__row td {
+  padding: 7px 0;
+  border: 0;
+  font-size: 14px;
+  color: $ec-text-2;
+}
+.okec-block-summary__row .okec-block-summary__label { color: $ec-text-2; }
+.okec-block-summary__value {
+  text-align: right;
+  white-space: nowrap;
+  color: $ec-ink;
+  font-weight: 500;
+}
+
+.okec-block-summary__row--total td {
+  font-weight: 700;
+  font-size: 16px;
+  color: $ec-ink;
+  border-top: 1px solid $ec-line;
+  padding-top: 14px;
+}
+.okec-block-summary__row--total .okec-block-summary__value {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+// Discount-style rows read as savings.
+.okec-block-summary__row--coupon .okec-block-summary__value,
+.okec-block-summary__row--voucher .okec-block-summary__value,
+.okec-block-summary__row--reward .okec-block-summary__value {
+  color: $ec-green;
+  font-weight: 600;
+}
+
+// Coupon / voucher / reward inputs
+.okec-block-summary__addon {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+#easycheckout-page .okec-block-summary__addon .form-control {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+// Apply button — accent-soft pill (design), overrides the generic .btn-default.
+#easycheckout-page .okec-block-summary__addon .btn-default {
+  flex: 0 0 auto;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1.5px solid $ec-accent;
+  border-radius: 10px;
+  background: $ec-accent-soft;
+  color: $ec-accent;
+  font-size: 14px;
+  &:hover,
+  &:focus { background: $ec-accent; color: #fff; border-color: $ec-accent; }
+}
+
+// ── Payment page summary (post-confirm) ───────────────────────────
+.okec-order-summary {
+  background: $ec-accent-soft;
+  border: 1px solid rgba($ec-accent, .18);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.okec-order-summary__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: $ec-ink;
+}
+.okec-order-summary__list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+.okec-order-summary__list dt {
+  color: $ec-muted;
+  font-weight: 500;
+  font-size: 13px;
+}
+.okec-order-summary__list dd {
+  margin: 0;
+  color: $ec-ink;
+}
+.okec-order-summary__total {
+  font-weight: 800;
+  font-size: 18px;
+  color: $ec-accent;
+}
+.okec-payment-form {
+  background: $ec-card;
+  border: 1px solid $ec-line;
+  border-radius: $ec-r-card;
+  padding: 22px 24px;
+}
+.okec-payment-back {
+  margin-top: 18px;
+  text-align: center;
+}
+.okec-payment-back a {
+  color: $ec-muted;
+  font-size: 13px;
+  text-decoration: none;
+  &:hover { color: $ec-accent; }
+}

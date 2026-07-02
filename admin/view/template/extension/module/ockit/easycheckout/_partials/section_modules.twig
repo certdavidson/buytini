@@ -1,0 +1,487 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ modules_heading }}</h2>
+<p class="ok-help">{{ modules_help }}</p>
+
+<div x-data="okecModules()" x-init="load()">
+  <div class="okec-loading" x-show="loading"><i data-lucide="loader" class="okec-spin"></i></div>
+
+  {# Payment table #}
+  <div class="ok-panel" x-show="!loading && payment.length > 0" x-cloak>
+    <div class="ok-panel-header">
+      <div class="ok-panel-title">
+        <i data-lucide="credit-card"></i> {{ modules_payment_heading }}
+      </div>
+    </div>
+    <table class="ok-table okec-modules-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>{{ modules_col_status }}</th>
+          <th>{{ modules_col_override_title }}</th>
+          <th>{{ modules_col_override_description }}</th>
+          <th>{{ modules_col_override_icon }}</th>
+          <th>{{ modules_col_sort }}</th>
+          <th>{{ modules_col_hide }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="m in payment" :key="m.code">
+          <tr>
+            <td><code class="ok-code" x-text="m.code"></code></td>
+            <td>
+              <span class="ok-badge ok-badge-squared" :class="m.enabled ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+                    x-text="m.enabled ? '✓' : '✕'"></span>
+            </td>
+            <td><input type="text" class="ok-input ok-input-sm" x-model="m.override_title"></td>
+            <td><input type="text" class="ok-input ok-input-sm" x-model="m.override_description"></td>
+            <td>
+              <div class="okec-module-icon-cell">
+                <a href="" :id="iconThumbId('payment', m)" data-toggle="image" class="img-thumbnail okec-module-icon-pick">
+                  <img :src="iconSrc(m)" :data-placeholder="placeholder" alt="">
+                </a>
+                <input type="hidden" :id="iconInputId('payment', m)" :value="m.override_icon">
+              </div>
+            </td>
+            <td><input type="text" inputmode="decimal" class="ok-input ok-input-sm ok-col-80" x-model.number="m.sort_order"></td>
+            <td>
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="m.hide">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+            </td>
+            <td>
+              <button type="button" class="ok-btn ok-btn-default ok-btn-xs" @click="save('payment', m)">
+                <i data-lucide="save"></i>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  {# Shipping table #}
+  <div class="ok-panel" x-show="!loading && shipping.length > 0" x-cloak>
+    <div class="ok-panel-header">
+      <div class="ok-panel-title">
+        <i data-lucide="truck"></i> {{ modules_shipping_heading }}
+      </div>
+    </div>
+    <table class="ok-table okec-modules-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>{{ modules_col_status }}</th>
+          <th>{{ modules_col_override_title }}</th>
+          <th>{{ modules_col_override_description }}</th>
+          <th>{{ modules_col_override_icon }}</th>
+          <th>{{ modules_col_sort }}</th>
+          <th>{{ modules_col_hide }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="m in shipping" :key="m.code">
+          <tr>
+            <td><code class="ok-code" x-text="m.code"></code></td>
+            <td>
+              <span class="ok-badge ok-badge-squared" :class="m.enabled ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+                    x-text="m.enabled ? '✓' : '✕'"></span>
+            </td>
+            <td><input type="text" class="ok-input ok-input-sm" x-model="m.override_title"></td>
+            <td><input type="text" class="ok-input ok-input-sm" x-model="m.override_description"></td>
+            <td>
+              <div class="okec-module-icon-cell">
+                <a href="" :id="iconThumbId('shipping', m)" data-toggle="image" class="img-thumbnail okec-module-icon-pick">
+                  <img :src="iconSrc(m)" :data-placeholder="placeholder" alt="">
+                </a>
+                <input type="hidden" :id="iconInputId('shipping', m)" :value="m.override_icon">
+              </div>
+            </td>
+            <td><input type="text" inputmode="decimal" class="ok-input ok-input-sm ok-col-80" x-model.number="m.sort_order"></td>
+            <td>
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="m.hide">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+            </td>
+            <td>
+              <button type="button" class="ok-btn ok-btn-default ok-btn-xs" @click="save('shipping', m)">
+                <i data-lucide="save"></i>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="okec-empty" x-show="!loading && payment.length === 0 && shipping.length === 0" x-cloak>
+    <p>{{ modules_empty }}</p>
+  </div>
+</div>
+
+{# ═══════════ Custom shipping/payment methods (master-detail) ═══════════ #}
+<div x-data="okecCustomMethods()" x-init="load()" class="okec-cm ok-mt-5">
+  <h3 class="ok-section-title"><i data-lucide="package-plus"></i> {{ cm_heading }}</h3>
+  <p class="ok-help">{{ cm_help }}</p>
+
+  <div class="okec-cm__layout">
+    {# ── Master (left) ── #}
+    <div class="okec-cm__master">
+      {# Shipping #}
+      <div class="okec-cm__section">
+        <div class="okec-cm__section-title"><i data-lucide="truck"></i> {{ modules_shipping_heading }}</div>
+
+        <template x-for="g in shipping.groups" :key="g.group_id">
+          <div class="okec-cm__group">
+            <div class="okec-cm__group-head">
+              <i data-lucide="folder"></i>
+              <span class="okec-cm__group-name" x-text="'#' + g.group_id"></span>
+              <button type="button" class="ok-btn ok-btn-danger ok-btn-xs" @click="delGroup(g.group_id)" :title="t('button_delete')">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </div>
+            <template x-for="m in methodsInGroup(g.group_id)" :key="m.method_id">
+              <div class="okec-cm__item" :class="{ 'is-active': isEditing(m.method_id), 'is-off': !m.status }"
+                   @click="edit(m.method_id)">
+                <span class="okec-cm__item-name" x-text="(m.descriptions[activeLang] && m.descriptions[activeLang].name) || m.code"></span>
+                <span class="okec-cm__item-actions" @click.stop>
+                  <button type="button" class="okec-cm__icon-btn" @click="cloneMethod(m)" :title="t('button_clone')"><i data-lucide="copy"></i></button>
+                  <label class="ok-toggle-wrap ok-toggle-sm" @click.stop>
+                    <input type="checkbox" class="ok-toggle-input" :checked="m.status" @change="toggle(m)">
+                    <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                  </label>
+                  <button type="button" class="okec-cm__icon-btn okec-cm__icon-btn--danger" @click="del(m)" :title="t('button_delete')"><i data-lucide="trash-2"></i></button>
+                </span>
+              </div>
+            </template>
+            <button type="button" class="okec-cm__add" @click="addMethod('shipping', g.group_id)">
+              <i data-lucide="plus"></i> {{ cm_add_variant }}
+            </button>
+          </div>
+        </template>
+
+        {# ungrouped shipping #}
+        <template x-for="m in ungroupedShipping()" :key="m.method_id">
+          <div class="okec-cm__item" :class="{ 'is-active': isEditing(m.method_id), 'is-off': !m.status }"
+               @click="edit(m.method_id)">
+            <span class="okec-cm__item-name" x-text="(m.descriptions[activeLang] && m.descriptions[activeLang].name) || m.code"></span>
+            <span class="okec-cm__item-actions" @click.stop>
+              <button type="button" class="okec-cm__icon-btn" @click="cloneMethod(m)" :title="t('button_clone')"><i data-lucide="copy"></i></button>
+              <label class="ok-toggle-wrap ok-toggle-sm" @click.stop>
+                <input type="checkbox" class="ok-toggle-input" :checked="m.status" @change="toggle(m)">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <button type="button" class="okec-cm__icon-btn okec-cm__icon-btn--danger" @click="del(m)" :title="t('button_delete')"><i data-lucide="trash-2"></i></button>
+            </span>
+          </div>
+        </template>
+
+        <div class="okec-cm__section-actions">
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="addMethod('shipping', 0)">
+            <i data-lucide="plus"></i> {{ cm_add_variant }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="addGroup()">
+            <i data-lucide="folder-plus"></i> {{ cm_add_group }}
+          </button>
+        </div>
+      </div>
+
+      {# Payment #}
+      <div class="okec-cm__section">
+        <div class="okec-cm__section-title"><i data-lucide="credit-card"></i> {{ modules_payment_heading }}</div>
+        <template x-for="m in payment.methods" :key="m.method_id">
+          <div class="okec-cm__item" :class="{ 'is-active': isEditing(m.method_id), 'is-off': !m.status }"
+               @click="edit(m.method_id)">
+            <span class="okec-cm__item-name" x-text="(m.descriptions[activeLang] && m.descriptions[activeLang].name) || m.code"></span>
+            <span class="okec-cm__item-actions" @click.stop>
+              <button type="button" class="okec-cm__icon-btn" @click="cloneMethod(m)" :title="t('button_clone')"><i data-lucide="copy"></i></button>
+              <label class="ok-toggle-wrap ok-toggle-sm" @click.stop>
+                <input type="checkbox" class="ok-toggle-input" :checked="m.status" @change="toggle(m)">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <button type="button" class="okec-cm__icon-btn okec-cm__icon-btn--danger" @click="del(m)" :title="t('button_delete')"><i data-lucide="trash-2"></i></button>
+            </span>
+          </div>
+        </template>
+        <div class="okec-cm__section-actions">
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="addMethod('payment', 0)">
+            <i data-lucide="plus"></i> {{ cm_add_variant }}
+          </button>
+        </div>
+      </div>
+
+      {# Subtotals («Облік у замовленні») #}
+      <div class="okec-cm__section">
+        <div class="okec-cm__section-title"><i data-lucide="receipt"></i> {{ cm_subtotals_heading }}</div>
+        <template x-for="s in subtotals" :key="s.subtotal_id">
+          <div class="okec-cm__item" :class="{ 'is-active': isEditingSubtotal(s.subtotal_id), 'is-off': !s.status }"
+               @click="editSubtotal(s)">
+            <span class="okec-cm__item-name" x-text="subItemName(s)"></span>
+            <span class="okec-cm__item-actions" @click.stop>
+              <label class="ok-toggle-wrap ok-toggle-sm" @click.stop>
+                <input type="checkbox" class="ok-toggle-input" :checked="s.status" @change="toggleSubtotal(s)">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <button type="button" class="okec-cm__icon-btn okec-cm__icon-btn--danger" @click="delSubtotal(s)" :title="t('button_delete')"><i data-lucide="trash-2"></i></button>
+            </span>
+          </div>
+        </template>
+        <div class="okec-cm__section-actions">
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="addSubtotal()">
+            <i data-lucide="plus"></i> {{ cm_sub_add }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {# ── Detail (right) ── #}
+    <div class="okec-cm__detail">
+      <div class="okec-cm__placeholder" x-show="!current" x-cloak>
+        <i data-lucide="mouse-pointer-click"></i>
+        <p>{{ cm_select_hint }}</p>
+      </div>
+
+      <template x-if="current">
+      <div class="okec-cm__form">
+        <div class="okec-cm__form-head">
+          <template x-if="currentKind === 'method'">
+            <span class="ok-flex ok-gap-8" style="align-items:center">
+              <code class="ok-code" x-text="current && current.code"></code>
+              <span class="ok-badge ok-badge-info-soft" x-text="current && current.type"></span>
+            </span>
+          </template>
+          <template x-if="currentKind === 'subtotal'">
+            <span class="ok-badge ok-badge-info-soft"><i data-lucide="receipt"></i> {{ cm_subtotals_heading }}</span>
+          </template>
+          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm ok-ml-auto" :disabled="busy" @click="save()">
+            <i data-lucide="save"></i> {{ button_save }}
+          </button>
+        </div>
+
+        {# language tabs #}
+        <div class="ok-tabs ok-mt-3">
+          <template x-for="l in languages" :key="l.language_id">
+            <button type="button" class="ok-tabs-item" :class="{ active: activeLang === l.language_id }" @click="activeLang = l.language_id">
+              <span x-text="l.name"></span>
+            </button>
+          </template>
+        </div>
+
+        {# Name (multilang) — shared #}
+        <div class="ok-form-row ok-form-row--block">
+          <label class="form-label">{{ cm_field_name }}</label>
+          <div class="ok-form-control">
+            <input type="text" class="ok-input" :value="desc(activeLang).name" @input="desc(activeLang).name = $event.target.value">
+          </div>
+        </div>
+
+        {# ── Method-only: description + icon ── #}
+        <template x-if="currentKind === 'method'">
+          <div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_field_description }}</label>
+              <div class="ok-form-control">
+                <textarea class="ok-input" rows="2" :value="desc(activeLang).description" @input="desc(activeLang).description = $event.target.value"></textarea>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ modules_col_override_icon }}</label>
+              <div class="ok-form-control">
+                <div class="okec-module-icon-cell">
+                  <a href="" :id="iconThumbId()" data-toggle="image" class="img-thumbnail okec-module-icon-pick">
+                    <img :src="iconSrc()" :data-placeholder="placeholder" alt="">
+                  </a>
+                  <input type="hidden" :id="iconInputId()" :value="(current && current.params && current.params.icon) || ''">
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        {# ── Subtotal-only: value + round ── #}
+        <template x-if="currentKind === 'subtotal'">
+          <div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_sub_value }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input ok-w-160" x-model="current.rules.value" placeholder="-1.3% / -50">
+                <p class="ok-help">{{ cm_sub_value_hint }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ cm_sub_round }}</label>
+              <div class="ok-form-control">
+                <label class="ok-toggle-wrap ok-toggle-sm">
+                  <input type="checkbox" class="ok-toggle-input" x-model="current.rules.round" :true-value="1" :false-value="0">
+                  <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        {# ── Shipping-only: cost ── #}
+        <template x-if="current && current.type === 'shipping'">
+          <div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_cost_type }}</label>
+              <div class="ok-form-control">
+                <select class="ok-select ok-mb-2" x-model="current.cost_type">
+                  <option value="fixed">{{ cm_cost_fixed }}</option>
+                  <option value="weight">{{ cm_cost_weight }}</option>
+                  <option value="sum">{{ cm_cost_sum }}</option>
+                  <option value="sum_totals">{{ cm_cost_sum_totals }}</option>
+                  <option value="api">{{ cm_cost_api }}</option>
+                </select>
+                <input type="text" inputmode="decimal" class="ok-input ok-w-100" x-model="current.cost_value"
+                       x-show="current.cost_type === 'fixed'" :placeholder="t('cm_cost_value_ph')">
+                <p class="ok-help" x-show="['weight','sum','sum_totals'].includes(current.cost_type)">{{ cm_cost_rules_hint }}</p>
+                <p class="ok-help" x-show="current.cost_type === 'api'">{{ cm_cost_api_hint }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ cm_currency }}</label>
+              <div class="ok-form-control">
+                <select class="ok-select" x-model="current.currency_code">
+                  <option value="">{{ cm_currency_default }}</option>
+                  <template x-for="c in currencies" :key="c.code">
+                    <option :value="c.code" x-text="c.title + ' (' + c.code + ')'"></option>
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ cm_tax_class }}</label>
+              <div class="ok-form-control">
+                <select class="ok-select" x-model.number="current.tax_class_id">
+                  <option value="0">{{ cm_tax_none }}</option>
+                  <template x-for="tc in taxClasses" :key="tc.tax_class_id">
+                    <option :value="tc.tax_class_id" x-text="tc.title"></option>
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_zero_cost_text }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input" :value="desc(activeLang).zero_cost_text" @input="desc(activeLang).zero_cost_text = $event.target.value">
+              </div>
+            </div>
+          </div>
+        </template>
+
+        {# ── Payment-only ── #}
+        <template x-if="current && current.type === 'payment'">
+          <div>
+            <div class="ok-form-row">
+              <label class="form-label">{{ cm_order_status }}</label>
+              <div class="ok-form-control">
+                <select class="ok-select ok-w-100" x-model.number="current.order_status_id">
+                  <option value="0">—</option>
+                  <template x-for="os in orderStatuses" :key="os.order_status_id">
+                    <option :value="os.order_status_id" x-text="os.name"></option>
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_payment_form_heading }}</label>
+              <div class="ok-form-control">
+                <input type="text" class="ok-input" :value="desc(activeLang).payment_form_heading" @input="desc(activeLang).payment_form_heading = $event.target.value">
+              </div>
+            </div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_payment_info_form }}</label>
+              <div class="ok-form-control">
+                <textarea class="ok-input" rows="3" :value="desc(activeLang).payment_info_form" @input="desc(activeLang).payment_info_form = $event.target.value"></textarea>
+                <p class="ok-help">{{ cm_payment_info_hint }}</p>
+              </div>
+            </div>
+            <div class="ok-form-row ok-form-row--block">
+              <label class="form-label">{{ cm_payment_info_mail }}</label>
+              <div class="ok-form-control">
+                <textarea class="ok-input" rows="3" :value="desc(activeLang).payment_info_mail" @input="desc(activeLang).payment_info_mail = $event.target.value"></textarea>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        {# Sort order #}
+        <div class="ok-form-row">
+          <label class="form-label">{{ modules_col_sort }}</label>
+          <div class="ok-form-control">
+            <input type="text" inputmode="decimal" class="ok-input ok-w-100" x-model.number="current.sort_order">
+          </div>
+        </div>
+
+        {# Conditions (multi-rule, reuse {match,rules}) #}
+        <div class="ok-form-row ok-form-row--block">
+          <label class="form-label">{{ cm_conditions }}</label>
+          <div class="ok-form-control">
+            <div class="okec-cond-builder">
+              <div class="okec-cond-builder__match">
+                <span>{{ block_settings_condition_match }}</span>
+                <select class="ok-select" x-model="current.conditions.match">
+                  <option value="all">{{ block_settings_condition_match_all }}</option>
+                  <option value="any">{{ block_settings_condition_match_any }}</option>
+                </select>
+              </div>
+              <template x-for="(rule, rIdx) in current.conditions.rules" :key="rIdx">
+                <div class="okec-condition">
+                  <select class="ok-select okec-condition__source" x-model="rule.source_code">
+                    <option value="">—</option>
+                    <template x-for="g in condTypeGroups()" :key="g.key">
+                      <optgroup :label="g.label">
+                        <template x-for="ct in g.items" :key="ct.code">
+                          <option :value="ct.code" x-text="ct.label"></option>
+                        </template>
+                      </optgroup>
+                    </template>
+                  </select>
+                  <select class="ok-select okec-condition__op" x-model="rule.operator">
+                    <option value="==">{{ block_settings_condition_op_eq }}</option>
+                    <option value="!=">{{ block_settings_condition_op_neq }}</option>
+                    <option value="not_empty">{{ block_settings_condition_op_not_empty }}</option>
+                    <option value="empty">{{ block_settings_condition_op_empty }}</option>
+                    <option value="in">{{ block_settings_condition_op_in }}</option>
+                  </select>
+                  <input type="text" class="ok-input okec-condition__value" x-model="rule.value"
+                         x-show="rule.operator !== 'not_empty' && rule.operator !== 'empty'"
+                         :placeholder="t('block_settings_condition_value_ph')">
+                  <button type="button" class="ok-btn ok-btn-danger ok-btn-xs" @click="removeRule(rIdx)"><i data-lucide="x"></i></button>
+                </div>
+              </template>
+              <button type="button" class="ok-btn ok-btn-default ok-btn-xs okec-cond-builder__add" @click="addRule()">
+                <i data-lucide="plus"></i> {{ block_settings_condition_add_rule }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {# Smart placeholder — method only #}
+        <template x-if="currentKind === 'method'">
+          <div class="ok-form-row">
+            <label class="form-label">{{ cm_placeholder }}</label>
+            <div class="ok-form-control okec-vp-toggles">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="current.placeholder_always" :true-value="1" :false-value="0">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label">{{ cm_placeholder_always }}</span>
+              </label>
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" class="ok-toggle-input" x-model="current.placeholder_unavailable" :true-value="1" :false-value="0">
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                <span class="ok-toggle-label">{{ cm_placeholder_unavailable }}</span>
+              </label>
+            </div>
+          </div>
+        </template>
+
+      </div>
+      </template>
+    </div>
+  </div>
+</div>

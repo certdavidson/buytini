@@ -1,0 +1,24 @@
+/* Easy Login admin — utility classes
+ * © 2026 oc-kit.com | https://oc-kit.com
+ *
+ * Replaces inline style="" attributes in settings.twig / log.twig.
+ * Width helpers are scoped to easy-login admin pages so they don't leak
+ * into other oc-kit modules' shared layouts.
+ */
+
+.el-w-120 { max-width: 120px; }
+.el-w-140 { max-width: 140px; }
+.el-w-240 { max-width: 240px; }
+.el-w-320 { max-width: 320px; }
+
+.el-divider-tight { margin: 4px 20px; }
+
+.el-icon-48 { width: 48px; height: 48px; }
+
+.el-cron-block {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px;
+    border-radius: 6px;
+    overflow: auto;
+}

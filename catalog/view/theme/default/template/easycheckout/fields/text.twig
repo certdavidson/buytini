@@ -1,0 +1,9 @@
+{% set input_type = (name == 'email') ? 'email' : ((name == 'telephone') ? 'tel' : 'text') %}
+<input type="{{ input_type }}"
+       name="{{ form_name }}" id="okec-f-{{ field.code }}"
+       class="ok-input"
+       placeholder="{{ field.placeholder }}"
+       value="{{ prefill_value }}"
+       autocomplete="{{ autocomplete_attr }}"
+       {% if field.mask %}data-okec-mask="{{ field.mask }}"{% endif %}
+       {% if required %}required{% endif %}>

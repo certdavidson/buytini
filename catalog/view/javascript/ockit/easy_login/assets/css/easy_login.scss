@@ -1,0 +1,268 @@
+/* Easy Login | © 2026 oc-kit.com | https://oc-kit.com */
+
+.el-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    // margin: 14px 0; 
+}
+
+.el-buttons .el-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 1rem 0;
+}
+
+.el-buttons .el-divider::before,
+.el-buttons .el-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.el-providers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.el-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 8px;
+    // font-size: 14px;
+    //font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity .15s, background .15s, border-color .15s;
+}
+
+.el-btn:hover {
+    opacity: .85;
+}
+
+.el-btn .el-icon {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+}
+
+.el-btn .el-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Google */
+.el-btn-google.el-btn-outline {
+    background: #fff;
+    border: 1px solid #dadce0;
+    color: #3c4043;
+
+    &:hover {
+        border-color: #ddd;
+        background-color: rgba(221,221,221,.35);
+    }
+}
+
+.el-btn-google.el-btn-filled_blue {
+    background: #1a73e8;
+    border: 1px solid #1a73e8;
+    color: #fff;
+}
+
+.el-btn-google.el-btn-filled_black {
+    background: #131314;
+    border: 1px solid #131314;
+    color: #fff;
+}
+
+/* Facebook */
+.el-btn-facebook {
+    background: #1877f2;
+    color: #fff;
+    border: 1px solid #1877f2;
+}
+
+/* Apple */
+.el-btn-apple.el-btn-black {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.el-btn-apple.el-btn-white {
+    background: #fff;
+    color: #000;
+    border: 1px solid #d1d5db;
+}
+
+.el-btn-apple.el-btn-white-outline {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+}
+
+/* Telegram widget — its own iframe styles by Telegram */
+.el-btn-telegram-wrap {
+    display: inline-flex;
+}
+
+/* Magic link / SMS forms */
+.el-magic,
+.el-sms {
+    // display: flex;
+    // flex-direction: column;
+    // gap: 8px;
+    // padding: 12px;
+    // background: #f9fafb;
+    // border-radius: 8px;
+    // margin-bottom: 1rem;
+}
+
+.el-input {
+    width: 100%;
+}
+
+.el-btn-magic,
+.el-btn-sms {
+    background: #111827;
+    color: #fff;
+    border: 1px solid #111827;
+}
+
+.el-msg {
+    font-size: 14px;
+    // min-height: 18px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid transparent;
+} 
+
+.el-msg.is-error {
+    color: #b91c1c;
+    background-color: rgba(#b91c1c, .04);
+    border-color: rgba(#b91c1c, .3);
+    padding: .5rem 1rem;
+    margin-top: 1rem;
+}
+
+.el-msg.is-success {
+    color: rgba(99, 180, 75, 1);
+    border-color: rgba(99, 180, 75, .5);
+    background-color: rgba(99, 180, 75, .04);
+    padding: .5rem 1rem;
+    margin-top: 1rem;
+}
+
+/* Account page — linked identities */
+.el-linked {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.el-linked-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    transition: border-color .15s, box-shadow .15s;
+
+    &:hover {
+        border-color: #d1d5db;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+    }
+
+    .el-prov {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        line-height: 1.3;
+
+        strong {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .ok-text-muted {
+            font-size: 13px;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        small {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+    }
+
+    .el-unlink {
+        flex-shrink: 0;
+        background: transparent;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+        padding: 6px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background .15s, border-color .15s, color .15s;
+
+        &:hover {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+    }
+}
+
+.el-link-more {
+    margin-top: 14px;
+}
+
+.el-login-banner {
+    margin: 0 0 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid;
+    font-size: 14px;
+    line-height: 1.4;
+
+    &.is-floating {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90%;
+        z-index: 9998;
+        box-shadow: 0 6px 24px rgba(0,0,0,.15);
+    }
+
+    &.is-error {
+        background: #fef2f2;
+        border-color: #fecaca;
+        color: #991b1b;
+    }
+    &.is-success {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+        color: #065f46;
+    }
+}

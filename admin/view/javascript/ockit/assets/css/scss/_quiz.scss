@@ -1,0 +1,223 @@
+// oc-kit Design System — Quiz / Wizard
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  // ── Step progress ──────────────────────────────────────────────────────────
+
+  .ok-quiz-steps {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .ok-quiz-step-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .ok-quiz-step-dot {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid $ok-border2;
+    background: $ok-white;
+    color: $ok-muted;
+    font-size: 18px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background $ok-trans, border-color $ok-trans, color $ok-trans;
+    z-index: 1;
+
+    .ok-quiz-step-wrap.active & { border-color: $ok-info; background: $ok-info; color: #fff; }
+    .ok-quiz-step-wrap.done &  { border-color: $ok-success; background: $ok-success; color: #fff; }
+  }
+
+  .ok-quiz-step-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: $ok-muted;
+    text-align: center;
+    margin-top: 6px;
+    white-space: nowrap;
+
+    .ok-quiz-step-wrap.active & { color: $ok-info; }
+    .ok-quiz-step-wrap.done &   { color: $ok-success; }
+  }
+
+  .ok-quiz-step-line {
+    flex: 1;
+    height: 2px;
+    background: $ok-border;
+    margin: 25px 6px 0;
+    &.done { background: $ok-success; }
+  }
+
+  // ── Option cards ──────────────────────────────────────────────────────────
+
+  .ok-quiz-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .ok-quiz-card {
+    border: 2px solid $ok-border;
+    border-radius: 12px;
+    padding: 16px 12px;
+    background: $ok-white;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color $ok-trans;
+    user-select: none;
+
+    &:hover { border-color: $ok-info; }
+
+    &.selected {
+      border-color: $ok-info;
+      background: rgba($ok-info, .04);
+    }
+
+    &-icon  { font-size: 24px; margin-bottom: 6px; display: block; }
+    &-title { font-size: 13px; font-weight: 700; color: $ok-text; margin: 0 0 3px; }
+    &-desc  { font-size: 11px; color: $ok-muted; margin: 0; line-height: 1.4; }
+  }
+
+  // ── Larger option card variant ────────────────────────────────────────────
+
+  .ok-quiz-cards-lg {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .ok-quiz-card-lg {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid $ok-border;
+    border-radius: 12px;
+    padding: 22px 18px;
+    background: $ok-white;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color $ok-trans;
+    user-select: none;
+
+    &:hover { border-color: $ok-info; }
+
+    &.selected {
+      border-color: $ok-success;
+      background: rgba($ok-success, .04);
+    }
+
+    &-icon  { font-size: 32px; margin-bottom: 10px; display: block; }
+    &-title { font-size: 15px; font-weight: 700; color: $ok-text; margin: 0 0 5px; }
+    &-desc  { font-size: 13px; color: $ok-muted; margin: 0; line-height: 1.5; }
+
+    &-eff {
+      position: relative;
+      margin-top: auto;   // pushes to bottom of flex column card
+      height: 20px;       // 16px visual gap + 4px track
+      flex-shrink: 0;
+
+      &::after {          // gray track
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 4px;
+        background: $ok-bg2;
+        border-radius: $ok-radius-full;
+      }
+
+      &-bar {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 4px;
+        border-radius: $ok-radius-full;
+        background: linear-gradient(90deg, $ok-info, $ok-accent);
+        transition: width .4s ease;
+        z-index: 1;
+      }
+    }
+
+    &.selected &-eff-bar,
+    &-eff-bar.ok-progress-bar-success { background: $ok-success; }
+  }
+
+  .ok-quiz-panel { display: none; &.active { display: block; } }
+
+  .ok-quiz-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid $ok-border;
+  }
+
+  // ── Setup step list ───────────────────────────────────────────────────────
+
+  .ok-setup-step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 18px;
+    border: 1px solid $ok-border;
+    border-radius: 12px;
+    background: $ok-white;
+    margin-bottom: 10px;
+
+    &-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: $ok-info;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    &-title { font-size: 14px; font-weight: 700; color: $ok-text; margin: 0 0 3px; }
+    &-desc  { font-size: 13px; color: $ok-text2; margin: 0; line-height: 1.5; }
+  }
+
+  // ── Setup step — large variant ─────────────────────────────────────────────
+
+  .ok-setup-step-lg {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    border: 1px solid $ok-border;
+    border-radius: 12px;
+    background: $ok-white;
+    margin-bottom: 10px;
+
+    &-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: $ok-info;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    &-title { font-size: 15px; font-weight: 700; color: $ok-text; margin: 0 0 4px; }
+    &-desc  { font-size: 13px; color: $ok-text2; margin: 0; line-height: 1.5; }
+  }
+}

@@ -1,0 +1,131 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            {# ── Scan panel ── #}
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="search"></i> {{ text_absurl_scan_title }}</div>
+              <div class="ok-block-body">
+                <div class="ok-filter-bar">
+                  <div>
+                    <label class="ok-label form-label">{{ label_search_domain }}</label>
+                    <input type="text" id="ok-absurl-domain" class="ok-input" placeholder="http://old-domain.com">
+                  </div>
+                  <div class="ok-flex ok-align-end">
+                    <button type="button" id="ok-absurl-scan" class="ok-btn ok-btn-default ok-btn-sm">
+                      <i data-lucide="search"></i> {{ button_scan }}
+                    </button>
+                  </div>
+                </div>
+                <div id="ok-absurl-scan-results" style="display:none">
+                  <p class="ok-scan-count"></p>
+                  <table class="ok-table ok-mt-2">
+                    <thead>
+                      <tr>
+                        <th>{{ column_type }}</th>
+                        <th class="ok-col-sm">ID</th>
+                        <th class="ok-col-sm">{{ column_field }}</th>
+                        <th class="ok-col-sm">{{ column_count }}</th>
+                        <th class="ok-col-sm"><input type="checkbox" id="ok-absurl-check-all"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="ok-absurl-scan-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {# ── Replace panel ── #}
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="replace"></i> {{ text_absurl_replace_title }}</div>
+              <div class="ok-block-body">
+                <div class="ok-filter-bar">
+                  <div>
+                    <label class="ok-label form-label">{{ label_old_domain }}</label>
+                    <input type="text" id="ok-absurl-old" class="ok-input" placeholder="http://old.com">
+                  </div>
+                  <div>
+                    <label class="ok-label form-label">{{ label_new_domain }}</label>
+                    <input type="text" id="ok-absurl-new" class="ok-input" placeholder="https://new.com">
+                  </div>
+                  <div>
+                    <label class="ok-label form-label">{{ column_type }}</label>
+                    <select id="ok-absurl-type" class="ok-select">
+                      <option value="product">{{ text_type_product }}</option>
+                      <option value="category">{{ text_type_category }}</option>
+                      <option value="information">{{ text_type_information }}</option>
+                    </select>
+                  </div>
+                  <div class="ok-flex ok-align-center ok-gap-8">
+                    <label class="ok-toggle-wrap ok-toggle-sm">
+                      <input type="checkbox" id="ok-absurl-https-only" class="ok-toggle-input">
+                      <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                    </label>
+                    <label class="ok-label form-label" for="ok-absurl-https-only">{{ label_https_only }}</label>
+                  </div>
+                </div>
+                <div class="ok-mt-2">
+                  <button type="button" id="ok-absurl-replace" class="ok-btn ok-btn-primary ok-btn-sm">
+                    <i data-lucide="replace"></i> {{ button_replace_selected }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {# ── Log ── #}
+            <div class="ok-panel">
+              <div class="ok-panel-header">
+                <span>{{ text_absurl_log_title }}</span>
+                <button type="button" id="ok-absurl-log-reload" class="ok-btn ok-btn-sm ok-btn-default">
+                  <i data-lucide="refresh-cw"></i>
+                </button>
+              </div>
+              <table class="ok-table">
+                <thead>
+                  <tr>
+                    <th>{{ column_type }}</th>
+                    <th>{{ label_old_domain }}</th>
+                    <th>{{ label_new_domain }}</th>
+                    <th class="ok-col-sm">Rows</th>
+                    <th class="ok-col-sm">{{ column_date }}</th>
+                  </tr>
+                </thead>
+                <tbody id="ok-absurl-log-tbody">
+                  <tr><td colspan="5" class="text-center ok-loading">{{ text_loading }}</td></tr>
+                </tbody>
+              </table>
+              <div id="ok-absurl-log-pagination" class="ok-pagination"></div>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  absurlScanUrl:    '{{ absurl_scan_url }}',
+  absurlReplaceUrl: '{{ absurl_replace_url }}',
+  absurlLogUrl:     '{{ absurl_log_url }}',
+  userToken:        '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

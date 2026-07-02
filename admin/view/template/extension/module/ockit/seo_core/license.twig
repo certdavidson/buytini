@@ -1,0 +1,118 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extension }}</a></li>
+            <li><a href="{{ activate_url }}">{{ heading_title }}</a></li>
+            <li><a href="#">{{ tab_license }}</a></li>
+          </ul>
+        </div>
+
+        <div class="ok-license-page">
+          <div class="ok-license-box">
+
+            <div class="ok-license-hero">
+              <div class="ok-license-hero-icon"><i data-lucide="shield-check"></i></div>
+              <div class="ok-license-hero-title">{{ heading_title }}</div>
+              <div class="ok-license-hero-sub">
+                <a href="https://oc-kit.com" target="_blank">oc-kit.com</a>
+              </div>
+            </div>
+
+            <div class="ok-panel">
+              <div class="ok-panel-body">
+
+                <div class="ok-license-status-row">
+                  {% if license_info.status == 'trial' %}
+                    <span class="ok-badge ok-badge-warning ok-badge-lg">
+                      <i data-lucide="clock"></i> {{ text_license_trial | format(license_info.trial_days_left) }}
+                    </span>
+                  {% elseif license_info.status == 'expired' %}
+                    <span class="ok-badge ok-badge-danger ok-badge-lg">
+                      <i data-lucide="x-circle"></i> {{ text_license_expired }}
+                    </span>
+                  {% elseif license_info.status == 'invalid' %}
+                    <span class="ok-badge ok-badge-danger ok-badge-lg">
+                      <i data-lucide="x-circle"></i> {{ text_license_invalid }}
+                    </span>
+                  {% elseif license_info.status == 'api_error' %}
+                    <span class="ok-badge ok-badge-warning ok-badge-lg">
+                      <i data-lucide="alert-triangle"></i> {{ text_license_api_error }}
+                    </span>
+                  {% else %}
+                    <span class="ok-badge ok-badge-default ok-badge-lg">
+                      <i data-lucide="help-circle"></i> {{ text_license_not_validated }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                {% if license_info.version is defined %}
+                <div class="ok-license-version">
+                  {{ text_license_version }}: <strong>{{ license_info.version }}</strong>
+                </div>
+                {% endif %}
+
+                <label class="ok-label form-label">{{ entry_license_key }}</label>
+                <div class="ok-input-inline ok-license-key-row">
+                  <input type="text" id="scf-license-key" class="ok-input"
+                         value="{{ license_key }}"
+                         placeholder="XXXX-XXXX-XXXX-XXXX-XXXX">
+                  <button type="button" id="scf-btn-activate" class="ok-btn ok-btn-primary"
+                          data-url="{{ activate_url }}">
+                    <i data-lucide="key"></i> {{ button_activate }}
+                  </button>
+                </div>
+
+                <div class="ok-license-buy-row">
+                  <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                    <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  lucide.createIcons();
+  var lang = {{ lang_js }};
+  var btn  = document.getElementById('scf-btn-activate');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var key = document.getElementById('scf-license-key').value.trim();
+    if (!key) return;
+    btn.disabled = true;
+    btn.textContent = lang.js_activating;
+    okPost(btn.dataset.url, { key: key }, function (res) {
+      btn.disabled = false;
+      btn.textContent = lang.button_activate;
+      lucide.createIcons();
+      if (res.success) {
+        okNotify(res.message || lang.text_license_activated, 'success');
+        if (res.redirect_url) {
+          setTimeout(function () { window.location.href = res.redirect_url; }, 1200);
+        }
+      } else {
+        okNotify(res.error || lang.text_license_error, 'error');
+        setTimeout(function () { window.location.reload(); }, 1500);
+      }
+    });
+  });
+})();
+</script>
+{{ footer }}

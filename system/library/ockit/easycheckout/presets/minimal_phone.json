@@ -1,0 +1,41 @@
+{
+    "code": "minimal_phone",
+    "name": "Мінімальний (телефон)",
+    "description": "Лише поле телефон і кнопка для callback-замовлень. Корзина прихована.",
+    "layout": {
+        "mode": "single_step",
+        "steps": [
+            {
+                "id": "step1",
+                "title": [],
+                "rows": [
+                    {
+                        "id": "row1", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell1",
+                                "blocks": [
+                                    {
+                                        "id": "customer", "type": "customer",
+                                        "settings": {
+                                            "registration_mode": "disabled",
+                                            "fields": [
+                                                { "field_id": -4, "visibility": "always", "required": true, "reload_on_change": false }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "row2", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            { "id": "cell2", "blocks": [ { "id": "buttons__1", "type": "buttons" } ] }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

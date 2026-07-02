@@ -1,0 +1,8 @@
+<div class="okec-field__file">
+  <input type="file" id="okec-f-{{ field.code }}"
+         class="ok-input"
+         data-okec-upload="{{ field.code }}"
+         {% if required %}required{% endif %}>
+  <input type="hidden" name="{{ form_name }}" value="">
+  <span class="okec-field__file-status" data-okec-upload-status></span>
+</div>

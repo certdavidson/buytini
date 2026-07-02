@@ -1,0 +1,7 @@
+<div class="okec-block__inner okec-block-comment">
+  {% if block.settings.text %}
+    <p class="okec-block-comment__hint">{{ block.settings.text }}</p>
+  {% endif %}
+  <textarea name="okec[comment]" class="form-control okec-block-comment__textarea"
+            rows="3" placeholder="{{ block.settings.text }}"></textarea>
+</div>

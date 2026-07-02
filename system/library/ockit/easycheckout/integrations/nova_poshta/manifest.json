@@ -1,0 +1,11 @@
+{
+  "code": "nova_poshta",
+  "name": "Нова Пошта",
+  "version": "1.0.0",
+  "author": "oc-kit.com",
+  "homepage": "https://oc-kit.com",
+  "country": "UA",
+  "category": "shipping",
+  "requires": { "easycheckout": ">=1.0.0", "php": ">=7.3" },
+  "description": "Автокомплейт міст та відділень/поштоматів Нової Пошти. Потрібен API-ключ з кабінету відправника."
+}

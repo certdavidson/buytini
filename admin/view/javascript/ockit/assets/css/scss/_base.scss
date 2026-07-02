@@ -1,0 +1,46 @@
+// oc-kit Design System — Base
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+  font-family: $ok-font;
+  font-size: 14px;
+  color: $ok-text;
+  line-height: 1.5;
+  box-sizing: border-box;
+  margin-top: 20px;
+
+  *, *::before, *::after { box-sizing: inherit; }
+
+  a { color: $ok-accent; text-decoration: none; &:hover { color: $ok-accent2; text-decoration: none; } }
+
+  // Override OC/Bootstrap breadcrumb defaults
+  .breadcrumb {
+    background: none;
+    padding: 0;
+    margin: 0;
+    li a {
+      color: $ok-muted;
+      font-size: 14px;
+      text-decoration: none;
+      &:hover { color: $ok-accent; text-decoration: none; }
+    }
+    li.active, li:last-child { color: $ok-text; }
+  }
+
+  .ok-wrap {
+    background: $ok-bg;
+    border-radius: $ok-radius;
+    padding: 16px;
+  }
+
+  .ok-divider {
+    border: none;
+    border-top: 1px solid $ok-border;
+    margin: 16px 0;
+  }
+
+  .ok-hidden { display: none !important; }
+  .ok-muted   { color: $ok-muted; font-size: 14px; }
+  .ok-text-sm { font-size: 13px; }
+  .ok-mono    { font-family: $ok-mono; }
+}

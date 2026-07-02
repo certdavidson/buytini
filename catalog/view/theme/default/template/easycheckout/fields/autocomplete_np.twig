@@ -1,0 +1,7 @@
+<input type="text" name="{{ form_name }}" id="okec-f-{{ field.code }}"
+       class="ok-input okec-field--autocomplete-np"
+       data-okec-np-scope="{{ field.np_scope|default('city') }}"
+       placeholder="{{ field.placeholder }}"
+       value="{{ prefill_value }}"
+       autocomplete="off"
+       {% if required %}required{% endif %}>

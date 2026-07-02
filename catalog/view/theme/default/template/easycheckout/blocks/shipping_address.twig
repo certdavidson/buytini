@@ -1,0 +1,12 @@
+{% if address_book|length > 1 %}
+  <div class="okec-address-picker">
+    <label class="okec-address-picker__label" for="okec-addr-shipping">{{ text_choose_address }}</label>
+    <select id="okec-addr-shipping" class="form-control" data-okec-address-picker="shipping">
+      <option value="">{{ text_new_address }}</option>
+      {% for a in address_book %}
+        <option value="{{ a.address_id }}"{% if a.is_default %} selected{% endif %}>{{ a.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endif %}
+{% include template_dir ~ 'easycheckout/blocks/_fields_list.twig' %}

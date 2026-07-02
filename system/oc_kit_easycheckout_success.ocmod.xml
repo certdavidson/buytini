@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EasyCheckout — customer-side checkout/success: показуємо oc-kit custom fields
+  після завершення замовлення. Customer бачить введені значення як confirmation.
+  © 2026 oc-kit.com | https://oc-kit.com
+-->
+<modification>
+    <name>EasyCheckout (oc-kit) — checkout success page panel</name>
+    <code>oc_kit_easycheckout_success</code>
+    <version>0.1.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <file path="catalog/controller/checkout/success.php">
+        <operation>
+            <search><![CDATA[$this->cart->clear();]]></search>
+            <add position="before"><![CDATA[
+            // EasyCheckout (oc-kit) — підтягуємо custom-поля для рендеру summary
+            // ПЕРЕД cart->clear() щоб session.data['order_id'] ще був актуальний
+            $okec_order_id = (int)($this->session->data['order_id'] ?? 0);
+            if ($okec_order_id) {
+                $this->load->model('extension/easycheckout/order');
+                $okec_fields = $this->model_extension_easycheckout_order->getCustomFields($okec_order_id);
+                $this->session->data['okec_success_fields'] = $okec_fields;
+            }
+            ]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[$this->response->setOutput($this->load->view('common/success', $data));]]></search>
+            <add position="before"><![CDATA[
+            // Pull-out з session — після cart->clear доступний тільки залишений flag
+            $data['oc_kit_easycheckout_fields'] = $this->session->data['okec_success_fields'] ?? [];
+            unset($this->session->data['okec_success_fields']);
+            // Lang strings — beremо з easycheckout/checkout мовного файла
+            $this->load->language('easycheckout/checkout');
+            $data['text_easycheckout_summary'] = $this->language->get('text_easycheckout_summary');
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/*/template/common/success.twig">
+        <operation error="skip">
+            <search><![CDATA[{{ content_top }}]]></search>
+            <add position="after"><![CDATA[
+{% if oc_kit_easycheckout_fields|default([])|length > 0 %}
+<div class="okec-success-summary panel panel-default" style="margin-top:16px;">
+  <div class="panel-heading"><h3 class="panel-title">{{ text_easycheckout_summary }}</h3></div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <tbody>
+        {% for f in oc_kit_easycheckout_fields %}
+          <tr>
+            <td style="width:30%;font-weight:500;color:#5a6474;">{{ f.name }}</td>
+            <td style="white-space: pre-line;">{{ f.value }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>

@@ -1,0 +1,49 @@
+<div class="okec-block__inner okec-block-cart">
+  {% if cart_products|length == 0 %}
+    <p class="okec-block-cart__empty">{{ text_cart_empty }}</p>
+  {% else %}
+    <ul class="okec-block-cart__list">
+      {% for p in cart_products %}
+        <li class="okec-block-cart__item">
+          {% if block.settings.show_image and p.thumb %}
+            <a href="{{ p.href }}" class="okec-block-cart__thumb">
+              <img src="{{ p.thumb }}" alt="{{ p.name }}">
+            </a>
+          {% endif %}
+          <div class="okec-block-cart__info">
+            <a href="{{ p.href }}" class="okec-block-cart__name">{{ p.name }}</a>
+            {% if (block.settings.show_model and p.model) or p.options|length %}
+              <div class="okec-block-cart__opts">
+                {%- if block.settings.show_model and p.model %}{{ p.model }}{% endif -%}
+                {%- for opt in p.options -%}
+                  {%- if not loop.first or (block.settings.show_model and p.model) %} · {% endif -%}
+                  {{- opt.value -}}
+                {%- endfor -%}
+              </div>
+            {% endif %}
+
+            {% if block.settings.show_quantity_controls %}
+              <div class="okec-block-cart__qty">
+                <button type="button" class="okec-block-cart__qty-btn" data-okec-action="qty-decrement" data-cart-id="{{ p.cart_id }}" aria-label="−">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+                </button>
+                <span class="okec-block-cart__qty-num" data-min="{{ p.minimum }}">{{ p.quantity }}</span>
+                <button type="button" class="okec-block-cart__qty-btn" data-okec-action="qty-increment" data-cart-id="{{ p.cart_id }}" aria-label="+">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </button>
+              </div>
+            {% else %}
+              <span class="okec-block-cart__qty-static">×{{ p.quantity }}</span>
+            {% endif %}
+          </div>
+
+          <div class="okec-block-cart__total">{{ p.total }}</div>
+
+          {% if block.settings.show_remove_btn %}
+            <button type="button" class="okec-block-cart__remove" data-okec-action="cart-remove" data-cart-id="{{ p.cart_id }}" title="{{ text_cart_remove }}" aria-label="{{ text_cart_remove }}">×</button>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>

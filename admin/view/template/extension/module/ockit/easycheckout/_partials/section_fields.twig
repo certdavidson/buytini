@@ -1,0 +1,322 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ fields_heading }}</h2>
+<p class="ok-help">{{ fields_help }}</p>
+
+{# ── Filter bar ─────────────────────────────────────────────── #}
+<div class="ok-filter-bar okec-filter">
+  <div class="okec-filter__search">
+    <i data-lucide="search"></i>
+    <input type="text" class="ok-input" x-model.debounce.250ms="fields.filter.search"
+           @input.debounce.300ms="fields.load()"
+           placeholder="{{ fields_filter_search }}">
+  </div>
+  <select class="ok-select okec-filter__select" x-model="fields.filter.type" @change="fields.load()">
+    <option value="">{{ fields_filter_all }} — {{ fields_filter_type }}</option>
+    <template x-for="ft in context.field_types" :key="ft.code">
+      <option :value="ft.code" x-text="ft.label"></option>
+    </template>
+  </select>
+  <select class="ok-select okec-filter__select" x-model="fields.filter.belongs_to" @change="fields.load()">
+    <option value="">{{ fields_filter_all }} — {{ fields_filter_belongs_to }}</option>
+    <option value="order">{{ belongs_to_order }}</option>
+    <option value="customer">{{ belongs_to_customer }}</option>
+    <option value="address">{{ belongs_to_address }}</option>
+  </select>
+
+  <div class="ok-status-filter" x-data="{ open: false }" @click.outside="open = false">
+    <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="open = !open">
+      {{ fields_filter_usage }}:
+      <strong x-text="t('fields_filter_' + fields.filter.usage)"></strong>
+      <i data-lucide="chevron-down"></i>
+    </button>
+    <div class="ok-status-filter-panel" x-show="open" x-cloak>
+      <label class="ok-radio">
+        <input type="radio" name="fields-usage" value="all"
+               :checked="fields.filter.usage === 'all'"
+               @change="fields.filter.usage = 'all'; fields.load(); open = false;">
+        <span>{{ fields_filter_all }}</span>
+      </label>
+      <label class="ok-radio">
+        <input type="radio" name="fields-usage" value="used"
+               :checked="fields.filter.usage === 'used'"
+               @change="fields.filter.usage = 'used'; fields.load(); open = false;">
+        <span>{{ fields_filter_used }}</span>
+      </label>
+      <label class="ok-radio">
+        <input type="radio" name="fields-usage" value="layouts"
+               :checked="fields.filter.usage === 'layouts'"
+               @change="fields.filter.usage = 'layouts'; fields.load(); open = false;">
+        <span>{{ fields_filter_layouts }}</span>
+      </label>
+      <label class="ok-radio">
+        <input type="radio" name="fields-usage" value="unused"
+               :checked="fields.filter.usage === 'unused'"
+               @change="fields.filter.usage = 'unused'; fields.load(); open = false;">
+        <span>{{ fields_filter_unused }}</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+{# ── Bulk bar ───────────────────────────────────────────────── #}
+<div class="okec-bulk-bar ok-mb-3" x-show="fields.selected.length > 0" x-cloak>
+  <span x-text="fields.selected.length + ' ' + t('text_selected')"></span>
+  <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="fields.openBulkEdit()">
+    <i data-lucide="edit-3"></i> {{ button_bulk_edit }}
+  </button>
+  <button type="button" class="ok-btn ok-btn-danger ok-btn-sm" @click="fields.bulkDelete()">
+    <i data-lucide="trash-2"></i> {{ button_delete_selected }}
+  </button>
+</div>
+
+{# ── Bulk-edit modal ───────────────────────────────────────── #}
+<div class="okec-modal" x-show="fields.bulkEditOpen" x-cloak
+     @keydown.escape.window="fields.closeBulkEdit()">
+  <div class="okec-modal__backdrop" @click="fields.closeBulkEdit()"></div>
+  <div class="okec-modal__dialog">
+    <div class="okec-modal__header">
+      <h3><i data-lucide="edit-3"></i> {{ bulk_edit_modal_title }}</h3>
+      <button type="button" class="okec-modal__close" @click="fields.closeBulkEdit()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="okec-modal__body">
+      <p class="ok-help">
+        <span x-text="t('bulk_edit_apply_to')"></span>
+        <strong x-text="fields.selected.length"></strong>
+        <span x-text="t('bulk_edit_apply_to_suffix')"></span>
+      </p>
+
+      <div class="ok-form-row">
+        <label class="form-label">{{ entry_field_belongs_to }}</label>
+        <div class="ok-form-control">
+          <select class="ok-select" x-model="fields.bulkEdit.belongs_to">
+            <option value="">— {{ bulk_edit_no_change }} —</option>
+            <option value="order">{{ belongs_to_order }}</option>
+            <option value="customer">{{ belongs_to_customer }}</option>
+            <option value="address">{{ belongs_to_address }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ok-form-row">
+        <label class="form-label">{{ entry_field_save_to_comment }}</label>
+        <div class="ok-form-control">
+          <select class="ok-select" x-model="fields.bulkEdit.save_to_comment">
+            <option value="">— {{ bulk_edit_no_change }} —</option>
+            <option value="1">{{ bulk_edit_yes }}</option>
+            <option value="0">{{ bulk_edit_no }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="fields.closeBulkEdit()">
+        {{ button_cancel }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="fields.applyBulkEdit()">
+        {{ button_apply }}
+      </button>
+    </div>
+  </div>
+</div>
+
+{# ── Table ─────────────────────────────────────────────────── #}
+<div class="ok-panel" x-show="!fields.loading && fields.items.length > 0" x-cloak>
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="package"></i> {{ fields_heading }}
+    </div>
+  </div>
+  <table class="ok-table">
+    <thead>
+      <tr>
+        <th class="okec-col-check">
+          <label class="ok-checkbox">
+            <input type="checkbox" @change="fields.toggleAll($event.target.checked)"
+                   :checked="fields.items.length > 0 && fields.selected.length === fields.items.length">
+          </label>
+        </th>
+        <th>{{ fields_col_id }}</th>
+        <th>{{ fields_col_code }}</th>
+        <th>{{ fields_col_type }}</th>
+        <th>{{ fields_col_belongs_to }}</th>
+        <th>{{ fields_col_name }}</th>
+        <th class="okec-col-usage">{{ fields_col_usage }}</th>
+        <th class="okec-col-langs">{{ fields_col_langs }}</th>
+        <th>{{ fields_col_modified }}</th>
+        <th class="okec-col-actions">{{ fields_col_actions }}</th>
+      </tr>
+    </thead>
+    <tbody x-ref="fieldsTbody" data-okec-sortable-fields>
+      <template x-for="item in fields.items" :key="item.field_id">
+        <tr :data-field-id="item.field_id">
+          <td>
+            <label class="ok-checkbox">
+              <input type="checkbox" :value="item.field_id" x-model="fields.selected">
+            </label>
+          </td>
+          <td>
+            <div class="ok-flex ok-gap-6">
+              <i class="okec-drag-handle" data-lucide="grip-vertical" :title="t('groups_drag_hint')"></i>
+              <span x-text="item.field_id"></span>
+            </div>
+          </td>
+          <td><code class="ok-code" x-text="item.code"></code></td>
+          <td>
+            <span class="ok-badge ok-badge-info-soft">
+              <i :data-lucide="fields.typeIcon(item.type)"></i>
+              <span x-text="fields.typeLabel(item.type)"></span>
+            </span>
+          </td>
+          <td x-text="t('belongs_to_' + item.belongs_to)"></td>
+          <td>
+            <span x-show="!item._editing"
+                  x-text="fields.primaryName(item)"
+                  @dblclick="item._editing = true; $nextTick(() => $event.target.parentNode.querySelector('input').focus())"
+                  class="okec-editable"
+                  :title="t('groups_inline_rename_hint')"></span>
+            <input x-show="item._editing" x-cloak type="text"
+                   class="ok-input okec-inline-edit"
+                   :value="fields.primaryName(item)"
+                   @blur="fields.inlineRename(item, $event.target.value); item._editing = false;"
+                   @keydown.enter.prevent="$event.target.blur()"
+                   @keydown.escape="item._editing = false">
+          </td>
+          <td class="okec-col-usage">
+            <span class="ok-badge"
+                  :class="(item.orders_count > 0) ? 'ok-badge-success-soft' : 'ok-badge-muted'"
+                  :title="t('fields_col_usage_orders_tooltip')"
+                  x-text="(item.orders_count || 0) + ' ' + t('fields_col_usage_orders_short')"></span>
+            <span class="ok-badge"
+                  :class="(item.layouts_count > 0) ? 'ok-badge-info-soft' : 'ok-badge-muted' ok-ml-1"
+                  :title="t('fields_col_usage_layouts_tooltip')"
+                 
+                  x-text="(item.layouts_count || 0) + ' ' + t('fields_col_usage_layouts_short')"></span>
+          </td>
+          <td class="okec-col-langs">
+            <span class="ok-badge"
+                  :class="(item._langs_filled >= context.languages.length) ? 'ok-badge-success-soft' : ((item._langs_filled === 0) ? 'ok-badge-danger-soft' : 'ok-badge-warning-soft')"
+                  :title="t('fields_col_langs_tooltip')"
+                  x-text="(item._langs_filled || 0) + '/' + context.languages.length"></span>
+          </td>
+          <td class="okec-col-modified" x-text="fields.formatDate(item.date_modified)"></td>
+          <td class="okec-col-actions">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="fields.openEdit(item.field_id)" :title="t('button_edit')">
+              <i data-lucide="pencil"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="fields.cloneField(item.field_id)" :title="t('button_clone')">
+              <i data-lucide="copy"></i>
+            </button>
+            <button type="button" class="ok-btn ok-btn-danger ok-btn-xs"
+                    @click="fields.confirmDelete(item.field_id)" :title="t('button_delete')">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+
+{# ── Empty state ─────────────────────────────────────────────── #}
+<div class="okec-empty" x-show="!fields.loading && fields.items.length === 0" x-cloak>
+  <p>{{ fields_empty }}</p>
+  <button type="button" class="ok-btn ok-btn-primary ok-mt-3" @click="fields.openCreate()">
+    <i data-lucide="plus"></i> {{ fields_btn_add }}
+  </button>
+</div>
+
+{# ── Loading ─────────────────────────────────────────────────── #}
+<div class="okec-loading" x-show="fields.loading">
+  <i data-lucide="loader" class="okec-spin"></i>
+</div>
+
+{# ── Native (default OC) fields ──────────────────────────────── #}
+<div class="ok-panel ok-mt-4" x-init="fields.loadNative()">
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="sliders-horizontal"></i> {{ fields_native_heading }}
+    </div>
+  </div>
+  <p class="ok-help ok-mb-2">{{ fields_native_help }}</p>
+  <table class="ok-table">
+    <thead>
+      <tr>
+        <th>{{ fields_col_name }}</th>
+        <th>{{ fields_col_code }}</th>
+        <th>{{ fields_col_belongs_to }}</th>
+        <th class="okec-col-actions">{{ fields_col_actions }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <template x-for="item in fields.nativeItems" :key="item.field_id">
+        <tr>
+          <td x-text="fields.nativePrimaryName(item)"></td>
+          <td><code class="ok-code" x-text="item.code"></code></td>
+          <td x-text="t('belongs_to_' + item.belongs_to)"></td>
+          <td class="okec-col-actions">
+            <button type="button" class="ok-btn ok-btn-default ok-btn-xs"
+                    @click="fields.openNativeEdit(item)" :title="t('button_edit')">
+              <i data-lucide="pencil"></i>
+            </button>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+
+{# ── Native field edit modal ─────────────────────────────────── #}
+<div class="okec-modal" x-show="fields.nativeModal.open" x-cloak
+     @keydown.escape.window="fields.closeNativeModal()">
+  <div class="okec-modal__backdrop" @click="fields.closeNativeModal()"></div>
+  <div class="okec-modal__dialog">
+    <div class="okec-modal__header">
+      <h3>
+        <i data-lucide="sliders-horizontal"></i> {{ fields_native_modal_title }}
+        <code class="ok-code" x-text="fields.nativeModal.code"></code>
+      </h3>
+      <button type="button" class="okec-modal__close" @click="fields.closeNativeModal()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="okec-modal__body">
+      <template x-for="lang in context.languages" :key="lang.language_id">
+        <div class="ok-panel okec-modal-panel">
+          <div class="okec-lang-flag" :title="lang.name">
+            <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                 onerror="this.style.display='none'">
+            <span x-text="lang.name"></span>
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_name }}</label>
+            <input type="text" class="ok-input"
+                   :placeholder="fields.nativeDefaultLabel(lang.language_id)"
+                   x-model="fields.nativeForm.descriptions[lang.language_id].name">
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_placeholder }}</label>
+            <input type="text" class="ok-input"
+                   x-model="fields.nativeForm.descriptions[lang.language_id].placeholder">
+          </div>
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_field_tooltip }}</label>
+            <textarea class="ok-input" rows="2"
+                      x-model="fields.nativeForm.descriptions[lang.language_id].tooltip"></textarea>
+          </div>
+        </div>
+      </template>
+    </div>
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="fields.closeNativeModal()">
+        {{ button_cancel }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="fields.saveNative()">
+        {{ button_save }}
+      </button>
+    </div>
+  </div>
+</div>

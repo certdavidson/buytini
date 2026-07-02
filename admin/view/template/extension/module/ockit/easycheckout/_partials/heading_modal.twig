@@ -1,0 +1,100 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="okec-modal" x-show="headings.modal.open" x-cloak @keydown.escape.window="headings.closeModal()">
+  <div class="okec-modal__backdrop" @click="headings.closeModal()"></div>
+  <div class="okec-modal__dialog">
+    <div class="okec-modal__header">
+      <h3 x-text="headings.modal.editing ? t('headings_modal_title_edit') : t('headings_modal_title_add')"></h3>
+      <button type="button" class="okec-modal__close" @click="headings.closeModal()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="okec-modal__body">
+
+      {# Tag #}
+      {% set tag_labels = {
+        'none':   heading_tag_none,
+        'h1':     heading_tag_h1,
+        'h2':     heading_tag_h2,
+        'h3':     heading_tag_h3,
+        'h4':     heading_tag_h4,
+        'h5':     heading_tag_h5,
+        'p':      heading_tag_p,
+        'legend': heading_tag_legend
+      } %}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-header"><strong>{{ entry_heading_tag }}</strong></div>
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_heading_tag }}</label>
+            <div class="ok-form-control okec-tag-radios">
+              {% for tag in heading_tags %}
+                <label class="ok-radio">
+                  <input type="radio" value="{{ tag }}" x-model="headings.form.tag">
+                  <span>{{ tag_labels[tag] }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Text (multilang) #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-header"><strong>{{ entry_heading_text }}</strong></div>
+        <div class="ok-panel-body">
+          <template x-for="lang in context.languages" :key="lang.language_id">
+            <div class="okec-lang-block">
+              <div class="okec-lang-flag" :title="lang.name">
+                <img :src="'language/' + lang.code + '/' + lang.code + '.png'" :alt="lang.name"
+                     onerror="this.style.display='none'">
+                <span x-text="lang.name"></span>
+              </div>
+              <div class="okec-lang-fields">
+                <div class="ok-form-row">
+                  <label class="form-label">{{ entry_heading_text }}</label>
+                  <div class="ok-form-control">
+                    <input type="text" class="ok-input"
+                           x-model="headings.form.descriptions[lang.language_id].text">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      {# Code #}
+      <div class="ok-panel okec-modal-panel">
+        <div class="ok-panel-body">
+          <div class="ok-form-row">
+            <label class="form-label">{{ entry_heading_code }}</label>
+            <div class="ok-form-control">
+              <input type="text" class="ok-input ok-code-input" x-model="headings.form.code"
+                     :class="{ 'is-invalid': headings.errors.code }" :disabled="headings.modal.editing">
+              <p class="ok-help">{{ help_field_code }}</p>
+              <p class="okec-error" x-show="headings.errors.code" x-text="headings.errorText('code')"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="okec-modal-error" x-show="headings.errors._global" x-cloak>
+        <i data-lucide="alert-circle"></i>
+        <span x-text="headings.errors._global"></span>
+      </div>
+
+    </div>
+
+    <div class="okec-modal__footer">
+      <button type="button" class="ok-btn ok-btn-default" @click="headings.closeModal()">
+        {{ button_close }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-primary" @click="headings.save()" :disabled="headings.saving">
+        <i data-lucide="save" x-show="!headings.saving"></i>
+        <i data-lucide="loader" class="okec-spin" x-show="headings.saving"></i>
+        <span x-text="headings.saving ? t('js_saving') : t('button_save')"></span>
+      </button>
+    </div>
+  </div>
+</div>

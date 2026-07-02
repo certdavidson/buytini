@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Advanced Search Pro</name>
+    <code>oc_kit_advanced_search_pro</code>
+    <version>0.3.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         INDEX QUEUE HOOKS — product save/edit/delete + order stock update
+         Hooks core admin/catalog models so any product change reaches the
+         ASP index queue (asp_index_queue) and Manticore stays in sync.
+         ════════════════════════════════════════════════════════════════ -->
+
+    <file path="admin/model/catalog/product.php">
+        <operation>
+            <search><![CDATA[
+                $this->cache->delete('product');
+            ]]></search>
+            <add position="before"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+                $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', $product_id, 'upsert');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $this->cache->delete('product');
+            ]]></search>
+            <add position="before"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+                $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', $product_id, 'upsert');
+            ]]></add>
+            <index>1</index>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $this->cache->delete('product');
+            ]]></search>
+            <add position="before"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+                $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', $product_id, 'delete');
+            ]]></add>
+            <index>3</index>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $this->cache->delete('product');
+            ]]></search>
+            <add position="before"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+                $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', $product_id, 'upsert');
+            ]]></add>
+            <index>2</index>
+        </operation>
+    </file>
+
+    <file path="catalog/model/checkout/order.php">
+        <operation>
+            <search><![CDATA[
+                $order_products = $this->getOrderProducts($order_id);
+            ]]></search>
+            <add position="after"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+            ]]></add>
+            <index>0</index>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                    $this->db->query("UPDATE " . DB_PREFIX . "product SET quantity = (quantity - " . (int)$order_product['quantity'] . ") WHERE product_id = '" . (int)$order_product['product_id'] . "' AND subtract = '1'");
+            ]]></search>
+            <add position="after"><![CDATA[
+                    $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', (int)$order_product['product_id'], 'upsert');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                $order_products = $this->getOrderProducts($order_id);
+            ]]></search>
+            <add position="after"><![CDATA[
+                $this->load->model('extension/module/oc_kit_advanced_search_pro');
+            ]]></add>
+            <index>1</index>
+        </operation>
+        <operation>
+            <search><![CDATA[
+                    $this->db->query("UPDATE `" . DB_PREFIX . "product` SET quantity = (quantity + " . (int)$order_product['quantity'] . ") WHERE product_id = '" . (int)$order_product['product_id'] . "' AND subtract = '1'");
+            ]]></search>
+            <add position="after"><![CDATA[
+                    $this->model_extension_module_oc_kit_advanced_search_pro->queueIndex('product', (int)$order_product['product_id'], 'upsert');
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         HEADER SEARCH WIDGET SWAP — replace the core common/search controller
+         call with the ASP autocomplete widget so the magnifier in the header
+         opens the rich live-search dropdown (synonyms, semantic, popular tags,
+         brand chips, etc.) instead of the bare core search box. Replace-mode,
+         single line — safe to revert by removing this operation.
+         ════════════════════════════════════════════════════════════════ -->
+
+    <file path="catalog/controller/common/header.php">
+        <operation>
+            <search><![CDATA[
+                $data['search'] = $this->load->controller('common/search');
+            ]]></search>
+            <add position="replace"><![CDATA[
+                $data['search'] = $this->load->controller('extension/module/oc_kit_advanced_search_pro');
+            ]]></add>
+        </operation>
+    </file>
+</modification>

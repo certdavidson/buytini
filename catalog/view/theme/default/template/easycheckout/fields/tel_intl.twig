@@ -1,0 +1,6 @@
+<input type="tel" name="{{ form_name }}" id="okec-f-{{ field.code }}"
+       class="ok-input okec-field--tel-intl"
+       placeholder="{{ field.placeholder }}"
+       value="{{ prefill_value }}"
+       autocomplete="tel"
+       {% if required %}required{% endif %}>

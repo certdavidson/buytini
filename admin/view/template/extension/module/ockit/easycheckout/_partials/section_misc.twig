@@ -1,0 +1,72 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ misc_heading }}</h2>
+<p class="ok-help">{{ misc_help }}</p>
+
+{# ── Error display ─────────────────────────────────────────── #}
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <h3><i data-lucide="alert-circle"></i> {{ misc_error_heading }}</h3>
+  </div>
+  <div class="ok-panel-body">
+    <div class="ok-form-row">
+      <label class="form-label" for="input-error-display-mode">{{ entry_error_display_mode }}</label>
+      <div class="ok-form-control">
+        <select id="input-error-display-mode" class="ok-select"
+                name="module_oc_kit_easycheckout_error_display_mode">
+          <option value="inline_under_field"
+                  {% if module_oc_kit_easycheckout_error_display_mode == 'inline_under_field' %}selected{% endif %}>{{ error_mode_inline }}</option>
+          <option value="top_summary"
+                  {% if module_oc_kit_easycheckout_error_display_mode == 'top_summary' %}selected{% endif %}>{{ error_mode_top }}</option>
+          <option value="toast"
+                  {% if module_oc_kit_easycheckout_error_display_mode == 'toast' %}selected{% endif %}>{{ error_mode_toast }}</option>
+        </select>
+        <p class="ok-help">{{ help_error_display_mode }}</p>
+      </div>
+    </div>
+
+    <div class="ok-form-row">
+      <label class="form-label">{{ entry_error_scroll_to_first }}</label>
+      <div class="ok-form-control">
+        <label class="ok-toggle-wrap ok-toggle-sm">
+          <input type="hidden" name="module_oc_kit_easycheckout_error_scroll_to_first" value="0">
+          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easycheckout_error_scroll_to_first" value="1"
+                 {% if module_oc_kit_easycheckout_error_scroll_to_first %}checked{% endif %}>
+          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+        </label>
+        <p class="ok-help">{{ help_error_scroll_to_first }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ── Theme integration ─────────────────────────────────────── #}
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <h3><i data-lucide="layout"></i> {{ misc_theme_heading }}</h3>
+  </div>
+  <div class="ok-panel-body">
+    <div class="ok-form-row">
+      <label class="form-label" for="input-theme-wrapper">{{ entry_theme_wrapper }}</label>
+      <div class="ok-form-control">
+        <input type="text" id="input-theme-wrapper" class="ok-input"
+               name="module_oc_kit_easycheckout_theme_wrapper_selector"
+               value="{{ module_oc_kit_easycheckout_theme_wrapper_selector }}"
+               placeholder=".main-container">
+        <p class="ok-help">{{ help_theme_wrapper }}</p>
+      </div>
+    </div>
+    <div class="ok-form-row">
+      <label class="form-label">{{ entry_theme_remove_breadcrumbs }}</label>
+      <div class="ok-form-control">
+        <label class="ok-toggle-wrap ok-toggle-sm">
+          <input type="hidden" name="module_oc_kit_easycheckout_theme_remove_breadcrumbs" value="0">
+          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_easycheckout_theme_remove_breadcrumbs" value="1"
+                 {% if module_oc_kit_easycheckout_theme_remove_breadcrumbs %}checked{% endif %}>
+          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+        </label>
+        <p class="ok-help">{{ help_theme_remove_breadcrumbs }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

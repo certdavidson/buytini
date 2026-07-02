@@ -1,0 +1,89 @@
+// Page shell, layout grid, typography. Scoped to #easycheckout-page so the
+// theme outside the checkout stays untouched.
+
+#easycheckout-page {
+  font-family: $ec-font;
+  color: $ec-ink;
+  background: $ec-bg;
+  padding-top: 6px;
+  padding-bottom: 40px;
+  -webkit-font-smoothing: antialiased;
+
+  .breadcrumb {
+    background: transparent;
+    padding-left: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .okec-page-title {
+    margin: 12px 0 26px;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -.025em;
+    color: $ec-ink;
+    line-height: 1.2;
+  }
+}
+
+// ── Layout columns ────────────────────────────────────────────────
+.okec-checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  counter-reset: okec-step;   // section step numbers (.okec-block__title::before)
+}
+
+// A step is just a grouping wrapper now — the cards live at block level.
+.okec-checkout__step {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.okec-checkout__step-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: $ec-ink;
+  border: 0;
+  padding: 0;
+}
+
+// 12-column grid; each cell spans --okec-span-{d,t,m} per breakpoint.
+.okec-checkout__row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 26px;
+  margin-bottom: 26px;
+}
+.okec-checkout__row:last-child { margin-bottom: 0; }
+
+.okec-checkout__cell {
+  grid-column: span var(--okec-span-d, 12);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+@media (max-width: $ec-bp-tablet) {
+  .okec-checkout__row { gap: 20px; }
+  .okec-checkout__cell { grid-column: span var(--okec-span-t, 12); }
+}
+@media (max-width: $ec-bp-mobile) {
+  .okec-checkout__cell { grid-column: span var(--okec-span-m, 12); }
+}
+
+// ── Viewport visibility (driven by settings.hide_on_*) ────────────
+@media (min-width: #{$ec-bp-tablet + 1}) {
+  .okec-hide-desktop { display: none !important; }
+}
+@media (min-width: #{$ec-bp-mobile + 1}) and (max-width: $ec-bp-tablet) {
+  .okec-hide-tablet { display: none !important; }
+}
+@media (max-width: $ec-bp-mobile) {
+  .okec-hide-mobile { display: none !important; }
+}

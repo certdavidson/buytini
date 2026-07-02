@@ -1,0 +1,209 @@
+// Shipping / payment method lists — radio-cards.
+
+.okec-block-shipping__methods,
+.okec-block-payment__methods {
+  margin-top: 4px;
+  position: relative;
+  min-height: 40px;
+}
+
+.okec-block-shipping__placeholder,
+.okec-block-payment__placeholder {
+  color: $ec-muted;
+  font-size: 13px;
+  margin: 0;
+}
+
+.okec-methods--loading { opacity: .55; pointer-events: none; }
+.okec-methods--loading::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 22px; height: 22px;
+  margin: -11px 0 0 -11px;
+  border: 2px solid $ec-line-2;
+  border-top-color: $ec-accent;
+  border-radius: 50%;
+  animation: okec-spin .7s linear infinite;
+}
+@keyframes okec-spin { to { transform: rotate(360deg); } }
+
+.okec-methods--hidden { display: none; }
+
+.okec-methods__empty {
+  margin: 0;
+  padding: 12px 14px;
+  background: $ec-warn-soft;
+  color: $ec-warn;
+  border-radius: 11px;
+  font-size: 13px;
+}
+
+.okec-method__group + .okec-method__group { margin-top: 16px; }
+
+.okec-method__title {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: $ec-muted;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.okec-method__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid $ec-border-dashed;
+  border-radius: $ec-r-method;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background: $ec-card;
+  transition: border-color .15s, background-color .15s;
+
+  &:last-child { margin-bottom: 0; }
+  &:hover { border-color: #c9c9d4; }
+
+  // Custom radio circle (design: 20px ring + accent dot when checked).
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    margin: 0;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #c9c9d4;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .15s;
+
+    &:checked {
+      border-color: $ec-accent;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: $ec-accent;
+      }
+    }
+  }
+}
+
+.okec-method__option:has(input:checked),
+.okec-method__option--selected {
+  border-color: $ec-accent;
+  background: $ec-accent-tint;
+}
+
+.okec-method__icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: $ec-accent-soft;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.okec-method__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.okec-method__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ec-ink;
+}
+
+.okec-method__desc {
+  font-size: 13px;
+  color: $ec-muted;
+  line-height: 1.4;
+}
+
+.okec-method__cost {
+  font-weight: 700;
+  color: $ec-ink;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.okec-method__terms {
+  margin: -4px 0 10px 34px;
+  font-size: 12px;
+  color: $ec-muted;
+  line-height: 1.45;
+}
+
+.okec-method__error {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: $ec-danger-soft;
+  color: $ec-danger;
+  border-radius: 11px;
+  font-size: 13px;
+}
+
+// ── Integration field autocomplete (np_city, np_warehouse, up_*) ──
+.okec-int-wrap { position: relative; }
+.okec-int-wrap input.okec-int-search { width: 100%; }
+
+.okec-int-dropdown {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 6px);
+  z-index: 50;
+  display: none;
+  max-height: 264px;
+  overflow-y: auto;
+  background: $ec-card;
+  border: 1px solid $ec-line-2;
+  border-radius: 12px;
+  padding: 6px;
+}
+.okec-int-dropdown.open { display: block; }
+
+.okec-int-option {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  border-radius: 8px;
+  &:hover { background: $ec-accent-tint; color: $ec-accent; }
+}
+.okec-int-empty {
+  padding: 12px;
+  color: $ec-muted;
+  font-style: italic;
+  font-size: 13px;
+}
+.okec-int-loadmore {
+  padding: 9px 12px;
+  cursor: pointer;
+  text-align: center;
+  color: $ec-accent;
+  font-weight: 600;
+  font-size: 13px;
+  border-top: 1px solid $ec-line;
+  margin-top: 4px;
+  &:hover { color: $ec-accent-dark; }
+}

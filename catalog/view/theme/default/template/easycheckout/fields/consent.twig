@@ -1,0 +1,5 @@
+<label class="okec-field__checkbox">
+  <input type="checkbox" name="{{ form_name }}" id="okec-f-{{ field.code }}"
+         value="1"{% if prefill_value %} checked{% endif %}{% if required %} required{% endif %}>
+  <span>{{ field.name }}</span>
+</label>

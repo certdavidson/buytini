@@ -1,0 +1,117 @@
+// Translater Pro — admin styles | © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  // ── Field widths ──────────────────────────────────────────────────────────
+  .tp-w-100 { max-width: 100px; }
+  .tp-w-200 { max-width: 200px; }
+  .tp-w-220 { max-width: 220px; }
+  .tp-w-240 { max-width: 240px; }
+  .tp-w-420 { max-width: 420px; }
+  .tp-w-600 { max-width: 600px; }
+
+  // ── Header / sidebar tweaks ───────────────────────────────────────────────
+  .tp-breadcrumb { margin: 0; }
+  .tp-divider    { margin: 4px 20px; }
+
+  // ── Inline loading indicator (inside block title) ─────────────────────────
+  .tp-inline-loading {
+    color: #888;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  // ── Translation progress bar ──────────────────────────────────────────────
+  .tp-progress { margin-bottom: 12px; }
+
+  .tp-progress-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .tp-progress-label { font-size: 13px; color: #555; }
+  .tp-progress-pct   { font-size: 13px; font-weight: 600; }
+
+  .tp-progress-track {
+    height: 10px;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .tp-progress-fill {
+    height: 100%;
+    width: 0;
+    background: #28a745;
+    border-radius: 6px;
+    transition: width .3s;
+  }
+
+  // ── Misc helpers ──────────────────────────────────────────────────────────
+  .tp-muted-sm { font-size: 13px; color: #666; }
+
+  .tp-help-flush { margin: 0; }
+
+  td.tp-table-empty {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+  }
+
+  .tp-pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 12px 0 0;
+  }
+
+  .tp-prompt-textarea {
+    max-width: 600px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  // ── API provider section ──────────────────────────────────────────────────
+  .ok-api-section {
+    border-left: 3px solid #e9ecef;
+    padding-left: 16px;
+    margin-bottom: 8px;
+  }
+
+  // ── Translation row status ────────────────────────────────────────────────
+  .tp-status-done    { color: #28a745; font-weight: 600; font-size: 12px; }
+  .tp-status-error   { color: #dc3545; font-size: 12px; }
+  .tp-status-pending { color: #999; font-size: 12px; }
+
+  // ── Table column widths ───────────────────────────────────────────────────
+  .tp-table-items th {
+    &:nth-child(1) { width: 32px; }
+    &:nth-child(2) { width: 55px; }
+    &:nth-child(4) { width: 140px; }
+    &:nth-child(6) { width: 90px; }
+  }
+
+  .tp-table-logs th {
+    &:nth-child(1)  { width: 50px; }
+    &:nth-child(2)  { width: 80px; }
+    &:nth-child(3)  { width: 110px; }
+    &:nth-child(4)  { width: 70px; }
+    &:nth-child(5)  { width: 70px; }
+    &:nth-child(6)  { width: 70px; }
+    &:nth-child(7)  { width: 90px; }
+    &:nth-child(8)  { width: 50px; }
+    &:nth-child(10) { width: 140px; }
+  }
+
+  // ── Per-page selector (translate list) ──────────────────────────────────────
+  .tp-perpage {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    .form-label { margin: 0; }
+    .ok-select  { max-width: 90px; }
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EasyCheckout — OpenCart 3.x Module
+  © 2026 oc-kit.com | https://oc-kit.com
+
+  Стадія 1 (skeleton): OCMOD-патчі ще не потрібні. Маршрут /easycheckout
+  зараз доступний як index.php?route=checkout/easycheckout. Короткий URL
+  додамо у наступному етапі (через seo_url таблицю або dispatcher).
+-->
+<modification>
+    <name>EasyCheckout (oc-kit) — placeholder</name>
+    <code>oc_kit_easycheckout</code>
+    <version>0.1.0-dev</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <!-- Резервний блок: тут будуть патчі custom-полів order/customer/address. -->
+</modification>

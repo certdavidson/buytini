@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>oc-kit.com — Easy Login</name>
+    <code>oc_kit_easy_login</code>
+    <version>1.0.0</version>
+    <author>oc-kit.com</author>
+    <link>https://oc-kit.com</link>
+
+    <!-- 1. login.twig: inject buttons before {{ sms_login }} -->
+    <file path="catalog/view/theme/*/template/account/login.twig">
+        <operation error="skip">
+            <search><![CDATA[{{ sms_login }}]]></search>
+            <add position="before"><![CDATA[
+{% if easy_login_buttons is defined %}{{ easy_login_buttons }}{% endif %}
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 2. register.twig: inject buttons before form -->
+    <file path="catalog/view/theme/*/template/account/register.twig">
+        <operation error="skip">
+            <search index="0"><![CDATA[<form action="]]></search>
+            <add position="before"><![CDATA[{% if easy_login_buttons is defined %}{{ easy_login_buttons }}{% endif %}]]></add>
+        </operation>
+    </file>
+
+    <!-- 3. account.twig: inject linked accounts section before {{ footer }} -->
+    <file path="catalog/view/theme/*/template/account/account.twig">
+        <!-- default template
+        <operation error="skip">
+            <search><![CDATA[{{ footer }}]]></search>
+            <add position="before"><![CDATA[
+{% if easy_login_account_section is defined %}{{ easy_login_account_section }}{% endif %}
+        ]]></add>
+        </operation>
+        -->
+        <operation error="skip">
+            <search><![CDATA[<div class="card_item__heading">{{ text_my_newsletter }}</div>]]></search>
+            <add position="before" offset="2"><![CDATA[
+{% if easy_login_account_section is defined %}<div class="card_item">{{ easy_login_account_section }}</div>{% endif %}
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 4. footer.twig: append Google One Tap snippet before </body>
+         (it's the small popup in screen corner — must load on every page for non-logged users) -->
+    <file path="catalog/view/theme/*/template/common/footer.twig">
+        <operation error="skip">
+            <search><![CDATA[</body>]]></search>
+            <add position="before"><![CDATA[
+{% if easy_login_one_tap is defined %}{{ easy_login_one_tap }}{% endif %}
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 5. header.php: register CSS/JS at start of index() — injects into <head> via document->getStyles/getScripts.
+         Scoped to surfaces that can actually render Easy Login UI:
+           - account/* routes (login/register/account pages)
+           - any page when Google One-Tap is active (renders in screen corner)
+           - any page when "display in popup" is enabled (the login popup can be
+             opened from a header button on product/cart/checkout/etc.)
+         Pages with none of these conditions don't pay the asset cost. -->
+    <file path="catalog/controller/common/header.php">
+        <operation error="skip">
+            <search><![CDATA[public function index($settings = []) {]]></search>
+            <add position="after"><![CDATA[
+        if ($this->config->get('module_oc_kit_easy_login_status')) {
+            $route = isset($this->request->get['route']) ? (string)$this->request->get['route'] : '';
+            $isAccountSurface = (strpos($route, 'account/') === 0);
+            $oneTapMode = (string)$this->config->get('module_oc_kit_easy_login_google_mode');
+            $oneTapActive = $this->config->get('module_oc_kit_easy_login_google_enabled')
+                && ($oneTapMode === 'one_tap' || $oneTapMode === 'both')
+                && (empty($this->customer) || !$this->customer->getId());
+            $popupActive = (bool)$this->config->get('module_oc_kit_easy_login_display_in_popup')
+                && (empty($this->customer) || !$this->customer->getId());
+            if ($isAccountSurface || $oneTapActive || $popupActive) {
+                $this->document->addStyle('catalog/view/javascript/ockit/easy_login/assets/css/easy_login.css');
+                $this->document->addScript('catalog/view/javascript/ockit/easy_login/easy_login.js');
+            }
+        }
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 6. login.php: load buttons block into $data -->
+    <file path="catalog/controller/account/login.php">
+        <operation error="skip">
+            <search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+            <add position="before"><![CDATA[
+        if ($this->config->get('module_oc_kit_easy_login_status') && $this->config->get('module_oc_kit_easy_login_display_on_login_page')) {
+            $data['easy_login_buttons'] = $this->load->controller('extension/module/oc_kit_easy_login/buttons');
+        }
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 7. register.php: load buttons block into $data -->
+    <file path="catalog/controller/account/register.php">
+        <operation error="skip">
+            <search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+            <add position="before"><![CDATA[
+        if ($this->config->get('module_oc_kit_easy_login_status') && $this->config->get('module_oc_kit_easy_login_display_on_register_page')) {
+            $data['easy_login_buttons'] = $this->load->controller('extension/module/oc_kit_easy_login/buttons');
+        }
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 8. account.php: load linked accounts section -->
+    <file path="catalog/controller/account/account.php">
+        <operation error="skip">
+            <search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+            <add position="before"><![CDATA[
+        if ($this->config->get('module_oc_kit_easy_login_status') && $this->config->get('module_oc_kit_easy_login_display_on_account_page')) {
+            $data['easy_login_account_section'] = $this->load->controller('extension/module/oc_kit_easy_login/account_section');
+        }
+        ]]></add>
+        </operation>
+    </file>
+
+    <!-- 9. footer.php: load One Tap block (renders on every page for non-logged customers) -->
+    <file path="catalog/controller/common/footer.php">
+        <operation error="skip">
+            <search><![CDATA[return $this->load->view($template, $data);]]></search>
+            <add position="before"><![CDATA[
+        if ($this->config->get('module_oc_kit_easy_login_status')) {
+            $data['easy_login_one_tap'] = $this->load->controller('extension/module/oc_kit_easy_login/one_tap');
+        }
+        ]]></add>
+        </operation>
+    </file>
+</modification>

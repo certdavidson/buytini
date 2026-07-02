@@ -1,0 +1,160 @@
+// Block = a card. Each functional block (customer, shipping, payment, cart,
+// summary…) renders as its own white card. Buttons / agreement float free.
+
+.okec-block {
+  background: $ec-card;
+  border: 1px solid $ec-line;
+  border-radius: $ec-r-card;
+  padding: 24px 26px;
+
+  @media (max-width: $ec-bp-mobile) {
+    padding: 18px 16px;
+    border-radius: 14px;
+  }
+}
+
+.okec-block__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+// Card heading (block_titles[type]); not rendered for buttons/agreement/help.
+// Numbered step circle (CSS counter) mirrors the design's section headers.
+.okec-block__title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 20px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: $ec-ink;
+
+  &::before {
+    counter-increment: okec-step;
+    content: counter(okec-step);
+    flex: 0 0 auto;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: $ec-accent-soft;
+    color: $ec-accent;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Order-summary side cards keep a plain heading (no step number).
+.okec-block--cart .okec-block__title::before,
+.okec-block--summary .okec-block__title::before { display: none; }
+
+// Floating blocks — no card chrome.
+.okec-block--buttons,
+.okec-block--agreement {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.okec-block__inner--stub { color: $ec-muted; }
+
+.okec-block__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.okec-block__type-badge {
+  font-size: 11px;
+  background: $ec-accent-soft;
+  color: $ec-accent;
+  padding: 2px 9px;
+  border-radius: $ec-r-pill;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  font-weight: 600;
+}
+
+.okec-block__placeholder {
+  margin: 0;
+  font-size: 13px;
+  color: $ec-muted;
+
+  code {
+    background: $ec-accent-soft;
+    padding: 1px 6px;
+    border-radius: 5px;
+    color: $ec-accent;
+    font-size: 12px;
+  }
+}
+
+// ── Comment block ─────────────────────────────────────────────────
+.okec-block-comment__hint {
+  margin: 0;
+  font-size: 13px;
+  color: $ec-muted;
+}
+.okec-block-comment__textarea { resize: vertical; }
+
+// ── Help / info block ─────────────────────────────────────────────
+.okec-block-help {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  background: $ec-accent-soft;
+  border: 1px solid rgba($ec-accent, .22);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: $ec-accent-dark;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.okec-block-help .fa-info-circle {
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+// ── Customer block ────────────────────────────────────────────────
+.okec-block-customer__login-hint {
+  font-size: 14px;
+  color: $ec-muted;
+  margin: 0 0 4px;
+
+  a {
+    color: $ec-accent;
+    font-weight: 600;
+    &:hover { color: $ec-accent-dark; }
+  }
+}
+
+// ── Agreement block ───────────────────────────────────────────────
+.okec-block-agreement__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 400;
+  margin: 0;
+  font-size: 13px;
+  color: $ec-text-2;
+  line-height: 1.45;
+}
+.okec-block-agreement__label input[type=checkbox] {
+  margin: 2px 0 0;
+  flex-shrink: 0;
+}
+
+// Validation error (required agreement not checked)
+.okec-block-agreement--error {
+  .okec-block-agreement__label { color: $ec-danger; }
+  .okec-field__error { display: block; margin-top: 6px; }
+}
+#easycheckout-page .okec-block-agreement--error input[type="checkbox"] {
+  border-color: $ec-danger;
+}

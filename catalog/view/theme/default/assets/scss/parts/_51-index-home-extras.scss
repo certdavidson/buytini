@@ -1,7 +1,7 @@
 /* index/home extras */
 .hero__copy { min-width: 0; }
 .hero__btn { height: 52px; font-size: 16px; }
-.cta-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+.cta-wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 20px; }
 .cta-band__btn { height: 52px; font-size: 16px; margin-top: 4px; }
 @media (max-width: 900px) { .pdp-lower { grid-template-columns: 1fr; } }
 .pdp-col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
@@ -68,3 +68,4 @@
 .size-table__row { border-top: 1px solid var(--border); }
 .size-table__row.is-active { background: var(--accent-soft); font-weight: 600; }
 .size-table__cell { flex: 1; padding: 14px 12px; }
+

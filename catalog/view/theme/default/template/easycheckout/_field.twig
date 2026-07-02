@@ -1,0 +1,61 @@
+{# Універсальний дispatcher: обгортка + label + tooltip, рендер input делегований
+   у `fields/{type}.twig`. Параметри:
+   - field: запис з fields_map (id, code, type, name, placeholder, mask, native, oc_field, options, ...)
+   - cfg:   запис з block.settings.fields[] (visibility, required, reload_on_change, condition)
+#}
+{% set name = field.native ? field.oc_field : field.code %}
+{% set prefixed_name = (field_prefix is defined ? field_prefix : '') ~ name %}
+{% set form_name = 'okec[' ~ prefixed_name ~ ']' %}
+{% set required = cfg.required %}
+{% set prefill_value = prefill[prefixed_name] %}
+{% set autocomplete_section = (field_prefix is defined and field_prefix == 'billing_') ? 'billing' : 'shipping' %}
+{% set autocomplete_map = {
+  'firstname':    'given-name',
+  'lastname':     'family-name',
+  'company':      'organization',
+  'address_1':    autocomplete_section ~ ' street-address',
+  'address_2':    autocomplete_section ~ ' address-line2',
+  'city':         autocomplete_section ~ ' address-level2',
+  'postcode':     autocomplete_section ~ ' postal-code',
+  'country_id':   autocomplete_section ~ ' country',
+  'zone_id':      autocomplete_section ~ ' address-level1',
+  'email':        'email',
+  'telephone':    'tel',
+  'password':     'new-password',
+  'confirm':      'new-password',
+} %}
+{% set autocomplete_attr = autocomplete_map[name]|default('on') %}
+
+<div class="okec-field okec-field--{{ field.type }} okec-field--w-{{ cfg.width ?: 'full' }}"
+     data-field-id="{{ field.field_id }}"
+     data-field-code="{{ field.code }}"
+     {% if cfg.reload_on_change %}data-okec-reload="1"{% endif %}
+     {% if cfg.condition %}data-okec-cond="{{ cfg.condition|json_encode|e('html_attr') }}"{% endif %}>
+
+  {% if field.type != 'hidden' and field.type != 'computed_hidden'
+        and field.type != 'checkbox' and field.type != 'consent' %}
+    <label class="okec-field__label" for="okec-f-{{ field.code }}">
+      {{ field.name }}
+      {% if required %}<span class="okec-field__required">*</span>{% endif %}
+    </label>
+  {% endif %}
+
+  {# Per-type input. У registered types включаємо partial; для невідомих fallback на text. #}
+  {% set _ftype = field.type %}
+  {% set _known = ['text', 'textarea', 'select', 'country', 'zone', 'city',
+                   'checkbox', 'consent', 'radio', 'segmented',
+                   'date', 'time', 'hidden', 'computed_hidden',
+                   'html', 'tel_intl', 'file', 'group',
+                   'autocomplete_np', 'autocomplete_ukrposhta', 'address_select'] %}
+  {% if _ftype in _known %}
+    {% include template_dir ~ 'easycheckout/fields/' ~ _ftype ~ '.twig' ignore missing %}
+  {% elseif _ftype starts with 'np_' or _ftype starts with 'up_' %}
+    {% include template_dir ~ 'easycheckout/fields/_integration.twig' %}
+  {% else %}
+    {% include template_dir ~ 'easycheckout/fields/text.twig' %}
+  {% endif %}
+
+  {% if field.tooltip and field.type != 'hidden' and field.type != 'computed_hidden' %}
+    <small class="okec-field__tooltip">{{ field.tooltip }}</small>
+  {% endif %}
+</div>

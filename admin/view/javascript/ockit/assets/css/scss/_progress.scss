@@ -1,0 +1,109 @@
+// oc-kit Design System — Progress Bar
+// © 2026 oc-kit.com | https://oc-kit.com
+
+@keyframes ok-progress-indeterminate {
+  0%   { left: -40%; width: 40%; }
+  60%  { left: 100%; width: 40%; }
+  100% { left: 100%; width: 0; }
+}
+
+@keyframes ok-progress-stripe {
+  from { background-position: 20px 0; }
+  to   { background-position: 0 0; }
+}
+
+.oc-kit {
+
+  .ok-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: $ok-text2;
+    margin-bottom: 5px;
+  }
+
+  .ok-progress {
+    background: $ok-bg2;
+    border-radius: $ok-radius-full;
+    overflow: hidden;
+    height: 10px;
+    position: relative;
+
+    &-bar {
+      height: 100%;
+      border-radius: $ok-radius-full;
+      background: $ok-info;
+      transition: width .4s ease;
+      position: relative;
+      overflow: hidden;
+
+      &-success { background: $ok-success; }
+      &-danger  { background: $ok-danger; }
+      &-warning { background: $ok-warning; }
+      &-accent  { background: $ok-accent; }
+    }
+
+    // ── Sizes ──────────────────────────────────────────────────────────────
+    &-xs  { height: 4px;  }
+    &-sm  { height: 7px;  }
+    &-lg  { height: 16px; }
+
+    // ── Striped ────────────────────────────────────────────────────────────
+    &-striped .ok-progress-bar {
+      background-image: linear-gradient(
+        45deg,
+        rgba(#fff, .18) 25%, transparent 25%,
+        transparent 50%, rgba(#fff, .18) 50%,
+        rgba(#fff, .18) 75%, transparent 75%, transparent
+      );
+      background-size: 20px 20px;
+    }
+
+    &-animated .ok-progress-bar {
+      animation: ok-progress-stripe .6s linear infinite;
+    }
+
+    // ── Indeterminate ──────────────────────────────────────────────────────
+    &-indeterminate .ok-progress-bar {
+      position: absolute;
+      width: 40% !important;
+      animation: ok-progress-indeterminate 1.4s ease infinite;
+    }
+  }
+
+  // ── Stacked ──────────────────────────────────────────────────────────────
+
+  .ok-progress-stacked {
+    background: $ok-bg2;
+    border-radius: $ok-radius-full;
+    overflow: hidden;
+    height: 10px;
+    display: flex;
+
+    .ok-progress-bar {
+      height: 100%;
+      border-radius: 0;
+      transition: width .4s ease;
+
+      &:first-child { border-radius: $ok-radius-full 0 0 $ok-radius-full; }
+      &:last-child  { border-radius: 0 $ok-radius-full $ok-radius-full 0; }
+    }
+  }
+
+  // ── Circle / ring progress ────────────────────────────────────────────────
+
+  .ok-progress-ring {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    svg {
+      transform: rotate(-90deg);
+      circle { transition: stroke-dashoffset .4s ease; }
+    }
+
+    &-label { font-size: 12px; font-weight: 600; color: $ok-text2; }
+  }
+}

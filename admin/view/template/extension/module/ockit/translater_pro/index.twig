@@ -1,0 +1,572 @@
+{# Translater Pro | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible">
+      <i data-lucide="circle-alert"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <div class="oc-kit">
+
+      <form action="{{ action }}" method="post" id="form-tp" class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb tp-breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+              {% if not loop.last %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+              {% else %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="btn-save" class="ok-btn ok-btn-primary ok-btn-sm">
+              <i data-lucide="save"></i> {{ button_save }}
+            </button>
+            <a href="{{ cancel }}" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</a>
+          </div>
+        </div>
+
+        <div id="tp">
+          <div class="ok-layout">
+
+            {# ── Sidebar ──────────────────────────────────────────────────── #}
+            <div class="ok-sidebar">
+              <div class="ok-brand">
+                <div class="ok-brand-icon"><i data-lucide="languages"></i></div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+                <span class="ok-brand-name">{{ heading_title_simple }} <span class="ok-brand-version">v1.0.0</span></span>
+              </div>
+
+              <div class="ok-tabs-sidebar">
+                <button type="button" class="ok-tabs-sidebar-item active" data-tab="tab-dashboard">
+                  <i data-lucide="gauge"></i> {{ tab_dashboard }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-translate">
+                  <i data-lucide="languages"></i> {{ tab_translate }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-logs">
+                  <i data-lucide="list"></i> {{ tab_logs }}
+                </button>
+                <hr class="ok-divider tp-divider">
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-settings">
+                  <i data-lucide="settings"></i> {{ tab_settings }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-license">
+                  <i data-lucide="key"></i> {{ tab_license }}
+                </button>
+              </div>
+            </div>
+
+            {# ── Content ──────────────────────────────────────────────────── #}
+            <div class="ok-content">
+
+              {# ──────────────────── TAB: DASHBOARD ──────────────────────── #}
+              <div class="ok-layout-panel active" id="tab-dashboard">
+
+                {# Stats cards #}
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="bar-chart-3"></i> {{ text_stats_title }}
+                    <div id="stats-loading" class="tp-inline-loading ok-hidden">
+                      <span class="ok-spinner-xs"></span> {{ text_loading }}
+                    </div>
+                  </div>
+                  <div class="ok-block-body">
+                    <div class="ok-kpi-grid ok-kpi-grid-5 ok-mt-0 ok-mb-0">
+                      {% for type_key, type_label in content_types %}
+                      <div class="ok-kpi-card" id="card-{{ type_key }}" data-type="{{ type_key }}">
+                        <div class="ok-kpi-card__icon"><i data-lucide="languages"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value" id="stat-{{ type_key }}">—</div>
+                          <p class="ok-kpi-card__label">{{ type_label }}</p>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                {# Language selectors #}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="gauge"></i> {{ tab_dashboard }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_source_lang }}</label>
+                      <select id="dash-source-lang" class="ok-select tp-w-200">
+                        {% for lang in languages %}
+                          <option value="{{ lang.code }}" {% if lang.code == dash_source_lang %}selected{% endif %}>{{ lang.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_target_lang }}</label>
+                      <select id="dash-target-lang" class="ok-select tp-w-200">
+                        {% for lang in languages %}
+                          <option value="{{ lang.code }}" {% if lang.code == dash_target_lang %}selected{% endif %}>{{ lang.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">&nbsp;</label>
+                      <button type="button" id="btn-refresh-stats" class="ok-btn ok-btn-primary ok-btn-sm">
+                        <i data-lucide="refresh-cw"></i> {{ button_refresh_stats }}
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /tab-dashboard #}
+
+              {# ──────────────────── TAB: TRANSLATE ──────────────────────── #}
+              <div class="ok-layout-panel" id="tab-translate">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="languages"></i> {{ tab_translate }}</div>
+                  <div class="ok-block-body">
+
+                    {# Language + Type selectors #}
+                    <div class="ok-filter-bar ok-filter-bar-flush ok-flex-wrap ok-items-end ok-mb-3">
+                      <div class="ok-flex-col ok-gap-4">
+                        <label class="ok-label form-label">{{ text_source_lang }}</label>
+                        <select id="tr-source-lang" class="ok-select">
+                          {% for lang in languages %}
+                            <option value="{{ lang.code }}">{{ lang.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="ok-flex-col ok-gap-4">
+                        <label class="ok-label form-label">{{ text_target_lang }}</label>
+                        <select id="tr-target-lang" class="ok-select">
+                          {% for lang in languages %}
+                            <option value="{{ lang.code }}">{{ lang.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="ok-flex-col ok-gap-4">
+                        <label class="ok-label form-label">{{ text_select_type }}</label>
+                        <select id="tr-type" class="ok-select">
+                          {% for type_key, type_label in content_types %}
+                            <option value="{{ type_key }}">{{ type_label }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="ok-flex-col ok-gap-4">
+                        <label class="ok-label form-label">{{ entry_overwrite }}</label>
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" class="ok-toggle-input" id="tr-overwrite">
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                      <button type="button" id="btn-load-items" class="ok-btn ok-btn-default ok-btn-sm">
+                        <i data-lucide="refresh-cw"></i> {{ button_load }}
+                      </button>
+                    </div>
+
+                    {# Progress bar #}
+                    <div id="tr-progress-wrap" class="tp-progress ok-hidden">
+                      <div class="tp-progress-head">
+                        <span id="tr-progress-label" class="tp-progress-label"></span>
+                        <span id="tr-progress-pct" class="tp-progress-pct"></span>
+                      </div>
+                      <div class="tp-progress-track">
+                        <div id="tr-progress-bar" class="tp-progress-fill"></div>
+                      </div>
+                    </div>
+
+                    {# Action buttons #}
+                    <div class="ok-flex ok-gap-8 ok-items-center ok-mb-3">
+                      <button type="button" id="btn-translate-selected" class="ok-btn ok-btn-primary ok-btn-sm" disabled>
+                        <i data-lucide="play"></i> {{ button_translate_selected }}
+                      </button>
+                      <button type="button" id="btn-translate-all" class="ok-btn ok-btn-success ok-btn-sm" disabled>
+                        <i data-lucide="circle-play"></i> {{ button_translate_all }}
+                      </button>
+                      <span id="tr-total-label" class="ok-ml-auto tp-muted-sm"></span>
+                      <span class="tp-perpage">
+                        <label class="form-label" for="tr-per-page">{{ text_per_page }}</label>
+                        <select id="tr-per-page" class="ok-select">
+                          <option value="10">10</option>
+                          <option value="30" selected>30</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </span>
+                    </div>
+
+                    {# Items table #}
+                    <div class="ok-table-wrap">
+                      <table class="ok-table tp-table-items">
+                        <thead>
+                          <tr>
+                            <th><input type="checkbox" id="tr-select-all"></th>
+                            <th>{{ column_id }}</th>
+                            <th>{{ column_name }}</th>
+                            <th>{{ column_fields }}</th>
+                            <th>{{ column_preview }}</th>
+                            <th>{{ column_status }}</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tr-tbody">
+                          <tr><td colspan="6" class="tp-table-empty">—</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {# Pagination #}
+                    <div id="tr-pagination" class="tp-pagination"></div>
+
+                  </div>
+                </div>
+
+              </div>{# /tab-translate #}
+
+              {# ──────────────────── TAB: LOGS ───────────────────────────── #}
+              <div class="ok-layout-panel" id="tab-logs">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <span><i data-lucide="list"></i> {{ tab_logs }}</span>
+                    <div class="ok-flex ok-gap-6 ok-ml-auto">
+                      <button type="button" class="ok-btn ok-btn-sm ok-btn-default ok-log-filter active" data-status="">{{ button_log_all }}</button>
+                      <button type="button" class="ok-btn ok-btn-sm ok-btn-default ok-log-filter" data-status="error">{{ button_log_errors }}</button>
+                      <button type="button" id="btn-clear-logs" class="ok-btn ok-btn-danger ok-btn-sm">
+                        <i data-lucide="trash-2"></i> {{ button_clear_logs }}
+                      </button>
+                    </div>
+                  </div>
+                  <div class="ok-block-body">
+                    <div class="ok-table-wrap">
+                      <table class="ok-table tp-table-logs">
+                        <thead>
+                          <tr>
+                            <th>{{ column_id }}</th>
+                            <th>{{ column_status }}</th>
+                            <th>{{ column_type }}</th>
+                            <th>{{ column_item }}</th>
+                            <th>{{ column_source }}</th>
+                            <th>{{ column_target }}</th>
+                            <th>{{ column_provider }}</th>
+                            <th>{{ column_fields }}</th>
+                            <th>{{ column_error }}</th>
+                            <th>{{ column_date }}</th>
+                          </tr>
+                        </thead>
+                        <tbody id="logs-tbody">
+                          <tr><td colspan="10" class="tp-table-empty">{{ text_loading }}</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="logs-pagination" class="tp-pagination"></div>
+                  </div>
+                </div>
+
+              </div>{# /tab-logs #}
+
+              {# ──────────────────── TAB: SETTINGS ──────────────────────── #}
+              <div class="ok-layout-panel" id="tab-settings">
+
+                {# Module status #}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="power"></i> {{ tab_settings }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_status }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_translater_pro_status" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input"
+                                 name="module_oc_kit_translater_pro_status" value="1"
+                                 {% if module_oc_kit_translater_pro_status %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# API Settings #}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="key"></i> {{ text_api_section }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_api_provider }}</label>
+                      <div>
+                        <select name="module_oc_kit_translater_pro_api_provider" id="api-provider" class="ok-select tp-w-220">
+                          <option value="openai"   {% if module_oc_kit_translater_pro_api_provider == 'openai' %}selected{% endif %}>OpenAI (GPT)</option>
+                          <option value="deepseek" {% if module_oc_kit_translater_pro_api_provider == 'deepseek' %}selected{% endif %}>DeepSeek</option>
+                          <option value="gemini"   {% if module_oc_kit_translater_pro_api_provider == 'gemini' %}selected{% endif %}>Google Gemini</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {# OpenAI #}
+                    <div class="ok-api-section" id="section-openai">
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_openai_key }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_openai_key"
+                               value="{{ module_oc_kit_translater_pro_openai_key }}"
+                               class="ok-input tp-w-420" autocomplete="off">
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_openai_model }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_openai_model"
+                               value="{{ module_oc_kit_translater_pro_openai_model }}"
+                               class="ok-input tp-w-220"
+                               placeholder="gpt-4o-mini">
+                      </div>
+                    </div>
+
+                    {# DeepSeek #}
+                    <div class="ok-api-section ok-hidden" id="section-deepseek">
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_deepseek_key }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_deepseek_key"
+                               value="{{ module_oc_kit_translater_pro_deepseek_key }}"
+                               class="ok-input tp-w-420" autocomplete="off">
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_deepseek_model }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_deepseek_model"
+                               value="{{ module_oc_kit_translater_pro_deepseek_model }}"
+                               class="ok-input tp-w-220"
+                               placeholder="deepseek-chat">
+                      </div>
+                    </div>
+
+                    {# Gemini #}
+                    <div class="ok-api-section ok-hidden" id="section-gemini">
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_gemini_key }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_gemini_key"
+                               value="{{ module_oc_kit_translater_pro_gemini_key }}"
+                               class="ok-input tp-w-420" autocomplete="off">
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_gemini_model }}</label>
+                        <input type="text" name="module_oc_kit_translater_pro_gemini_model"
+                               value="{{ module_oc_kit_translater_pro_gemini_model }}"
+                               class="ok-input tp-w-220"
+                               placeholder="gemini-2.0-flash">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row ok-mt-3">
+                      <label class="ok-label form-label">{{ entry_prompt }}</label>
+                      <div>
+                        <textarea name="module_oc_kit_translater_pro_prompt" id="prompt-textarea"
+                                  class="ok-input tp-prompt-textarea" rows="14">{{ module_oc_kit_translater_pro_prompt }}</textarea>
+                        <div class="ok-mt-1">
+                          <button type="button" id="btn-reset-prompt" class="ok-btn ok-btn-default ok-btn-sm">
+                            <i data-lucide="rotate-ccw"></i> {{ button_reset_prompt }}
+                          </button>
+                        </div>
+                        <p class="ok-alert ok-alert-info ok-mt-2">{{ help_prompt }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Cron #}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="clock"></i> {{ text_cron_section }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_auto }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_translater_pro_cron_auto" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input"
+                                 name="module_oc_kit_translater_pro_cron_auto" value="1"
+                                 {% if module_oc_kit_translater_pro_cron_auto %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_source_lang }}</label>
+                      <select name="module_oc_kit_translater_pro_cron_source_lang" id="cron-source-lang" class="ok-select tp-w-200">
+                        <option value="">—</option>
+                        {% for lang in languages %}
+                          <option value="{{ lang.code }}"
+                            {% if module_oc_kit_translater_pro_cron_source_lang == lang.code %}selected{% endif %}>
+                            {{ lang.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_target_langs }}</label>
+                      <div>
+                        <select name="module_oc_kit_translater_pro_cron_target_langs[]"
+                                id="cron-target-langs" class="ok-select ok-multiselect tp-w-240" multiple size="5">
+                          {% for lang in languages %}
+                            <option value="{{ lang.code }}"
+                              {% if lang.code in (module_oc_kit_translater_pro_cron_target_langs ?? []) %}selected{% endif %}>
+                              {{ lang.name }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <p class="ok-help">{{ help_cron_multiselect }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_types }}</label>
+                      <div>
+                        <select name="module_oc_kit_translater_pro_cron_types[]"
+                                id="cron-types" class="ok-select ok-multiselect tp-w-240" multiple size="5">
+                          {% for type_key, type_label in content_types %}
+                            <option value="{{ type_key }}"
+                              {% if type_key in (module_oc_kit_translater_pro_cron_types ?? []) %}selected{% endif %}>
+                              {{ type_label }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <p class="ok-help">{{ help_cron_multiselect }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_batch }}</label>
+                      <div>
+                        <input type="number" name="module_oc_kit_translater_pro_cron_batch"
+                               id="cron-batch"
+                               value="{{ module_oc_kit_translater_pro_cron_batch }}"
+                               class="ok-input tp-w-100" min="1" max="500">
+                        <p class="ok-help">{{ help_cron_batch }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_cron_command }}</label>
+                      <div id="cron-commands-wrap">
+                        {# Dynamically filled by JS when cron settings change #}
+                        <p class="ok-help tp-help-flush">{{ help_cron_command }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /tab-settings #}
+
+              {# ──────────────────── TAB: LICENSE ───────────────────────── #}
+              <div class="ok-layout-panel" id="tab-license">
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="key"></i> {{ tab_license }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-mb-3">
+                      {% if license_info.status == 'active' %}
+                        <span class="ok-badge ok-badge-success"><i data-lucide="check"></i> {{ text_license_active }}</span>
+                      {% elseif license_info.status == 'trial' %}
+                        <span class="ok-badge ok-badge-warning"><i data-lucide="clock"></i> {{ text_license_trial|format(license_info.trial_days_left) }}</span>
+                      {% elseif license_info.status == 'expired' %}
+                        <span class="ok-badge ok-badge-danger"><i data-lucide="circle-x"></i> {{ text_license_expired }}</span>
+                      {% elseif license_info.status == 'invalid' %}
+                        <span class="ok-badge ok-badge-danger"><i data-lucide="circle-x"></i> {{ text_license_invalid }}</span>
+                      {% elseif license_info.status == 'api_error' %}
+                        <span class="ok-badge ok-badge-warning"><i data-lucide="triangle-alert"></i> {{ text_license_api_error }}</span>
+                      {% else %}
+                        <span class="ok-badge"><i data-lucide="circle-help"></i> {{ text_license_not_validated }}</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="ok-mb-2 ok-text-sm ok-text-muted">{{ text_license_version }}: <strong>{{ license_info.version }}</strong></div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_license_key }}</label>
+                      <div class="ok-input-inline">
+                        <input type="text" id="tp-license-key-tab" class="ok-input"
+                               value="{{ license_key }}"
+                               placeholder="XXXX-XXXX-XXXX-XXXX-XXXX">
+                        <button type="button" id="tp-btn-activate-tab" class="ok-btn ok-btn-primary"
+                                data-url="{{ action_activate }}">
+                          <i data-lucide="check"></i> {{ button_activate }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                        <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                      </a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>{# /tab-license #}
+
+            </div>{# /ok-content #}
+          </div>{# /ok-layout #}
+        </div>{# /tp #}
+
+      </form>
+    </div>{# /oc-kit #}
+  </div>
+</div>
+
+<script>
+window.tpI18n = {{ i18n|json_encode|raw }};
+window.tpUrls = {
+  stats:      "{{ url_stats|raw }}",
+  items:      "{{ url_items|raw }}",
+  translate:  "{{ url_translate|raw }}",
+  logs:       "{{ url_logs|raw }}",
+  clearLogs:  "{{ url_clear_logs|raw }}"
+};
+window.tpConfig = {
+  adminEditUrls:      {{ admin_edit_urls|json_encode|raw }},
+  catalogUrlPatterns: {{ catalog_url_patterns|json_encode|raw }},
+  cronPhpPath:        "{{ cron_php_path|escape('js') }}",
+  cronLogPath:        "{{ cron_log_path|escape('js') }}"
+};
+window.tpConfig.defaultPrompt = "{{ default_prompt|escape('js') }}";
+window.tpLicenseI18n = {
+  button_activate:        "{{ button_activate }}",
+  js_license_activating:  "{{ js_license_activating }}",
+  text_license_activated: "{{ text_license_activated }}",
+  text_license_error:     "{{ text_license_error }}"
+};
+(function () {
+  var btn = document.getElementById('tp-btn-activate-tab');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var key = document.getElementById('tp-license-key-tab').value.trim();
+    if (!key) return;
+    btn.disabled = true;
+    btn.textContent = window.tpLicenseI18n.js_license_activating;
+    okPost(btn.dataset.url, { key: key }, function (res) {
+      btn.disabled = false;
+      btn.textContent = window.tpLicenseI18n.button_activate;
+      if (res.success) {
+        okNotify(res.message || window.tpLicenseI18n.text_license_activated, 'success');
+        if (res.redirect_url) {
+          setTimeout(function () { window.location.href = res.redirect_url; }, 1200);
+        } else {
+          setTimeout(function () { window.location.reload(); }, 1200);
+        }
+      } else {
+        okNotify(res.error || window.tpLicenseI18n.text_license_error, 'error');
+        setTimeout(function () { window.location.reload(); }, 1500);
+      }
+    });
+  });
+}());
+</script>
+<script src="view/javascript/ockit/translater_pro/assets/js/admin.js"></script>
+{{ footer }}

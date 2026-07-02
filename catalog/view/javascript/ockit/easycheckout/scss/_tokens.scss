@@ -1,0 +1,48 @@
+// EasyCheckout — catalog frontend design tokens
+// Visual language ported from oc-kit.com Claude Design mockup.
+
+$ec-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+// Accent
+$ec-accent:       #508EF5;
+$ec-accent-dark:  #3a78e0;
+$ec-accent-soft:  #e9f1fe; // step circle, icon box, badge bg
+$ec-accent-tint:  #f0f6fe; // selected method bg, dropdown hover
+
+// Text
+$ec-ink:        #111827; // primary text
+$ec-ink-soft:   #3a3f4b; // labels
+$ec-muted:      #6b7280;
+$ec-muted-2:    #9aa0ab;
+$ec-text-2:     #4b5563; // totals labels, terms text, stepper
+
+// Surfaces / lines
+$ec-bg:         #f5f6f8;
+$ec-card:       #ffffff;
+$ec-line:       #ececf1; // card border, dividers
+$ec-line-2:     #e4e4ec; // dropdown / stepper border
+$ec-input-line: #e0e0e8; // input border
+$ec-border-dashed: #e6e6ee; // method border, nova divider
+
+// State
+$ec-green:      #16a34a;
+$ec-green-soft: #dcfce7;
+$ec-danger:     #dc2626;
+$ec-danger-soft:#fef2f2;
+$ec-warn:       #b26a00;
+$ec-warn-soft:  #fff8e1;
+
+// Radii
+$ec-r-card:   18px;
+$ec-r-input:  11px;
+$ec-r-method: 13px;
+$ec-r-pill:   999px;
+
+// Effects
+$ec-ring:        0 0 0 4px rgba($ec-accent, .18);
+$ec-shadow-card: 0 1px 2px rgba(17, 24, 39, .04), 0 6px 22px rgba(17, 24, 39, .045);
+$ec-shadow-pop:  0 10px 32px rgba(17, 24, 39, .12);
+
+// Breakpoints (must mirror the inline grid media-queries in checkout.twig CSS)
+$ec-bp-tablet: 1024px;
+$ec-bp-mobile: 640px;

@@ -1,0 +1,87 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            {# ── Editor ── #}
+            <div class="ok-block">
+              <div class="ok-block-title">
+                <i data-lucide="file-text"></i> {{ text_robots_editor }}
+                <span class="ok-hint ok-ml-2">{{ robots_path }}</span>
+              </div>
+              <div class="ok-block-body">
+                <textarea id="ok-robots-content" class="ok-input ok-robots-textarea" rows="20" spellcheck="false">{{ robots_content }}</textarea>
+                <div class="ok-mt-2 ok-flex ok-gap-8">
+                  <button type="button" id="ok-robots-save" class="ok-btn ok-btn-primary ok-btn-sm">
+                    <i data-lucide="save"></i> {{ button_save }}
+                  </button>
+                  <span id="ok-robots-errors" class="ok-text-error" style="display:none"></span>
+                </div>
+              </div>
+            </div>
+
+            {# ── Backups ── #}
+            <div class="ok-panel">
+              <div class="ok-panel-header">
+                <span>{{ text_robots_backups }}</span>
+              </div>
+              <table class="ok-table" id="ok-robots-backups-table">
+                <thead>
+                  <tr>
+                    <th>{{ column_file }}</th>
+                    <th class="ok-col-sm">{{ column_size }}</th>
+                    <th class="ok-col-sm">{{ column_date }}</th>
+                    <th class="ok-col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if robots_backups %}
+                    {% for bk in robots_backups %}
+                    <tr data-path="{{ bk.path }}">
+                      <td>{{ bk.filename }}</td>
+                      <td>{{ bk.size }} bytes</td>
+                      <td>{{ bk.date }}</td>
+                      <td>
+                        <button type="button" class="ok-btn ok-btn-sm ok-btn-default ok-robots-restore">
+                          <i data-lucide="rotate-ccw"></i> {{ button_restore }}
+                        </button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr><td colspan="4" class="text-center ok-muted">{{ text_no_backups }}</td></tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  robotsSaveUrl:    '{{ robots_save_url }}',
+  robotsRestoreUrl: '{{ robots_restore_url }}',
+  userToken:        '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

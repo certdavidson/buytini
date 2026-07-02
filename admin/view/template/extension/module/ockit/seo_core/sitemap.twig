@@ -1,0 +1,116 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            {% set st = sitemap_status %}
+
+            {% if not st.installed %}
+
+            {# ── Not installed ── #}
+            <div class="ok-block">
+              <div class="ok-block-body">
+                <span class="ok-badge ok-badge-warning"><i data-lucide="alert-triangle"></i> {{ text_jetsitemap_missing }}</span>
+              </div>
+            </div>
+
+            {% else %}
+
+            {# ── Status ── #}
+            <div class="ok-block">
+              <div class="ok-block-title">
+                <i data-lucide="map"></i> {{ text_sitemap_status_title }}
+                <button type="button" id="ok-sm-refresh" class="ok-btn ok-btn-sm ok-btn-default ok-ml-2">
+                  <i data-lucide="refresh-cw"></i>
+                </button>
+              </div>
+              <div class="ok-block-body" id="ok-sm-status-body">
+
+                <div class="ok-flex ok-gap-8">
+                  {% if st.enabled %}
+                    <span class="ok-badge ok-badge-success"><i data-lucide="check"></i> {{ text_jetsitemap_installed }}</span>
+                  {% else %}
+                    <span class="ok-badge ok-badge-warning"><i data-lucide="alert-triangle"></i> {{ text_jetsitemap_missing }}</span>
+                  {% endif %}
+                  {% if st.last_generated %}
+                    <span class="ok-badge ok-badge-muted">{{ st.last_generated }}</span>
+                  {% endif %}
+                  {% if st.files_missing %}
+                    <span class="ok-badge ok-badge-warning">{{ text_no_sitemap_file }}</span>
+                  {% endif %}
+                </div>
+
+                {% if st.files %}
+                <div class="ok-mt-2">
+                  <ul class="ok-sitemap-list">
+                    {% for f in st.files %}
+                    <li>
+                      <i data-lucide="file-text"></i>
+                      <a href="{{ st.sitemap_url }}" target="_blank">{{ f.name }}</a>
+                      <span class="ok-muted ok-text-sm">{{ f.size }} bytes</span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+
+            {# ── Actions ── #}
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="file-plus"></i> {{ text_sitemap_actions }}</div>
+              <div class="ok-block-body">
+                <div class="ok-flex ok-gap-8">
+                  <button type="button" id="ok-sm-generate" class="ok-btn ok-btn-primary ok-btn-sm">
+                    <i data-lucide="zap"></i> {{ button_sitemap_generate }}
+                  </button>
+                  <a href="{{ sitemap_settings_url }}" class="ok-btn ok-btn-default ok-btn-sm">
+                    <i data-lucide="settings-2"></i> {{ text_sitemap_open_settings }}
+                  </a>
+                  <button type="button" id="ok-sm-ping-google" class="ok-btn ok-btn-default ok-btn-sm"
+                          data-url="{{ st.sitemap_url }}" data-engine="google">
+                    <i data-lucide="send"></i> Ping Google
+                  </button>
+                  <button type="button" id="ok-sm-ping-bing" class="ok-btn ok-btn-default ok-btn-sm"
+                          data-url="{{ st.sitemap_url }}" data-engine="bing">
+                    <i data-lucide="send"></i> Ping Bing
+                  </button>
+                </div>
+                <div id="ok-sm-generate-result" class="ok-mt-2 ok-hidden"></div>
+              </div>
+            </div>
+
+            {% endif %}
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  sitemapStatusUrl:   '{{ sitemap_status_url }}',
+  sitemapGenerateUrl: '{{ sitemap_generate_url }}',
+  sitemapPingUrl:     '{{ sitemap_ping_url }}',
+  userToken:          '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

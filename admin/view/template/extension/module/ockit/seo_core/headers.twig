@@ -1,0 +1,140 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="ok-hdr-add" class="ok-btn ok-btn-primary ok-btn-sm">
+              <i data-lucide="plus"></i> {{ button_add_rule }}
+            </button>
+          </div>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            {# ── Test panel ── #}
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="zap"></i> {{ text_headers_test }}</div>
+              <div class="ok-block-body">
+                <div class="ok-filter-bar">
+                  <div>
+                    <label class="ok-label form-label">URI</label>
+                    <input type="text" id="ok-hdr-test-uri" class="ok-input" placeholder="/catalog/product/view">
+                  </div>
+                  <div class="ok-flex ok-align-end">
+                    <button type="button" id="ok-hdr-test-btn" class="ok-btn ok-btn-default ok-btn-sm">
+                      <i data-lucide="zap"></i> {{ text_headers_test }}
+                    </button>
+                  </div>
+                  <div id="ok-hdr-test-result" style="display:none"></div>
+                </div>
+              </div>
+            </div>
+
+            {# ── Rules table ── #}
+            <div class="ok-panel">
+              <div class="ok-panel-header">
+                <span>{{ text_headers_rules }}</span>
+              </div>
+              <table class="ok-table">
+                <thead>
+                  <tr>
+                    <th>URI</th>
+                    <th class="ok-col-sm">Robots</th>
+                    <th class="ok-col-sm">Header</th>
+                    <th class="ok-col-sm">Meta</th>
+                    <th class="ok-col-xs">{{ label_regen_mode }}</th>
+                    <th>Comment</th>
+                    <th class="ok-col-xs">Status</th>
+                    <th class="ok-col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody id="ok-hdr-tbody">
+                  <tr><td colspan="8" class="text-center ok-loading">{{ text_loading }}</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+
+      {# ── Edit modal ── #}
+      <div id="ok-hdr-modal" class="ok-modal-backdrop" style="display:none">
+        <div class="ok-modal">
+          <div class="ok-modal-header">
+            <span id="ok-hdr-modal-title">{{ text_headers_rules }}</span>
+            <button type="button" id="ok-hdr-modal-close" class="ok-modal-close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ok-modal-body">
+            <input type="hidden" id="ok-hdr-edit-id" value="0">
+            <div class="mb-3">
+              <label class="ok-label form-label">URI</label>
+              <input type="text" id="ok-hdr-edit-pattern" class="ok-input" placeholder="/catalog/product/* або /admin/*">
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">Robots</label>
+              <input type="text" id="ok-hdr-edit-robots" class="ok-input" placeholder="noindex,follow">
+            </div>
+            <div class="mb-3">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" id="ok-hdr-edit-header" class="ok-toggle-input" checked>
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <label class="ok-label form-label" for="ok-hdr-edit-header">X-Robots-Tag header</label>
+            </div>
+            <div class="mb-3">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" id="ok-hdr-edit-meta" class="ok-toggle-input" checked>
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <label class="ok-label form-label" for="ok-hdr-edit-meta">&lt;meta name="robots"&gt;</label>
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">Sort order</label>
+              <input type="number" id="ok-hdr-edit-order" class="ok-input" value="0">
+            </div>
+            <div class="mb-3">
+              <label class="ok-label form-label">Comment</label>
+              <input type="text" id="ok-hdr-edit-comment" class="ok-input">
+            </div>
+            <div class="mb-3">
+              <label class="ok-toggle-wrap ok-toggle-sm">
+                <input type="checkbox" id="ok-hdr-edit-status" class="ok-toggle-input" checked>
+                <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+              </label>
+              <label class="ok-label form-label" for="ok-hdr-edit-status">Active</label>
+            </div>
+          </div>
+          <div class="ok-modal-footer">
+            <button type="button" id="ok-hdr-modal-save"   class="ok-btn ok-btn-primary">{{ button_save }}</button>
+            <button type="button" id="ok-hdr-modal-cancel" class="ok-btn ok-btn-default">{{ button_cancel }}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreConfig = {
+  headersListUrl:  '{{ headers_list_url }}',
+  headerSaveUrl:   '{{ header_save_url }}',
+  headerDeleteUrl: '{{ header_delete_url }}',
+  headerTestUrl:   '{{ header_test_url }}',
+  userToken:       '{{ user_token }}'
+};
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>

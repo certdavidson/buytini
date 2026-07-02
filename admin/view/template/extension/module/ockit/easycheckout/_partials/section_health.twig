@@ -1,0 +1,62 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ health_heading }}</h2>
+<p class="ok-help">{{ health_help }}</p>
+
+<div x-data="okecHealth()" x-init="load()">
+  <div class="ok-panel" id="okec-health-panel">
+    <div class="ok-panel-header">
+      <div class="ok-panel-title">
+        <i data-lucide="activity"></i> {{ health_heading }}
+      </div>
+    </div>
+
+    <table class="ok-table">
+      <thead>
+        <tr>
+          <th class="ok-col-50"></th>
+          <th>{{ entry_check }}</th>
+          <th>{{ entry_status_label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr x-show="loading">
+          <td colspan="3" class="text-center ok-loading">
+            <i data-lucide="loader" class="okec-spin"></i>
+          </td>
+        </tr>
+        <template x-for="c in checks" :key="c.key">
+          <tr :class="'ok-row-' + (c.status === 'fail' ? 'error' : (c.status === 'warn' ? 'warning' : 'ok'))">
+            <td>
+              <div class="ok-stat-icon"
+                   :class="c.status === 'ok' ? 'ok-stat-icon--success'
+                         : (c.status === 'warn' ? 'ok-stat-icon--warning' : 'ok-stat-icon--danger')">
+                <i :data-lucide="c.status === 'ok' ? 'check-circle-2'
+                              : (c.status === 'warn' ? 'alert-triangle' : 'alert-octagon')"></i>
+              </div>
+            </td>
+            <td>
+              <strong x-text="t('health_check_' + c.key)"></strong>
+            </td>
+            <td>
+              <div class="okec-health-result">
+                <span class="ok-badge"
+                      :class="c.status === 'ok' ? 'ok-badge-success-soft'
+                            : (c.status === 'warn' ? 'ok-badge-warning-soft' : 'ok-badge-danger-soft')"
+                      x-text="c.status === 'ok' ? t('health_status_ok')
+                            : (c.status === 'warn' ? t('health_status_warn') : t('health_status_fail'))"></span>
+                <span class="okec-health-result__msg" x-text="c.message" x-show="c.message"></span>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <div class="ok-panel-footer">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="load()">
+        <i data-lucide="refresh-cw"></i> {{ button_refresh }}
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="okec-block__inner okec-block-payment" data-okec-payment-container>
+  {% if block.settings.fields|length > 0 %}
+    {% include template_dir ~ 'easycheckout/blocks/_fields_list.twig' %}
+  {% endif %}
+  <div class="okec-block-payment__methods" data-okec-methods="payment"
+       data-display-mode="{{ block.settings.display_mode }}"
+       data-auto-select="{{ block.settings.auto_select_first ? '1' : '0' }}"
+       data-show-description="{{ block.settings.show_description ? '1' : '0' }}">
+    <p class="okec-block-payment__placeholder">Payment methods will load here…</p>
+  </div>
+</div>

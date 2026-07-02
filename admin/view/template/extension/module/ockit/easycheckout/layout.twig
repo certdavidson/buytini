@@ -1,0 +1,415 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible">
+        <i data-lucide="alert-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="alert alert-success alert-dismissible">
+        <i data-lucide="check-circle"></i> {{ success }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+
+    <script>
+      window.OkEasycheckoutI18n    = {{ lang_js }};
+      window.OkEasycheckoutContext = {
+        store_name:       {{ store_name|json_encode }},
+        catalog_base_url: {{ catalog_base_url|json_encode }},
+        image_base:        {{ image_base|json_encode }},
+        image_placeholder: {{ image_placeholder|json_encode }},
+        languages:    {{ languages_json }},
+        field_types:  {{ field_types_json }},
+        block_types:  {{ block_types|json_encode }},
+        fields_list:  {{ fields_list|json_encode }},
+        groups_list:  {{ groups_list|json_encode }},
+        active_group_id: {{ active_group_id }},
+        heading_tags: {{ heading_tags|json_encode }},
+        urls: {
+          self:      '{{ url_self }}',
+          // fields
+          list:      '{{ url_list }}',
+          get:       '{{ url_get }}',
+          save:      '{{ url_save }}',
+          del:       '{{ url_delete }}',
+          clone:     '{{ url_clone }}',
+          del_many:  '{{ url_delete_many }}',
+          next_code:   '{{ url_next_code }}',
+          fields_list: '{{ url_fields_list }}',
+          // groups
+          g_list:       '{{ url_g_list }}',
+          g_save:       '{{ url_g_save }}',
+          g_delete:     '{{ url_g_delete }}',
+          g_clone:      '{{ url_g_clone }}',
+          // headings
+          h_list:      '{{ url_h_list }}',
+          h_get:       '{{ url_h_get }}',
+          h_save:      '{{ url_h_save }}',
+          h_del:       '{{ url_h_delete }}',
+          h_del_many:  '{{ url_h_delete_many }}',
+          h_next_code: '{{ url_h_next_code }}',
+          h_clone:     '{{ url_h_clone }}',
+          h_export:    '{{ url_h_export }}',
+          h_import:    '{{ url_h_import }}',
+          h_reorder:   '{{ url_h_reorder }}',
+          fields_reorder: '{{ url_fields_reorder }}',
+          fields_bulk_edit: '{{ url_fields_bulk_edit }}',
+          native_list: '{{ url_native_list }}',
+          native_save: '{{ url_native_save }}',
+          // misc
+          info_search: '{{ url_info_search }}',
+          // page layout
+          layout_get:        '{{ url_layout_get }}',
+          layout_save:       '{{ url_layout_save }}',
+          layout_defaults:   '{{ url_layout_defaults }}',
+          layout_preview:    '{{ url_layout_preview }}',
+          layout_export:     '{{ url_layout_export }}',
+          layout_import:     '{{ url_layout_import }}',
+          layout_copy_from:  '{{ url_layout_copy_from }}',
+          health_check:      '{{ url_health_check }}',
+          layout_presets_list: '{{ url_layout_presets_list }}',
+          layout_preset_apply: '{{ url_layout_preset_apply }}',
+          address_formats_list: '{{ url_address_formats_list }}',
+          address_format_save:  '{{ url_address_format_save }}',
+          address_format_delete:'{{ url_address_format_delete }}',
+          restrictions_list:    '{{ url_restrictions_list }}',
+          restriction_save:     '{{ url_restriction_save }}',
+          restriction_delete:   '{{ url_restriction_delete }}',
+          license_info:     '{{ url_license_info }}',
+          license_activate: '{{ url_license_activate }}',
+          modules_list:         '{{ url_modules_list }}',
+          module_override_save: '{{ url_module_override_save }}',
+          cm_data:         '{{ url_cm_data }}',
+          cm_group_add:    '{{ url_cm_group_add }}',
+          cm_group_delete: '{{ url_cm_group_delete }}',
+          cm_add:          '{{ url_cm_add }}',
+          cm_get:          '{{ url_cm_get }}',
+          cm_save:         '{{ url_cm_save }}',
+          cm_delete:       '{{ url_cm_delete }}',
+          cm_toggle:       '{{ url_cm_toggle }}',
+          cm_clone:        '{{ url_cm_clone }}',
+          cm_subtotal_add:    '{{ url_cm_subtotal_add }}',
+          cm_subtotal_save:   '{{ url_cm_subtotal_save }}',
+          cm_subtotal_delete: '{{ url_cm_subtotal_delete }}',
+          integrations_list:    '{{ url_integrations_list }}',
+          integration_get:      '{{ url_integration_get }}',
+          integration_toggle:   '{{ url_integration_toggle }}',
+          integration_save:     '{{ url_integration_save }}',
+          integration_action:   '{{ url_integration_action }}',
+          integration_refresh:  '{{ url_integration_refresh }}',
+          integration_purge:    '{{ url_integration_purge }}',
+          integration_icon:     '{{ url_integration_icon }}',
+          integration_health:   '{{ url_integration_health }}',
+          integration_add_to_layout: '{{ url_integration_add_to_layout }}',
+          integration_install_fields: '{{ url_integration_install_fields }}',
+          marketplace_list:    '{{ url_marketplace_list }}',
+          marketplace_install: '{{ url_marketplace_install }}',
+          marketplace_uninstall: '{{ url_marketplace_uninstall }}',
+          marketplace_update:    '{{ url_marketplace_update }}',
+          abandoned_list:        '{{ url_abandoned_list }}',
+          abandoned_delete:      '{{ url_abandoned_delete }}',
+          abandoned_delete_many: '{{ url_abandoned_delete_many }}',
+          abandoned_products:    '{{ url_abandoned_products }}',
+          abandoned_save_note:   '{{ url_abandoned_save_note }}',
+          abandoned_send_reminder: '{{ url_abandoned_send_reminder }}',
+          orders_export:     '{{ url_orders_export }}',
+          presets_list:      '{{ url_presets_list }}',
+          preset_apply:      '{{ url_preset_apply }}'
+        }
+      };
+    </script>
+
+    <div class="oc-kit okec" x-data="okecApp('{{ section_initial }}')" x-init="init()">
+      {# ── Preview modal (Pages-секція) ──────────────────────────── #}
+      <div class="ok-modal-backdrop okec-preview-modal" x-cloak x-show="pages && pages.previewOpen"
+           @click.self="pages.closePreview()" @keydown.escape.window="pages.closePreview()">
+        <div class="ok-modal okec-preview-dialog">
+          <div class="ok-modal-header okec-preview-header">
+            <h3 class="ok-modal-title"><i data-lucide="eye"></i> {{ layout_preview_title }}</h3>
+            <div class="okec-preview-devices">
+              <button type="button" class="okec-preview-device"
+                      :class="{ 'is-active': pages.previewDevice === 'desktop' }"
+                      @click="pages.previewDevice = 'desktop'" title="Desktop">
+                <i data-lucide="monitor"></i>
+              </button>
+              <button type="button" class="okec-preview-device"
+                      :class="{ 'is-active': pages.previewDevice === 'tablet' }"
+                      @click="pages.previewDevice = 'tablet'" title="Tablet (768px)">
+                <i data-lucide="tablet"></i>
+              </button>
+              <button type="button" class="okec-preview-device"
+                      :class="{ 'is-active': pages.previewDevice === 'mobile' }"
+                      @click="pages.previewDevice = 'mobile'" title="Mobile (390px)">
+                <i data-lucide="smartphone"></i>
+              </button>
+              <span class="okec-preview-dims" x-text="pages.previewDims()"></span>
+            </div>
+            <button type="button" class="ok-modal-close" @click="pages.closePreview()">×</button>
+          </div>
+          <div class="ok-modal-body okec-preview-body">
+            <div class="okec-preview-frame-wrap" :class="'okec-preview-frame-wrap--' + pages.previewDevice">
+              <iframe :src="pages.previewUrl" class="okec-preview-iframe"
+                      :style="pages.previewFrameStyle()"
+                      sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <form action="{{ action }}" method="post" id="form-easycheckout" class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for crumb in breadcrumbs %}
+              <li><a href="{{ crumb.href }}">{{ crumb.text }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            {# Group selector — впливає на pages (layout) секцію. Ховаємо для секцій,
+               що не залежать від групи (fields, headings — глобальні). #}
+            <template x-if="section === 'pages'">
+              <label class="okec-group-selector" :title="t('layout_group_selector_help')">
+                <i data-lucide="layers"></i>
+                <span class="okec-group-selector__label">{{ layout_group_selector_label }}</span>
+                <select class="ok-select okec-group-selector__select"
+                        x-model.number="activeGroupId"
+                        @change="setActiveGroup($event.target.value)">
+                  <template x-for="g in (context.groups_list || [])" :key="g.group_id">
+                    <option :value="g.group_id" x-text="g.name + (g.is_default ? ' [default]' : '')"></option>
+                  </template>
+                </select>
+              </label>
+            </template>
+
+            {# Save кнопка показується тільки для секцій-форм (general). Інші — мають свої кнопки в собі. #}
+            <button type="submit" class="ok-btn ok-btn-primary ok-btn-sm" x-show="section === 'general'">
+              <i data-lucide="save"></i> {{ button_save }}
+            </button>
+
+            {# Кнопки для fields-секції — переміщені сюди для консистентності #}
+            <template x-if="section === 'fields'">
+              <div class="ok-flex ok-gap-8" x-data="{ presetsOpen: false }">
+                <div class="okec-presets-dropdown" @click.outside="presetsOpen = false">
+                  <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                          @click="presetsOpen = !presetsOpen; if (presetsOpen) fields.loadPresets()">
+                    <i data-lucide="package"></i> {{ fields_btn_presets }}
+                  </button>
+                  <div class="okec-presets-dropdown__menu" x-show="presetsOpen" x-cloak>
+                    <div class="okec-presets-dropdown__empty" x-show="!fields.presets || !fields.presets.length">
+                      <i data-lucide="loader" class="okec-spin"></i>
+                    </div>
+                    <template x-for="p in fields.presets" :key="p.code">
+                      <button type="button" class="okec-presets-dropdown__item"
+                              @click="fields.applyPreset(p.code); presetsOpen = false">
+                        <strong x-text="p.label"></strong>
+                        <small class="ok-muted" x-text="p.description"></small>
+                        <span class="ok-badge" x-text="p.fields_count + ' fields'"></span>
+                      </button>
+                    </template>
+                  </div>
+                </div>
+
+                <a class="ok-btn ok-btn-default ok-btn-sm"
+                   href="{{ url_fields_export }}" target="_blank"
+                   :title="t('button_fields_export_tip')">
+                  <i data-lucide="download"></i>
+                </a>
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        :title="t('button_fields_import_tip')"
+                        @click="fields.openImport()">
+                  <i data-lucide="upload"></i>
+                </button>
+
+                <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" @click="fields.openCreate()">
+                  <i data-lucide="plus"></i> {{ fields_btn_add }}
+                </button>
+              </div>
+            </template>
+
+            {# Кнопки для pages-секції (конструктор блоків) #}
+            <template x-if="section === 'pages'">
+              <div class="ok-flex ok-gap-8">
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        @click="pages.openPreview()">
+                  <i data-lucide="eye"></i>
+                  <span>{{ layout_btn_preview }}</span>
+                </button>
+                <a class="ok-btn ok-btn-default ok-btn-sm"
+                   :href="pages.exportUrl()"
+                   target="_blank"
+                   :title="t('layout_btn_export_tip')">
+                  <i data-lucide="download"></i>
+                </a>
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        :title="t('layout_btn_import_tip')"
+                        @click="pages.openImport()">
+                  <i data-lucide="upload"></i>
+                </button>
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        @click="pages.resetToDefaults()" :disabled="pages.saving || pages.loading">
+                  <i data-lucide="rotate-ccw"></i>
+                  <span>{{ layout_btn_reset }}</span>
+                </button>
+                <button type="button" class="ok-btn ok-btn-primary ok-btn-sm"
+                        @click="pages.save()" :disabled="pages.saving">
+                  <i data-lucide="save" x-show="!pages.saving"></i>
+                  <i data-lucide="loader" class="okec-spin" x-show="pages.saving"></i>
+                  <span x-text="pages.saving ? t('js_saving') : t('layout_btn_save')"></span>
+                </button>
+              </div>
+            </template>
+
+            {# Кнопки для groups-секції #}
+            <template x-if="section === 'groups'">
+              <div class="ok-flex ok-gap-8">
+                <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" @click="groups.openCreate()">
+                  <i data-lucide="plus"></i> {{ groups_btn_add }}
+                </button>
+              </div>
+            </template>
+
+            {# Кнопки для headings-секції #}
+            <template x-if="section === 'headings'">
+              <div class="ok-flex ok-gap-8">
+                <button type="button" class="ok-btn ok-btn-danger ok-btn-sm"
+                        x-show="headings.selected.length > 0" x-cloak
+                        @click="headings.bulkDelete()">
+                  <i data-lucide="trash-2"></i>
+                  <span x-text="t('headings_btn_delete_selected') + ' (' + headings.selected.length + ')'"></span>
+                </button>
+                <a class="ok-btn ok-btn-default ok-btn-sm"
+                   href="{{ url_h_export }}" target="_blank"
+                   :title="t('button_fields_export_tip')">
+                  <i data-lucide="download"></i>
+                </a>
+                <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                        :title="t('button_fields_import_tip')"
+                        @click="headings.openImport()">
+                  <i data-lucide="upload"></i>
+                </button>
+                <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" @click="headings.openCreate()">
+                  <i data-lucide="plus"></i> {{ headings_btn_add }}
+                </button>
+              </div>
+            </template>
+
+            <a href="{{ cancel }}" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</a>
+          </div>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/easycheckout/_partials/sidebar.twig' %}
+
+          <div class="ok-content">
+
+            {# ─── General ──────────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'general'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_general.twig' %}
+            </div>
+
+            {# ─── Fields ──────────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'fields'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_fields.twig' %}
+            </div>
+
+            {# ─── Pages (block layout builder) ────────────────────────── #}
+            <div class="okec-section" x-show="section === 'pages'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_pages.twig' %}
+            </div>
+
+            {# ─── Headings ────────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'headings'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_headings.twig' %}
+            </div>
+
+            {# ─── Settings groups ─────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'groups'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_groups.twig' %}
+            </div>
+
+            {# ─── Abandoned checkouts ─────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'abandoned'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_abandoned.twig' %}
+            </div>
+
+            {# ─── Health check ────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'health'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_health.twig' %}
+            </div>
+
+            {# ─── Presets ─────────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'presets'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_presets.twig' %}
+            </div>
+
+            {# ─── Address formats ─────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'address_formats'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_address_formats.twig' %}
+            </div>
+
+            {# ─── Order restrictions ──────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'restrictions'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_restrictions.twig' %}
+            </div>
+
+            {# ─── Misc (error display, theme) ─────────────── #}
+            <div class="okec-section" x-show="section === 'misc'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_misc.twig' %}
+            </div>
+
+            {# ─── JavaScript injection + API docs ─────────────── #}
+            <div class="okec-section" x-show="section === 'js'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_js.twig' %}
+            </div>
+
+            {# ─── Integrations marketplace ─────────────── #}
+            <div class="okec-section" x-show="section === 'integrations'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_integrations.twig' %}
+            </div>
+
+            {# ─── License ─────────────────────────────────────────────── #}
+            <div class="okec-section" x-show="section === 'license'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_license.twig' %}
+            </div>
+
+            {# ─── Payment/Shipping modules (overrides) ────────────────── #}
+            <div class="okec-section" x-show="section === 'modules'" x-cloak>
+              {% include 'extension/module/ockit/easycheckout/_partials/section_modules.twig' %}
+            </div>
+
+            {# ─── Coming-soon (всі решта) ──────────────────────────────── #}
+            {# NB: `{% for ... if ... %}` видалено в Twig 2+, тож inner-if (працює і в Twig 1.x, і в 3.x) #}
+            {% for item in sidebar_items %}
+              {% if not item.available %}
+                <div class="okec-section" x-show="section === '{{ item.key }}'" x-cloak>
+                  <div class="okec-empty">
+                    <i data-lucide="hammer" class="okec-empty__icon"></i>
+                    <h3>{{ text_coming_soon }}</h3>
+                    <p>{{ text_dev_stage }}</p>
+                    <p class="okec-empty__hint"><code>{{ item.key }}</code></p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+
+      </form>
+
+      {# ─── Modals (поза формою щоб не sub-submitся) ─────────────────── #}
+      {% include 'extension/module/ockit/easycheckout/_partials/field_modal.twig' %}
+      {% include 'extension/module/ockit/easycheckout/_partials/heading_modal.twig' %}
+      {% include 'extension/module/ockit/easycheckout/_partials/block_settings_modal.twig' %}
+
+    </div>
+  </div>
+</div>
+
+{{ footer }}

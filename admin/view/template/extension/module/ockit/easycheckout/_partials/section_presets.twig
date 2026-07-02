@@ -1,0 +1,28 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ presets_heading }}</h2>
+<p class="ok-help">{{ presets_help }}</p>
+
+{# Server-side render — без чекання AJAX, щоб пресети завжди були видимі. #}
+<div x-data="okecPresets()" class="okec-presets">
+  {% if layout_presets|length > 0 %}
+    <div class="okec-presets__grid">
+      {% for p in layout_presets %}
+        <div class="ok-panel okec-modal-panel">
+          <div class="ok-panel-header">
+            {{ p.name }}
+          </div>
+          <div class="ok-panel-body okec-preset-card__body">
+            <div class="okec-preset-card__desc">{{ p.description }}</div>
+            <button type="button" class="ok-btn ok-btn-primary ok-btn-sm okec-preset-card__btn" @click="apply({ code: '{{ p.code }}', name: '{{ p.name|e('js') }}' })">
+              <i data-lucide="zap"></i> {{ button_apply }}
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="okec-empty">
+      <p>{{ presets_empty }}</p>
+    </div>
+  {% endif %}
+</div>

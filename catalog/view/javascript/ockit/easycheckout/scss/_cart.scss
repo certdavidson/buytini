@@ -1,0 +1,140 @@
+// Cart / order items list inside the summary column. Matches the design:
+// thumb · (name + opts + qty stepper) · line total; remove = corner ×.
+
+.okec-block-cart__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.okec-block-cart__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.okec-block-cart__item--loading {
+  opacity: .5;
+  pointer-events: none;
+}
+.okec-block-cart__item--loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+  animation: okec-shimmer 1.2s infinite;
+}
+@keyframes okec-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.okec-block-cart__thumb {
+  flex: 0 0 auto;
+  img {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 11px;
+    border: 1px solid $ec-line;
+    background: #f7f7fb;
+    display: block;
+  }
+}
+
+.okec-block-cart__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.okec-block-cart__name {
+  font-weight: 600;
+  font-size: 14px;
+  color: $ec-ink;
+  text-decoration: none;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover { color: $ec-accent; }
+}
+// Options line (model + option values joined) — one muted row above stepper.
+.okec-block-cart__opts {
+  font-size: 12px;
+  color: $ec-muted;
+  margin: 2px 0 0;
+}
+
+// Quantity stepper — one bordered pill, seamless icon buttons + static qty.
+.okec-block-cart__qty {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  border: 1px solid $ec-line-2;
+  border-radius: 9px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.okec-block-cart__qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: $ec-card;
+  cursor: pointer;
+  color: $ec-text-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color .15s;
+  &:hover { background: #f3f4f6; }
+}
+.okec-block-cart__qty-num {
+  min-width: 30px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: $ec-ink;
+}
+.okec-block-cart__qty-static {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ec-ink;
+  margin-top: 8px;
+}
+
+.okec-block-cart__total {
+  flex: 0 0 auto;
+  align-self: center;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  color: $ec-ink;
+}
+
+.okec-block-cart__remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: $ec-muted-2;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color .15s;
+  &:hover { color: $ec-danger; }
+}
+
+.okec-block-cart__empty {
+  text-align: center;
+  color: $ec-muted;
+  margin: 8px 0;
+  font-size: 14px;
+}

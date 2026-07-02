@@ -1,0 +1,117 @@
+{{ header }}
+<script>
+  window.OkecConfig = {
+    urls:         {{ okec_urls|json_encode }},
+    text:         {{ okec_text|json_encode }},
+    prefill:      {{ prefill|json_encode }},
+    address_book: {{ address_book|json_encode }},
+    logged:       {{ logged ? 'true' : 'false' }}
+  };
+</script>
+{% if is_preview %}
+  <div class="okec-preview-banner">⚠ Preview mode (admin) — фактичне оформлення замовлення тут не доступне.</div>
+{% endif %}
+<div id="easycheckout-page" class="container{% if is_preview %} okec-preview-active{% endif %}">
+  <ul class="breadcrumb">
+    {% for crumb in breadcrumbs %}
+      <li><a href="{{ crumb.href }}">{{ crumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+    <div id="content"
+         class="{% if column_left and column_right %}col-sm-6{% elseif column_left or column_right %}col-sm-9{% else %}col-sm-12{% endif %}">
+      {{ content_top }}
+
+      <h1 class="okec-page-title">{{ heading_title }}</h1>
+
+      {% if groups_list|length > 1 %}
+        <div class="okec-group-switcher">
+          {% for g in groups_list %}
+            <a class="okec-group-switcher__btn{% if g.group_id == active_group_id %} is-active{% endif %}"
+               href="{{ g.href }}">{{ g.name }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="okec-checkout"
+           data-group-id="{{ group_id }}"
+           data-mode="{{ layout.mode }}">
+
+        {% for step in layout.steps %}
+          <section class="okec-checkout__step" data-step-id="{{ step.id }}">
+
+            {% if step.title_resolved %}
+              <h2 class="okec-checkout__step-title">{{ step.title_resolved }}</h2>
+            {% endif %}
+
+            {% for row in step.rows %}
+              <div class="okec-checkout__row">
+                {% for cell in row.cells %}
+                  <div class="okec-checkout__cell" data-cell-id="{{ cell.id }}"
+                       style="--okec-span-d:{{ cell.span.desktop }};--okec-span-t:{{ cell.span.tablet }};--okec-span-m:{{ cell.span.mobile }};">
+                    {% for block in cell.blocks %}
+                      {% set s = block.settings %}
+                      {% set skip = (s.hide_for_guests and not logged) or (s.hide_for_logged_in and logged) %}
+
+                      {% if not skip %}
+                        {% set vp_classes = '' %}
+                        {% if s.hide_on_desktop %}{% set vp_classes = vp_classes ~ ' okec-hide-desktop' %}{% endif %}
+                        {% if s.hide_on_tablet  %}{% set vp_classes = vp_classes ~ ' okec-hide-tablet'  %}{% endif %}
+                        {% if s.hide_on_mobile  %}{% set vp_classes = vp_classes ~ ' okec-hide-mobile'  %}{% endif %}
+
+                        <div class="okec-block okec-block--{{ block.type }}{{ vp_classes }}"
+                             data-block-id="{{ block.id }}"
+                             data-block-type="{{ block.type }}"
+                             {% if s.condition %}data-okec-cond="{{ s.condition|json_encode|e('html_attr') }}"{% endif %}>
+                          {% if block_titles[block.type] is defined %}
+                            <h3 class="okec-block__title">{{ block_titles[block.type] }}</h3>
+                          {% endif %}
+                          {# Делегуємо рендер у per-type partial. У 4.1 — заглушка з назвою. #}
+                          {% include template_dir ~ 'easycheckout/blocks/' ~ block.type ~ '.twig' ignore missing %}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+
+          </section>
+        {% endfor %}
+
+      </div>
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+{# ── Login modal (oc-kit shared pattern) ──────────────────────────── #}
+<div class="ok-modal-backdrop oc-kit" data-okec-login-modal hidden>
+  <div class="ok-modal ok-modal-sm" role="dialog" aria-modal="true">
+    <div class="ok-modal-header">
+      <h3 class="ok-modal-title">{{ text_login_title }}</h3>
+      <button type="button" class="ok-modal-close" data-okec-login-close aria-label="{{ text_close }}">×</button>
+    </div>
+    <form class="ok-modal-body" data-okec-login-form>
+      <div class="okec-login-form__row">
+        <label class="form-label" for="okec-login-email">{{ text_login_email }}</label>
+        <input type="email" id="okec-login-email" name="email" class="form-control" autocomplete="email" required>
+      </div>
+      <div class="okec-login-form__row">
+        <label class="form-label" for="okec-login-pass">{{ text_login_password }}</label>
+        <input type="password" id="okec-login-pass" name="password" class="form-control" autocomplete="current-password" required>
+      </div>
+      <p class="okec-login-form__error" data-okec-login-error hidden></p>
+    </form>
+    <div class="ok-modal-footer">
+      <button type="button" class="btn btn-primary" data-okec-login-submit>{{ text_login_submit }}</button>
+      <a href="{{ okec_urls.forgotten }}" class="okec-login-form__forgot">{{ text_login_forgot }}</a>
+    </div>
+  </div>
+</div>
+
+{{ footer }}

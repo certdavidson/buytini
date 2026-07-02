@@ -1,0 +1,24 @@
+// Cron Manager — Local variable copy (mirrors shared _variables.scss)
+// Needed to compile module styles independently without importing shared files.
+
+$ok-white:    #ffffff;
+$ok-bg:       #f4f6f9;
+$ok-bg2:      #eef0f5;
+$ok-border:   #e0e4eb;
+$ok-border2:  #c8d0db;
+$ok-text:     #2c3e50;
+$ok-text2:    #5a6474;
+$ok-muted:    #8a94a6;
+$ok-accent:   #7EB2FF;
+$ok-accent2:  #508EF5;
+$ok-success:  #22bb6a;
+$ok-danger:   #e74c3c;
+$ok-warning:  #f39c12;
+$ok-info:     #3498db;
+$ok-font:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$ok-mono:     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+$ok-radius:   8px;
+$ok-radius-lg: 10px;
+$ok-radius-full: 999px;
+$ok-shadow-lg: 0 4px 16px rgba(0,0,0,.10);
+$ok-trans:    .15s ease;

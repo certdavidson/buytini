@@ -1,0 +1,10 @@
+<div class="okec-field__radios okec-field__radios--{{ field.type }}">
+  {% for o in field.options %}
+    <label class="okec-field__radio">
+      <input type="radio" name="{{ form_name }}" value="{{ o.value }}"
+             {% if o.value == prefill_value %}checked{% endif %}
+             {% if required and loop.first %}required{% endif %}>
+      <span>{{ o.label }}</span>
+    </label>
+  {% endfor %}
+</div>

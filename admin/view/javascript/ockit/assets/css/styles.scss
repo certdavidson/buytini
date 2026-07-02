@@ -1,0 +1,28 @@
+// oc-kit Design System — Main Entry
+// © 2026 oc-kit.com | https://oc-kit.com
+//
+// Scope: .oc-kit  (all styles are namespaced to avoid Bootstrap conflicts)
+// Prefix: ok-     (all component classes)
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "scss/variables";
+@import "scss/base";
+@import "scss/layout";
+@import "scss/typography";
+@import "scss/buttons";
+@import "scss/tabs";
+@import "scss/table";
+@import "scss/form";
+@import "scss/card";
+@import "scss/grid";
+@import "scss/badge";
+@import "scss/quiz";
+@import "scss/progress";
+@import "scss/filter";
+@import "scss/autocomplete";
+@import "scss/utils";
+@import "scss/modal";
+@import "scss/responsive";
+@import "scss/icons";
+@import "scss/sortable";

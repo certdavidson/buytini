@@ -1,0 +1,39 @@
+{% if block.settings.same_as_shipping_toggle %}
+  {# Mode 1: customer-facing checkbox; коли checked — payment-fields ховаються,
+     значення для платіжної адреси беруться з shipping #}
+  <label class="okec-same-as-shipping">
+    <input type="checkbox" name="okec[same_as_shipping]" value="1" data-okec-same-as-shipping checked>
+    <span>{{ text_same_as_shipping }}</span>
+  </label>
+
+  <div class="okec-block-fields-wrap" data-okec-payment-fields>
+    {% if address_book|length > 1 %}
+      <div class="okec-address-picker">
+        <label class="okec-address-picker__label" for="okec-addr-payment">{{ text_choose_address }}</label>
+        <select id="okec-addr-payment" class="form-control" data-okec-address-picker="payment">
+          <option value="">{{ text_new_address }}</option>
+          {% for a in address_book %}
+            <option value="{{ a.address_id }}"{% if a.is_default %} selected{% endif %}>{{ a.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endif %}
+    {% include template_dir ~ 'easycheckout/blocks/_fields_list.twig' %}
+  </div>
+{% else %}
+  {# Mode 2: незалежний блок — поля з префіксом `billing_` у okec[].
+     Окремий simple-fields-list з prefix передачею через field_prefix var. #}
+  {% if address_book|length > 1 %}
+    <div class="okec-address-picker">
+      <label class="okec-address-picker__label" for="okec-addr-payment">{{ text_choose_address }}</label>
+      <select id="okec-addr-payment" class="form-control" data-okec-address-picker="payment">
+        <option value="">{{ text_new_address }}</option>
+        {% for a in address_book %}
+          <option value="{{ a.address_id }}"{% if a.is_default %} selected{% endif %}>{{ a.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+  {% set field_prefix = 'billing_' %}
+  {% include template_dir ~ 'easycheckout/blocks/_fields_list.twig' %}
+{% endif %}

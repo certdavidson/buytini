@@ -3,6 +3,7 @@
 .deliv-methods { margin-bottom: 36px; align-items: start; }
 .deliv-card { position: relative; display: flex; flex-direction: column; }
 .deliv-card--featured { border-color: var(--accent); }
+.deliv-methods .deliv-card__icon { margin-bottom: 16px; }
 .deliv-card__ribbon { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--accent); color: var(--on-accent); font-size: 12px; font-weight: 500; }
 .deliv-card__rows { margin-top: auto; }
 .tariff { margin-bottom: 28px; }
@@ -16,9 +17,10 @@
 .tariff__table tbody tr:hover { background: var(--surface-muted); }
 .tariff__note { font-size: 13px; color: var(--text-subtle); margin: 12px 0 0; line-height: 1.5; }
 .customs { display: flex; gap: 16px; background: var(--info-soft); border-radius: var(--radius-lg); padding: 24px 26px; margin-bottom: 36px; }
-.customs__icon { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--surface); color: var(--info); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.customs__title { display: block; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-.customs__text { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin: 0; }
+.customs__icon { width: 46px; height: 46px; border-radius: var(--radius-md); background: var(--surface); color: var(--text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.customs__title { display: block; font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.customs__text { font-size: 14px; color: var(--text); line-height: 1.65; margin: 0; }
 .customs__text strong { color: var(--text); }
 .deliv-faq-title { font-size: 24px; font-weight: 600; margin: 0 0 18px; }
 .faq + .help-cta { margin-top: 36px; }
+

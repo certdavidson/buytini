@@ -1,0 +1,7 @@
+<input type="text" name="{{ form_name }}" id="okec-f-{{ field.code }}"
+       class="ok-input okec-field--autocomplete-ukrposhta"
+       data-okec-up-scope="{{ field.up_scope|default('city') }}"
+       placeholder="{{ field.placeholder }}"
+       value="{{ prefill_value }}"
+       autocomplete="off"
+       {% if required %}required{% endif %}>

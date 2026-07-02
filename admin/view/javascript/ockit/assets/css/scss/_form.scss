@@ -1,0 +1,552 @@
+// oc-kit Design System — Form Elements
+// © 2026 oc-kit.com | https://oc-kit.com
+
+@mixin ok-input-base {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-family: $ok-font;
+  font-size: 14px;
+  color: $ok-text;
+  background: $ok-white;
+  border: 1px solid $ok-border2;
+  border-radius: 9px;
+  min-height: 38px;
+  transition: border-color $ok-trans;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+
+  &::placeholder { color: $ok-muted; }
+  &:hover  { border-color: darken($ok-border2, 8%); }
+  &:focus  { border-color: $ok-info; box-shadow: 0 0 0 3px rgba($ok-info, .12); }
+  &:disabled { background: $ok-bg; color: $ok-muted; cursor: not-allowed; }
+}
+
+.oc-kit {
+
+  // ── Label ─────────────────────────────────────────────────────────────────
+
+  .ok-label {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: $ok-text;
+    margin-bottom: 5px;
+    padding: 0 0 8px 0;
+    &.form-label { margin-bottom: 5px; }
+    &-required::after { content: ' *'; color: $ok-danger; }
+  }
+
+  .ok-help {
+    display: block;
+    font-size: 13px;
+    color: $ok-muted;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  
+  label {
+    font-weight: normal;
+  }
+
+  // ── Form group (vertical stacked, for modals) ────────────────────────────
+
+  .ok-form-group {
+    margin-bottom: 14px;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // ── Form row ──────────────────────────────────────────────────────────────
+
+  .ok-form-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+    align-items: start;
+    margin-bottom: 14px;
+    &:last-child { margin-bottom: 0; }
+    > .ok-label { margin-bottom: 0; }
+  }
+
+  // ── Input ─────────────────────────────────────────────────────────────────
+
+  .ok-input { @include ok-input-base; }
+
+  .ok-input-lg {
+    @include ok-input-base;
+    padding: 12px 16px;
+    font-size: 15px;
+    min-height: 48px;
+    border-radius: 10px;
+  }
+
+  textarea.ok-input,
+  textarea.ok-input-lg { min-height: 90px; resize: vertical; }
+
+  // ── Select ────────────────────────────────────────────────────────────────
+
+  .ok-select {
+    @include ok-input-base;
+    padding-right: 32px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%238a94a6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    background-size: 12px;
+  }
+
+  select[multiple].ok-select,
+  .ok-multiselect {
+    padding-right: 10px;
+    background-image: none;
+    min-height: 110px;
+    option { padding: 4px 6px; }
+  }
+
+  // ── Upload zone (shared dashed-border drop area) ──────────────────────────
+  // Use as base for module-specific upload zones (ep-upload-zone, cb-image-row, …)
+
+  .ok-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #c8d0db;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    margin-top: 8px;
+
+    &:hover,
+    &.ok-drag-over {
+      border-color: #7EB2FF;
+      background: #f0f6ff;
+    }
+  }
+
+  // ── Checkbox ──────────────────────────────────────────────────────────────
+
+  .ok-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: $ok-text;
+
+    input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid $ok-border2;
+      border-radius: 4px;
+      background: $ok-white;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background $ok-trans, border-color $ok-trans;
+      position: relative;
+
+      &:checked {
+        background: $ok-success;
+        border-color: $ok-success;
+        &::after {
+          content: '';
+          position: absolute;
+          left: 4px;
+          top: 1px;
+          width: 5px;
+          height: 9px;
+          border: 2px solid #fff;
+          border-top: none;
+          border-left: none;
+          transform: rotate(45deg);
+        }
+      }
+      &:focus { outline: none; box-shadow: 0 0 0 3px rgba($ok-success, .2); }
+    }
+  }
+
+  // ── Toggle ────────────────────────────────────────────────────────────────
+  // <label class="ok-toggle-wrap">
+  //   <input type="checkbox" class="ok-toggle-input">
+  //   <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+  //   <span class="ok-toggle-label">Text</span>
+  // </label>
+
+  .ok-toggle-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+
+    .ok-toggle-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .ok-toggle-track {
+        background: $ok-success;
+        .ok-toggle-thumb { transform: translateX(20px); }
+      }
+      &:focus + .ok-toggle-track { box-shadow: 0 0 0 3px rgba($ok-success, .2); }
+    }
+
+    .ok-toggle-track {
+      position: relative;
+      width: 46px;
+      height: 26px;
+      border-radius: $ok-radius-full;
+      background: #ccc;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+
+    .ok-toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+      transition: transform .2s ease;
+    }
+
+    .ok-toggle-label {
+      font-size: 14px;
+      color: $ok-text;
+      font-weight: normal;
+    }
+  }
+
+  // Compact toggle for table rows
+  .ok-toggle-sm {
+    gap: 6px;
+
+    .ok-toggle-input:checked + .ok-toggle-track {
+      .ok-toggle-thumb { transform: translateX(14px); }
+    }
+
+    .ok-toggle-track {
+      width: 34px;
+      height: 20px;
+    }
+
+    .ok-toggle-thumb {
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  // ── Form row top-align variant ────────────────────────────────────────────
+
+  .ok-form-row-top { align-items: flex-start; }
+  .ok-form-row-center { align-items: center; }
+
+  // ── Monospace input (for masks / code) ───────────────────────────────────
+
+  .ok-input-monospace {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 13px;
+    background: #fafafa;
+    letter-spacing: 0.2px;
+  }
+
+  // ── Small input ───────────────────────────────────────────────────────────
+
+  .ok-input-sm {
+    padding: 5px 10px;
+    font-size: 13px;
+    min-height: 32px;
+    border-radius: 7px;
+  }
+
+  // ── Checkbox group ────────────────────────────────────────────────────────
+
+  .ok-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    padding-top: 6px;
+  }
+
+  .ok-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $ok-text;
+    cursor: pointer;
+    margin: 0;
+
+    input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── Radio group ────────────────────────────────────────────────────────────
+
+  .ok-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
+  }
+
+  .ok-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $ok-text;
+    cursor: pointer;
+    margin: 0;
+
+    input[type="radio"] {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── Range input ────────────────────────────────────────────────────────────
+  // Usage: <input type="range" class="ok-range">
+  // Optionally add ok-range-N width class (e.g. ok-range-200)
+
+  .ok-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    background: $ok-border2;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    vertical-align: middle;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: $ok-info;
+      border: 2px solid $ok-white;
+      box-shadow: 0 0 0 1px $ok-info;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: $ok-info;
+      border: 2px solid $ok-white;
+      box-shadow: 0 0 0 1px $ok-info;
+      cursor: pointer;
+    }
+
+    &:focus::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba($ok-info, .25); }
+    &:focus::-moz-range-thumb      { box-shadow: 0 0 0 3px rgba($ok-info, .25); }
+  }
+
+  // ── Range group (range + live value label) ────────────────────────────────
+  // Usage: <div class="ok-range-group"><input type="range" class="ok-range ok-range-200"><span class="ok-range-val">5</span></div>
+
+  .ok-range-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    .ok-range-val {
+      min-width: 28px;
+      // text-align: right;
+      // font-size: 13px;
+      // font-weight: 600;
+      // color: $ok-info;
+    }
+  }
+
+  // ── Inline field combo (input + button / input + select side by side) ───────
+
+  .ok-input-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  // ── Input group ───────────────────────────────────────────────────────────
+
+  .ok-input-group {
+    display: flex;
+    align-items: stretch;
+
+    .ok-input {
+      border-radius: 0;
+      flex: 1;
+      min-width: 0;
+      &:first-child { border-radius: 9px 0 0 9px; }
+      &:last-child  { border-radius: 0 9px 9px 0; }
+    }
+
+    .ok-input-addon,
+    &-addon {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      background: $ok-bg;
+      border: 1px solid $ok-border2;
+      color: $ok-text2;
+      font-size: 13px;
+      white-space: nowrap;
+      min-height: 38px;
+      &:first-child { border-radius: 9px 0 0 9px; border-right: none; }
+      &:last-child  { border-radius: 0 9px 9px 0; border-left: none; }
+    }
+  }
+
+  // ── Form row center-aligned variant (for toggles, checkboxes) ─────────────
+
+  .ok-form-row-center {
+    align-items: center;
+    > .ok-label { padding-top: 0; }
+  }
+
+  // ── Language label (flag + name, multilingual inputs) ────────────────────
+
+  .ok-lang-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 90px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $ok-text2;
+    flex-shrink: 0;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+
+    img {
+      width: 18px;
+      height: 12px;
+      object-fit: cover;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── Condition Builder (Rule Constructor) ──────────────────────────────────
+
+  .ar-cond-section {
+    background: $ok-bg;
+    border: 1px solid $ok-border;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .ar-cond-section-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 13px;
+
+    svg { width: 15px; height: 15px; color: $ok-accent2; flex-shrink: 0; }
+    strong { font-weight: 600; }
+    .ok-help { color: $ok-muted; font-size: 12px; }
+  }
+
+  .ar-cond-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 4px;
+  }
+
+  .ar-cond-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: $ok-white;
+    border: 1px solid $ok-border2;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .ar-cond-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background: $ok-accent2;
+    color: $ok-white;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ar-cond-hint {
+    color: $ok-muted;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .ar-cond-eq {
+    color: $ok-muted;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .ar-cond-remove {
+    margin-left: auto;
+    flex-shrink: 0;
+    line-height: 1;
+    padding: 2px 7px !important;
+    font-size: 14px !important;
+    min-height: unset !important;
+    border-radius: 6px !important;
+    color: $ok-muted !important;
+    background: transparent !important;
+    border-color: transparent !important;
+
+    &:hover {
+      color: $ok-danger !important;
+      border-color: $ok-danger !important;
+    }
+  }
+
+  .ar-cond-attr-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    .ar-cond-attr-drop {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 200;
+    }
+  }
+}

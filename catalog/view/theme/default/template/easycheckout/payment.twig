@@ -1,0 +1,46 @@
+{{ header }}
+<div id="easycheckout-payment-page" class="container">
+  <ul class="breadcrumb">
+    {% for crumb in breadcrumbs %}
+      <li><a href="{{ crumb.href }}">{{ crumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+    <div id="content"
+         class="{% if column_left and column_right %}col-sm-6{% elseif column_left or column_right %}col-sm-9{% else %}col-sm-12{% endif %}">
+      {{ content_top }}
+
+      <h1 class="okec-page-title">{{ heading_title }}</h1>
+
+      {% if order_summary %}
+        <div class="okec-order-summary">
+          <h3 class="okec-order-summary__title">{{ text_order_summary }} #{{ order_summary.order_id }}</h3>
+          <dl class="okec-order-summary__list">
+            <dt>{{ text_total }}</dt>
+            <dd class="okec-order-summary__total">{{ order_summary.total }}</dd>
+            <dt>{{ text_payment }}</dt>
+            <dd>{{ order_summary.payment }}</dd>
+            {% if order_summary.shipping %}
+              <dt>{{ text_shipping }}</dt>
+              <dd>{{ order_summary.shipping }}</dd>
+            {% endif %}
+          </dl>
+        </div>
+      {% endif %}
+
+      <div class="okec-payment-form">
+        {{ payment_form }}
+      </div>
+
+      <p class="okec-payment-back">
+        <a href="{{ breadcrumbs[1].href }}"><i class="fa fa-chevron-left"></i> {{ text_back_to_checkout }}</a>
+      </p>
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}

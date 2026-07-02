@@ -61,3 +61,4 @@
 @media (max-width: 860px) { .promo-lower { grid-template-columns: 1fr; } }
 .howto-step { display: flex; gap: 12px; align-items: flex-start; }
 .howto-step > span:first-child { width: 26px; height: 26px; border-radius: var(--radius-pill); background: var(--accent); color: var(--on-accent); font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+

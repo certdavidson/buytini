@@ -1,0 +1,85 @@
+<style>#search, #ajax-search-results { --asp-accent: {{ accent }}; --asp-accent-hover: {{ accent_hover }}; --asp-accent-ink: {{ accent_ink }}; --asp-accent-soft: {{ accent_soft }}; --asp-accent-soft-border: {{ accent_soft_border }}; }</style>
+<div id="search" class="asp-search page-header__search ajax-search-container" data-asp
+    data-asp-i18n-no-results="{{ text_no_results }}"
+    data-asp-i18n-recent="{{ text_recent }}"
+    data-asp-i18n-clear="{{ text_clear_history }}"
+    data-asp-i18n-loading="{{ text_loading }}"
+    data-asp-i18n-in-stock="{{ text_in_stock }}"
+    data-asp-i18n-out-of-stock="{{ text_out_of_stock }}"
+    data-asp-i18n-category="{{ text_category }}"
+    data-asp-i18n-brand="{{ text_brand }}"
+    data-asp-i18n-popular="{{ text_popular }}"
+    data-asp-i18n-sale="{{ text_sale }}"
+    data-asp-i18n-did-you-mean="{{ text_did_you_mean }}"
+    data-asp-i18n-view-all="{{ text_view_all }}"
+    data-asp-i18n-voice-listen="{{ text_voice_listen }}"
+    data-asp-i18n-popular-tags="{{ text_popular_tags }}"
+    data-asp-i18n-id="{{ text_id }}"
+    data-asp-i18n-model="{{ text_model }}"
+    data-asp-i18n-popular-queries="{{ text_popular_queries }}"
+    data-asp-i18n-popular-products="{{ text_popular_products }}"
+    data-asp-i18n-popular-brands="{{ text_popular_brands }}"
+    data-asp-i18n-add-to-cart="{{ text_add_to_cart }}"
+    data-asp-i18n-all-categories="{{ text_all_categories }}"
+    data-asp-i18n-other-category="{{ text_other_category }}"
+    data-asp-i18n-viewed="{{ text_viewed }}"
+    data-asp-i18n-search-history="{{ text_search_history }}"
+    data-asp-i18n-more="{{ text_more }}"
+    data-asp-i18n-open-category="{{ text_open_category }}"
+    data-asp-i18n-sort-cheap="{{ text_sort_cheap }}"
+    data-asp-i18n-sort-expensive="{{ text_sort_expensive }}"
+    data-asp-i18n-sort-default="{{ text_sort_default }}"
+    data-asp-current-product="{{ current_product_id }}"
+    data-asp-cart-fn="{{ cart_fn }}"
+    data-asp-layout="{{ autocomplete_layout }}"
+    data-asp-theme="{{ asp_theme }}"
+    data-asp-popular-tags-b64="{{ popular_tags_b64 }}">
+
+    <button type="button" class="asp-stub" data-asp-stub aria-label="{{ heading_title }}">
+        <svg class="asp-stub-ico" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span class="asp-stub-text">{{ text_placeholder }}</span>
+    </button>
+
+    <div id="ajax-search-results" class="asp-results asp-pop" data-asp-results role="listbox" aria-label="{{ heading_title }}">
+        <div class="asp-pop-head">
+            <span class="asp-pop-ico" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input id="ajax-search-input" name="search" type="text"
+                class="asp-pop-input asp-input"
+                placeholder="{{ text_placeholder }}"
+                data-asp-input autocomplete="off"
+                aria-autocomplete="list" aria-haspopup="listbox" />
+            <button type="button" class="asp-pop-clear" data-asp-clear aria-label="{{ text_clear_history }}" style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21"/><path d="m5.082 11.09 8.828 8.828"/></svg>
+            </button>
+            <button type="button" class="asp-mic-btn" data-asp-mic aria-label="{{ text_voice_search }}" style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            <button type="button" class="asp-pop-close" data-asp-pop-close aria-label="{{ button_search }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="asp-pop-body">
+            <div class="asp-spinner" data-asp-loading aria-hidden="true">
+                <span class="asp-spinner-dot"></span>
+                <span class="asp-spinner-dot"></span>
+                <span class="asp-spinner-dot"></span>
+            </div>
+            <div class="asp-popular-tags-wrap" data-asp-popular-tags-wrap style="display:none"></div>
+            <div class="asp-empty" data-asp-empty style="display:none"></div>
+            <div class="asp-list" data-asp-list role="group"></div>
+            <div class="asp-facets" data-asp-facets style="display:none"></div>
+            <div class="asp-footer" data-asp-footer style="display:none">
+                <a href="#" data-asp-view-all>{{ text_view_all }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="search-overlay asp-overlay" id="asp-overlay" data-asp-overlay style="display:none"></div>
+    <input type="hidden" data-asp-endpoint value="{{ endpoint }}" />
+    <input type="hidden" data-asp-min value="{{ min_chars }}" />
+    <input type="hidden" data-asp-delay value="{{ delay }}" />
+</div>
+
+<link href="catalog/view/javascript/advanced_search_pro.css" rel="stylesheet">
+<script src="catalog/view/javascript/advanced_search_pro.js" defer></script>

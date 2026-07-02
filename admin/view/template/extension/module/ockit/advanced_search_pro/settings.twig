@@ -1,0 +1,2473 @@
+{# Advanced Search | © 2024-2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible">
+      <i data-lucide="alert-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <div class="oc-kit">
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-asp" class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ cancel }}">{{ text_extension }}</a></li>
+            <li><a href="#">{{ heading_title }}</a></li>
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="submit" class="ok-btn ok-btn-primary ok-btn-sm"><i data-lucide="save"></i> {{ button_save }}</button>
+            <a href="{{ cancel }}" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</a>
+          </div>
+        </div>
+
+        <div id="asp">
+          <div class="ok-layout">
+
+            {# ── Sidebar ─────────────────────────────────────────────────── #}
+            <div class="ok-sidebar">
+
+              <div class="ok-brand">
+                <div class="ok-brand-icon"><i data-lucide="search"></i></div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+                <span class="ok-brand-name">Advanced Search <span class="ok-brand-version">v{{ asp_module_version }}</span></span>
+              </div>
+
+              <div class="ok-tabs-sidebar">
+
+                <button type="button" class="ok-tabs-sidebar-item{% if wizard_done %} active{% endif %}" data-tab="tab-stats">
+                  <i data-lucide="bar-chart-2"></i> {{ tab_stats }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-zero-results">
+                  <i data-lucide="search-x"></i> {{ tab_zero_results }}
+                </button>
+
+                <hr class="ok-divider ok-divider--nav">
+
+                <button type="button" class="ok-tabs-sidebar-item{% if not wizard_done %} ok-tabs-sidebar-item--pulse{% endif %}" data-tab="tab-wizard">
+                  <i data-lucide="wand-2"></i> {{ tab_wizard }}
+                  {% if wizard_done %}
+                    <span class="ok-badge ok-badge-success ok-badge-sm ok-badge-squared ok-ml-auto"><i data-lucide="check"></i></span>
+                  {% else %}
+                    <span class="ok-badge ok-badge-warning ok-badge-sm ok-badge-squared ok-ml-auto"><i data-lucide="circle-x"></i></span>
+                  {% endif %}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-general">
+                  <i data-lucide="power"></i> {{ tab_general }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-search">
+                  <i data-lucide="search"></i> {{ tab_search }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-autocomplete">
+                  <i data-lucide="zap"></i> {{ tab_autocomplete }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item is-disabled" data-tab="tab-filters" disabled title="{{ text_coming_soon }}">
+                  <i data-lucide="filter"></i> {{ tab_filters }}
+                  <span class="asp-soon-badge">{{ text_soon }}</span>
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-attributes">
+                  <i data-lucide="list"></i> {{ tab_attributes }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-synonyms">
+                  <i data-lucide="shuffle"></i> {{ tab_synonyms }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-ai">
+                  <i data-lucide="wand-2"></i> AI
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-query-rules">
+                  <i data-lucide="list"></i> {{ tab_query_rules }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-index">
+                  <i data-lucide="database"></i> {{ tab_index }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-daemons">
+                  <i data-lucide="server"></i> {{ tab_daemons }}
+                </button>
+
+                <hr class="ok-divider ok-divider--nav">
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-dictionary">
+                  <i data-lucide="book"></i> {{ tab_dictionary }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-faq">
+                  <i data-lucide="help-circle"></i> {{ tab_faq }}
+                </button>
+
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-license">
+                  <i data-lucide="key-round"></i> {{ tab_license }}
+                </button>
+
+              </div>
+            </div>
+
+            {# ── Content ─────────────────────────────────────────────────── #}
+            <div class="ok-content">
+
+              {# ══ WIZARD ══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel{% if not wizard_done %} active{% endif %}" id="tab-wizard">
+
+                {% if wizard_done %}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="check-circle-2"></i> {{ tab_wizard }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-alert ok-alert-success ok-mb-3"><i data-lucide="check-circle-2"></i> {{ text_wizard_done_msg }}</div>
+                    <p class="ok-help ok-mb-3">{{ text_wizard_done_hint }}</p>
+
+                    <table class="asp-wiz-summary ok-mb-3">
+                      <tr>
+                        <td class="ok-text-muted">{{ text_wiz_summary_mode }}</td>
+                        <td><span class="ok-badge ok-badge-info-soft">{{ wizard_current_mode }}</span></td>
+                      </tr>
+                      <tr>
+                        <td class="ok-text-muted">{{ text_wiz_summary_ai }}</td>
+                        <td>{% if wizard_current_ai %}<span class="ok-badge ok-badge-success-soft">{{ text_wiz_enabled }}</span>{% else %}<span class="ok-badge ok-badge-muted">{{ text_wiz_skipped }}</span>{% endif %}</td>
+                      </tr>
+                      <tr>
+                        <td class="ok-text-muted">{{ text_wiz_summary_cron }}</td>
+                        <td>{% if wizard_current_cron %}<span class="ok-badge ok-badge-success-soft">{{ text_wiz_enabled }}</span>{% else %}<span class="ok-badge ok-badge-muted">{{ text_wiz_skipped }}</span>{% endif %}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="ok-panel-footer">
+                    <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-wiz-reset" data-url="{{ wizard_reset_url }}">
+                      <i data-lucide="undo-2"></i> {{ button_wiz_reset }}
+                    </button>
+                  </div>
+                  
+                </div>
+                {% else %}
+
+                {# Intro #}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="wand-2"></i> {{ tab_wizard }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help">{{ text_wizard_intro }}</p>
+                  </div>
+                </div>
+
+                {# Step 1 — Engine (quiz cards) #}
+                <div class="ok-block ok-mb-2">
+                  <div class="ok-block-title"><span class="ok-badge ok-badge-primary ok-badge-sm ok-mr-1">1</span> {{ text_wiz_mode_title }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-quiz-cards-lg" id="wiz-mode-cards">
+                      <div class="ok-quiz-card-lg wiz-mode-card selected" data-value="native">
+                        <span class="ok-quiz-card-lg-icon"><i data-lucide="database"></i></span>
+                        <div class="ok-quiz-card-lg-title">{{ text_native }}</div>
+                        <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_native }}</div>
+                        <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:40%"></div></div>
+                      </div>
+                      <div class="ok-quiz-card-lg wiz-mode-card" data-value="manticore">
+                        <span class="ok-quiz-card-lg-icon"><i data-lucide="zap"></i></span>
+                        <div class="ok-quiz-card-lg-title">Manticore</div>
+                        <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_manticore }}</div>
+                        <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:80%"></div></div>
+                      </div>
+                      <div class="ok-quiz-card-lg wiz-mode-card" data-value="sphinx">
+                        <span class="ok-quiz-card-lg-icon"><i data-lucide="zoom-in"></i></span>
+                        <div class="ok-quiz-card-lg-title">Sphinx</div>
+                        <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_sphinx }}</div>
+                        <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:55%"></div></div>
+                      </div>
+                      <div class="ok-quiz-card-lg wiz-mode-card" data-value="hybrid">
+                        <span class="ok-quiz-card-lg-icon"><i data-lucide="wand-2"></i></span>
+                        <div class="ok-quiz-card-lg-title">Hybrid</div>
+                        <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_hybrid }}</div>
+                        <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:95%"></div></div>
+                      </div>
+                    </div>
+                    <input type="hidden" id="wiz-mode" value="native">
+                  </div>
+                </div>
+
+                {# Step 2 — Connection (shown for non-native modes) #}
+                <div class="ok-block ok-mb-2 asp-wiz-block" id="wiz-conn-block" style="display:none">
+                  <div class="ok-block-title"><span class="ok-badge ok-badge-primary ok-badge-sm ok-mr-1">2</span> {{ text_wiz_conn_title }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ text_wizard_conn_hint }}</p>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_host }}</label>
+                      <div>
+                        <input type="text" class="ok-input ok-w-200" id="wiz-host" value="127.0.0.1">
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_port }}</label>
+                      <div>
+                        <input type="text" class="ok-input ok-w-100" id="wiz-port" value="9306">
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_index_name }}</label>
+                      <div>
+                        <input type="text" class="ok-input ok-w-180" id="wiz-index" value="products">
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_login }}</label>
+                      <div>
+                        <input type="text" class="ok-input ok-w-180" id="wiz-login" value="">
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_password }}</label>
+                      <div>
+                        <input type="password" class="ok-input ok-w-180" id="wiz-password" value="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {# Step 3 — AI #}
+                <div class="ok-block ok-mb-2 asp-wiz-block">
+                  <div class="ok-block-title"><span class="ok-badge ok-badge-primary ok-badge-sm ok-mr-1">3</span> {{ text_wiz_ai_title }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">AI</label>
+                      <div>
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" id="wiz-ai">
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ text_wizard_ai_hint }}</p>
+                      </div>
+                    </div>
+                    <div class="ok-form-row" id="wiz-ai-key-row" style="display:none">
+                      <label class="ok-label form-label">{{ entry_api_key }}</label>
+                      <div>
+                        <input type="text" class="ok-input ok-w-340" id="wiz-ai-key" placeholder="sk-...">
+                        <p class="ok-help ok-mt-1">{{ text_wizard_ai_key_hint }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {# Step 4 — Cron #}
+                <div class="ok-block ok-mb-2 asp-wiz-block">
+                  <div class="ok-block-title"><span class="ok-badge ok-badge-primary ok-badge-sm ok-mr-1">4</span> {{ text_wiz_cron_title }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_autoindex }}</label>
+                      <div>
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" id="wiz-cron" checked>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ text_wizard_cron_hint }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {# Apply #}
+                <div class="ok-py-2">
+                  <div class="ok-flex ok-gap-8 ok-items-center">
+                    <button type="button" class="ok-btn ok-btn-primary" id="asp-wiz-apply" data-url="{{ wizard_url }}" data-redirect="{{ action }}">
+                      <i data-lucide="check"></i> {{ button_wiz_apply }}
+                    </button>
+                    <span id="asp-wiz-status" class="ok-help"></span>
+                  </div>
+                </div>
+
+                {% endif %}
+              </div>
+
+              {# ══ GENERAL ═════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-general">
+
+                {% if asp_presets %}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="layers"></i> {{ text_niche_presets }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ help_niche_presets }}</p>
+                    <div class="ok-flex ok-gap-8 ok-mb-2" style="flex-wrap:wrap" data-preset-url="{{ asp_load_preset_url }}">
+                      {% for preset in asp_presets %}
+                        <button type="button" class="ok-btn ok-btn-default ok-btn-sm asp-preset-btn" data-code="{{ preset.code }}" title="{{ preset.description }}">
+                          {{ preset.name }}{% if preset.syn_count %} <span class="ok-badge ok-badge-success-soft ok-badge-sm">+{{ preset.syn_count }}</span>{% endif %}
+                        </button>
+                      {% endfor %}
+                    </div>
+                    <div id="asp-preset-status" class="ok-hidden"></div>
+                  </div>
+                </div>
+                {% endif %}
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="power"></i> {{ tab_general }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_status }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_status" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_status" value="1" {% if module_oc_kit_advanced_search_pro_status %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_search_type }}</label>
+                      <div>
+                        <div class="ok-quiz-cards-lg">
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_mode == 'native' or not module_oc_kit_advanced_search_pro_mode %}selected{% endif %}" data-value="native" data-input="asp-mode">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="database"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_native }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_native }}</div>
+                            <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:40%"></div></div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_mode == 'manticore' %}selected{% endif %}" data-value="manticore" data-input="asp-mode">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="zap"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_manticore }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_manticore }}</div>
+                            <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:80%"></div></div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_mode == 'sphinx' %}selected{% endif %}" data-value="sphinx" data-input="asp-mode">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="zoom-in"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_sphinx }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_sphinx }}</div>
+                            <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:55%"></div></div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_mode == 'hybrid' %}selected{% endif %}" data-value="hybrid" data-input="asp-mode">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="wand-2"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_hybrid }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_wiz_hint_hybrid }}</div>
+                            <div class="ok-quiz-card-lg-eff"><div class="ok-quiz-card-lg-eff-bar" style="width:95%"></div></div>
+                          </div>
+                        </div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_mode" id="asp-mode" value="{{ module_oc_kit_advanced_search_pro_mode|default('native') }}">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_debug_mode }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_debug" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_debug" value="1" {% if module_oc_kit_advanced_search_pro_debug %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ SEARCH ══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-search">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="sliders"></i> {{ text_algorithm_params }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_layout_correction }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_layout_correction" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_layout_correction" value="1" {% if module_oc_kit_advanced_search_pro_layout_correction %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_layout_correction | raw }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cross_lang_enabled }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_cross_lang_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_cross_lang_enabled" value="1" {% if module_oc_kit_advanced_search_pro_cross_lang_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_cross_lang_enabled }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label ok-mt-1">{{ entry_fuzzy }}</label>
+                      <div>
+                        <div class="ok-input-inline">
+                          <input type="hidden" name="module_oc_kit_advanced_search_pro_fuzzy" value="0">
+                          <label class="ok-toggle-wrap">
+                            <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_fuzzy" value="1" {% if module_oc_kit_advanced_search_pro_fuzzy %}checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                          <label class="ok-label form-label ok-ml-4 ok-mb-0 ok-pb-0">{{ entry_fuzzy_distance }}</label>
+                          <input type="text" name="module_oc_kit_advanced_search_pro_fuzzy_distance" value="{{ module_oc_kit_advanced_search_pro_fuzzy_distance }}" class="ok-input ok-w-70" min="1" max="3">
+                        </div>
+                        <p class="ok-help ok-mt-1">{{ help_fuzzy | raw }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_min_word_length }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_min_word_length" value="{{ module_oc_kit_advanced_search_pro_min_word_length }}" class="ok-input ok-w-70" min="1" max="10">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_stopwords }}</label>
+                      <div>
+                        <textarea name="module_oc_kit_advanced_search_pro_stopwords" class="ok-input ok-w-500" rows="4" placeholder="{{ placeholder_stopwords }}">{{ module_oc_kit_advanced_search_pro_stopwords }}</textarea>
+                        <p class="ok-help ok-mt-1">{{ help_stopwords }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_wordforms }}</label>
+                      <div>
+                        <textarea name="module_oc_kit_advanced_search_pro_wordforms" class="ok-input ok-w-500" rows="4" placeholder="{{ placeholder_wordforms }}">{{ module_oc_kit_advanced_search_pro_wordforms }}</textarea>
+                        <p class="ok-help ok-mt-1">{{ help_config_only }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_lemmatization }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_lemmatization" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_lemmatization" value="1" {% if module_oc_kit_advanced_search_pro_lemmatization %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_lemmatization | raw }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# ── NLP & Query Intelligence ────────────────────────────── #}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="wand-2"></i> {{ text_nlp_features }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_homoglyph_norm }}</label>
+                      <div>
+                        <span class="ok-badge ok-badge-success ok-badge-squared"><i data-lucide="check"></i></span>
+                        <p class="ok-help ok-mt-1">{{ help_homoglyph }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_transliteration }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_transliteration" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_transliteration" value="1" {% if module_oc_kit_advanced_search_pro_enable_transliteration is not defined or module_oc_kit_advanced_search_pro_enable_transliteration %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_transliteration }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_typo_correction }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_typo_correction" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_typo_correction" value="1" {% if module_oc_kit_advanced_search_pro_enable_typo_correction is not defined or module_oc_kit_advanced_search_pro_enable_typo_correction %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_typo_correction }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_word_split }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_word_split" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_word_split" value="1" {% if module_oc_kit_advanced_search_pro_enable_word_split %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_word_split }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_mmr }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_mmr" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_mmr" value="1" {% if module_oc_kit_advanced_search_pro_enable_mmr %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_mmr_lambda }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_mmr_lambda" value="{{ module_oc_kit_advanced_search_pro_mmr_lambda is defined ? module_oc_kit_advanced_search_pro_mmr_lambda : '0.5' }}" class="ok-input ok-w-80" placeholder="0.5">
+                        <p class="ok-help ok-mt-1">{{ help_mmr_lambda }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="arrow-down-narrow-wide"></i> {{ text_ranking }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_oos_mode }}</label>
+                      <div>
+                        <select name="module_oc_kit_advanced_search_pro_oos_mode" class="ok-select ok-w-300">
+                          <option value="show" {% if module_oc_kit_advanced_search_pro_oos_mode == 'show' %}selected{% endif %}>{{ text_oos_show }}</option>
+                          <option value="last" {% if module_oc_kit_advanced_search_pro_oos_mode == 'last' %}selected{% endif %}>{{ text_oos_last }}</option>
+                          <option value="hide" {% if module_oc_kit_advanced_search_pro_oos_mode == 'hide' %}selected{% endif %}>{{ text_oos_hide }}</option>
+                        </select>
+                        <p class="ok-help ok-mt-1">{{ help_oos_mode }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_stock_first }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_rank_stock_first" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_rank_stock_first" value="1" {% if module_oc_kit_advanced_search_pro_rank_stock_first %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_stock_first }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_boost_new }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_rank_boost_new" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_rank_boost_new" value="1" {% if module_oc_kit_advanced_search_pro_rank_boost_new %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_boost_new }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_boost_popular }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_rank_boost_popular" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_rank_boost_popular" value="1" {% if module_oc_kit_advanced_search_pro_rank_boost_popular %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_boost_popular }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_boost_category }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_rank_boost_category" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_rank_boost_category" value="1" {% if module_oc_kit_advanced_search_pro_rank_boost_category %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_boost_category }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3 asp-mode-block" data-require-mode="hybrid">
+                  <div class="ok-block-title"><i data-lucide="git-fork"></i> {{ text_vector_search }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-alert ok-alert-warning ok-mb-2 asp-mode-alert" style="display:none">
+                      <i data-lucide="alert-triangle"></i>
+                      <span>{{ text_requires_hybrid_mode }}</span>
+                    </div>
+
+                    <p class="ok-help ok-mb-3">{{ help_vector_search_intro }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_vector_search }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_vector_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_vector_enabled" value="1" {% if module_oc_kit_advanced_search_pro_vector_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_hybrid_ratio }}</label>
+                      <div>
+                        <div class="ok-range-group">
+                          <input type="range" min="0" max="100" value="{{ module_oc_kit_advanced_search_pro_vector_ratio }}" id="asp-vector-ratio" class="ok-range ok-range-200">
+                          <span class="ok-range-val" id="asp-vector-ratio-value">{{ module_oc_kit_advanced_search_pro_vector_ratio }}</span>%
+                          <input type="hidden" name="module_oc_kit_advanced_search_pro_vector_ratio" id="asp-vector-ratio-hidden" value="{{ module_oc_kit_advanced_search_pro_vector_ratio }}">
+                        </div>
+                        <p class="ok-help">{{ text_mixing }}: text ← → vector</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_min_semantic_score }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_vector_min_score" value="{{ module_oc_kit_advanced_search_pro_vector_min_score }}" class="ok-input ok-w-90">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_autocomplete_semantic }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_semantic" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_semantic" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_semantic %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_autocomplete_semantic }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="database"></i> {{ text_cache }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cache }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_cache_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_cache_enabled" value="1" {% if module_oc_kit_advanced_search_pro_cache_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_ttl_sec }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_cache_ttl" value="{{ module_oc_kit_advanced_search_pro_cache_ttl }}" class="ok-input ok-w-100" min="10">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_type }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_cache_type" class="ok-select ok-w-300">
+                        <option value="system" {% if module_oc_kit_advanced_search_pro_cache_type == 'system' or not module_oc_kit_advanced_search_pro_cache_type %}selected{% endif %}>{{ text_cache_system }}</option>
+                        <option value="file" {% if module_oc_kit_advanced_search_pro_cache_type == 'file' %}selected{% endif %}>{{ text_file }}</option>
+                        <option value="redis" {% if module_oc_kit_advanced_search_pro_cache_type == 'redis' %}selected{% endif %}>{{ text_redis }}</option>
+                        <option value="mysql" {% if module_oc_kit_advanced_search_pro_cache_type == 'mysql' %}selected{% endif %}>{{ text_mysql }}</option>
+                      </select>
+                    </div>
+                    <p class="ok-help ok-mt-1">{{ help_cache_type }}</p>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="list"></i> {{ text_search_fields }}</div>
+                  <table class="ok-table">
+                    <thead>
+                      <tr>
+                        <th>{{ entry_enable }}</th>
+                        <th>{{ entry_name }}</th>
+                        <th>{{ entry_weight }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for key, field in module_oc_kit_advanced_search_pro_search_fields %}
+                      <tr>
+                        <td>
+                          <input type="hidden" name="module_oc_kit_advanced_search_pro_search_fields[{{ key }}][enabled]" value="0">
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_search_fields[{{ key }}][enabled]" value="1" {% if field.enabled %}checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </td>
+                        <td>
+                          <input type="hidden" name="module_oc_kit_advanced_search_pro_search_fields[{{ key }}][id]" value="{{ field.id }}">
+                          {{ field.label }}
+                        </td>
+                        <td>
+                          <div class="ok-range-group">
+                            <input type="range" class="ok-range ok-range-200 asp-field-weight-range" min="1" max="100" value="{{ field.weight }}" data-target="asp-fw-{{ key }}">
+                            <span class="ok-range-val" id="asp-fw-{{ key }}">{{ field.weight }}</span>
+                            <input type="hidden" name="module_oc_kit_advanced_search_pro_search_fields[{{ key }}][weight]" id="asp-fw-h-{{ key }}" value="{{ field.weight }}">
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+
+              {# ══ AUTOCOMPLETE ════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-autocomplete">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="zap"></i> {{ tab_autocomplete }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_enabled" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_min_chars }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_min_chars" value="{{ module_oc_kit_advanced_search_pro_autocomplete_min_chars }}" class="ok-input ok-w-70" min="1" max="5">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_delay_ms }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_delay" value="{{ module_oc_kit_advanced_search_pro_autocomplete_delay }}" class="ok-input ok-w-70" min="0">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_limit }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_limit" value="{{ module_oc_kit_advanced_search_pro_autocomplete_limit }}" class="ok-input ok-w-70" min="1" max="20">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_layout }}</label>
+                      <div>
+                        <select name="module_oc_kit_advanced_search_pro_autocomplete_layout" class="ok-input">
+                          <option value="popup"{% if module_oc_kit_advanced_search_pro_autocomplete_layout == 'popup' %} selected{% endif %}>{{ text_layout_popup }}</option>
+                          <option value="inline"{% if module_oc_kit_advanced_search_pro_autocomplete_layout == 'inline' %} selected{% endif %}>{{ text_layout_inline }}</option>
+                        </select>
+                        <div class="ok-help">{{ help_layout }}</div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_color_preset }}</label>
+                      <div class="asp-color-row">
+                        <select name="module_oc_kit_advanced_search_pro_autocomplete_color_preset" class="ok-input">
+                          {% set presets = {'indigo':'Indigo','purple':'Purple','blue':'Blue','green':'Green','teal':'Teal','orange':'Orange','red':'Red','pink':'Pink','slate':'Slate','custom':text_color_custom} %}
+                          {% for val, label in presets %}
+                          <option value="{{ val }}"{% if module_oc_kit_advanced_search_pro_autocomplete_color_preset == val %} selected{% endif %}>{{ label }}</option>
+                          {% endfor %}
+                        </select>
+                        <input type="color" class="asp-color-input" name="module_oc_kit_advanced_search_pro_autocomplete_color_custom" value="{{ module_oc_kit_advanced_search_pro_autocomplete_color_custom }}" title="{{ entry_color_custom }}">
+                        <div class="ok-help">{{ help_color }}</div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cart_fn }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_cart_fn" value="{{ module_oc_kit_advanced_search_pro_autocomplete_cart_fn }}" class="ok-input" placeholder="cart.add">
+                        <div class="ok-help">{{ help_cart_fn }}</div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_price }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_price" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_price" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_price %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_stock }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_stock" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_stock" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_stock %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_image }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_image" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_image" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_image %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_facets }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_facets" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_facets" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_facets %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_show_facets }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_group_collapse }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_group_collapse" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_group_collapse" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_group_collapse %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_group_collapse }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_group_collapse_attribute }}</label>
+                      <div>
+                        <select name="module_oc_kit_advanced_search_pro_group_collapse_attribute" class="ok-select ok-w-300">
+                          <option value="0"{% if module_oc_kit_advanced_search_pro_group_collapse_attribute == 0 %} selected{% endif %}>{{ text_group_collapse_whole }}</option>
+                          {% for a in group_collapse_attr_list %}
+                          <option value="{{ a.attribute_id }}"{% if module_oc_kit_advanced_search_pro_group_collapse_attribute == a.attribute_id %} selected{% endif %}>{{ a.group_name ? a.group_name ~ ' › ' : '' }}{{ a.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <p class="ok-help">{{ help_group_collapse_attribute }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_categories }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_categories" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_categories" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_categories %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_show_categories }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_category_limit }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_category_limit" value="{{ module_oc_kit_advanced_search_pro_autocomplete_category_limit }}" class="ok-input ok-w-70" min="1" max="5">
+                        <p class="ok-help">{{ help_category_limit }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_show_brands }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_autocomplete_show_brands" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_autocomplete_show_brands" value="1" {% if module_oc_kit_advanced_search_pro_autocomplete_show_brands %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_show_brands }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_brand_limit }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_autocomplete_brand_limit" value="{{ module_oc_kit_advanced_search_pro_autocomplete_brand_limit }}" class="ok-input ok-w-70" min="1" max="5">
+                        <p class="ok-help">{{ help_brand_limit }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="tags"></i> {{ entry_popular_tags }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_tags_enabled }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_tags_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_popular_tags_enabled" value="1" {% if module_oc_kit_advanced_search_pro_popular_tags_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_popular_tags_enabled }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_tags_source }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_popular_tags_source" class="ok-select ok-w-300">
+                        <option value="manual" {% if module_oc_kit_advanced_search_pro_popular_tags_source == 'manual' %}selected{% endif %}>{{ text_popular_tags_manual }}</option>
+                        <option value="auto" {% if module_oc_kit_advanced_search_pro_popular_tags_source == 'auto' %}selected{% endif %}>{{ text_popular_tags_auto }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_tags_limit }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_popular_tags_limit" value="{{ module_oc_kit_advanced_search_pro_popular_tags_limit }}" class="ok-input ok-w-70" min="1" max="30">
+                    </div>
+
+                    <div class="ok-form-row ok-form-row-top">
+                      <label class="ok-label form-label">{{ entry_popular_tags_list }}</label>
+                      <div class="ok-table-scroll">
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_tags" id="asp-popular-tags-raw" value="{{ module_oc_kit_advanced_search_pro_popular_tags }}">
+                        <table class="ok-table ok-table-compact ok-mb-2" id="asp-popular-tags-table">
+                          <thead>
+                            <tr>
+                              <th>UA</th><th>RU</th><th>EN</th>
+                              <th>URL (UA)</th><th>URL (RU)</th><th>URL (EN)</th>
+                              <th class="ok-col-40"></th>
+                            </tr>
+                          </thead>
+                          <tbody id="asp-popular-tags-body"></tbody>
+                        </table>
+                        
+                        <div class="ok-panel-footer">
+                          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-popular-tags-add"><i data-lucide="plus"></i> {{ button_add_row }}</button>
+                          <p class="ok-help ok-mt-2 ok-ml-2">{{ help_popular_tags_list }}</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="package"></i> {{ entry_popular_products }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_products_enabled }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_products_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_popular_products_enabled" value="1" {% if module_oc_kit_advanced_search_pro_popular_products_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_popular_products_enabled }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_source }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_popular_products_source" class="ok-select ok-w-300">
+                        <option value="auto" {% if module_oc_kit_advanced_search_pro_popular_products_source == 'auto' %}selected{% endif %}>{{ text_popular_source_auto }}</option>
+                        <option value="manual" {% if module_oc_kit_advanced_search_pro_popular_products_source == 'manual' %}selected{% endif %}>{{ text_popular_source_manual }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_limit }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_popular_products_limit" value="{{ module_oc_kit_advanced_search_pro_popular_products_limit }}" class="ok-input ok-w-70" min="1" max="20">
+                    </div>
+
+                    <div class="ok-form-row ok-form-row-top">
+                      <label class="ok-label form-label">{{ entry_popular_products_list }}</label>
+                      <div class="asp-picker" data-asp-picker="products" data-url="{{ asp_search_products_url }}">
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_products" class="asp-picker-raw" value="{{ module_oc_kit_advanced_search_pro_popular_products }}">
+                        <div class="asp-picker-search">
+                          <input type="text" class="ok-input asp-picker-input" placeholder="{{ text_picker_product_ph }}" autocomplete="off">
+                          <div class="ok-dropdown asp-picker-dropdown"></div>
+                        </div>
+                        <ul class="asp-picker-chips">
+                          {% for it in asp_popular_products_resolved %}
+                          <li class="asp-picker-chip" data-id="{{ it.id }}"><span class="asp-picker-chip-t">{{ it.name }}</span><button type="button" class="asp-picker-x" aria-label="x"><i data-lucide="x"></i></button></li>
+                          {% endfor %}
+                        </ul>
+                        <p class="ok-help ok-mt-1">{{ help_popular_products_list }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="award"></i> {{ entry_popular_brands }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_brands_enabled }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_brands_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_popular_brands_enabled" value="1" {% if module_oc_kit_advanced_search_pro_popular_brands_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help">{{ help_popular_brands_enabled }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_source }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_popular_brands_source" class="ok-select ok-w-300">
+                        <option value="auto" {% if module_oc_kit_advanced_search_pro_popular_brands_source == 'auto' %}selected{% endif %}>{{ text_popular_source_auto }}</option>
+                        <option value="manual" {% if module_oc_kit_advanced_search_pro_popular_brands_source == 'manual' %}selected{% endif %}>{{ text_popular_source_manual }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_popular_limit }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_popular_brands_limit" value="{{ module_oc_kit_advanced_search_pro_popular_brands_limit }}" class="ok-input ok-w-70" min="1" max="20">
+                    </div>
+
+                    <div class="ok-form-row ok-form-row-top">
+                      <label class="ok-label form-label">{{ entry_popular_brands_list }}</label>
+                      <div class="asp-picker" data-asp-picker="brands" data-url="{{ asp_search_brands_url }}">
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_popular_brands" class="asp-picker-raw" value="{{ module_oc_kit_advanced_search_pro_popular_brands }}">
+                        <div class="asp-picker-search">
+                          <input type="text" class="ok-input asp-picker-input" placeholder="{{ text_picker_brand_ph }}" autocomplete="off">
+                          <div class="ok-dropdown asp-picker-dropdown"></div>
+                        </div>
+                        <ul class="asp-picker-chips">
+                          {% for it in asp_popular_brands_resolved %}
+                          <li class="asp-picker-chip" data-id="{{ it.id }}"><span class="asp-picker-chip-t">{{ it.name }}</span><button type="button" class="asp-picker-x" aria-label="x"><i data-lucide="x"></i></button></li>
+                          {% endfor %}
+                        </ul>
+                        <p class="ok-help ok-mt-1">{{ help_popular_brands_list }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ FILTERS — coming in next version ═══════════════════════ #}
+              <div class="ok-layout-panel" id="tab-filters">
+
+                <div class="ok-block">
+                  <div class="ok-block-body">
+                    <div class="asp-coming-soon">
+                      <i data-lucide="hard-hat" class="asp-coming-soon__icon"></i>
+                      <h3>{{ tab_filters }}</h3>
+                      <p>{{ text_filters_coming_soon }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {# Preserve existing settings on save — UI hidden but values stay in DB #}
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_enabled"      value="{{ module_oc_kit_advanced_search_pro_filter_enabled      ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_ajax_mode"   value="{{ module_oc_kit_advanced_search_pro_filter_ajax_mode }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_category"    value="{{ module_oc_kit_advanced_search_pro_filter_category     ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_manufacturer" value="{{ module_oc_kit_advanced_search_pro_filter_manufacturer ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_price"       value="{{ module_oc_kit_advanced_search_pro_filter_price        ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_stock"       value="{{ module_oc_kit_advanced_search_pro_filter_stock        ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_attribute"   value="{{ module_oc_kit_advanced_search_pro_filter_attribute    ? '1' : '0' }}">
+                <input type="hidden" name="module_oc_kit_advanced_search_pro_filter_rating"      value="{{ module_oc_kit_advanced_search_pro_filter_rating       ? '1' : '0' }}">
+
+              </div>
+
+              {# ══ ATTRIBUTES ══════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-attributes">
+
+                <div class="ok-grid-2 ok-mb-3">
+
+                  <div class="ok-block">
+                    <div class="ok-block-title"><i data-lucide="search"></i> {{ text_attributes_catalog }}</div>
+                    <div class="ok-block-body">
+                      <div class="asp-attr-wrap">
+                        <input type="text" id="asp-attr-search" class="ok-input ok-w-full" placeholder="{{ placeholder_attribute_search }}" data-url="{{ asp_attr_search_url }}" autocomplete="off">
+                        <div id="asp-attr-dropdown" class="ok-dropdown" style="display:none"></div>
+                      </div>
+                      <p class="ok-help ok-mt-2">{{ help_attributes_sync_on_save }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-block">
+                    <div class="ok-block-title"><i data-lucide="check-square"></i> {{ text_selected_attributes_for_indexing }}</div>
+                    <input type="hidden" name="module_oc_kit_advanced_search_pro_attributes_raw" id="asp-attributes-raw" value="{{ module_oc_kit_advanced_search_pro_attributes_raw }}">
+                    <table class="ok-table" id="asp-selected-attrs-table">
+                      <thead>
+                        <tr>
+                          <th class="ok-col-50">{{ entry_id }}</th>
+                          <th>{{ entry_name }}</th>
+                          <th>{{ entry_group }}</th>
+                          <th class="ok-col-60"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if asp_selected_attributes %}
+                          {% for attr in asp_selected_attributes %}
+                          <tr data-id="{{ attr.attribute_id }}">
+                            <td>{{ attr.attribute_id }}</td>
+                            <td>{{ attr.name }}</td>
+                            <td>{{ attr.group }}</td>
+                            <td class="ok-text-center"><button type="button" class="ok-btn ok-btn-danger ok-btn-sm asp-attr-remove" data-id="{{ attr.attribute_id }}"><i data-lucide="x"></i></button></td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr id="asp-attrs-empty"><td colspan="4" class="ok-text-muted ok-text-center">{{ text_nothing_found }}</td></tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {# ══ SYNONYMS ════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-synonyms">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="shuffle"></i> {{ text_synonym_groups }}</div>
+                  {#<div class="ok-block-body">#}
+                    {#<p class="ok-help ok-mb-2">{{ help_edit_groups_and_save }}</p>#}
+
+                    <div>
+                      <table class="ok-table" id="asp-synonyms-table">
+                        <thead>
+                          <tr>
+                            <th>{{ entry_group_name }}</th>
+                            <th>{{ entry_terms_comma }}</th>
+                            <th class="ok-col-80">{{ entry_delete }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if asp_synonym_groups %}
+                            {% for grp in asp_synonym_groups %}
+                            <tr>
+                              <td class="ok-mw-300"><input type="text" name="synonym_groups[{{ grp.group_id }}][name]" value="{{ grp.name }}" class="ok-input" placeholder="{{ placeholder_group_name }}"></td>
+                              <td class="ok-w-full"><input type="text" name="synonym_groups[{{ grp.group_id }}][terms]" value="{{ grp.terms_raw }}" class="ok-input" placeholder="{{ placeholder_terms }}"></td>
+                              <td class="ok-text-center">
+                                <button type="button" class="ok-btn ok-btn-danger ok-btn-sm asp-syn-delete-btn" data-id="{{ grp.group_id }}" data-url="{{ asp_delete_synonym_url }}"><i data-lucide="trash-2"></i></button>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          {% else %}
+                            <tr id="asp-syn-empty"><td colspan="3" class="ok-text-muted ok-text-center">{{ text_no_groups }}</td></tr>
+                          {% endif %}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="ok-panel-footer">
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-syn-add-row">
+                        <i data-lucide="plus"></i> {{ text_add_new_group }}
+                      </button>
+                    </div>
+
+                  {#</div>#}
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="upload"></i> {{ entry_csv_import }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">CSV</label>
+                      <div>
+                        <div class="ok-input-inline">
+                          <input type="file" id="syn-csv-file" accept=".csv" class="ok-input ok-w-340">
+                          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-syn-csv-upload" data-url="{{ asp_import_synonyms_csv_url }}">
+                            <i data-lucide="upload"></i> {{ button_upload }}
+                          </button>
+                        </div>
+                        <p class="ok-help ok-mt-1">{{ help_csv_groups_append }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="package"></i> {{ text_bundled_synonyms }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ help_bundled_synonyms }}</p>
+                    <div class="ok-panel-footer">
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-syn-load-bundled" data-url="{{ asp_load_bundled_synonyms_url }}">
+                        <i data-lucide="download"></i> {{ button_load_bundled }}
+                      </button>
+                    </div>
+                    <div id="asp-syn-bundled-status" class="ok-hidden"></div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="wand-2"></i> {{ text_ai_synonyms_generation }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ help_ai_synonyms_pending }}</p>
+                    <div class="ok-progress ok-progress-indeterminate ok-mb-2 ok-hidden" id="asp-syn-gen-progress">
+                      <div class="ok-progress-bar"></div>
+                    </div>
+                    <div id="asp-syn-gen-status" class="ok-hidden"></div>
+                    <textarea class="ok-input ok-mt-1 ok-w-full" id="asp-syn-log" rows="5" readonly>{{ text_synonyms_log_placeholder }}</textarea>
+                  </div>
+                  <div class="ok-panel-footer">
+                    <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-syn-generate" data-url="{{ asp_generate_synonyms_url }}">
+                      <i data-lucide="wand-2"></i> {{ button_generate_via_ai }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="inbox"></i> {{ text_pending_synonyms }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ help_pending_synonyms }}</p>
+                    <div class="ok-table-wrap" id="asp-syn-pending-wrap">
+                      <table class="ok-table" id="asp-syn-pending-table">
+                        <thead>
+                          <tr>
+                            <th class="ok-w-180">{{ entry_query }}</th>
+                            <th>{{ entry_proposed_terms }}</th>
+                            <th class="ok-col-80">{{ entry_created }}</th>
+                            <th class="ok-col-160">{{ entry_actions }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if asp_synonym_pending %}
+                            {% for row in asp_synonym_pending %}
+                              <tr data-pending-id="{{ row.id }}">
+                                <td><strong>{{ row.query }}</strong></td>
+                                <td>{{ row.terms|join(', ') }}</td>
+                                <td>{{ row.created_at }}</td>
+                                <td>
+                                  <button type="button" class="ok-btn ok-btn-success ok-btn-sm asp-syn-accept-btn" data-id="{{ row.id }}" data-url="{{ asp_accept_synonym_pending_url }}"><i data-lucide="check"></i> {{ button_accept }}</button>
+                                  <button type="button" class="ok-btn ok-btn-danger ok-btn-sm asp-syn-reject-btn" data-id="{{ row.id }}" data-url="{{ asp_reject_synonym_pending_url }}"><i data-lucide="x"></i> {{ button_reject }}</button>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                          {% else %}
+                            <tr id="asp-syn-pending-empty"><td colspan="4" class="ok-text-muted ok-text-center">{{ text_no_pending_synonyms }}</td></tr>
+                          {% endif %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ AI ══════════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-ai">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="wand-2"></i> {{ text_ai_provider }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_provider }}</label>
+                      <div>
+                        <div class="ok-quiz-cards-lg">
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_ai_provider == 'openai' or not module_oc_kit_advanced_search_pro_ai_provider %}selected{% endif %}" data-value="openai" data-input="asp-ai-provider">
+                            <span class="ok-quiz-card-lg-icon asp-brand-icon">
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/>
+                              </svg>
+                            </span>
+                            <div class="ok-quiz-card-lg-title">OpenAI</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_openai }}</div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_ai_provider == 'deepseek' %}selected{% endif %}" data-value="deepseek" data-input="asp-ai-provider">
+                            <span class="ok-quiz-card-lg-icon asp-brand-icon">
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path d="M23.748 4.482c-.254-.124-.364.113-.512.234-.051.039-.094.09-.137.136-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.156-.708-.311-.955-.65-.172-.241-.219-.51-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.093.172.187.129.323-.082.28-.18.552-.266.833-.055.179-.137.217-.329.14a5.526 5.526 0 0 1-1.736-1.18c-.857-.828-1.631-1.742-2.597-2.458a11.365 11.365 0 0 0-.689-.471c-.985-.957.13-1.743.388-1.836.27-.098.093-.432-.779-.428-.872.004-1.67.295-2.687.684a3.055 3.055 0 0 1-.465.137 9.597 9.597 0 0 0-2.883-.102c-1.885.21-3.39 1.102-4.497 2.623C.082 8.606-.231 10.684.152 12.85c.403 2.284 1.569 4.175 3.36 5.653 1.858 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.133-.284 4.994-1.86.47.234.962.327 1.78.397.63.059 1.236-.03 1.705-.128.735-.156.684-.837.419-.961-2.155-1.004-1.682-.595-2.113-.926 1.096-1.296 2.746-2.642 3.392-7.003.05-.347.007-.565 0-.845-.004-.17.035-.237.23-.256a4.173 4.173 0 0 0 1.545-.475c1.396-.763 1.96-2.015 2.093-3.517.02-.23-.004-.467-.247-.588zM11.581 18c-2.089-1.642-3.102-2.183-3.52-2.16-.392.024-.321.471-.235.763.09.288.207.486.371.739.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.167-1.361-.802-2.5-1.86-3.301-3.307-.774-1.393-1.224-2.887-1.298-4.482-.02-.386.093-.522.477-.592a4.696 4.696 0 0 1 1.529-.039c2.132.312 3.946 1.265 5.468 2.774.868.86 1.525 1.887 2.202 2.891.72 1.066 1.494 2.082 2.48 2.914.348.292.625.514.891.677-.802.09-2.14.11-3.054-.614zm1-6.44a.306.306 0 0 1 .415-.287.302.302 0 0 1 .2.288.306.306 0 0 1-.31.307.303.303 0 0 1-.304-.308zm3.11 1.596c-.2.081-.399.151-.59.16a1.245 1.245 0 0 1-.798-.254c-.274-.23-.47-.358-.552-.758a1.73 1.73 0 0 1 .016-.588c.07-.327-.008-.537-.239-.727-.187-.156-.426-.199-.688-.199a.559.559 0 0 1-.254-.078c-.11-.054-.2-.19-.114-.358.028-.054.16-.186.192-.21.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.391.451.462.576.685.914.176.265.336.537.445.848.067.195-.019.354-.25.452z"/>
+                              </svg>
+                            </span>
+                            <div class="ok-quiz-card-lg-title">DeepSeek</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_deepseek }}</div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_ai_provider == 'gemini' %}selected{% endif %}" data-value="gemini" data-input="asp-ai-provider">
+                            <span class="ok-quiz-card-lg-icon asp-brand-icon">
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 0c1.4 4.7 3.3 6.6 8 8-4.7 1.4-6.6 3.3-8 8-1.4-4.7-3.3-6.6-8-8 4.7-1.4 6.6-3.3 8-8z"/>
+                              </svg>
+                            </span>
+                            <div class="ok-quiz-card-lg-title">Gemini</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_gemini }}</div>
+                          </div>
+                        </div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_provider" id="asp-ai-provider" value="{{ module_oc_kit_advanced_search_pro_ai_provider|default('openai') }}">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_api_key }}</label>
+                      <div class="asp-api-keys">
+                        <div class="asp-api-key" data-provider="openai">
+                          <input type="text" name="module_oc_kit_advanced_search_pro_ai_api_key_openai" value="{{ module_oc_kit_advanced_search_pro_ai_api_key_openai }}" class="ok-input ok-w-340" autocomplete="off" placeholder="sk-…">
+                          <p class="ok-help ok-mt-1">OpenAI · <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a></p>
+                        </div>
+                        <div class="asp-api-key" data-provider="deepseek">
+                          <input type="text" name="module_oc_kit_advanced_search_pro_ai_api_key_deepseek" value="{{ module_oc_kit_advanced_search_pro_ai_api_key_deepseek }}" class="ok-input ok-w-340" autocomplete="off" placeholder="sk-…">
+                          <p class="ok-help ok-mt-1">DeepSeek · <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">platform.deepseek.com/api_keys</a></p>
+                        </div>
+                        <div class="asp-api-key" data-provider="gemini">
+                          <input type="text" name="module_oc_kit_advanced_search_pro_ai_api_key_gemini" value="{{ module_oc_kit_advanced_search_pro_ai_api_key_gemini }}" class="ok-input ok-w-340" autocomplete="off" placeholder="AIza…">
+                          <p class="ok-help ok-mt-1">Google AI Studio · <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></p>
+                        </div>
+                        <div class="asp-api-key" data-provider="claude">
+                          <input type="text" name="module_oc_kit_advanced_search_pro_ai_api_key_claude" value="{{ module_oc_kit_advanced_search_pro_ai_api_key_claude }}" class="ok-input ok-w-340" autocomplete="off" placeholder="sk-ant-…">
+                          <p class="ok-help ok-mt-1">Anthropic · <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com/settings/keys</a></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_model }}</label>
+                      <div>
+                        <select name="module_oc_kit_advanced_search_pro_ai_model" class="ok-select ok-w-300" id="asp-ai-model">
+                          <option value="{{ module_oc_kit_advanced_search_pro_ai_model }}" selected>{{ module_oc_kit_advanced_search_pro_ai_model }}</option>
+                        </select>
+                        <p class="ok-help">{{ help_model_depends_provider }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="git-fork"></i> {{ text_embeddings }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_embedding_model }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_ai_embedding_model" value="{{ module_oc_kit_advanced_search_pro_ai_embedding_model }}" class="ok-input ok-w-300" id="asp-embed-model">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_batch_size }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_ai_batch_size" value="{{ module_oc_kit_advanced_search_pro_ai_batch_size }}" class="ok-input ok-w-90" min="1" max="500">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_embedding_content }}</label>
+                      <div class="asp-embed-fields">
+                        {% set embed_fields = {
+                          'name':         field_title,
+                          'description':  field_description,
+                          'attributes':   field_attributes,
+                          'categories':   field_categories,
+                          'manufacturer': field_manufacturer,
+                          'tags':         field_tags
+                        } %}
+                        {% for fkey, flabel in embed_fields %}
+                        <div class="asp-embed-field">
+                          <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_embed_fields[{{ fkey }}]" value="0">
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_ai_embed_fields[{{ fkey }}]" value="1" {% if module_oc_kit_advanced_search_pro_ai_embed_fields[fkey] %}checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                          <span class="ok-text-sm">{{ flabel }}</span>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="ok-panel-footer">
+                    <button type="button" class="ok-btn ok-btn-primary ok-mr-2" id="asp-reembed-all" data-url="{{ asp_manual_run_url }}">
+                      <i data-lucide="refresh-cw"></i> {{ text_reembed_all_now }}
+                    </button>
+                    <div>
+                      <strong>{{ text_reembed_all }}</strong>
+                      <p class="ok-help ok-mb-0">{{ help_reembed_all }}</p>
+                      <span id="asp-reembed-status" class="ok-help"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="maximize-2"></i> {{ text_query_expansion }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_query_expansion }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_expand_query" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_ai_expand_query" value="1" {% if module_oc_kit_advanced_search_pro_ai_expand_query %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_query_expansion | raw }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_rewrite_query }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_rewrite_query" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_ai_rewrite_query" value="1" {% if module_oc_kit_advanced_search_pro_ai_rewrite_query %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_rewrite_query | raw }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_intent_detection }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_intent_detection" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_ai_intent_detection" value="1" {% if module_oc_kit_advanced_search_pro_ai_intent_detection %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ help_intent_detection | raw }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="dollar-sign"></i> {{ text_budgets }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_monthly_budget }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_ai_budget_monthly" value="{{ module_oc_kit_advanced_search_pro_ai_budget_monthly }}" class="ok-input ok-w-100" min="0" step="0.01">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_daily_query_limit }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_ai_budget_daily_limit" value="{{ module_oc_kit_advanced_search_pro_ai_budget_daily_limit }}" class="ok-input ok-w-100" min="0">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_auto_block }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_ai_auto_block" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_ai_auto_block" value="1" {% if module_oc_kit_advanced_search_pro_ai_auto_block %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ QUERY RULES ═════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-query-rules">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="list"></i> {{ tab_query_rules }}</div>
+                  <div class="ok-block-body">
+
+                    <p class="ok-help ok-mb-3">{{ text_qr_vs_synonyms | raw }}</p>
+
+                    <div class="ok-filter-bar ok-mb-2">
+                      <input type="text" class="ok-input ok-w-260" id="asp-qr-search" placeholder="{{ entry_qr_search_placeholder }}">
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="asp-qr-load" data-url="{{ asp_list_query_rules_url }}"><i data-lucide="refresh-cw"></i> {{ button_qr_load }}</button>
+                      <div class="asp-qr-actions">
+                        <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-qr-generate" data-url="{{ asp_generate_query_rules_url }}"><i data-lucide="wand-2"></i> {{ button_generate_rules }}</button>
+                        <a href="{{ asp_export_query_rules_url }}" class="ok-btn ok-btn-default ok-btn-sm"><i data-lucide="download"></i> {{ text_export_query_rules }}</a>
+                      </div>
+                    </div>
+
+                    <div class="ok-table-wrap">
+                      <table class="ok-table" id="asp-qr-table" data-update-url="{{ asp_update_query_rule_url }}" data-delete-url="{{ asp_delete_query_rule_url }}">
+                        <thead>
+                          <tr>
+                            <th title="{{ help_qr_col_query }}">{{ text_qr_col_query }}</th>
+                            <th title="{{ help_qr_col_rewrite }}">{{ text_qr_col_rewrite }}</th>
+                            <th title="{{ help_qr_col_expanded }}">{{ text_qr_col_expanded }}</th>
+                            <th>{{ text_qr_col_source }}</th>
+                            <th>{{ text_qr_col_hits }}</th>
+                            <th>{{ text_qr_col_updated }}</th>
+                            <th>{{ text_qr_col_actions }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td colspan="7" class="ok-text-center ok-text-muted">{{ text_qr_loading }}</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="eye"></i> {{ text_preview_ai_rule }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-form-row ok-mb-0">
+                      <label class="ok-label form-label ok-mt-1">{{ entry_preview_query }}</label>
+                      <div class="ok-input-inline">
+                        <input type="text" class="ok-input ok-w-260" id="asp-qr-preview-q" placeholder="Nike Air Max">
+                        <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="asp-qr-preview-btn" data-url="{{ asp_preview_query_rule_url }}"><i data-lucide="search"></i> {{ button_preview }}</button>
+                      </div>
+                    </div>
+                    <pre class="ok-pre ok-mt-2" id="asp-qr-preview-result" style="display:none"></pre>
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ INDEX ═══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-index">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="clock"></i> {{ text_cron }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_autoindex }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_cron_enabled" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_cron_enabled" value="1" {% if module_oc_kit_advanced_search_pro_cron_enabled %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_index_trigger }}</label>
+                      <div>
+                        <div class="ok-quiz-cards-lg">
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_index_trigger == 'both' or not module_oc_kit_advanced_search_pro_index_trigger %}selected{% endif %}" data-value="both" data-input="asp-index-trigger">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="refresh-cw"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_trigger_both }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_trigger_both }}</div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_index_trigger == 'hook' %}selected{% endif %}" data-value="hook" data-input="asp-index-trigger">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="zap"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_trigger_hook }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_trigger_hook }}</div>
+                          </div>
+                          <div class="ok-quiz-card-lg asp-pick-card {% if module_oc_kit_advanced_search_pro_index_trigger == 'cron' %}selected{% endif %}" data-value="cron" data-input="asp-index-trigger">
+                            <span class="ok-quiz-card-lg-icon"><i data-lucide="clock"></i></span>
+                            <div class="ok-quiz-card-lg-title">{{ text_trigger_cron }}</div>
+                            <div class="ok-quiz-card-lg-desc">{{ text_hint_trigger_cron }}</div>
+                          </div>
+                        </div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_index_trigger" id="asp-index-trigger" value="{{ module_oc_kit_advanced_search_pro_index_trigger|default('both') }}">
+                        <p class="ok-help ok-mt-1">{{ help_index_trigger }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_type }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_cron_type" class="ok-select ok-w-300">
+                        <option value="full" {% if module_oc_kit_advanced_search_pro_cron_type == 'full' %}selected{% endif %}>{{ text_full }}</option>
+                        <option value="incremental" {% if module_oc_kit_advanced_search_pro_cron_type == 'incremental' %}selected{% endif %}>{{ text_incremental }}</option>
+                        <option value="sync_modified" {% if module_oc_kit_advanced_search_pro_cron_type == 'sync_modified' %}selected{% endif %}>{{ text_sync_modified }}</option>
+                        <option value="ai_rules" {% if module_oc_kit_advanced_search_pro_cron_type == 'ai_rules' %}selected{% endif %}>{{ text_ai_rules }}</option>
+                        <option value="ai_rules_zero" {% if module_oc_kit_advanced_search_pro_cron_type == 'ai_rules_zero' %}selected{% endif %}>{{ text_ai_rules_zero }}</option>
+                        <option value="warm_cache" {% if module_oc_kit_advanced_search_pro_cron_type == 'warm_cache' %}selected{% endif %}>{{ text_warm_cache }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_interval }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_cron_interval" class="ok-select ok-w-300">
+                        <option value="auto" {% if module_oc_kit_advanced_search_pro_cron_interval == 'auto' %}selected{% endif %}>{{ text_auto_cron }}</option>
+                        <option value="daily" {% if module_oc_kit_advanced_search_pro_cron_interval == 'daily' %}selected{% endif %}>{{ text_cron_daily }}</option>
+                        <option value="hourly" {% if module_oc_kit_advanced_search_pro_cron_interval == 'hourly' %}selected{% endif %}>{{ text_cron_hourly }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_private_key }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_cron_key" value="{{ module_oc_kit_advanced_search_pro_cron_key }}" class="ok-input ok-w-300">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_lock_wait_sec }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_cron_lock_wait_sec" value="{{ module_oc_kit_advanced_search_pro_cron_lock_wait_sec }}" class="ok-input ok-w-90" min="0">
+                        <p class="ok-help ok-mt-1">{{ help_cron_lock_wait_sec }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cron_url }}</label>
+                      <div>
+                        <div class="ok-copyable ok-flex ok-gap-8 ok-items-center">
+                          <span class="ok-code-block ok-flex-1" id="asp-cron-url-code">{{ module_oc_kit_advanced_search_pro_cron_url }}</span>
+                          <button type="button" class="ok-btn ok-btn-default ok-btn-sm ok-code-copy ok-copy-btn ok-px-1" data-target="asp-cron-url-code" data-notify="{{ text_copied }}"><i data-lucide="copy"></i></button>
+                        </div>
+                        <p class="ok-help ok-mt-1">{{ help_use_cron_url }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="list-ordered"></i> {{ text_queue_recovery }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_max_attempts }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_queue_max_attempts" value="{{ module_oc_kit_advanced_search_pro_queue_max_attempts }}" class="ok-input ok-w-80" min="1">
+                        <p class="ok-help ok-mt-1">{{ help_max_attempts }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_retry_after_sec }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_queue_retry_after_sec" value="{{ module_oc_kit_advanced_search_pro_queue_retry_after_sec }}" class="ok-input ok-w-100" min="0">
+                        <p class="ok-help ok-mt-1">{{ help_retry_after_sec }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_recover_stuck_sec }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_queue_recover_stuck_sec" value="{{ module_oc_kit_advanced_search_pro_queue_recover_stuck_sec }}" class="ok-input ok-w-100" min="0">
+                        <p class="ok-help ok-mt-1">{{ help_recover_stuck_sec }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="play"></i> {{ text_manual_run }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_limit }}</label>
+                      <input type="text" id="asp-run-limit" class="ok-input ok-w-90" value="500" min="1">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_offset }}</label>
+                      <input type="text" id="asp-run-offset" class="ok-input ok-w-90" value="0" min="0">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_minutes }}</label>
+                      <input type="text" id="asp-run-minutes" class="ok-input ok-w-90" value="60" min="1">
+                    </div>
+
+                    <div class="ok-flex ok-gap-8 ok-mb-2 asp-run-btns" id="asp-run-btns" data-cron-url="{{ asp_cron_url }}" data-manual-run-url="{{ asp_manual_run_url }}">
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" data-run-type="full" id="asp-run-full" title="{{ help_run_full }}"><i data-lucide="database"></i> {{ button_full_reindex }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-run-type="incremental" id="asp-run-incremental" title="{{ help_run_incremental }}"><i data-lucide="refresh-cw"></i> {{ button_process_queue }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-run-type="sync_modified" id="asp-run-sync" title="{{ help_run_sync_modified }}"><i data-lucide="clock"></i> {{ text_sync_modified }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-run-type="ai_rules" id="asp-run-ai-rules" title="{{ help_run_ai_rules }}"><i data-lucide="wand-2"></i> {{ text_ai_rules }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-run-type="warm_cache" id="asp-run-warm" title="{{ help_run_warm_cache }}"><i data-lucide="flame"></i> {{ text_warm_cache }}</button>
+                    </div>
+
+                    <p class="ok-help ok-mb-2">{{ help_manual_run_types }}</p>
+
+                    <div class="ok-alert ok-alert-info ok-mb-3" data-show-mode="native" style="display:none">
+                      <i data-lucide="info"></i>
+                      {{ text_reindex_native_note }}
+                    </div>
+
+                    <div id="asp-reindex-progress-wrap" class="ok-hidden ok-mb-3"
+                         data-text-of="{{ text_indexed_of }}" data-text-from="{{ text_indexed_from }}"
+                         data-text-done="{{ text_reindex_done }}" data-text-native="{{ text_reindex_native_note }}">
+                      <div class="ok-progress">
+                        <div class="ok-progress-bar" id="asp-reindex-progress-bar" style="width:0%"></div>
+                      </div>
+                      <p class="ok-help ok-mt-1" id="asp-reindex-progress-text"></p>
+                    </div>
+
+                    <div class="ok-form-row ok-mt-2">
+                      <label class="ok-label form-label">{{ entry_run_log }}</label>
+                      <div class="asp-run-log-wrap">
+                        <textarea class="ok-input ok-w-full asp-log" id="asp-run-log" rows="6" readonly></textarea>
+                        <button type="button" class="ok-btn ok-btn-default ok-btn-sm ok-mt-1" id="asp-clear-cron-log" data-url="{{ asp_clear_cron_log_url }}"><i data-lucide="trash-2"></i> {{ button_clear_log }}</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="languages"></i> {{ text_morphology }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ help_morphology }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_morphology }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_morphology" value="{{ module_oc_kit_advanced_search_pro_morphology|default('lemmatize_ru_all, lemmatize_en_all') }}" class="ok-input ok-w-340">
+                        <p class="ok-help ok-mt-1">{{ help_morphology_value }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_morphology_uk }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_morphology_uk_wordforms" value="{{ module_oc_kit_advanced_search_pro_morphology_uk_wordforms|default('/var/lib/manticore/wordforms/uk.txt') }}" class="ok-input ok-w-340">
+                        <p class="ok-help ok-mt-1">
+                          {{ help_morphology_uk }}
+                          {% if asp_morphology_uk_status %}
+                            <span class="ok-badge ok-badge-success ok-badge-sm">{{ asp_morphology_uk_status }}</span>
+                          {% else %}
+                            <span class="ok-badge ok-badge-muted ok-badge-sm">{{ text_morphology_uk_missing }}</span>
+                          {% endif %}
+                        </p>
+                        <p class="ok-help ok-mt-1"><code>php system/library/ockit/advanced_search_pro/tools/build_uk_wordforms.php</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="trash-2"></i> {{ text_purge_log }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_log_ttl_days }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_advanced_search_pro_log_ttl_days" value="{{ module_oc_kit_advanced_search_pro_log_ttl_days }}" class="ok-input ok-w-90" min="7">
+                        <p class="ok-help ok-mt-1">{{ help_log_ttl_days }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_purge_log }}</label>
+                      <div>
+                        <button type="button" class="ok-btn ok-btn-danger ok-btn-sm ok-ml-auto" id="asp-purge-log" data-url="{{ asp_manual_run_url }}" data-ttl="{{ module_oc_kit_advanced_search_pro_log_ttl_days|default(90) }}"><i data-lucide="trash-2"></i> {{ text_purge_log_now }}</button>
+                        <span id="asp-purge-status" class="ok-help ok-ml-2"></span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ DAEMONS ═════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-daemons">
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="plug"></i> {{ text_connection }}</div>
+                  <div class="ok-block-body">
+
+                    <p class="ok-help ok-mb-3">{{ text_daemon_description }}</p>
+
+                    <p class="ok-block-subtitle"><i data-lucide="search"></i> Manticore Search</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_host }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_host" value="{{ module_oc_kit_advanced_search_pro_host }}" class="ok-input ok-w-200">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_port }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_port" value="{{ module_oc_kit_advanced_search_pro_port }}" class="ok-input ok-w-100">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_index_name }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_index" value="{{ module_oc_kit_advanced_search_pro_index }}" class="ok-input ok-w-200">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_login }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_login" value="{{ module_oc_kit_advanced_search_pro_login }}" class="ok-input ok-w-200" autocomplete="off">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_password }}</label>
+                      <input type="password" name="module_oc_kit_advanced_search_pro_password" value="{{ module_oc_kit_advanced_search_pro_password }}" class="ok-input ok-w-200" autocomplete="off">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ text_manticore_installation }}</label>
+                      <select name="module_oc_kit_advanced_search_pro_install_mode" class="ok-select ok-w-200" id="asp-install-mode">
+                        <option value="local" {% if module_oc_kit_advanced_search_pro_install_mode == 'local' %}selected{% endif %}>{{ text_local_server }}</option>
+                        <option value="remote" {% if module_oc_kit_advanced_search_pro_install_mode == 'remote' %}selected{% endif %}>{{ text_remote }}</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row ok-mb-3">
+                      <label class="ok-label form-label">{{ text_connection }}</label>
+                      <div>
+                        <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="asp-test-connection" data-url="{{ asp_test_url }}"><i data-lucide="plug"></i> {{ button_test_connection }}</button>
+                        <span id="asp-test-result" class="ok-help ok-ml-2"></span>
+                      </div>
+                    </div>
+
+                    <hr class="ok-divider ok-mb-3">
+
+                    <p class="ok-block-subtitle"><i data-lucide="server"></i> Sphinx</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_sphinx_host }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_sphinx_host" value="{{ module_oc_kit_advanced_search_pro_sphinx_host }}" class="ok-input ok-w-200">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_sphinx_port }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_sphinx_port" value="{{ module_oc_kit_advanced_search_pro_sphinx_port }}" class="ok-input ok-w-100">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_sphinx_index }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_sphinx_index" value="{{ module_oc_kit_advanced_search_pro_sphinx_index }}" class="ok-input ok-w-200">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_sphinx_login }}</label>
+                      <input type="text" name="module_oc_kit_advanced_search_pro_sphinx_login" value="{{ module_oc_kit_advanced_search_pro_sphinx_login }}" class="ok-input ok-w-200" autocomplete="off">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_sphinx_password }}</label>
+                      <input type="password" name="module_oc_kit_advanced_search_pro_sphinx_password" value="{{ module_oc_kit_advanced_search_pro_sphinx_password }}" class="ok-input ok-w-200" autocomplete="off">
+                    </div>
+
+                    <p class="ok-help ok-mt-2">{{ help_engine_connection_note }}</p>
+
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="file-code"></i> {{ entry_manticore_conf }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-flex ok-gap-8 ok-mb-2 ok-items-center">
+                      <span id="asp-gen-config-status" class="ok-badge ok-badge-success-soft"></span>
+                    </div>
+                    <textarea class="ok-input ok-w-full asp-log" id="asp-manticore-conf" rows="10" readonly placeholder="{{ placeholder_manticore_config }}"></textarea>
+                  </div>
+                  <div class="ok-panel-footer">
+                    <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-gen-config" data-url="{{ asp_generate_config_url }}"><i data-lucide="settings"></i> {{ button_generate_config }}</button>
+                  </div>
+                </div>
+
+                <div class="ok-block" id="asp-daemon-block">
+                  <div class="ok-block-title"><i data-lucide="server"></i> {{ tab_daemons }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-3">{{ help_daemon_local_only }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_connection_status }}</label>
+                      <input type="text" id="asp-daemon-status" class="ok-input ok-w-120" value="{{ asp_daemon.status }}" readonly>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_pid }}</label>
+                      <input type="text" id="asp-daemon-pid" class="ok-input ok-w-100" value="{{ asp_daemon.pid }}" readonly>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_memory_usage }}</label>
+                      <input type="text" id="asp-daemon-memory" class="ok-input ok-w-120" value="{{ asp_daemon.memory }}" readonly>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_cpu_usage }}</label>
+                      <input type="text" id="asp-daemon-cpu" class="ok-input ok-w-100" value="{{ asp_daemon.cpu }}" readonly>
+                    </div>
+                  </div>
+                  <div class="ok-panel-footer ok-gap-8">
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" data-action="start" id="asp-daemon-start" data-url="{{ asp_daemon_action_url }}"><i data-lucide="play"></i> {{ button_start }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-action="restart" id="asp-daemon-restart" data-url="{{ asp_daemon_action_url }}"><i data-lucide="refresh-cw"></i> {{ button_restart }}</button>
+                      <button type="button" class="ok-btn ok-btn-danger ok-btn-sm" data-action="stop" id="asp-daemon-stop" data-url="{{ asp_daemon_action_url }}"><i data-lucide="square"></i> {{ button_stop }}</button>
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="asp-daemon-refresh" data-url="{{ asp_daemon_url }}"><i data-lucide="info"></i> {{ button_refresh }}</button>
+                    </div>
+                </div>
+
+              </div>
+
+              {# ══ STATS ═══════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel{% if wizard_done %} active{% endif %}" id="tab-stats">
+
+                <div class="ok-flex ok-items-center ok-gap-8 ok-mb-3">
+                  <a href="{{ asp_export_stats_url }}" class="ok-btn ok-btn-primary ok-btn-sm" target="_blank"><i data-lucide="download"></i> {{ text_export_stats }}</a>
+                  <span class="ok-help ok-mt-0">{{ help_export_stats }}</span>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="plug"></i> {{ text_daemon_connection }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ text_daemon_conn_subtitle }}</p>
+                  </div>
+                  <div class="ok-panel-footer">
+                    <div class="ok-flex ok-gap-8 ok-items-center">
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-stats-recheck" data-url="{{ asp_test_url }}"><i data-lucide="refresh-cw"></i> {{ button_recheck_connection }}</button>
+                      <span id="asp-stats-conn-result" class="ok-help ok-mt-0 asp-stats-conn-result"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="bar-chart-2"></i> {{ text_stats_general }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-kpi-grid ok-mt-0 ok-mb-0">
+                      <div class="ok-kpi-card ok-kpi-card--ok">
+                        <div class="ok-kpi-card__icon"><i data-lucide="package"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.indexed_products }}</div>
+                          <div class="ok-kpi-card__label">{{ text_indexed_products }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--info">
+                        <div class="ok-kpi-card__icon"><i data-lucide="search"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.queries_today }}</div>
+                          <div class="ok-kpi-card__label">{{ text_queries_today }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--info">
+                        <div class="ok-kpi-card__icon"><i data-lucide="calendar-days"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.queries_7 }}</div>
+                          <div class="ok-kpi-card__label">{{ text_queries_7_days }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--total">
+                        <div class="ok-kpi-card__icon"><i data-lucide="calendar"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.queries_30 }}</div>
+                          <div class="ok-kpi-card__label">{{ text_queries_30_days }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--total">
+                        <div class="ok-kpi-card__icon"><i data-lucide="database"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.index_size }}</div>
+                          <div class="ok-kpi-card__label">{{ text_index_size }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--total">
+                        <div class="ok-kpi-card__icon"><i data-lucide="clock"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.last_indexed }}</div>
+                          <div class="ok-kpi-card__label">{{ text_last_indexed }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="gauge"></i> {{ text_performance }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-kpi-grid ok-mt-0 ok-mb-0">
+                      <div class="ok-kpi-card ok-kpi-card--info">
+                        <div class="ok-kpi-card__icon"><i data-lucide="timer"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.avg_latency }}</div>
+                          <div class="ok-kpi-card__label">{{ text_avg_latency }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--lost">
+                        <div class="ok-kpi-card__icon"><i data-lucide="trending-up"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.p95_latency }}</div>
+                          <div class="ok-kpi-card__label">{{ text_p95_latency }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--ok">
+                        <div class="ok-kpi-card__icon"><i data-lucide="zap"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.cache_hit }}</div>
+                          <div class="ok-kpi-card__label">{{ text_cache_hit_percent }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--lost">
+                        <div class="ok-kpi-card__icon"><i data-lucide="alert-octagon"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.errors }}</div>
+                          <div class="ok-kpi-card__label">{{ text_errors }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="sparkles"></i> {{ text_ai_stats }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-kpi-grid ok-mt-0 ok-mb-0">
+                      <div class="ok-kpi-card ok-kpi-card--info">
+                        <div class="ok-kpi-card__icon"><i data-lucide="cpu"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.ai_tokens_today }}</div>
+                          <div class="ok-kpi-card__label">{{ text_ai_tokens_today }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--total">
+                        <div class="ok-kpi-card__icon"><i data-lucide="dollar-sign"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.ai_cost_today }}</div>
+                          <div class="ok-kpi-card__label">{{ text_ai_cost_today }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--lost">
+                        <div class="ok-kpi-card__icon"><i data-lucide="banknote"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.ai_cost_month }}</div>
+                          <div class="ok-kpi-card__label">{{ text_ai_cost_month }}</div>
+                        </div>
+                      </div>
+                      <div class="ok-kpi-card ok-kpi-card--ok">
+                        <div class="ok-kpi-card__icon"><i data-lucide="wallet"></i></div>
+                        <div class="ok-kpi-card__body">
+                          <div class="ok-kpi-card__value">{{ stats.ai_budget_left }}</div>
+                          <div class="ok-kpi-card__label">{{ text_ai_budget_left }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="line-chart"></i> {{ text_no_results_trend }}</div>
+                    <div id="asp-trend-chart" class="asp-trend-chart" data-url="{{ asp_no_results_trend_url }}"></div>
+                </div>
+
+                <div class="ok-grid-2 ok-mb-3">
+                  <div class="ok-block">
+                    <div class="ok-block-title">
+                      <i data-lucide="x-circle"></i> {{ text_top_zero_queries }}
+                      <button type="button" class="ok-btn ok-btn-danger ok-btn-sm ok-ml-auto" id="asp-clear-query-log" data-url="{{ asp_clear_query_log_url }}"><i data-lucide="trash-2"></i> {{ button_clear }}</button>
+                    </div>
+                    <table class="ok-table" id="asp-zero-queries-table" data-url="{{ asp_generate_rule_for_url }}">
+                      <thead>
+                        <tr>
+                          <th>{{ text_col_query }}</th>
+                          <th>{{ text_col_count }}</th>
+                          <th>{{ text_col_has_rule }}</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if stats.no_result_queries %}
+                          {% for q in stats.no_result_queries %}
+                          <tr>
+                            <td>{{ q.query }}</td>
+                            <td>{{ q.count }}</td>
+                            <td>
+                              {% if q.has_rule %}
+                                <span class="ok-badge ok-badge-success ok-badge-squared ok-badge-sm"><i data-lucide="check"></i> {# text_rule_exists #}</span>
+                              {% else %}
+                                <span class="ok-badge ok-badge-muted ok-badge-squared ok-badge-sm"><i data-lucide="x"></i> {# text_no_rule #}</span>
+                              {% endif %}
+                            </td>
+                            <td>
+                              {% if not q.has_rule %}
+                              <button type="button" class="ok-btn ok-btn-default ok-btn-sm asp-gen-rule-for" data-query="{{ q.query }}">
+                                <i class="ok-mr-1" data-lucide="wand-2"></i> {{ text_generate_rule }}
+                              </button>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr><td colspan="4" class="ok-text-center ok-text-muted">{{ text_no_data }}</td></tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="ok-block">
+                    <div class="ok-block-title">
+                      <i data-lucide="star"></i> {{ text_top_queries }}
+                    </div>
+                    <table class="ok-table">
+                      <thead>
+                        <tr>
+                          <th>{{ text_col_query }}</th>
+                          <th>{{ text_col_count }}</th>
+                          <th>{{ text_col_last_seen }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if stats.top_queries %}
+                          {% for q in stats.top_queries %}
+                          <tr>
+                            <td>{{ q.query }}</td>
+                            <td>{{ q.count }}</td>
+                            <td>{{ q.last_seen }}</td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr><td colspan="3" class="ok-text-center ok-text-muted">{{ text_no_data }}</td></tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title">
+                    <i data-lucide="history"></i> {{ text_recent_queries }}
+                  </div>
+                  <div class="ok-table-scroll">
+                    <table class="ok-table">
+                      <thead>
+                        <tr>
+                          <th>{{ text_col_query }}</th>
+                          <th>{{ text_col_count }}</th>
+                          <th>{{ text_col_results }}</th>
+                          <th>{{ text_col_date }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if stats.recent_queries %}
+                          {% for q in stats.recent_queries %}
+                          <tr>
+                            <td>{{ q.query }}</td>
+                            <td>{{ q.hits }}</td>
+                            <td>
+                              {% if q.results > 0 %}
+                                <span class="ok-badge ok-badge-success ok-badge-sm">{{ q.results }}</span>
+                              {% else %}
+                                <span class="ok-badge ok-badge-danger ok-badge-sm">0</span>
+                              {% endif %}
+                            </td>
+                            <td>{{ q.created_at }}</td>
+                          </tr>
+                          {% endfor %}
+                        {% else %}
+                          <tr><td colspan="4" class="ok-text-center ok-text-muted">{{ text_no_data }}</td></tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i data-lucide="flask-conical"></i> {{ text_benchmark }}</div>
+                  <div class="ok-block-body">
+                    <div class="ok-flex ok-gap-8 ok-mb-2 ok-items-center">
+                      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="asp-run-benchmark" data-url="{{ asp_benchmark_url }}"><i data-lucide="play"></i> {{ button_run_benchmark }}</button>
+                      <span id="asp-benchmark-status" class="ok-help"></span>
+                    </div>
+                    <pre class="ok-pre" id="asp-benchmark-result" style="display:none">{{ text_benchmark_report_placeholder }}</pre>
+                    <div id="asp-benchmark-interpret" class="ok-hidden ok-mt-3"
+                         data-text-excellent="{{ text_bench_excellent }}" data-text-good="{{ text_bench_good }}"
+                         data-text-acceptable="{{ text_bench_acceptable }}" data-text-slow="{{ text_bench_slow }}"
+                         data-tip-native="{{ text_bench_tip_native_ok }}" data-tip-mant="{{ text_bench_tip_mant_ok }}"
+                         data-tip-slow="{{ text_bench_tip_slow }}" data-tip-hybrid="{{ text_bench_tip_hybrid }}">
+                      <div class="ok-fw-600 ok-mb-2">{{ text_bench_interpret }}</div>
+                      <table class="ok-table">
+                        <thead><tr>
+                          <th>{{ text_bench_metric }}</th>
+                          <th>{{ text_bench_value }}</th>
+                          <th>{{ text_bench_rating }}</th>
+                          <th>{{ text_bench_tip }}</th>
+                        </tr></thead>
+                        <tbody id="asp-bench-interpret-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ ZERO-RESULT QUERIES ═════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-zero-results">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i data-lucide="search-x"></i> {{ text_all_zero_queries }}
+
+                    <div class="ok-flex ok-gap-16 ok-items-center ok-mb-2 ok-hidden ok-ml-auto" id="asp-zero-bulk-bar">
+                      <span id="asp-zero-bulk-count" class="ok-help"></span>
+                      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="asp-zero-bulk-generate" data-url="{{ asp_generate_rule_for_url }}">
+                        <i data-lucide="wand-2"></i> {{ text_generate_rule }}
+                      </button>
+                    </div>
+                  </div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-2">{{ text_zero_results_hint }}</p>
+
+                    
+
+                    <div class="ok-table-scroll">
+                      <table class="ok-table" id="asp-all-zero-table" data-url="{{ asp_generate_rule_for_url }}">
+                        <thead>
+                          <tr>
+                            <th class="ok-col-40 ok-text-center">
+                              <label class="ok-checkbox" title="{{ text_select_all }}">
+                                <input type="checkbox" id="asp-zero-check-all">
+                              </label>
+                            </th>
+                            <th>{{ text_col_query }}</th>
+                            <th>{{ text_col_date }}</th>
+                            <th>{{ text_col_has_rule }}</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if stats.all_no_result_queries %}
+                            {% for q in stats.all_no_result_queries %}
+                            <tr data-query="{{ q.query }}" {% if q.has_rule %}class="asp-zero-has-rule"{% endif %}>
+                              <td class="ok-text-center">
+                                <label class="ok-checkbox">
+                                  <input type="checkbox" class="asp-zero-row-check" {% if q.has_rule %}disabled{% endif %}>
+                                </label>
+                              </td>
+                              <td>{{ q.query }}</td>
+                              <td>{{ q.created_at }}</td>
+                              <td>
+                                {% if q.has_rule %}
+                                  <span class="ok-badge ok-badge-success ok-badge-sm ok-badge-squared"><i data-lucide="check"></i></span>
+                                {% else %}
+                                  <span class="ok-badge ok-badge-muted ok-badge-sm ok-badge-squared"><i data-lucide="x"></i></span>
+                                {% endif %}
+                              </td>
+                              <td>
+                                {% if q.has_rule %}
+                                  <button type="button" class="ok-btn ok-btn-default ok-btn-sm" disabled>
+                                    <i class="ok-mr-1" data-lucide="check"></i> {{ text_rule_generated }}
+                                  </button>
+                                {% else %}
+                                  <button type="button" class="ok-btn ok-btn-default ok-btn-sm asp-gen-rule-for" data-query="{{ q.query }}">
+                                    <i class="ok-mr-1" data-lucide="wand-2"></i> {{ text_generate_rule }}
+                                  </button>
+                                {% endif %}
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          {% else %}
+                            <tr><td colspan="5" class="ok-text-center ok-text-muted">{{ text_no_data }}</td></tr>
+                          {% endif %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ DICTIONARY ══════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-dictionary">
+
+                {# NLP toggles #}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="languages"></i> {{ tab_dictionary }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-3">{{ dict_description }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ dict_label_morphology }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_morphology" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_morphology" value="1" {% if module_oc_kit_advanced_search_pro_enable_morphology %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ dict_hint_morphology }}</p>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ dict_label_trigram }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_advanced_search_pro_enable_trigram_fallback" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_advanced_search_pro_enable_trigram_fallback" value="1" {% if module_oc_kit_advanced_search_pro_enable_trigram_fallback %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                        <p class="ok-help ok-mt-1">{{ dict_hint_trigram }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {# Stats #}
+                <div class="ok-block ok-mb-3" id="dict-stats">
+                  <div class="ok-block-title"><i data-lucide="bar-chart-2"></i> {{ dict_col_lang }} / {{ dict_col_count }}</div>
+                  <div class="ok-block-body-flush">
+                    <table class="ok-table ok-table--compact">
+                      <thead><tr>
+                        <th>{{ dict_col_lang }}</th>
+                        <th>{{ dict_col_count }}</th>
+                        <th>{{ dict_col_actions }}</th>
+                      </tr></thead>
+                      <tbody>
+                        {% for lang_key, cnt in asp_dict_counts %}
+                          <tr>
+                            <td>{% if lang_key == '' %}{{ dict_lang_all }}{% else %}{{ lang_key | upper }}{% endif %}</td>
+                            <td><span class="ok-badge">{{ cnt }}</span></td>
+                            <td>
+                              <button type="button" class="ok-btn ok-btn-sm ok-btn-danger dict-delete-btn"
+                                data-lang="{{ lang_key }}">{{ button_delete }}</button>
+                            </td>
+                          </tr>
+                        {% else %}
+                          <tr><td colspan="3" class="ok-text-muted ok-px-3 ok-py-2">{{ dict_empty }}</td></tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {# Import form #}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="upload"></i> {{ dict_import_title }}</div>
+                  <div class="ok-block-body">
+                    <p class="ok-help ok-mb-3">{{ dict_import_hint }}</p>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="dict-lang-select">{{ dict_import_lang }}</label>
+                      <select id="dict-lang-select" class="ok-select ok-w-140">
+                        <option value="">{{ dict_lang_all }}</option>
+                        <option value="uk">UK</option>
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                      </select>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label" for="dict-file-input">{{ dict_import_file }}</label>
+                      <input type="file" id="dict-file-input" accept=".csv,.json" class="ok-input ok-w-340">
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label"></label>
+                      <div>
+                        <button type="button" id="dict-import-btn" class="ok-btn ok-btn-primary">
+                          <i data-lucide="upload"></i> {{ dict_import_btn }}
+                        </button>
+                        <span id="dict-import-result" class="ok-text-muted ok-ml-2"></span>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ dict_format_title }}</label>
+                      <div>
+                        <pre class="ok-pre">{{ dict_format_csv }}</pre>
+                        <pre class="ok-pre">{{ dict_format_json }}</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {# Entries preview #}
+                <div class="ok-block ok-mb-3" id="dict-preview-wrap" style="display:none">
+                  <div class="ok-block-title"><i data-lucide="list"></i> {{ dict_preview_title }} <span id="dict-preview-total" class="ok-text-muted ok-text-sm"></span></div>
+                  <div class="ok-block-body">
+                    <div class="ok-flex ok-gap-8 ok-mb-2">
+                      <select id="dict-preview-lang" class="ok-select ok-w-140">
+                        <option value="">{{ dict_lang_all }}</option>
+                        <option value="uk">UK</option>
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                      </select>
+                      <button type="button" id="dict-preview-btn" class="ok-btn ok-btn-sm">{{ dict_preview_btn }}</button>
+                    </div>
+                  </div>
+                  <div class="ok-block-body-flush">
+                    <table class="ok-table" id="dict-preview-table">
+                      <thead><tr>
+                        <th>{{ dict_col_word }}</th>
+                        <th>{{ dict_col_stem }}</th>
+                        <th>{{ dict_col_lang }}</th>
+                      </tr></thead>
+                      <tbody id="dict-preview-body"></tbody>
+                    </table>
+                  </div>
+                  <div class="ok-block-body">
+                    <div id="dict-preview-pager" class="ok-text-muted ok-text-sm"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              {# ══ FAQ ═════════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-faq">
+
+                {% set faq_items = [
+                  ['faq_section_engines',     [['faq_native_title','faq_native_text'],['faq_manticore_title','faq_manticore_text'],['faq_sphinx_title','faq_sphinx_text'],['faq_hybrid_title','faq_hybrid_text']]],
+                  ['faq_section_search',      [['faq_fuzzy_title','faq_fuzzy_text'],['faq_layout_title','faq_layout_text'],['faq_morphology_title','faq_morphology_text'],['faq_ratio_title','faq_ratio_text'],['faq_min_score_title','faq_min_score_text'],['faq_fields_title','faq_fields_text'],['faq_synonyms_title','faq_synonyms_text'],['faq_zero_results_title','faq_zero_results_text']]],
+                  ['faq_section_indexing',    [['faq_indexing_title','faq_indexing_text'],['faq_cron_title','faq_cron_text']]],
+                  ['faq_section_autocomplete',[['faq_autocomplete_title','faq_autocomplete_text'],['faq_facets_title','faq_facets_text']]],
+                  ['faq_section_ai',          [['faq_embeddings_title','faq_embeddings_text'],['faq_ai_rewrite_title','faq_ai_rewrite_text'],['faq_query_rules_title','faq_query_rules_text'],['faq_rate_limit_title','faq_rate_limit_text']]],
+                  ['faq_section_performance', [['faq_cache_title','faq_cache_text']]]
+                ] %}
+
+                {% for section in faq_items %}
+                <div class="ok-block ok-mb-3">
+                  <div class="ok-block-title"><i data-lucide="help-circle"></i> {{ attribute(_context, section[0]) }}</div>
+                  <div class="ok-block-body">
+                    {% for item in section[1] %}
+                    <div class="asp-faq-item{% if loop.last %} ok-mb-0{% endif %}">
+                      <p class="asp-faq-title">{{ attribute(_context, item[0]) }}</p>
+                      <p class="asp-faq-text ok-help">{{ attribute(_context, item[1]) }}</p>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endfor %}
+
+              </div>
+
+              {# ══ LICENSE ═════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="tab-license">
+                <div class="asp-license-center">
+                  <div class="asp-license-card">
+
+                    <div class="asp-license-brand">
+                      <div class="asp-license-icon"><i data-lucide="key-round"></i></div>
+                      <div class="asp-license-title">{{ heading_title }}</div>
+                      <div class="asp-license-sub"><a href="https://oc-kit.com" target="_blank">oc-kit.com</a></div>
+                    </div>
+
+                    <div class="ok-block">
+                      <div class="ok-block-body">
+
+                        <div class="asp-license-badge">
+                          {% if asp_license_status == 'active' %}
+                            <span class="ok-badge ok-badge-success"><i data-lucide="check"></i> {{ text_license_active }}</span>
+                          {% elseif asp_license_status == 'expired' %}
+                            <span class="ok-badge ok-badge-warning"><i data-lucide="clock"></i> {{ text_license_expired }}</span>
+                          {% elseif asp_license_status == 'invalid' %}
+                            <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle"></i> {{ text_license_invalid }}</span>
+                          {% else %}
+                            <span class="ok-badge ok-badge-default"><i data-lucide="help-circle"></i> {{ text_license_no_key }}</span>
+                          {% endif %}
+                        </div>
+
+                        {% if asp_license_domain %}
+                          <div class="asp-license-meta">{{ text_license_domain }}: <strong>{{ asp_license_domain }}</strong></div>
+                        {% endif %}
+                        {% if asp_license_expiry %}
+                          <div class="asp-license-meta">{{ text_license_expiry }}: <strong>{{ asp_license_expiry }}</strong></div>
+                        {% endif %}
+
+                        <label class="form-label ok-fw-600 ok-mt-2 ok-mb-1">{{ entry_license_key }}</label>
+                        <div class="ok-input-inline ok-mb-2">
+                          <input type="text" name="module_oc_kit_advanced_search_pro_license_key" value="{{ module_oc_kit_advanced_search_pro_license_key }}" class="ok-input ok-flex-1" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off">
+                        </div>
+                        <p class="ok-help ok-mb-3">{{ help_license_key }}</p>
+
+                        <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                          <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                        </a>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>{# /ok-content #}
+          </div>{# /ok-layout #}
+        </div>{# /asp #}
+      </form>
+    </div>{# /oc-kit #}
+  </div>{# /container-fluid #}
+</div>{# /content #}
+
+<script>var aspI18n = {{ asp_i18n_json }};
+var aspModelOpts = {{ asp_ai_model_options_json }};
+</script>
+<script src="view/javascript/ockit/advanced_search_pro/assets/js/admin.js?v={{ asp_assets_v }}"></script>
+{{ footer }}

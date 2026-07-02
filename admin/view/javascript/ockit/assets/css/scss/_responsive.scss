@@ -1,0 +1,61 @@
+// oc-kit Design System — Responsive
+// © 2026 oc-kit.com | https://oc-kit.com
+
+@media (max-width: 1100px) {
+  .oc-kit {
+    .ok-layout {
+      grid-template-columns: 1fr;
+    }
+    .ok-sidebar {
+      position: static;
+      height: auto;
+      min-height: 0;
+      border-right: none;
+      border-bottom: 1px solid $ok-border;
+    }
+    .ok-tabs-sidebar {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      &-item { width: auto; flex: 1; min-width: 120px; justify-content: center; }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .oc-kit {
+    .ok-grid,
+    .ok-grid-2,
+    .ok-grid-3,
+    .ok-grid-4 { grid-template-columns: 1fr; }
+
+    .ok-col-2,
+    .ok-col-3,
+    .ok-col-4,
+    .ok-col-6,
+    .ok-col-8,
+    .ok-col-9 { grid-column: span 12; }
+
+    .ok-form-row {
+      grid-template-columns: 1fr;
+      > .ok-label { padding-top: 0; }
+    }
+
+    .ok-quiz-cards { grid-template-columns: repeat(2, 1fr); }
+
+    .ok-tabs { overflow-x: auto; flex-wrap: nowrap; }
+
+    .ok-field-row {
+      flex-direction: column;
+      gap: 3px;
+      &-label { min-width: 0; }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .oc-kit {
+    .ok-quiz-cards { grid-template-columns: 1fr; }
+    .ok-content { padding: 14px; }
+  }
+}

@@ -18,3 +18,4 @@
 .ct-map__pin { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
 .ct-map__pin-dot { width: 52px; height: 52px; border-radius: var(--radius-pill); background: var(--accent); color: var(--on-accent); display: flex; align-items: center; justify-content: center; }
 .ct-map__label { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 14px; font-size: 14px; font-weight: 500; }
+

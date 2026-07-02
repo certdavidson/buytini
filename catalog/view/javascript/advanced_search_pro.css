@@ -1,0 +1,376 @@
+.asp-mic-btn{display:flex;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;border:1.5px solid #d1d5db;border-radius:8px;background:#f9fafb;color:#374151;cursor:pointer;transition:background .15s,border-color .15s,color .15s;display:none}.asp-mic-btn:hover{background:var(--asp-accent);border-color:var(--asp-accent);color:#fff}.asp-mic-btn.asp-mic-active{background:#ef4444;border-color:#ef4444;color:#fff;animation:asp-mic-pulse 1.2s infinite}@keyframes asp-mic-pulse{0%, 100%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)}50%{box-shadow:0 0 0 7px rgba(239,68,68,0)}}.asp-results{position:absolute;z-index:1050;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.1);display:none;overflow:hidden}.asp-results.open{display:block}.asp-spinner{display:none;gap:5px;padding:14px 16px;align-items:center;justify-content:center}.asp-spinner.asp-loading-active{display:flex}.asp-spinner-dot{width:7px;height:7px;border-radius:50%;background:var(--asp-accent);animation:asp-bounce 0.9s infinite ease-in-out}.asp-spinner-dot:nth-child(1){animation-delay:0s}.asp-spinner-dot:nth-child(2){animation-delay:0.18s}.asp-spinner-dot:nth-child(3){animation-delay:0.36s}@keyframes asp-bounce{0%, 80%, 100%{transform:scale(0.5);opacity:0.4}40%{transform:scale(1);opacity:1}}.asp-section-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px}.asp-section-label{font-size:14px;font-weight:200;color:#9ca3af}.asp-clear-history{background:none;border:none;padding:0;font-size:13px;color:#9ca3af;cursor:pointer;transition:color .15s}.asp-clear-history:hover{color:#ef4444}.asp-history-list{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}.asp-history-item{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;padding:4px 12px;font-size:14px;color:#374151;cursor:pointer;transition:background .15s,color .15s}.asp-history-item:hover{background:var(--asp-accent);border-color:var(--asp-accent);color:#fff}.asp-popular-tags-list{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}.asp-popular-tag{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;padding:4px 12px;font-size:14px;color:#374151;cursor:pointer;transition:background .15s,color .15s,border-color .15s}.asp-popular-tag:hover{background:var(--asp-accent);border-color:var(--asp-accent);color:#fff}.asp-list{max-height:360px;overflow-y:auto;overscroll-behavior:contain}@media (min-width: 768px){.asp-list{max-height:426px}}.asp-item{display:flex;align-items:center;gap:12px;padding:10px 16px;text-decoration:none;color:inherit;border-bottom:1px solid #f3f4f6;transition:background 0.1s;cursor:pointer}.asp-item:last-child{border-bottom:0}.asp-item:hover,.asp-item.asp-selected{background:#f5f6ff}.asp-img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:#f3f4f6;flex-shrink:0}.asp-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.asp-title{font-size:14px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asp-meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;color:#9ca3af}.asp-price{display:flex;align-items:center;gap:6px;font-size:14px;color:#111827}.asp-sale-badge{font-size:10px;font-weight:700;background:#fee2e2;color:#dc2626;border-radius:4px;padding:1px 5px;text-transform:uppercase}.asp-price-special{color:#dc2626}.asp-price-old{font-size:11px;font-weight:400;color:#9ca3af;text-decoration:line-through}.asp-stock{font-size:11px}.asp-in-stock{color:#62a250}.asp-out-of-stock{color:#9ca3af}.asp-badge{display:inline-block;font-size:10px;font-weight:600;border-radius:4px;padding:1px 6px;text-transform:uppercase;letter-spacing:0.03em}.asp-badge.asp-badge-cat{background:#ede9fe;color:#7c3aed}.asp-badge.asp-badge-brand{background:#fff7ed;color:#c2410c}.asp-badge.asp-badge-pop{background:#fef3c7;color:#d97706}.asp-empty{padding:16px;font-size:13px;color:#6b7280;text-align:center}.asp-did-you-mean{margin-top:6px;font-size:12px;color:#6b7280}.asp-did-you-mean a{color:#7CC467;text-decoration:underline;font-weight:500}.asp-did-you-mean a:hover{color:#3730a3}.asp-footer{border-top:1px solid #f3f4f6;text-align:center}@media (min-width: 768px){.asp-footer{text-align:center}}.asp-footer a{display:block;padding:10px 0;font-size:13px;background-color:#f9f9f9;color:#7CC467;text-decoration:none;text-align:center;transition:color .15s}.asp-footer a:hover{color:#7CC467;text-decoration:underline}.asp-facets{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border-top:1px solid #f1f5f9}.asp-facet-chip{display:inline-block;padding:5px 12px;border-radius:8px;font-size:13px;text-decoration:none;line-height:1.6;transition:background .15s,color .15s}.asp-facet-category{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}.asp-facet-category:hover{background:#dbeafe;color:#1d4ed8}.asp-facet-manufacturer{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}.asp-facet-manufacturer:hover{background:#dcfce7;color:#15803d}.asp-hl{background:#fef9c3;font-weight:700;border-radius:2px;padding:0 1px;font-style:normal}@media (max-width: 640px){.asp-img{width:42px;height:42px}.asp-list{max-height:280px}}
+/*# sourceMappingURL=advanced_search_pro.css.map */
+
+/* Accent colour scheme — overridable per-store via the widget inline <style>
+   (admin preset / custom colour). Defaults = indigo. */
+:root {
+    --asp-accent: #6366f1;
+    --asp-accent-hover: #4f46e5;
+    --asp-accent-ink: #4338ca;
+    --asp-accent-soft: #eef2ff;
+    --asp-accent-soft-border: #c7d2fe;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Empty-state dashboard (popular queries / products / brands) — find-iq style
+   ════════════════════════════════════════════════════════════════════════ */
+.asp-popular-tags-wrap { padding: 0; }
+.asp-dash-section { padding: 14px 18px; border-bottom: 1px solid #eef0f3; }
+.asp-dash-section:last-child { border-bottom: 0; }
+.asp-dash-head {
+    font-size: 17px; font-weight: 600; color: #1f2937; margin: 0 0 12px;
+    letter-spacing: -.01em;
+}
+
+/* — Popular queries / brands chips — */
+.asp-dash-chips, .asp-dash-brands {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 9px;
+}
+.asp-dash-chip, .asp-dash-brand {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #f6f7f9; border: 1px solid #eceef1; border-radius: 999px;
+    padding: 7px 16px; font-size: 14px; color: #374151; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s; white-space: nowrap;
+}
+.asp-dash-chip:hover, .asp-dash-brand:hover { background: var(--asp-accent-soft); border-color: var(--asp-accent-soft-border); color: var(--asp-accent-ink); }
+.asp-dash-brand .asp-svg-tag { width: 15px; height: 15px; flex-shrink: 0; fill: #9aa1ab; }
+.asp-dash-brand:hover .asp-svg-tag { fill: var(--asp-accent); }
+
+/* — Popular products carousel — */
+.asp-dash-carousel-wrap { position: relative; }
+.asp-dash-arrows { display: flex; align-items: center; gap: 12px; padding: 8px 2px 0; }
+.asp-dash-track { flex: 1; height: 5px; background: #eceef1; border-radius: 3px; position: relative; overflow: hidden; }
+.asp-dash-thumb { position: absolute; top: 0; height: 100%; min-width: 24px; background: #c4c9d4; border-radius: 3px; }
+.asp-dash-arrow {
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid #e5e7eb; background: #fff;
+    color: #374151; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.asp-dash-arrow:hover { background: var(--asp-accent); border-color: var(--asp-accent); color: #fff; }
+.asp-dash-arrow .asp-svg-chev { width: 18px; height: 18px; }
+.asp-dash-prev .asp-svg-chev { transform: rotate(90deg); }
+.asp-dash-next .asp-svg-chev { transform: rotate(-90deg); }
+.asp-dash-carousel {
+    display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden;
+    padding: 2px 2px 6px; scroll-snap-type: x proximity; overscroll-behavior-x: contain;
+    scrollbar-width: none; -ms-overflow-style: none;   /* native bar hidden — asp-dash-track shows progress */
+}
+.asp-dash-carousel::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+.asp-card {
+    flex: 0 0 168px; width: 168px; display: flex; flex-direction: column;
+    text-decoration: none; color: inherit; scroll-snap-align: start;
+    border-radius: 12px; padding: 10px; transition: background .15s;
+}
+.asp-card:hover { background: #f7f8fa; }
+.asp-card-img {
+    position: relative; width: 100%; height: 148px; border-radius: 8px;
+    background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.asp-card-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.asp-card-badge {
+    position: absolute; top: 6px; left: 6px; background: #dc3545; color: #fff;
+    font-size: 11px; font-weight: 600; border-radius: 6px; padding: 2px 8px;
+}
+.asp-card-name {
+    font-size: 13px; line-height: 1.35; color: #4b5563; margin: 10px 0 8px;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden; min-height: 53px;
+}
+.asp-card-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.asp-card-price { display: flex; flex-direction: column; line-height: 1.2; font-size: 15px; font-weight: 700; color: #111827; }
+.asp-card-old { font-size: 12px; font-weight: 400; color: #9ca3af; text-decoration: line-through; }
+.asp-card-new { color: #dc3545; display: inline-flex; align-items: center; gap: 6px; }
+.asp-card-disc { background: #dc3545; color: #fff; font-size: 11px; font-weight: 600; border-radius: 5px; padding: 1px 6px; }
+.asp-card-cart {
+    flex-shrink: 0; width: 34px; height: 34px; border: 1px solid #e5e7eb; border-radius: 9px;
+    background: #fff; color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.asp-card-cart:hover { background: var(--asp-accent); border-color: var(--asp-accent); color: #fff; }
+.asp-card-cart .asp-svg-cart { width: 19px; height: 19px; fill: currentColor; }
+
+/* Recently-viewed: top-3 compact row cards — 3-up grid on desktop, swipe on phones. */
+.asp-dash-viewed { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.asp-dash-viewed .asp-card--row { padding: 6px 8px; border: 1px solid #eef0f3; border-radius: 10px; }
+
+@media (max-width: 768px) {
+    .asp-dash-section { padding: 12px 14px; }
+    .asp-dash-head { font-size: 15px; margin-bottom: 9px; }
+    /* #4: chips — tighter padding, larger text on phones (tablets keep defaults) */
+    .asp-dash-chip { padding: 5px 12px; font-size: 15px; }
+    /* #9: ~2.35 product cards visible in the carousel */
+    .asp-dash-carousel .asp-card { flex: 0 0 41vw; width: 41vw; padding: 8px; }
+    .asp-dash-carousel .asp-card-img { height: 37vw; }
+    .asp-dash-carousel .asp-card-name { min-height: 0; -webkit-line-clamp: 2; }
+    /* Recently-viewed: desktop grid → horizontal swipe row on phones */
+    .asp-dash-viewed { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .asp-dash-viewed::-webkit-scrollbar { height: 0; display: none; }
+    .asp-dash-viewed .asp-card--row { flex: 0 0 76vw; scroll-snap-align: start; }
+}
+
+/* Dropdown positioning stays theme-specific: the base .asp-results rule already
+   positions correctly for the default theme. Narrow-header themes (e.g. the
+   targets) get a per-theme width/anchor override at integration time — applying
+   it globally here overflowed the default theme's header. */
+
+/* ── Search-state: category group headers ── */
+.asp-cat-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 16px 7px; font-size: 14px; font-weight: 600; color: #1f2937;
+    border-top: 1px solid #f1f3f5;
+}
+.asp-list > .asp-cat-head:first-child { border-top: 0; }
+.asp-cat-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.asp-cat-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.asp-cat-more {
+    font-size: 12px; font-weight: 500; color: var(--asp-accent); text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+}
+.asp-cat-more:hover { text-decoration: underline; }
+.asp-cat-chev { display: none; color: #9ca3af; transition: transform .2s; }
+.asp-cat-chev .asp-svg-chev { width: 20px; height: 20px; display: block; }
+
+/* Category actions (sort + open-category) — hidden until the category is chosen. */
+.asp-group-foot {
+    display: none; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; padding: 12px 4px 4px; margin-top: 8px; border-top: 1px solid #f1f3f5;
+}
+.asp-group.asp-show-foot .asp-group-foot { display: flex; }
+.asp-sort { display: flex; gap: 8px; flex-wrap: wrap; }
+.asp-sort-select {
+    background-color: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 7px 32px 7px 14px; font-size: 13px; color: #374151; cursor: pointer;
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+    transition: border-color .15s;
+}
+.asp-sort-select:hover { border-color: var(--asp-accent-soft-border); }
+.asp-sort-select:focus { outline: none; border-color: var(--asp-accent); }
+.asp-open-cat {
+    font-size: 13px; font-weight: 600; color: var(--asp-accent); text-decoration: none;
+    white-space: nowrap; background: none; padding: 0;
+}
+.asp-open-cat:hover { color: var(--asp-accent-hover); text-decoration: underline; }
+
+/* Category-mode pager (12 cards / page) */
+.asp-pager { display: none; align-items: center; justify-content: center; gap: 14px; padding: 14px 4px 6px; }
+.asp-pager-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid #e5e7eb; background: #fff;
+    color: #374151; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.asp-pager-btn:hover:not(:disabled) { background: var(--asp-accent); border-color: var(--asp-accent); color: #fff; }
+.asp-pager-btn:disabled { opacity: .4; cursor: default; }
+.asp-pager-btn .asp-svg-chev { width: 18px; height: 18px; }
+.asp-pager-prev .asp-svg-chev { transform: rotate(90deg); }
+.asp-pager-next .asp-svg-chev { transform: rotate(-90deg); }
+.asp-pager-ind { font-size: 13px; color: #6b7280; min-width: 48px; text-align: center; }
+
+/* ── Search-state: find-iq 2-column (category sidebar + grouped cards) ── */
+.asp-sr { display: flex; align-items: stretch; max-height: 72vh; }
+.asp-side {
+    flex: 0 0 268px; padding: 10px 10px;
+    /* border-right: 1px solid #eef0f3; */
+    overflow-y: auto;
+    /* background: #fafbfc; */
+}
+.asp-side-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    width: 100%; text-align: left; background: none; border: 0; border-radius: 8px;
+    padding: 12px 16px; font-size: 14px; color: #374151; cursor: pointer;
+    transition: background .12s, color .12s;
+}
+.asp-side-item:hover { background: var(--asp-accent-soft); }
+.asp-side-item.active { background: var(--asp-accent); color: #fff; }
+.asp-side-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.asp-side-count { flex-shrink: 0; font-size: 13px; opacity: .7; padding: 2px 6px; border-radius: 250px; background: rgba(0, 0, 0, 0.05) }
+.asp-side-item.active .asp-side-count { opacity: .9; }
+
+.asp-groups { flex: 1; min-width: 0; overflow-y: auto; padding: 4px 4px 8px; }
+.asp-group { padding: 4px 12px 12px; border-bottom: 1px solid #f3f4f6; }
+.asp-group:last-child { border-bottom: 0; }
+.asp-group .asp-cat-head { padding: 10px 4px 10px; border-top: 0; }
+.asp-sr-cards { display: flex; flex-direction: column; }
+/* Search-result card = horizontal row (image · name+price · cart). */
+.asp-card--row {
+    flex: 0 0 auto; width: auto; flex-direction: row; align-items: center; gap: 14px;
+    padding: 11px 8px; border-radius: 8px;
+}
+.asp-card--row:hover { background: #f7f8fa; }
+.asp-card--row .asp-card-img { width: 64px; height: 64px; flex: 0 0 64px; }
+.asp-card--row .asp-card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.asp-card--row .asp-card-name { margin: 0; min-height: 0; font-size: 13.5px; -webkit-line-clamp: 2; }
+.asp-card--row .asp-card-price { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 5px 9px; }
+.asp-card--row .asp-card-cart { flex-shrink: 0; margin-left: auto; }
+
+/* "All categories" view: max 5 products per group (rest behind "Ще N →"). */
+.asp-group:not(.asp-cat-mode) .asp-sr-cards .asp-card--row:nth-child(n+6) { display: none; }
+
+/* Recently-viewed dashboard list (row cards). */
+.asp-dash-rows { display: flex; flex-direction: column; }
+
+@media (min-width: 769px) {
+    /* More than one group → 2-column masonry of category blocks. */
+    .asp-groups.asp-multi { column-count: 2; column-gap: 0; column-rule: 1px solid #f3f4f6; }
+    .asp-groups.asp-multi .asp-group { break-inside: avoid; }
+    /* Selected category → 2-column grid of cards, paginated (12 / page). */
+    .asp-group.asp-cat-mode .asp-sr-cards { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+}
+
+@media (max-width: 768px) {
+    /* Search state → accordion of categories; cards already rows (.asp-card--row). */
+    .asp-sr { flex-direction: column; max-height: none; }
+    .asp-side { display: none; }
+    .asp-groups { padding: 0; overflow: visible; }
+    .asp-group { padding: 0; border-bottom: 1px solid #eef0f3; }
+    .asp-group .asp-cat-head {
+        padding: 14px; cursor: pointer; background: #fafbfc;
+        position: sticky; top: 0; z-index: 1; border-top: 0;
+    }
+    .asp-cat-chev { display: inline-flex; }
+    .asp-group--collapsed .asp-cat-chev { transform: rotate(-90deg); }
+    .asp-group--collapsed .asp-sr-cards,
+    .asp-group--collapsed .asp-group-foot { display: none; }
+    .asp-sr-cards { padding: 0 14px; }
+    .asp-card--row { padding: 11px 0; }
+    .asp-group-foot { padding: 12px 14px; margin: 0; }
+    .asp-group:not(.asp-group--collapsed) .asp-group-foot { display: flex; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Detached popup (santan style): header stub trigger + wide fixed overlay
+   that holds the real search input. Popup + overlay are moved to <body>.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* — Header stub (placeholder trigger) — */
+.asp-search { position: static; }
+.asp-stub {
+    display: flex; align-items: center; gap: 9px; width: 100%; height: 44px;
+    background: #fff; border: 1.5px solid #d1d5db; border-radius: 10px;
+    padding: 0 14px; cursor: text; text-align: left; transition: border-color .15s, box-shadow .15s;
+}
+.asp-stub:hover { border-color: var(--asp-accent); box-shadow: 0 0 0 3px rgba(99,102,241,.08); }
+.asp-stub-ico { display: flex; flex-shrink: 0; color: #9ca3af; }
+.asp-stub-text {
+    flex: 1; min-width: 0; font-size: 14px; color: #9ca3af;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* — Theme-matched stub skins: the header trigger inherits each storefront's
+     native search-box look (background, border, radius, height, icon-on-right).
+     Scoped by [data-asp-theme] so only the matching storefront is affected. — */
+[data-asp-theme="oct_showcase"] .asp-stub {
+    height: 38px; gap: 6px; padding: 0 12px;
+    background: #f8f9fa; border: 1px solid #f2f4f8; border-radius: 8px;
+}
+[data-asp-theme="oct_showcase"] .asp-stub:hover { border-color: #e2e6ee; box-shadow: none; }
+[data-asp-theme="oct_showcase"] .asp-stub-text { order: 1; font-size: .75rem; color: #6c757d; }
+[data-asp-theme="oct_showcase"] .asp-stub-ico { order: 2; margin-left: auto; color: #6e7458; }
+
+[data-asp-theme="oct_deals"] .asp-stub {
+    height: 38px; gap: 6px; padding: 0 12px;
+    background: #fff; border: 1px solid #ced4da; border-radius: 7px;
+}
+[data-asp-theme="oct_deals"] .asp-stub:hover { border-color: #b9c0c8; box-shadow: none; }
+[data-asp-theme="oct_deals"] .asp-stub-text { order: 1; font-size: 12px; color: #6c757d; }
+[data-asp-theme="oct_deals"] .asp-stub-ico { order: 2; margin-left: auto; color: #00171f; }
+
+/* — Dim overlay — */
+.asp-overlay { position: fixed; inset: 0; background: rgba(17,24,39,.42); z-index: 2147483646; display: none; }
+body.asp-pop-open { overflow: hidden; }
+
+/* — Popup shell (overrides base .asp-results positioning) — */
+.asp-pop {
+    position: fixed; top: 0; left: 0; right: auto;
+    width: min(720px, calc(100vw - 24px)); max-height: 82vh;
+    display: none; flex-direction: column;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.20); overflow: hidden; z-index: 2147483647;
+}
+.asp-pop.open { display: flex; }
+
+/* — Popup head: magnifier + real input + clear/mic/close — */
+.asp-pop-head {
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    padding: 14px 16px; border-bottom: 1px solid #eef0f3;
+}
+.asp-pop-ico { display: flex; flex-shrink: 0; color: #9ca3af; }
+.asp-pop-input {
+    flex: 1; min-width: 0; border: 0; outline: 0; background: none;
+    font-size: 16px; line-height: 1.3; color: #111827; padding: 3px 0;
+}
+.asp-pop-input::placeholder { color: #9ca3af; }
+.asp-pop-clear, .asp-pop-close {
+    flex-shrink: 0; width: 32px; height: 32px; border: 0; border-radius: 8px; padding: 0;
+    background: #f3f4f6; color: #6b7280; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s;
+}
+.asp-pop-clear:hover { background: #e5e7eb; color: #111827; }
+.asp-pop-close:hover { background: #fee2e2; color: #dc2626; }
+.asp-pop-head .asp-mic-btn { width: 32px; height: 32px; border-radius: 8px; }
+
+/* — Popup body: single scroll container (disable nested scrollers) — */
+.asp-pop-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.asp-pop .asp-sr { max-height: none; }
+.asp-pop .asp-side { overflow: visible; position: sticky; top: 0; align-self: flex-start; }
+.asp-pop .asp-groups { overflow: visible; }
+.asp-pop .asp-list { max-height: none; overflow: visible; }
+
+/* — History chips (clear-all + per-item ×) — */
+.asp-dash-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.asp-dash-clear {
+    display: inline-flex; align-items: center; gap: 5px; background: none; border: 0;
+    padding: 4px 6px; font-size: 13px; font-weight: 500; color: #9ca3af; cursor: pointer;
+    border-radius: 6px; transition: color .15s, background .15s;
+}
+.asp-dash-clear:hover { color: #dc2626; background: #fef2f2; }
+.asp-dash-clear .asp-svg-trash { width: 15px; height: 15px; }
+.asp-hist-chip { padding-right: 7px; }
+.asp-hist-chip-t { cursor: pointer; }
+.asp-hist-x {
+    display: inline-flex; align-items: center; justify-content: center; padding: 0;
+    width: 18px; height: 18px; border: 0; border-radius: 50%;
+    background: rgba(0,0,0,.07); color: #6b7280; cursor: pointer; transition: background .15s, color .15s;
+    flex: 0 0 auto;
+}
+.asp-hist-x:hover { background: #dc2626; color: #fff; }
+.asp-hist-x .asp-svg-x { width: 11px; height: 11px; }
+
+/* Mobile: popup is a full-screen sheet with vertical scroll (JS sets height). */
+@media (max-width: 768px) {
+    .asp-pop { max-height: none; border-radius: 0; border: 0; box-shadow: none; }
+    .asp-pop-head { padding: 12px 13px; position: sticky; top: 0; background: #fff; z-index: 2; }
+    .asp-pop-input { font-size: 16px; }
+    .asp-pop .asp-side { position: static; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Inline layout (autocomplete_layout=inline): the header field IS the live
+   search input; results drop in-place below it (classic autocomplete), no
+   detached overlay / stub.
+   ════════════════════════════════════════════════════════════════════════ */
+.asp-search.asp-mode-inline { position: relative; }
+.asp-mode-inline .asp-stub { display: none; }
+.asp-mode-inline .asp-pop {
+    display: flex; position: static; width: 100%; max-height: none;
+    background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; z-index: auto;
+}
+.asp-mode-inline .asp-pop-head {
+    border: 1.5px solid #d1d5db; border-radius: 10px; background: #fff;
+    padding: 0 12px; height: 44px;
+}
+.asp-mode-inline .asp-pop-head:focus-within { border-color: var(--asp-accent); box-shadow: 0 0 0 3px rgba(99,102,241,.08); }
+.asp-mode-inline .asp-pop-close { display: none; }
+.asp-mode-inline .asp-pop-body {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.12); max-height: 74vh; overflow-y: auto;
+    display: none; z-index: 1050;
+}
+.asp-mode-inline .asp-pop.open .asp-pop-body { display: block; }
+@media (max-width: 768px) {
+    .asp-mode-inline .asp-pop-body { left: -8px; right: -8px; max-height: 70vh; }
+}

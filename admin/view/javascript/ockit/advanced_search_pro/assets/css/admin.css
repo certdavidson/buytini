@@ -1,0 +1,174 @@
+/**
+ * Advanced Search Pro — Admin UI styles
+ * @author    oc-kit.com
+ * @copyright Copyright (c) 2024-2026 oc-kit.com. All rights reserved.
+ * @link      https://oc-kit.com
+ */
+
+/* ── Wizard ─────────────────────────────────────────────────────────────────── */
+
+.oc-kit .asp-wiz-block   { cursor: default; text-align: left; }
+
+.oc-kit .asp-wiz-summary { border-collapse: collapse; min-width: 260px; }
+.oc-kit .asp-wiz-summary td { padding: 4px 12px 4px 0; font-size: 13px; }
+
+/* ── Embed fields grid ───────────────────────────────────────────────────────── */
+
+.oc-kit .asp-embed-fields { display: flex; flex-wrap: wrap; gap: 12px 24px; padding-top: 4px; }
+.oc-kit .asp-embed-field  { display: flex; align-items: center; gap: 6px; }
+.oc-kit .asp-embed-field .ok-toggle-wrap { margin: 0; }
+
+/* ── Attribute search dropdown ────────────────────────────────────────────────── */
+
+.oc-kit .asp-attr-wrap { position: relative; max-width: 340px; margin-bottom: 12px; }
+
+.oc-kit .ok-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid #e0e4eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.oc-kit .ok-dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #2c3e50;
+  border-bottom: 1px solid #f4f6f9;
+}
+.oc-kit .ok-dropdown-item:hover { background: #f0f6ff; }
+
+/* ── Log / monospace outputs ─────────────────────────────────────────────────── */
+
+.oc-kit .asp-log { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; }
+
+/* ── Index — manual run ──────────────────────────────────────────────────────── */
+
+.oc-kit .asp-run-btns { flex-wrap: wrap; }
+.oc-kit .asp-run-log-wrap { flex: 1; min-width: 0; }
+
+/* ── Daemons ─────────────────────────────────────────────────────────────────── */
+
+.oc-kit .asp-trend-chart { min-height: 200px; }
+
+/* ── Query rules ─────────────────────────────────────────────────────────────── */
+
+.oc-kit .asp-qr-actions { margin-left: auto; display: flex; gap: 8px; }
+
+/* ── Stats tab ─────────────────────────────────────────────────────────────────────── */
+.oc-kit .asp-stats-conn-result .ok-badge { height: 34px; padding: 0 16px; font-size: 13px; border-radius: 8px; }
+
+/* ── FAQ ─────────────────────────────────────────────────────────────────────── */
+
+.oc-kit .asp-faq-item:not(:last-child) { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px; }
+.oc-kit .asp-faq-title { font-weight: 600; margin: 0 0 4px; }
+.oc-kit .asp-faq-text  { margin: 0; }
+
+/* ── License tab ─────────────────────────────────────────────────────────────── */
+
+.oc-kit .asp-license-center { display: flex; justify-content: center; align-items: flex-start; min-height: 50vh; padding: 40px 20px; }
+.oc-kit .asp-license-card   { width: 100%; max-width: 520px; }
+.oc-kit .asp-license-brand  { text-align: center; margin-bottom: 32px; }
+.oc-kit .asp-license-icon   { font-size: 48px; color: #6366f1; margin-bottom: 8px; }
+.oc-kit .asp-license-title  { font-size: 20px; font-weight: 700; color: #1e293b; }
+.oc-kit .asp-license-sub    { font-size: 13px; color: #64748b; margin-top: 4px; }
+.oc-kit .asp-license-sub a  { color: #6366f1; text-decoration: none; }
+.oc-kit .asp-license-badge  { margin-bottom: 16px; }
+.oc-kit .asp-license-badge .ok-badge { font-size: 14px; padding: 6px 12px; }
+.oc-kit .asp-license-meta   { margin-bottom: 8px; font-size: 13px; color: #475569; }
+
+/* ── AI provider brand icons (inline SVG) ─────────────────────────────────────── */
+.oc-kit .asp-brand-icon svg { width: 28px; height: 28px; display: block; margin-left: auto; margin-right: auto; }
+
+/* ── Dictionary ──────────────────────────────────────────────────────────────── */
+
+.oc-kit #dict-preview-total { font-size: 12px; font-weight: normal; }
+.oc-kit .ok-block-body-flush { padding: 0; }
+
+/* ── Popular products / brands picker ──────────────────────────────────────────── */
+
+.oc-kit .asp-picker { max-width: 520px; }
+.oc-kit .asp-picker-search { position: relative; max-width: 340px; }
+.oc-kit .asp-picker-chips {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.oc-kit .asp-picker-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px 5px 10px;
+  background: #f0f6ff;
+  border: 1px solid #d4e2f7;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #2c3e50;
+  cursor: grab;
+}
+.oc-kit .asp-picker-chip--drag { opacity: .5; }
+.oc-kit .asp-picker-chip-t { line-height: 1.2; }
+.oc-kit .asp-picker-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #8a97a8;
+  cursor: pointer;
+}
+.oc-kit .asp-picker-x:hover { background: #e0467e; color: #fff; }
+.oc-kit .asp-picker-x svg { width: 13px; height: 13px; }
+
+/* Disabled sidebar tab (feature shipped in a later version) */
+.oc-kit .ok-tabs-sidebar-item.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.oc-kit .ok-tabs-sidebar-item.is-disabled .asp-soon-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #eceff1;
+  color: #607d8b;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* "Coming soon" empty state inside disabled tab panel */
+.oc-kit .asp-coming-soon {
+  padding: 64px 24px;
+  text-align: center;
+  color: #607d8b;
+}
+.oc-kit .asp-coming-soon__icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 12px;
+  color: #b0bec5;
+}
+.oc-kit .asp-coming-soon h3 {
+  font-size: 18px;
+  margin: 4px 0 8px;
+  color: #455a64;
+}
+.oc-kit .asp-coming-soon p {
+  margin: 0;
+  font-size: 14px;
+}

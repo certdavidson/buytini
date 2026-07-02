@@ -1,0 +1,27 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="ok-sidebar">
+  <div class="ok-brand">
+    <div class="ok-brand-icon"><i data-lucide="shopping-bag"></i></div>
+    <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+    <span class="ok-brand-name">{{ module_name }} <span class="ok-brand-version">v{{ version }}</span></span>
+  </div>
+
+  <div class="ok-tabs-sidebar">
+    {% for item in sidebar_items %}
+      <button type="button"
+              data-section="{{ item.key }}"
+              @click="setSection('{{ item.key }}')"
+              class="ok-tabs-sidebar-item"
+              :class="{ 'active': section === '{{ item.key }}' }">
+        <i data-lucide="{{ item.icon }}"></i>
+        <span>{{ item.label }}</span>
+        {% if item.key == 'abandoned' and stats.abandoned > 0 %}
+          <span class="ok-badge ok-badge-warning ok-badge-sm">{{ stats.abandoned }}</span>
+        {% endif %}
+        {% if not item.available %}
+          <span class="ok-badge ok-badge-muted ok-badge-sm okec-soon">{{ text_coming_soon }}</span>
+        {% endif %}
+      </button>
+    {% endfor %}
+  </div>
+</div>

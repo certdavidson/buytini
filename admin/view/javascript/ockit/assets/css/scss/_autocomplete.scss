@@ -1,0 +1,245 @@
+// oc-kit Design System — Autocomplete
+// © 2026 oc-kit.com | https://oc-kit.com
+
+.oc-kit {
+
+  .ok-autocomplete {
+    position: relative;
+
+    // ── Dropdown ────────────────────────────────────────────────────────────
+
+    &-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: $ok-white;
+      border: 1px solid $ok-border;
+      border-radius: $ok-radius;
+      box-shadow: $ok-shadow-lg;
+      z-index: 1050;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    // ── Item ────────────────────────────────────────────────────────────────
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: background $ok-trans;
+      border-bottom: 1px solid $ok-bg2;
+
+      &:last-child { border-bottom: none; }
+
+      &:hover,
+      &.active { background: $ok-bg; }
+
+      // Simple variant: image + name only (tighter)
+      &-sm {
+        padding: 7px 12px;
+        gap: 8px;
+      }
+    }
+
+    // ── Image ───────────────────────────────────────────────────────────────
+
+    &-img {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: $ok-bg2;
+      flex-shrink: 0;
+      border: 1px solid $ok-border;
+      display: block;
+
+      .ok-autocomplete-item-sm & {
+        width: 34px;
+        height: 34px;
+        border-radius: 4px;
+      }
+    }
+
+    // ── Body (name + meta) ──────────────────────────────────────────────────
+
+    &-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: $ok-text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+
+      .ok-autocomplete-item-sm & {
+        font-size: 13px;
+        font-weight: 500;
+      }
+    }
+
+    &-sku {
+      display: inline-block;
+      font-size: 12px;
+      color: $ok-muted;
+      margin-top: 2px;
+      font-family: $ok-mono;
+    }
+
+    &-price {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: $ok-text2;
+      margin-top: 2px;
+      margin-left: 8px;
+    }
+
+    // ── Matched text highlight ──────────────────────────────────────────────
+
+    mark {
+      background: rgba($ok-accent2, .14);
+      color: $ok-accent2;
+      padding: 0;
+      border-radius: 2px;
+    }
+
+    // ── Empty state ──────────────────────────────────────────────────────────
+
+    &-empty {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: $ok-muted;
+      text-align: center;
+    }
+
+    // ── Divider label (group separator) ─────────────────────────────────────
+
+    &-group-label {
+      padding: 6px 14px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: $ok-muted;
+      background: $ok-bg;
+      border-bottom: 1px solid $ok-border;
+    }
+  }
+
+  // ── Single-product autocomplete wrapper (preview panel) ─────────────────────
+
+  .ok-preview-autocomplete-wrap {
+    position: relative;
+
+    .ok-multitag-dropdown {
+      min-width: 300px;
+    }
+  }
+
+  // ── Multi-tag select ─────────────────────────────────────────────────────────
+  // Note: .ok-multiselect is reserved in _form.scss for <select multiple>.
+  // This component uses .ok-multitag to avoid the collision.
+
+  .ok-multitag {
+    position: relative;
+
+    &-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      min-height: 38px;
+      border: 1px solid $ok-border2;
+      border-radius: $ok-radius-lg;
+      background: $ok-white;
+      cursor: text;
+      transition: border-color $ok-trans;
+
+      &:focus-within { border-color: $ok-accent2; }
+    }
+
+    &-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 6px 2px 10px;
+      background: $ok-accent2;
+      color: #fff;
+      border-radius: $ok-radius-full;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    &-tag-remove {
+      cursor: pointer;
+      opacity: 0.75;
+      font-size: 14px;
+      line-height: 1;
+      &:hover { opacity: 1; }
+    }
+
+    &-input {
+      border: none;
+      outline: none;
+      flex: 1;
+      min-width: 100px;
+      font-size: 13px;
+      font-family: $ok-font;
+      background: transparent;
+      padding: 2px 0;
+      color: $ok-text;
+    }
+
+    &-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      right: 0;
+      background: $ok-white;
+      border: 1px solid $ok-border;
+      border-radius: $ok-radius;
+      box-shadow: $ok-shadow-lg;
+      z-index: 200;
+      max-height: 220px;
+      overflow-y: auto;
+
+      &.open { display: block; }
+    }
+
+    &-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      color: $ok-text;
+      border-bottom: 1px solid $ok-bg2;
+      transition: background $ok-trans;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      &:last-child { border-bottom: none; }
+      &:hover, &.focused { background: $ok-bg; }
+      &.is-selected { background: $ok-bg; }
+      input[type="checkbox"] { margin: 0; cursor: pointer; }
+    }
+
+    &-empty {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: $ok-muted;
+      text-align: center;
+    }
+  }
+}

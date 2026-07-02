@@ -1,0 +1,20 @@
+<select name="{{ form_name }}" id="okec-f-{{ field.code }}"
+        class="ok-select"
+        autocomplete="{{ autocomplete_attr }}"
+        {% if required %}required{% endif %}>
+  <option value="">{{ field.placeholder }}</option>
+  {% if field.native and field.code == 'country' %}
+    {% for c in countries %}
+      <option value="{{ c.country_id }}"
+              data-iso2="{{ c.iso_code_2 }}"
+              data-phone-mask="{{ c.phone_mask }}"
+              data-phone-prefix="{{ c.phone_pref }}"
+              {% if c.country_id == default_country_id %} selected{% endif %}>{{ c.name }}</option>
+    {% endfor %}
+  {% elseif field.options is defined %}
+    {% for o in field.options %}
+      <option value="{{ o.value }}"{% if o.value == prefill_value %} selected{% endif %}>{{ o.label }}</option>
+    {% endfor %}
+  {% endif %}
+  {# zone — підтягуються через AJAX (loadZones) при зміні country #}
+</select>

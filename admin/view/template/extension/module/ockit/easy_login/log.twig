@@ -1,0 +1,179 @@
+{# Easy Login | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+
+      {% if stats %}
+      <div class="ok-kpi-grid ok-kpi-grid-6 ok-mb-4 ok-mt-0">
+        <div class="ok-kpi-card ok-kpi-card--total">
+          <div class="ok-kpi-card__icon"><i data-lucide="bar-chart-3"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.total }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_total }}</div>
+          </div>
+        </div>
+        <div class="ok-kpi-card ok-kpi-card--ok">
+          <div class="ok-kpi-card__icon"><i data-lucide="check-circle"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.success }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_success }}</div>
+          </div>
+        </div>
+        <div class="ok-kpi-card ok-kpi-card--ok">
+          <div class="ok-kpi-card__icon"><i data-lucide="user-plus"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.registered }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_registered }}</div>
+          </div>
+        </div>
+        <div class="ok-kpi-card ok-kpi-card--ok">
+          <div class="ok-kpi-card__icon"><i data-lucide="link"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.linked }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_linked }}</div>
+          </div>
+        </div>
+        <div class="ok-kpi-card ok-kpi-card--lost">
+          <div class="ok-kpi-card__icon"><i data-lucide="x-circle"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.failed }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_failed }}</div>
+          </div>
+        </div>
+        <div class="ok-kpi-card ok-kpi-card--info">
+          <div class="ok-kpi-card__icon"><i data-lucide="shield-alert"></i></div>
+          <div class="ok-kpi-card__body">
+            <div class="ok-kpi-card__value">{{ stats.rate_limited }}</div>
+            <div class="ok-kpi-card__label">{{ text_stats_rate_limited }}</div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="ok-panel ok-panel-sticky">
+        <div class="ok-panel-header">
+          <div>
+            <ul class="breadcrumb">
+              <li><a href="{{ extensions_url }}">{{ text_extension }}</a></li>
+              <li><a href="{{ settings_url }}">{{ heading_title }}</a></li>
+              <li><a href="#">{{ tab_log }}</a></li>
+            </ul>
+          </div>
+
+          <div class="ok-panel-actions">
+            <a href="{{ settings_url }}" class="ok-btn ok-btn-default ok-btn-sm">
+              <i data-lucide="arrow-left" class="ok-icon-xs"></i> {{ button_back }}
+            </a>
+            <button type="button" id="btn-clear-old" class="ok-btn ok-btn-warning ok-btn-sm" data-url="{{ clear_old_url }}" data-csrf="{{ admin_csrf }}">
+              <i data-lucide="calendar-x" class="ok-icon-xs"></i> {{ button_clear_old }}
+            </button>
+            <button type="button" id="btn-clear-log" class="ok-btn ok-btn-danger ok-btn-sm" data-url="{{ clear_log_url }}" data-csrf="{{ admin_csrf }}">
+              <i data-lucide="trash-2" class="ok-icon-xs"></i> {{ button_clear_log }}
+            </button>
+          </div>
+        </div>
+
+        <form method="get" action="">
+          <input type="hidden" name="route" value="extension/module/oc_kit_easy_login/log">
+          <input type="hidden" name="user_token" value="{{ user_token }}">
+          <div class="ok-filter-bar ok-filter-bar-flush">
+            <div class="ok-filter-search">
+              <i class="fa fa-search"></i>
+              <input type="text" name="filter_email" placeholder="{{ entry_filter_email }}..." value="{{ filter.email }}">
+            </div>
+            <input type="text" name="filter_ip" class="ok-filter-input" placeholder="{{ entry_filter_ip }}" value="{{ filter.ip }}" class="el-w-140">
+            <select name="filter_provider" class="ok-filter-select">
+              <option value="">{{ entry_filter_provider }}</option>
+              {% for p in ['google','telegram','apple','facebook','email_magic','sms_otp'] %}
+                <option value="{{ p }}"{% if filter.provider == p %} selected{% endif %}>{{ p }}</option>
+              {% endfor %}
+            </select>
+            <select name="filter_status" class="ok-filter-select">
+              <option value="">{{ entry_filter_status }}</option>
+              <option value="success"      {% if filter.status == 'success'      %}selected{% endif %}>{{ status_success }}</option>
+              <option value="failed"       {% if filter.status == 'failed'       %}selected{% endif %}>{{ status_failed }}</option>
+              <option value="rate_limited" {% if filter.status == 'rate_limited' %}selected{% endif %}>{{ status_rate_limited }}</option>
+              <option value="linked"       {% if filter.status == 'linked'       %}selected{% endif %}>{{ status_linked }}</option>
+              <option value="registered"   {% if filter.status == 'registered'   %}selected{% endif %}>{{ status_registered }}</option>
+            </select>
+            <div class="ok-filter-date">
+              <span>{{ entry_filter_date_from }}</span>
+              <input type="date" name="filter_date_from" value="{{ filter.date_from }}">
+            </div>
+            <div class="ok-filter-date">
+              <span>{{ entry_filter_date_to }}</span>
+              <input type="date" name="filter_date_to" value="{{ filter.date_to }}">
+            </div>
+            <span class="ok-filter-divider"></span>
+            <button type="submit" class="ok-btn ok-btn-primary ok-btn-sm"><i class="fa fa-search"></i></button>
+            <a href="{{ log_url }}" class="ok-btn ok-btn-default ok-btn-sm"><i class="fa fa-times"></i></a>
+            <span class="ok-filter-count">{{ total }}</span>
+          </div>
+        </form>
+
+        <div class="ok-table-container">
+          {% if entries %}
+          <table class="ok-table">
+            <thead>
+              <tr>
+                <th>{{ column_created_at }}</th>
+                <th>{{ column_provider }}</th>
+                <th>{{ column_status }}</th>
+                <th>{{ column_email }}</th>
+                <th>{{ column_customer_id }}</th>
+                <th>{{ column_ip }}</th>
+                <th>{{ column_error }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in entries %}
+                <tr>
+                  <td><span class="ok-muted ok-text-sm">{{ e.created_at }}</span></td>
+                  <td><span class="ok-badge ok-badge-info-soft">{{ e.provider }}</span></td>
+                  <td>
+                    {% set s = e.status %}
+                    {% if s == 'success' %}<span class="ok-badge ok-badge-success-soft">{{ status_success }}</span>
+                    {% elseif s == 'registered' %}<span class="ok-badge ok-badge-success-soft">{{ status_registered }}</span>
+                    {% elseif s == 'linked' %}<span class="ok-badge ok-badge-info-soft">{{ status_linked }}</span>
+                    {% elseif s == 'failed' %}<span class="ok-badge ok-badge-danger-soft">{{ status_failed }}</span>
+                    {% elseif s == 'rate_limited' %}<span class="ok-badge ok-badge-warning-soft">{{ status_rate_limited }}</span>
+                    {% else %}<span class="ok-badge ok-badge-muted">{{ s }}</span>{% endif %}
+                  </td>
+                  <td>{{ e.email ?: '—' }}</td>
+                  <td>{{ e.customer_id ?: '—' }}</td>
+                  <td><span class="ok-muted ok-text-sm">{{ e.ip ?: '—' }}</span></td>
+                  <td>
+                    {% if e.error %}
+                      <span title="{{ e.error }}" class="ok-muted ok-text-sm">{{ e.error|slice(0, 45) }}{% if e.error|length > 45 %}…{% endif %}</span>
+                    {% else %}<span class="ok-muted">—</span>{% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+            <div class="ok-empty-state"><i data-lucide="inbox" class="el-icon-48"></i><p>{{ text_log_empty }}</p></div>
+          {% endif %}
+        </div>
+
+        {% if pages > 1 %}
+          <div class="ok-pagination-wrap">
+            <ul class="pagination">
+              {% set qs = '&filter_provider=' ~ filter.provider ~ '&filter_status=' ~ filter.status ~ '&filter_email=' ~ filter.email ~ '&filter_ip=' ~ filter.ip ~ '&filter_date_from=' ~ filter.date_from ~ '&filter_date_to=' ~ filter.date_to %}
+              {% for p in 1..pages %}
+                <li{% if p == page %} class="active"{% endif %}><a href="{{ log_url }}{{ qs }}&page={{ p }}">{{ p }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+window.elI18n = {{ js_lang|json_encode }};
+</script>
+{{ footer }}

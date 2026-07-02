@@ -224,25 +224,34 @@
     show(m);
   }
 
-  /* ---------- Галерея товару ---------- */
-  function galleryThumbs() { return Array.prototype.slice.call(document.querySelectorAll("[data-gallery-thumb]")); }
-  function setGallery(idx) {
-    var thumbs = galleryThumbs();
-    if (!thumbs.length) return;
-    idx = (idx + thumbs.length) % thumbs.length;
-    var main = byId("gallery-main");
-    var img = thumbs[idx].getAttribute("data-img");
-    if (main) { main.style.backgroundImage = img; main.setAttribute("data-current", String(idx)); }
-    thumbs.forEach(function (t, i) { t.classList.toggle("is-active", i === idx); });
-    var counter = document.querySelector("[data-gallery-counter]");
-    if (counter) counter.textContent = (idx + 1) + "/" + thumbs.length;
-    var lb = byId("modal-lightbox");
-    if (lb) { var lbImg = lb.querySelector("[data-lightbox-img]"); if (lbImg) lbImg.style.backgroundImage = img; }
-  }
-  function galleryStep(dir) {
-    var main = byId("gallery-main");
-    var cur = main ? parseInt(main.getAttribute("data-current") || "0", 10) : 0;
-    setGallery(cur + dir);
+  /* ---------- Галерея товару (Swiper) ---------- */
+  function initGallery() {
+    var mainEl = document.querySelector("[data-gallery-main]");
+    if (!mainEl || typeof Swiper === "undefined") return;
+    var stage = mainEl.closest(".gallery__stage");
+    var thumbsEl = document.querySelector("[data-gallery-thumbs]");
+    var thumbs = thumbsEl ? new Swiper(thumbsEl, {
+      slidesPerView: "auto",
+      freeMode: true,
+      watchSlidesProgress: true,
+      spaceBetween: 10,
+      breakpoints: {
+        0: { direction: "horizontal" },
+        521: { direction: "vertical" }
+      }
+    }) : null;
+    new Swiper(mainEl, {
+      speed: 400,
+      navigation: {
+        prevEl: stage.querySelector("[data-gallery-prev]"),
+        nextEl: stage.querySelector("[data-gallery-next]")
+      },
+      pagination: {
+        el: mainEl.querySelector("[data-gallery-counter]"),
+        type: "fraction"
+      },
+      thumbs: thumbs ? { swiper: thumbs } : undefined
+    });
   }
 
   /* ---------- Опції товару (колір / розмір) ---------- */
@@ -287,15 +296,20 @@
 
     // Модалки
     var modalOpen = t.closest("[data-modal-open]");
-    if (modalOpen) { e.preventDefault(); openModal(modalOpen.getAttribute("data-modal-open")); return; }
+    if (modalOpen) {
+      e.preventDefault();
+      var modalName = modalOpen.getAttribute("data-modal-open");
+      if (modalName === "lightbox") {
+        var img = modalOpen.getAttribute("data-img");
+        var lb = byId("modal-lightbox");
+        var lbImg = lb && lb.querySelector("[data-lightbox-img]");
+        if (lbImg && img) lbImg.style.backgroundImage = img;
+      }
+      openModal(modalName);
+      return;
+    }
     if (t.closest("[data-modal-close]")) { var md = t.closest(".modal"); hide(md); return; }
     if (t.classList && t.classList.contains("modal")) { hide(t); return; }
-
-    // Галерея
-    var gThumb = t.closest("[data-gallery-thumb]");
-    if (gThumb) { setGallery(parseInt(gThumb.getAttribute("data-gallery-thumb"), 10)); return; }
-    if (t.closest("[data-gallery-prev]")) { galleryStep(-1); return; }
-    if (t.closest("[data-gallery-next]")) { galleryStep(1); return; }
 
     // Опції товару
     var colorBtn = t.closest("[data-color]");
@@ -726,6 +740,7 @@
     if (document.body && document.body.hasAttribute("data-confetti")) launchConfetti();
     recalc();
     recalcHiw();
+    initGallery();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onReady);
   else onReady();

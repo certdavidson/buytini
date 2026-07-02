@@ -1,0 +1,8 @@
+<div class="okec-field__group" data-group-cols="{{ field.columns|default(1) }}">
+  {% if field.children is defined %}
+    {% for child in field.children %}
+      {% set field = child %}
+      {% include template_dir ~ 'easycheckout/_field.twig' %}
+    {% endfor %}
+  {% endif %}
+</div>

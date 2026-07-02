@@ -1,0 +1,370 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+
+<div class="ok-panel">
+
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="settings"></i> {{ tab_general }}
+    </div>
+  </div>
+
+  <div class="ok-panel-body">
+
+    {#<div class="ok-alert ok-alert-info">
+      <i data-lucide="info"></i>
+      <span>{{ text_dev_stage }}</span>
+    </div>#}
+
+    <div class="ok-form-row">
+      <label class="form-label" for="input-status">{{ entry_status }}</label>
+      <div class="ok-form-control">
+        <label class="ok-toggle-wrap ok-toggle-sm">
+          <input type="hidden" name="module_oc_kit_easycheckout_status" value="0">
+          <input type="checkbox" class="ok-toggle-input" id="input-status" name="module_oc_kit_easycheckout_status" value="1"
+                {% if module_oc_kit_easycheckout_status %}checked{% endif %}>
+          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+          <span class="ok-toggle-label">
+            {% if module_oc_kit_easycheckout_status %}{{ text_enabled }}{% else %}{{ text_disabled }}{% endif %}
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="ok-form-row">
+      <label class="form-label" for="input-route-value">{{ entry_route }}</label>
+      <div>
+        <div class="ok-d-inline-flex">
+          <input type="text" id="input-route-value" class="ok-input ok-input-sm ok-code-input"
+                 name="module_oc_kit_easycheckout_route_keyword" pattern="[a-z0-9_\-]+"
+                 value="{{ module_oc_kit_easycheckout_route_keyword|default(route_value) }}"
+                 placeholder="easycheckout">
+        </div>
+        <p class="ok-help">{{ help_route }}</p>
+      </div>
+    </div>
+
+    {# ── Integration setup (seo_url + redirect event) ─────────────────── #}
+    <div class="ok-form-row"
+        x-data='{
+          status: {{ integration_status|json_encode }},
+          busy:   false,
+          _post: function (url) {
+            var self = this;
+            self.busy = true;
+            fetch(url, { method: "POST", credentials: "same-origin" })
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                self.busy = false;
+                if (data.success) {
+                  self.status = data.status;
+                  window.okNotify(data.message, "success");
+                } else {
+                  window.okNotify(data.message || "Error", "error");
+                }
+              })
+              .catch(function () { self.busy = false; window.okNotify("Network error", "error"); });
+          },
+          setup:  function () { this._post("{{ url_integration_setup }}"); },
+          remove: function () { if (confirm("Remove integration?")) this._post("{{ url_integration_remove }}"); }
+        }'>
+      <label class="form-label">{{ entry_integration }}</label>
+      <div class="ok-form-control">
+        <div class="okec-integration-status">
+          <span class="ok-badge ok-badge-default"
+                :class="status.is_active ? 'ok-badge-success-soft' : 'ok-badge-muted'">
+            <i :data-lucide="status.is_active ? 'check-circle' : 'circle-dashed'"></i>
+            <span class="ok-ml-1" x-text="status.is_active ? '{{ integration_active }}' : '{{ integration_inactive }}'"></span>
+          </span>
+
+          <button type="button" class="ok-btn ok-btn-primary ok-btn-sm"
+                  x-show="!status.is_active" x-cloak
+                  @click="setup()" :disabled="busy">
+            <i data-lucide="zap"></i> {{ integration_btn_setup }}
+          </button>
+          <button type="button" class="ok-btn ok-btn-default ok-btn-sm"
+                  x-show="status.is_active" x-cloak
+                  @click="remove()" :disabled="busy">
+            <i data-lucide="x"></i> {{ integration_btn_remove }}
+          </button>
+        </div>
+
+        <p class="ok-help">{{ help_integration }}</p>
+
+        <div class="okec-integration-checks ok-flex ok-gap-6">
+          <div :class="status.seo_url === status.seo_url_total ? 'ok-alert ok-alert-compact ok-alert-success' : 'ok-alert ok-alert-compact ok-alert-warning'">
+            <!-- <i :data-lucide="status.seo_url === status.seo_url_total ? 'check' : 'alert-triangle'"></i> -->
+            <span x-text="'SEO URL: ' + status.seo_url + ' / ' + status.seo_url_total + ' {{ integration_languages }}'"></span>
+          </div>
+          <div :class="status.event ? 'ok-alert ok-alert-compact ok-alert-success' : 'ok-alert ok-alert-compact ok-alert-warning'">
+            <!-- <i :data-lucide="status.event ? 'check' : 'alert-triangle'"></i> -->
+            <span x-text="status.event ? '{{ integration_event_active }}' : '{{ integration_event_inactive }}'"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ok-form-row">
+      <label class="form-label" for="input-replace-links">{{ entry_replace_checkout_links }}</label>
+      <div class="ok-form-control">
+        <label class="ok-toggle-wrap ok-toggle-sm">
+          <input type="hidden" name="module_oc_kit_easycheckout_replace_checkout_links" value="0">
+          <input type="checkbox" class="ok-toggle-input" id="input-replace-links" name="module_oc_kit_easycheckout_replace_checkout_links" value="1"
+                {% if module_oc_kit_easycheckout_replace_checkout_links %}checked{% endif %}>
+          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+          <span class="ok-toggle-label">
+            {% if module_oc_kit_easycheckout_replace_checkout_links %}{{ text_yes }}{% else %}{{ text_no }}{% endif %}
+          </span>
+        </label>
+        <p class="ok-help">{{ help_replace_checkout_links }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{# ── Default country (for the native `country` field) ──────────────── #}
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="globe"></i> {{ settings_section_country }}
+    </div>
+  </div>
+  <div class="ok-panel-body">
+    <div class="ok-form-row">
+      <label class="form-label" for="input-default-country">{{ entry_default_country }}</label>
+      <div class="ok-form-control">
+        <select id="input-default-country" name="module_oc_kit_easycheckout_default_country_id" class="ok-select">
+          {% for country in countries %}
+            <option value="{{ country.country_id }}"
+                    {% if country.country_id == module_oc_kit_easycheckout_default_country_id %}selected{% endif %}>
+              {{ country.name }}
+            </option>
+          {% endfor %}
+        </select>
+        <p class="ok-help">{{ help_default_country }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ── Backup: export / import ALL settings ─────────────────────────── #}
+<div class="ok-panel"
+     x-data='{
+       importing: false,
+       doImport: function (input) {
+         var self = this;
+         if (!input.files || !input.files.length) return;
+         if (!confirm("{{ settings_import_confirm|e('js') }}")) { input.value = ""; return; }
+         var fd = new FormData();
+         fd.append("file", input.files[0]);
+         self.importing = true;
+         fetch("{{ url_settings_import }}", { method: "POST", body: fd, credentials: "same-origin" })
+           .then(function (r) { return r.json(); })
+           .then(function (data) {
+             self.importing = false;
+             input.value = "";
+             window.okNotify((data && data.message) || "OK", data && data.success ? "success" : "error");
+             if (data && data.success) setTimeout(function () { location.reload(); }, 900);
+           })
+           .catch(function () { self.importing = false; input.value = ""; window.okNotify("Network error", "error"); });
+       }
+     }'>
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="database-backup"></i> {{ settings_backup_heading }}
+    </div>
+  </div>
+  <div class="ok-panel-body">
+    <p class="ok-help">{{ settings_backup_help }}</p>
+    <div class="okec-backup-actions">
+      <a href="{{ url_settings_export }}" class="ok-btn ok-btn-default">
+        <i data-lucide="download"></i> {{ settings_export_btn }}
+      </a>
+      <button type="button" class="ok-btn ok-btn-default" :disabled="importing"
+              @click="$refs.importFile.click()">
+        <i data-lucide="upload"></i>
+        <span x-text="importing ? '{{ js_saving|e('js') }}' : '{{ settings_import_btn|e('js') }}'"></span>
+      </button>
+      <input type="file" accept="application/json,.json" x-ref="importFile" class="ok-hidden"
+             @change="doImport($event.target)">
+    </div>
+  </div>
+</div>
+
+{# ── Abandoned reminder ───────────────────────────────────────────── #}
+<div class="ok-panel">
+  <div class="ok-panel-header">
+    <div class="ok-panel-title">
+      <i data-lucide="bell-ring"></i> {{ entry_reminder }}
+    </div>
+  </div>
+  <div class="ok-panel-body">
+<p class="ok-help">{{ help_reminder }}</p>
+
+<div class="ok-form-row">
+  <label class="form-label" for="input-reminder-enabled">{{ entry_reminder_enabled }}</label>
+  <div class="ok-form-control">
+    <label class="ok-toggle-wrap ok-toggle-sm">
+      <input type="hidden" name="module_oc_kit_easycheckout_reminder_enabled" value="0">
+      <input type="checkbox" class="ok-toggle-input" id="input-reminder-enabled" name="module_oc_kit_easycheckout_reminder_enabled" value="1"
+             {% if module_oc_kit_easycheckout_reminder_enabled %}checked{% endif %}>
+      <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+      <span class="ok-toggle-label">
+        {% if module_oc_kit_easycheckout_reminder_enabled %}{{ text_enabled }}{% else %}{{ text_disabled }}{% endif %}
+      </span>
+    </label>
+  </div>
+</div>
+
+<div class="ok-form-row">
+  <label class="form-label" for="input-reminder-delay">{{ entry_reminder_delay }}</label>
+  <div class="ok-form-control">
+    <input type="text" inputmode="decimal" id="input-reminder-delay"
+           name="module_oc_kit_easycheckout_reminder_delay_minutes"
+           class="ok-input ok-code-input" min="5" max="10080" step="5"
+           value="{{ module_oc_kit_easycheckout_reminder_delay_minutes }}">
+    <p class="ok-help">{{ help_reminder_delay }}</p>
+  </div>
+</div>
+
+<div class="ok-form-row">
+  <label class="form-label" for="input-reminder-delays">{{ entry_reminder_delays }}</label>
+  <div class="ok-form-control">
+    <input type="text" id="input-reminder-delays"
+           name="module_oc_kit_easycheckout_reminder_delays"
+           class="ok-input ok-code-input"
+           placeholder="60, 1440, 4320"
+           value="{{ module_oc_kit_easycheckout_reminder_delays }}">
+    <p class="ok-help">{{ help_reminder_delays }}</p>
+  </div>
+</div>
+
+<div class="ok-form-row">
+  <label class="form-label" for="input-abandoned-retention">{{ entry_abandoned_retention }}</label>
+  <div class="ok-form-control">
+    <input type="text" inputmode="decimal" id="input-abandoned-retention"
+           name="module_oc_kit_easycheckout_abandoned_retention_days"
+           class="ok-input ok-code-input" min="7" max="3650" step="1"
+           value="{{ module_oc_kit_easycheckout_abandoned_retention_days }}">
+    <p class="ok-help">{{ help_abandoned_retention }}</p>
+  </div>
+</div>
+
+<div class="ok-form-row ok-form-row--block">
+  <label class="form-label" for="input-reminder-blacklist">{{ entry_reminder_blacklist }}</label>
+  <div class="ok-form-control">
+    <textarea id="input-reminder-blacklist" name="module_oc_kit_easycheckout_reminder_blacklist"
+              class="ok-input ok-code-input" rows="4"
+              placeholder="*@example.com&#10;test@mystore.com">{{ module_oc_kit_easycheckout_reminder_blacklist }}</textarea>
+    <p class="ok-help">{{ help_reminder_blacklist }}</p>
+  </div>
+</div>
+
+<div class="ok-form-row ok-form-row--block">
+  <label class="form-label">{{ entry_reminder_template }}</label>
+  <div class="ok-form-control">
+    <p class="ok-help">{{ help_reminder_template }}</p>
+    <div x-data="{ activeLang: '{{ languages[0].code }}' }">
+      <div class="ok-tabs">
+        {% for lang in languages %}
+          <button type="button" class="ok-tabs-item"
+                  :class="{ 'active': activeLang === '{{ lang.code }}' }"
+                  @click="activeLang = '{{ lang.code }}'">
+            <img src="language/{{ lang.code }}/{{ lang.code }}.png" alt="{{ lang.name }}" class="okec-reminder-lang__flag">
+            {{ lang.name }}
+          </button>
+        {% endfor %}
+      </div>
+      {% for lang in languages %}
+        <div class="okec-reminder-lang" x-show="activeLang === '{{ lang.code }}'" x-cloak>
+          <div class="ok-form-row ok-form-row--block">
+            <label class="form-label" for="input-reminder-subject-{{ lang.code }}">{{ entry_reminder_subject }}</label>
+            <div class="ok-form-control">
+              <input type="text" id="input-reminder-subject-{{ lang.code }}"
+                     name="reminder_subject[{{ lang.code }}]"
+                     class="ok-input"
+                     placeholder="{{ entry_reminder_subject }}"
+                     value="{{ module_oc_kit_easycheckout_reminder_subject[lang.code] }}">
+            </div>
+          </div>
+          <div class="ok-form-row ok-form-row--block">
+            <label class="form-label" for="input-reminder-body-{{ lang.code }}">{{ entry_reminder_body }}</label>
+            <div class="ok-form-control">
+              <textarea id="input-reminder-body-{{ lang.code }}"
+                        name="reminder_body[{{ lang.code }}]" rows="6"
+                        class="ok-input"
+                        placeholder="{{ entry_reminder_body }}">{{ module_oc_kit_easycheckout_reminder_body[lang.code] }}</textarea>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {# Reminder template actions: preview / test / reset — single toolbar #}
+    <div class="okec-reminder-toolbar"
+         x-data="Object.assign(okecReminderPreview(), { email: '', sending: false })">
+      <select class="ok-select ok-w-160" x-model="lang">
+        {% for lang in languages %}
+          <option value="{{ lang.code }}">{{ lang.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" @click="open()">
+        <i data-lucide="eye"></i> {{ button_reminder_preview }}
+      </button>
+
+      <input type="email" class="ok-input" x-model="email" :placeholder="t('entry_reminder_test_email')">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" :disabled="sending || !email"
+              @click="
+                sending = true;
+                window.okPost(urlReminderTest, { email: email }, function (data) {
+                  sending = false;
+                  window.okNotify((data && data.message) || (data && data.success ? 'OK' : 'Failed'),
+                                  data && data.success ? 'success' : 'error');
+                }, function () { sending = false; window.okNotify(t('js_network_error'), 'error'); });
+              ">
+        <i data-lucide="send"></i>
+        <span x-text="sending ? t('js_saving') : t('button_reminder_test')"></span>
+      </button>
+
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm ok-ml-auto"
+              @click="if (confirm(t('text_reminder_reset_confirm'))) {
+                document.querySelectorAll('[name^=\'reminder_subject\'],[name^=\'reminder_body\']').forEach(function (el) { el.value = ''; });
+                window.okNotify(t('text_reminder_reset_done'), 'success');
+              }">
+        <i data-lucide="rotate-ccw"></i> {{ button_reminder_reset }}
+      </button>
+
+      {# Preview modal #}
+      <div class="okec-modal" x-show="modalOpen" x-cloak @keydown.escape.window="modalOpen = false">
+        <div class="okec-modal__backdrop" @click="modalOpen = false"></div>
+        <div class="okec-modal__dialog okec-modal__dialog--lg">
+          <div class="okec-modal__header">
+            <h3><i data-lucide="eye"></i> {{ button_reminder_preview }} — <span x-text="lang"></span></h3>
+            <button type="button" class="okec-modal__close" @click="modalOpen = false"><i data-lucide="x"></i></button>
+          </div>
+          <div class="okec-modal__body">
+            <p class="ok-help"><strong x-text="t('entry_reminder_subject') + ':'"></strong> <span x-text="rendered.subject"></span></p>
+            <iframe :srcdoc="rendered.body" class="okec-reminder-preview-frame"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Cron command — copy block #}
+    <div class="ok-mt-3">
+      <p class="ok-help"><strong>Cron-розсилка email-нагадувань:</strong></p>
+      <div class="ok-copyable">
+        <div class="ok-code-block" id="okec-cron-cmd">*/15 * * * * php {{ cron_path }} > /dev/null 2>&amp;1</div>
+        <button type="button" class="ok-btn ok-btn-default ok-btn-xs ok-copy-btn" data-target="okec-cron-cmd">
+          <i class="fa fa-copy"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<script>
+window.urlReminderTest = '{{ url_reminder_test }}';
+</script>

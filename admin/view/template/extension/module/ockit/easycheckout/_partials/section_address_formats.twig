@@ -1,0 +1,133 @@
+{# EasyCheckout | © 2026 oc-kit.com | https://oc-kit.com #}
+<h2 class="ok-section-title">{{ address_formats_heading }}</h2>
+<p class="ok-help">{{ address_formats_help }}</p>
+
+<div x-data="okecAddressFormats()" x-init="load()">
+  <div class="okec-loading" x-show="loading"><i data-lucide="loader" class="okec-spin"></i></div>
+
+  <div class="ok-panel" x-show="!loading && items.length > 0" x-cloak>
+    <div class="ok-panel-header"><span><i data-lucide="map-pin"></i> {{ address_formats_heading }}</span></div>
+    <div class="ok-table-wrap">
+    <table class="ok-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>{{ address_formats_col_scope }}</th>
+          <th>{{ address_formats_col_scope_id }}</th>
+          <th>{{ address_formats_col_language }}</th>
+          <th>{{ address_formats_col_template }}</th>
+          <th class="okec-col-actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="f in items" :key="f.format_id">
+          <tr>
+            <td x-text="f.format_id"></td>
+            <td><code class="ok-code" x-text="f.scope"></code></td>
+            <td><code class="ok-code" x-text="f.scope_id"></code></td>
+            <td x-text="languageById(f.language_id)"></td>
+            <td><pre class="okec-format-preview" x-text="f.template.length > 80 ? (f.template.slice(0,80)+'…') : f.template"></pre></td>
+            <td class="okec-col-actions">
+              <button type="button" class="ok-btn ok-btn-default ok-btn-xs" @click="openEdit(f)" :title="t('button_edit')">
+                <i data-lucide="pencil"></i>
+              </button>
+              <button type="button" class="ok-btn ok-btn-danger ok-btn-xs" @click="del(f)" :title="t('button_delete')">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="okec-empty" x-show="!loading && items.length === 0" x-cloak>
+    <p>{{ address_formats_empty }}</p>
+    <button type="button" class="ok-btn ok-btn-primary ok-mt-3" @click="openCreate()">
+      <i data-lucide="plus"></i> {{ button_add_format }}
+    </button>
+  </div>
+
+  
+
+  {# Modal #}
+  <div class="okec-modal" x-show="modalOpen" x-cloak @keydown.escape.window="modalOpen = false">
+    <div class="okec-modal__backdrop" @click="modalOpen = false"></div>
+    <div class="okec-modal__dialog">
+      <div class="okec-modal__header">
+        <h3><i data-lucide="map-pin"></i> <span x-text="form.format_id ? t('button_edit') : t('button_add')"></span></h3>
+        <button type="button" class="okec-modal__close" @click="modalOpen = false"><i data-lucide="x"></i></button>
+      </div>
+      <div class="okec-modal__body">
+        <div class="ok-form-row">
+          <label class="form-label">{{ address_formats_col_scope }}</label>
+          <div class="ok-form-control">
+            <select class="ok-select" x-model="form.scope">
+              <option value="customer_group">{{ address_formats_scope_customer_group }}</option>
+              <option value="shipping">{{ address_formats_scope_shipping }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ok-form-row">
+          <label class="form-label">{{ address_formats_col_scope_id }}</label>
+          <div class="ok-form-control">
+            <div class="ok-multitag" @click.outside="pickerOpen = false">
+              <div class="ok-multitag-inner" @click="pickerOpen = true">
+                <template x-for="id in parseScopeIds(form.scope_id)" :key="id">
+                  <span class="ok-multitag-tag">
+                    <span x-text="scopeOptionLabel(form.scope, id)"></span>
+                    <span class="ok-multitag-tag-remove" @click.stop="removeScopeId(id)">×</span>
+                  </span>
+                </template>
+                <input type="text" class="ok-multitag-input" readonly
+                       :placeholder="parseScopeIds(form.scope_id).length === 0 ? '{{ restrictions_groups_placeholder }}' : ''">
+              </div>
+              <div class="ok-multitag-dropdown" :class="{ 'open': pickerOpen }">
+                <template x-for="opt in scopeOptions(form.scope)" :key="opt.id">
+                  <div class="ok-multitag-option"
+                       :class="{ 'is-selected': hasScopeId(opt.id) }"
+                       @click="toggleScopeId(opt.id)">
+                    <input type="checkbox" :checked="hasScopeId(opt.id)" @click.stop="toggleScopeId(opt.id)">
+                    <span x-text="opt.label"></span>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <p class="ok-help">{{ address_formats_help_scope_id }}</p>
+          </div>
+        </div>
+        <div class="ok-form-row">
+          <label class="form-label">{{ address_formats_col_language }}</label>
+          <div class="ok-form-control">
+            <select class="ok-select" x-model.number="form.language_id">
+              {% for lang in languages %}
+                <option value="{{ lang.language_id }}">{{ lang.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="ok-form-row">
+          <label class="form-label">{{ address_formats_col_template }}</label>
+          <div class="ok-form-control">
+            <textarea id="okec-addrfmt-template" class="ok-input" rows="6" x-model="form.template"></textarea>
+            <p class="ok-help">{{ address_formats_help_template }}</p>
+            <div class="okec-placeholders">
+              <span class="okec-placeholders__label">{{ address_formats_placeholders_label }}</span>
+              <template x-for="ph in placeholders" :key="ph">
+                <button type="button" class="okec-placeholders__chip" @click="insertPlaceholder(ph)"
+                        :title="t('address_formats_placeholders_insert')">
+                  <code x-text="'{' + ph + '}'"></code>
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="okec-modal__footer">
+        <button type="button" class="ok-btn ok-btn-default" @click="modalOpen = false">{{ button_cancel }}</button>
+        <button type="button" class="ok-btn ok-btn-primary" @click="save()">{{ button_save }}</button>
+      </div>
+    </div>
+  </div>
+</div>

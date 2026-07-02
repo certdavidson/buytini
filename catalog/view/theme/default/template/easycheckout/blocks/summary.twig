@@ -1,0 +1,40 @@
+<div class="okec-block__inner okec-block-summary"
+     data-okec-summary
+     data-show-subtotal="{{ block.settings.show_subtotal ? '1' : '0' }}"
+     data-show-taxes="{{ block.settings.show_taxes ? '1' : '0' }}">
+  <table class="okec-block-summary__table" data-okec-summary-table>
+    <tbody>
+      {% for t in totals %}
+        {% set show = true %}
+        {% if t.code == 'sub_total' and not block.settings.show_subtotal %}{% set show = false %}{% endif %}
+        {% if t.code == 'tax' and not block.settings.show_taxes %}{% set show = false %}{% endif %}
+        {% if show %}
+          <tr class="okec-block-summary__row okec-block-summary__row--{{ t.code }}">
+            <td class="okec-block-summary__label">{{ t.title }}</td>
+            <td class="okec-block-summary__value">{{ t.text }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if block.settings.show_coupon_input %}
+    <div class="okec-block-summary__addon">
+      <input type="text" name="okec[coupon]" class="form-control" placeholder="{{ text_coupon_placeholder }}">
+      <button type="button" class="btn btn-default" data-okec-action="apply-coupon">{{ button_apply }}</button>
+    </div>
+  {% endif %}
+  {% if block.settings.show_voucher_input %}
+    <div class="okec-block-summary__addon">
+      <input type="text" name="okec[voucher]" class="form-control" placeholder="{{ text_voucher_placeholder }}">
+      <button type="button" class="btn btn-default" data-okec-action="apply-voucher">{{ button_apply }}</button>
+    </div>
+  {% endif %}
+  {% if block.settings.show_reward_input %}
+    <div class="okec-block-summary__addon">
+      <input type="text" name="okec[reward]" class="form-control" placeholder="{{ text_reward_placeholder }}">
+      <button type="button" class="btn btn-default" data-okec-action="apply-reward">{{ button_apply }}</button>
+    </div>
+  {% endif %}
+
+</div>

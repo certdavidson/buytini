@@ -1,7 +1,7 @@
 /* ==========================================================================
    buytini — compiled stylesheet (generated from scss/main.scss)
-   Не редагувати вручну: правки вносити в SCSS-партіали й перекомпілювати:
-     sass scss/main.scss css/main.css
+   Не редагувати вручну: правки вносити в SCSS-партіали й перезбирати:
+     sh scss/build.sh
    ========================================================================== */
 
 /* -------- tokens -------- */
@@ -1110,21 +1110,29 @@ img { max-width: 100%; }
 @media (max-width: 900px) { .pdp { grid-template-columns: 1fr; gap: 28px; } }
 
 .gallery { display: grid; grid-template-columns: 76px 1fr; gap: 14px; position: sticky; top: 90px; }
-.gallery__thumbs { display: flex; flex-direction: column; gap: 10px; }
-.gallery__thumb { aspect-ratio: 1; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface-sunken) center / cover no-repeat; cursor: pointer; transition: border-color .15s; }
-.gallery__thumb.is-active { border-color: var(--accent); }
+.gallery__thumbs { height: 100%; max-height: 620px; }
+.gallery__thumb { width: 76px; height: auto; aspect-ratio: 1; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface-sunken) center / cover no-repeat; cursor: pointer; opacity: .65; transition: border-color .15s, opacity .15s; }
+.gallery__thumb:hover { opacity: 1; }
+.gallery__thumb.swiper-slide-thumb-active { border-color: var(--accent); opacity: 1; }
 .gallery__stage { position: relative; }
-.gallery__main { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4 / 5; background: var(--surface-sunken) center / cover no-repeat; cursor: zoom-in; padding: 0; display: block; }
-.gallery__tools { position: absolute; top: 14px; right: 14px; display: flex; flex-direction: column; gap: 8px; }
+.gallery__viewport { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.gallery__slide { aspect-ratio: 4 / 5; background: var(--surface-sunken) center / cover no-repeat; cursor: zoom-in; }
+.gallery__tools { position: absolute; top: 14px; right: 14px; z-index: 3; display: flex; flex-direction: column; gap: 8px; }
 .gallery__tool { width: 40px; height: 40px; border: none; border-radius: var(--radius-pill); background: var(--surface); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color .15s; }
 .gallery__tool:hover { color: var(--accent); }
 .gallery__tool.is-active { color: var(--accent); }
-.gallery__nav { position: absolute; top: 50%; margin-top: -20px; width: 40px; height: 40px; border: none; border-radius: var(--radius-pill); background: var(--surface); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .15s; }
+.gallery__nav { position: absolute; top: 50%; margin-top: -20px; z-index: 3; width: 40px; height: 40px; border: none; border-radius: var(--radius-pill); background: var(--surface); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .15s; }
 .gallery__nav:hover { background: var(--surface-muted); }
+.gallery__nav.swiper-button-disabled { opacity: .35; cursor: default; }
 .gallery__nav--prev { left: 14px; }
 .gallery__nav--next { right: 14px; }
-.gallery__counter { position: absolute; left: 14px; bottom: 14px; padding: 4px 12px; border-radius: var(--radius-pill); background: rgba(20, 16, 12, .55); color: #fff; font-size: 12px; }
-@media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } .gallery__thumbs { flex-direction: row; } }
+.gallery__counter { position: absolute; left: 14px; bottom: 14px; top: auto; z-index: 3; width: auto; padding: 4px 12px; border-radius: var(--radius-pill); background: rgba(20, 16, 12, .55); color: #fff; font-size: 12px; }
+@media (max-width: 520px) {
+  .gallery { grid-template-columns: 1fr; }
+  .gallery__thumbs { order: 2; height: auto; max-height: none; margin-top: 4px; }
+  .gallery__stage { order: 1; }
+  .gallery__thumb { width: 64px; }
+}
 
 .pdp-brand-line { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
 .pdp-brand { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 500; color: var(--text-muted); }

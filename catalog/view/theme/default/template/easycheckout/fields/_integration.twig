@@ -1,0 +1,10 @@
+<div class="okec-int-wrap" data-okec-integration-field data-okec-field="{{ field.type }}">
+  <input type="text"
+         id="okec-f-{{ field.code }}"
+         class="okec-int-search ok-input"
+         placeholder="{{ field.placeholder }}"
+         autocomplete="off"
+         {% if required %}required{% endif %}>
+  <input type="hidden" class="okec-int-id" name="{{ form_name }}" value="{{ prefill_value }}">
+  <div class="okec-int-dropdown"></div>
+</div>

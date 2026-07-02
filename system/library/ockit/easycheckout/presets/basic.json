@@ -1,0 +1,101 @@
+{
+    "code": "basic",
+    "name": "Базовий",
+    "description": "Стандартний шаблон: всі стандартні блоки checkout (покупець, адреса, доставка, оплата, кошик, кнопка). Підходить для більшості магазинів як стартова конфігурація.",
+    "layout": {
+        "mode": "single_step",
+        "steps": [
+            {
+                "id": "step1",
+                "title": [],
+                "rows": [
+                    {
+                        "id": "row1", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell1",
+                                "blocks": [
+                                    {
+                                        "id": "customer", "type": "customer",
+                                        "settings": {
+                                            "registration_mode": "optional",
+                                            "show_login_link": true,
+                                            "fields": [
+                                                { "field_id": -1, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -2, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -3, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -4, "visibility": "always", "required": true, "reload_on_change": false }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "row2", "columns": { "desktop": 2, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell2a",
+                                "blocks": [
+                                    {
+                                        "id": "shipping_address", "type": "shipping_address",
+                                        "settings": {
+                                            "show_company": true,
+                                            "fields": [
+                                                { "field_id": -24, "visibility": "always", "required": true, "reload_on_change": true  },
+                                                { "field_id": -25, "visibility": "always", "required": false, "reload_on_change": false },
+                                                { "field_id": -26, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -27, "visibility": "always", "required": true, "reload_on_change": false },
+                                                { "field_id": -28, "visibility": "always", "required": true, "reload_on_change": true  },
+                                                { "field_id": -29, "visibility": "always", "required": true, "reload_on_change": false }
+                                            ]
+                                        }
+                                    },
+                                    { "id": "shipping", "type": "shipping", "settings": { "display_mode": "radio", "auto_select_first": true, "show_description": true } },
+                                    { "id": "payment",  "type": "payment",  "settings": { "display_mode": "radio", "auto_select_first": true, "show_description": true } },
+                                    { "id": "comment",  "type": "comment" }
+                                ]
+                            },
+                            {
+                                "id": "cell2b",
+                                "blocks": [
+                                    {
+                                        "id": "cart", "type": "cart",
+                                        "settings": {
+                                            "show_image": true,
+                                            "show_model": false,
+                                            "show_quantity_controls": true,
+                                            "show_remove_btn": true,
+                                            "show_subtotal": true
+                                        }
+                                    },
+                                    {
+                                        "id": "summary", "type": "summary",
+                                        "settings": {
+                                            "show_subtotal": true,
+                                            "show_taxes": true,
+                                            "show_coupon_input": true
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "row3", "columns": { "desktop": 1, "tablet": 1 },
+                        "cells": [
+                            {
+                                "id": "cell3",
+                                "blocks": [
+                                    { "id": "agreement",  "type": "agreement", "settings": { "required": true } },
+                                    { "id": "buttons__1", "type": "buttons" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

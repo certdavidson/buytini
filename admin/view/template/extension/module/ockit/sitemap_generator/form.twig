@@ -1,0 +1,851 @@
+{# Sitemap Generator | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+
+      <form action="{{ action }}" method="post" id="form-sg" class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_edit }}</a></li>
+            <li><a href="#">{{ heading_title }}</a></li>
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" id="sg-btn-save-settings" class="ok-btn ok-btn-primary ok-btn-sm"><i class="fa fa-save"></i> {{ button_save }}</button>
+            <a href="{{ cancel }}" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</a>
+          </div>
+        </div>
+
+        <div id="sg">
+          <div class="ok-layout">
+
+            {# ── Sidebar ───────────────────────────────────────────────────── #}
+            <div class="ok-sidebar">
+
+              <div class="ok-brand">
+                <div class="ok-brand-icon"><i class="fa fa-sitemap"></i></div>
+                <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+                <span class="ok-brand-name">Sitemap Generator</span>
+                <span class="ok-brand-ver">v1.0.0</span>
+              </div>
+
+              <div id="sg-layout-sidebar" class="ok-tabs-sidebar">
+                <button type="button" class="ok-tabs-sidebar-item active" data-tab="layout-general">
+                  <i class="fa fa-cogs"></i> {{ tab_general }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-maps">
+                  <i class="fa fa-language"></i> {{ tab_language_maps }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-types">
+                  <i class="fa fa-list"></i> {{ tab_content_types }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-images">
+                  <i class="fa fa-image"></i> {{ tab_images }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-hreflang">
+                  <i class="fa fa-globe"></i> {{ tab_hreflang }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-cron">
+                  <i class="fa fa-clock-o"></i> {{ tab_cron }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-logs">
+                  <i class="fa fa-list-alt"></i> {{ tab_logs }}
+                </button>
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-faq">
+                  <i class="fa fa-question-circle"></i> {{ tab_faq }}
+                </button>
+                <hr class="ok-divider ok-divider--nav">
+                <button type="button" class="ok-tabs-sidebar-item" data-tab="layout-license">
+                  <i class="fa fa-key"></i> {{ tab_license }}
+                </button>
+              </div>
+
+            </div>
+
+            {# ── Content ───────────────────────────────────────────────────── #}
+            <div class="ok-content">
+
+              {# ══ Tab: General ══════════════════════════════════════════════ #}
+              <div class="ok-layout-panel active" id="layout-general">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-cogs"></i> {{ tab_general }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_status }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_status" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_status" value="1" {% if module_oc_kit_sitemap_generator_status %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_generation_mode }}</label>
+                      <div>
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_generation_mode" value="static" {% if module_oc_kit_sitemap_generator_generation_mode != 'dynamic' %}checked{% endif %}>
+                          {{ text_generate_mode_static }}
+                        </label>
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_generation_mode" value="dynamic" {% if module_oc_kit_sitemap_generator_generation_mode == 'dynamic' %}checked{% endif %}>
+                          {{ text_generate_mode_dynamic }}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_output_directory }}
+                        <small class="ok-help">{{ help_output_directory }}</small>
+                      </label>
+                      <div>
+                        <input type="text" name="module_oc_kit_sitemap_generator_output_directory" value="{{ module_oc_kit_sitemap_generator_output_directory }}" class="ok-input ok-w-400" placeholder="{{ help_output_directory_placeholder }}">
+                        <div class="sg-dir-status {% if output_dir_writable %}ok-status-ok{% else %}ok-status-err{% endif %}">
+                          {% if output_dir_writable %}{{ text_writable }}{% else %}{{ text_not_writable }}{% endif %}
+                          <span class="sg-dir-path"> — {{ output_dir }}</span>
+                        </div>
+                        {% if module_oc_kit_sitemap_generator_output_directory %}
+                        <div class="sg-nginx-hint">
+                          <p class="ok-help">{{ help_nginx_subdir }}</p>
+                          <pre class="sg-nginx-code">location ~* \.(xml|xsl)$ {
+    root {{ output_dir_abs }};
+    try_files $uri =404;
+}</pre>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_index_filename }}
+                        <small class="ok-help">{{ help_index_filename }}</small>
+                      </label>
+                      <div>
+                        <div class="ok-input-group ok-w-260">
+                          <input type="text" name="module_oc_kit_sitemap_generator_index_filename" value="{{ module_oc_kit_sitemap_generator_index_filename }}" class="ok-input">
+                          <span class="ok-input-addon">.xml</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_urls_per_file }}
+                        <small class="ok-help">{{ help_urls_per_file }}</small>
+                      </label>
+                      <div>
+                        <input type="number" name="module_oc_kit_sitemap_generator_urls_per_file" value="{{ module_oc_kit_sitemap_generator_urls_per_file }}" class="ok-input ok-w-140" min="100" max="50000">
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_grouping_mode }}
+                        <small class="ok-help">{{ help_grouping_mode }}</small>
+                      </label>
+                      <div class="ok-radio-group">
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_grouping_mode" value="combined" {% if module_oc_kit_sitemap_generator_grouping_mode != 'by_type' %}checked{% endif %}>
+                          {{ text_grouping_combined }}
+                        </label>
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_grouping_mode" value="by_type" {% if module_oc_kit_sitemap_generator_grouping_mode == 'by_type' %}checked{% endif %}>
+                          {{ text_grouping_by_type }}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_gzip }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_enable_gzip" value="0">
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_enable_gzip" value="1" {% if module_oc_kit_sitemap_generator_enable_gzip %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_xsl }}
+                        <small class="ok-help">{{ help_enable_xsl }}</small>
+                      </label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_enable_xsl" value="0">
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_enable_xsl" value="1" {% if module_oc_kit_sitemap_generator_enable_xsl %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row sg-dynamic-only{% if module_oc_kit_sitemap_generator_generation_mode != 'dynamic' %} ok-hidden{% endif %}">
+                      <label class="ok-label form-label">{{ entry_dynamic_cache_ttl }}
+                        <small class="ok-help">{{ help_dynamic_cache_ttl }}</small>
+                      </label>
+                      <div>
+                        <input type="number" name="module_oc_kit_sitemap_generator_dynamic_cache_ttl" value="{{ module_oc_kit_sitemap_generator_dynamic_cache_ttl }}" class="ok-input ok-w-140" min="0">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {# Generated files block #}
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-files-o"></i> {{ text_generated_files }}</div>
+                  <div class="ok-block-body">
+
+                    <div id="sg-generate-progress" class="sg-generate-progress ok-hidden">
+                      <div class="ok-progress ok-progress-indeterminate">
+                        <div class="ok-progress-bar ok-progress-bar-accent" id="sg-progress-bar"></div>
+                      </div>
+                      <div id="sg-progress-text" class="sg-progress-text"></div>
+                    </div>
+
+                    <div id="sg-files-list">
+                      {% if generated_files %}
+                        <table class="ok-table ok-table-sm">
+                          <thead>
+                            <tr>
+                              <th>{{ column_filename }}</th>
+                              <th>{{ column_size }}</th>
+                              <th>{{ column_modified }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for file in generated_files %}
+                            <tr>
+                              <td><a href="{{ store_url }}/{{ file.filename }}" target="_blank">{{ file.filename }}</a></td>
+                              <td>{{ (file.size / 1024)|round(1) }} KB</td>
+                              <td>{{ file.mtime|date('Y-m-d H:i') }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      {% else %}
+                        <p class="ok-text-muted">{{ text_no_files }}</p>
+                      {% endif %}
+                    </div>
+
+                    <div class="ok-flex ok-gap-8 sg-generate-actions">
+                      <button type="button" id="sg-btn-generate" class="ok-btn ok-btn-primary ok-btn-sm">
+                        <i class="fa fa-refresh"></i> {{ button_generate }}
+                      </button>
+                      <button type="button" id="sg-btn-delete-files" class="ok-btn ok-btn-danger ok-btn-sm">
+                        <i class="fa fa-trash"></i> {{ button_delete_files }}
+                      </button>
+                    </div>
+
+                    {# robots.txt hint #}
+                    <div class="ok-block ok-block-info sg-robots-block">
+                      <div class="ok-block-title">{{ text_robots_hint }}</div>
+                      <div class="ok-block-body">
+                        <div class="ok-code-block ok-w-full">
+                          <code id="sg-robots-hint">{{ robots_hint }}</code>
+                          <button type="button" class="ok-copy-btn" data-target="sg-robots-hint" data-notify="{{ text_copied }}">
+                            <i class="fa fa-copy"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-general #}
+
+              {# ══ Tab: Language Maps ════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-maps">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i class="fa fa-language"></i> {{ tab_language_maps }}
+                    <button type="button" id="sg-btn-add-map" class="ok-btn ok-btn-success ok-btn-xs ok-ml-auto">
+                      <i class="fa fa-plus"></i> {{ button_add_map }}
+                    </button>
+                  </div>
+                  <div class="ok-block-body ok-block-body-flush">
+
+                    {# Add/Edit Map form (hidden by default) #}
+                    <div id="sg-map-form" class="ok-sub-form ok-hidden">
+                      <h4 class="ok-sub-form-title" id="sg-map-form-title">{{ text_add_map }}</h4>
+                      <input type="hidden" id="sg-map-id" value="">
+
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_language }}</label>
+                        <div>
+                          <select id="sg-map-language-id" class="ok-select ok-w-200">
+                            <option value="0">—</option>
+                            {% for lang in languages %}
+                            <option value="{{ lang.language_id }}" data-code="{{ lang.code }}">{{ lang.name }} ({{ lang.code }})</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_url_prefix }}
+                          <small class="ok-help">{{ help_url_prefix }}</small>
+                        </label>
+                        <div>
+                          <input type="text" id="sg-map-url-prefix" class="ok-input ok-w-120" placeholder="en">
+                        </div>
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_filename }}
+                          <small class="ok-help">{{ help_filename }}</small>
+                        </label>
+                        <div>
+                          <div class="ok-input-group ok-w-220">
+                            <input type="text" id="sg-map-filename" class="ok-input" placeholder="sitemap-en">
+                            <span class="ok-input-addon">.xml</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_hreflang_locale }}</label>
+                        <div>
+                          <input type="text" id="sg-map-hreflang-locale" class="ok-input ok-w-120" placeholder="en-US">
+                        </div>
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_is_default }}</label>
+                        <div>
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input" id="sg-map-is-default">
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_map_status }}</label>
+                        <div>
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input" id="sg-map-status" checked>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="ok-flex ok-gap-8 sg-map-form-actions">
+                        <button type="button" id="sg-btn-save-map" class="ok-btn ok-btn-primary ok-btn-sm">
+                          <i class="fa fa-save"></i> {{ button_save }}
+                        </button>
+                        <button type="button" id="sg-btn-cancel-map" class="ok-btn ok-btn-default ok-btn-sm">{{ button_cancel }}</button>
+                      </div>
+                    </div>
+
+                    {# Maps table #}
+                    {% if maps %}
+                    <table class="ok-table" id="sg-maps-table">
+                      <thead>
+                        <tr>
+                          <th>{{ column_language }}</th>
+                          <th>{{ column_url_prefix }}</th>
+                          <th>{{ column_filename }}</th>
+                          <th>{{ column_hreflang }}</th>
+                          <th>{{ column_xdefault }}</th>
+                          <th>{{ column_status }}</th>
+                          <th>{{ column_urls }}</th>
+                          <th>{{ column_last_generated }}</th>
+                          <th>{{ column_actions }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for map in maps %}
+                        <tr id="sg-map-row-{{ map.map_id }}"
+                            data-map='{{ map|json_encode }}'>
+                          <td>{{ map.language_code }}</td>
+                          <td><code>{{ map.url_prefix != '' ? '/' ~ map.url_prefix ~ '/' : '/' }}</code></td>
+                          <td>
+                            {% if map.files_count > 1 %}
+                              {% if module_oc_kit_sitemap_generator_grouping_mode == 'by_type' %}
+                                <a href="{{ store_url }}/{{ module_oc_kit_sitemap_generator_index_filename }}.xml" target="_blank">{{ module_oc_kit_sitemap_generator_index_filename }}.xml</a>
+                                <span class="ok-badge ok-badge-default">×{{ map.files_count }}</span>
+                              {% else %}
+                                <a href="{{ store_url }}/{{ map.filename }}-1.xml" target="_blank">{{ map.filename }}-1.xml</a>
+                                <span class="ok-badge ok-badge-default" title="{% for i in 1..map.files_count %}{{ map.filename }}-{{ i }}.xml&#10;{% endfor %}">×{{ map.files_count }}</span>
+                              {% endif %}
+                            {% else %}
+                              <a href="{{ store_url }}/{{ map.filename }}.xml" target="_blank">{{ map.filename }}.xml</a>
+                            {% endif %}
+                          </td>
+                          <td>{{ map.hreflang_locale }}</td>
+                          <td>{% if map.is_default %}<span class="ok-badge ok-badge-success">x-default</span>{% endif %}</td>
+                          <td>
+                            <span class="ok-badge {% if map.status %}ok-badge-success{% else %}ok-badge-default{% endif %}">
+                              {% if map.status %}ON{% else %}OFF{% endif %}
+                            </span>
+                          </td>
+                          <td>{{ map.urls_count }}</td>
+                          <td>{{ map.last_generated_at ? map.last_generated_at|date('Y-m-d H:i') : text_not_generated }}</td>
+                          <td class="ok-flex ok-gap-4">
+                            <button type="button" class="ok-btn ok-btn-primary ok-btn-xs sg-btn-gen-map" data-map-id="{{ map.map_id }}">
+                              <i class="fa fa-refresh"></i> {{ button_generate_map }}
+                            </button>
+                            <button type="button" class="ok-btn ok-btn-default ok-btn-xs sg-btn-edit-map" data-map-id="{{ map.map_id }}">
+                              <i class="fa fa-pencil"></i>
+                            </button>
+                            <button type="button" class="ok-btn ok-btn-danger ok-btn-xs sg-btn-delete-map" data-map-id="{{ map.map_id }}">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    {% else %}
+                    <div class="ok-empty" id="sg-maps-empty">
+                      <i class="fa fa-language"></i>
+                      <p>{{ text_maps_empty }}</p>
+                    </div>
+                    {% endif %}
+
+                  </div>
+                </div>
+
+              </div>{# /layout-maps #}
+
+              {# ══ Tab: Content Types ════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-types">
+
+                {% set types = [
+                  { key: 'home',         label: text_type_home,         icon: 'fa-home',         has_maxurls: false },
+                  { key: 'category',     label: text_type_category,     icon: 'fa-folder-open',  has_maxurls: true  },
+                  { key: 'product',      label: text_type_product,      icon: 'fa-tag',          has_maxurls: true  },
+                  { key: 'manufacturer', label: text_type_manufacturer, icon: 'fa-industry',     has_maxurls: true  },
+                  { key: 'information',  label: text_type_information,  icon: 'fa-file-text-o',  has_maxurls: true  },
+                  { key: 'blog_post',    label: text_type_blog_post,    icon: 'fa-pencil-square', has_maxurls: true, blog: true },
+                  { key: 'blog_category',label: text_type_blog_category,icon: 'fa-bookmark',     has_maxurls: true, blog: true },
+                  { key: 'special',      label: text_type_special,      icon: 'fa-percent',      has_maxurls: false },
+                  { key: 'contact',      label: text_type_contact,      icon: 'fa-phone',        has_maxurls: false },
+                ] %}
+
+                {% for type in types %}
+                {% set p = 'module_oc_kit_sitemap_generator_type_' ~ type.key %}
+                <div class="ok-block ok-type-block">
+                  <div class="ok-block-title">
+                    <i class="fa {{ type.icon }}"></i> {{ type.label }}
+                    {% if type.blog is defined and not has_blog %}
+                      <span class="ok-badge ok-badge-warning ok-ml-2">{{ text_not_installed }}</span>
+                    {% endif %}
+                    <div class="ok-ml-auto">
+                      <input type="hidden" name="{{ p }}_enabled" value="0">
+                      <label class="ok-toggle-wrap ok-toggle-sm">
+                        <input type="checkbox" class="ok-toggle-input" name="{{ p }}_enabled" value="1"
+                          {% if attribute(_context, p ~ '_enabled') %}checked{% endif %}
+                          {% if type.blog is defined and not has_blog %}disabled{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="ok-block-body">
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_changefreq }}</label>
+                      <div>
+                        <select name="{{ p }}_changefreq" class="ok-select ok-w-160">
+                          {% for freq in ['always','hourly','daily','weekly','monthly','yearly','never'] %}
+                          <option value="{{ freq }}" {% if attribute(_context, p ~ '_changefreq') == freq %}selected{% endif %}>{{ freq }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_priority }}</label>
+                      <div>
+                        <select name="{{ p }}_priority" class="ok-select ok-w-100">
+                          {% for pr in ['1.0','0.9','0.8','0.7','0.6','0.5','0.4','0.3','0.2','0.1','0.0'] %}
+                          <option value="{{ pr }}" {% if attribute(_context, p ~ '_priority') == pr %}selected{% endif %}>{{ pr }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_lastmod }}</label>
+                      <div>
+                        <select name="{{ p }}_lastmod" class="ok-select ok-w-200">
+                          <option value="auto" {% if attribute(_context, p ~ '_lastmod') == 'auto' %}selected{% endif %}>{{ text_lastmod_auto }}</option>
+                          <option value="none" {% if attribute(_context, p ~ '_lastmod') == 'none' %}selected{% endif %}>{{ text_lastmod_none }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    {% if type.has_maxurls %}
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_max_urls }}</label>
+                      <div>
+                        <input type="number" name="{{ p }}_max_urls" value="{{ attribute(_context, p ~ '_max_urls') ?? 0 }}" class="ok-input ok-w-100" min="0">
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% if type.key == 'information' %}
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_include_bottom }}</label>
+                      <div>
+                        <input type="hidden" name="{{ p }}_include_bottom" value="0">
+                        <label class="ok-toggle-wrap ok-toggle-sm">
+                          <input type="checkbox" class="ok-toggle-input" name="{{ p }}_include_bottom" value="1"
+                            {% if attribute(_context, p ~ '_include_bottom') %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+
+              </div>{# /layout-types #}
+
+              {# ══ Tab: Images ══════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-images">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-image"></i> {{ tab_images }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_include_images }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_include_images" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" id="sg-toggle-images" name="module_oc_kit_sitemap_generator_include_images" value="1" {% if module_oc_kit_sitemap_generator_include_images %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div id="sg-image-options"{% if not module_oc_kit_sitemap_generator_include_images %} class="ok-hidden"{% endif %}>
+
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_image_source }}</label>
+                        <div>
+                          <label class="ok-radio-label form-label">
+                            <input type="radio" name="module_oc_kit_sitemap_generator_image_type" value="original" {% if module_oc_kit_sitemap_generator_image_type != 'resized' %}checked{% endif %}>
+                            {{ text_image_original }}
+                          </label>
+                          <label class="ok-radio-label form-label">
+                            <input type="radio" name="module_oc_kit_sitemap_generator_image_type" value="resized" {% if module_oc_kit_sitemap_generator_image_type == 'resized' %}checked{% endif %}>
+                            {{ text_image_resized }}
+                          </label>
+                        </div>
+                      </div>
+
+                      <div id="sg-resize-options"{% if module_oc_kit_sitemap_generator_image_type != 'resized' %} class="ok-hidden"{% endif %}>
+                        <div class="ok-form-row">
+                          <label class="ok-label form-label">{{ entry_image_width }}</label>
+                          <div>
+                            <input type="number" name="module_oc_kit_sitemap_generator_image_width" value="{{ module_oc_kit_sitemap_generator_image_width }}" class="ok-input ok-w-100" min="1">
+                          </div>
+                        </div>
+                        <div class="ok-form-row">
+                          <label class="ok-label form-label">{{ entry_image_height }}</label>
+                          <div>
+                            <input type="number" name="module_oc_kit_sitemap_generator_image_height" value="{{ module_oc_kit_sitemap_generator_image_height }}" class="ok-input ok-w-100" min="1">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="ok-form-row ok-form-row-center">
+                        <label class="ok-label form-label">{{ entry_include_additional }}</label>
+                        <div>
+                          <input type="hidden" name="module_oc_kit_sitemap_generator_include_additional_images" value="0">
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_include_additional_images" value="1" {% if module_oc_kit_sitemap_generator_include_additional_images %}checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label">{{ entry_max_images }}</label>
+                        <div>
+                          <input type="number" name="module_oc_kit_sitemap_generator_max_images_per_product" value="{{ module_oc_kit_sitemap_generator_max_images_per_product }}" class="ok-input ok-w-100" min="0">
+                        </div>
+                      </div>
+
+                      <div class="ok-form-row">
+                        <label class="ok-label form-label"></label>
+                        <div>
+                          <button type="button" id="sg-btn-generate-resizes" class="ok-btn ok-btn-default ok-btn-sm">
+                            <i class="fa fa-picture-o"></i> {{ button_generate_resizes }}
+                          </button>
+                          <span id="sg-resizes-status" class="ok-text-muted ok-ml-8" style="display:none"></span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-images #}
+
+              {# ══ Tab: Hreflang ════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-hreflang">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-globe"></i> {{ tab_hreflang }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_enable_hreflang }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_hreflang_enable" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_hreflang_enable" value="1" {% if module_oc_kit_sitemap_generator_hreflang_enable %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_xdefault_map }}</label>
+                      <div>
+                        <select name="module_oc_kit_sitemap_generator_hreflang_xdefault_map_id" class="ok-select ok-w-200">
+                          <option value="0">{{ text_xdefault_auto }}</option>
+                          {% for map in maps %}
+                          <option value="{{ map.map_id }}" {% if module_oc_kit_sitemap_generator_hreflang_xdefault_map_id == map.map_id %}selected{% endif %}>
+                            {{ map.language_code }}{% if map.url_prefix %} (/{{ map.url_prefix }}/){% endif %}
+                          </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_missing_translation }}</label>
+                      <div>
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_hreflang_missing_behavior" value="skip" {% if module_oc_kit_sitemap_generator_hreflang_missing_behavior != 'use_default' %}checked{% endif %}>
+                          {{ text_missing_skip }}
+                        </label>
+                        <label class="ok-radio-label form-label">
+                          <input type="radio" name="module_oc_kit_sitemap_generator_hreflang_missing_behavior" value="use_default" {% if module_oc_kit_sitemap_generator_hreflang_missing_behavior == 'use_default' %}checked{% endif %}>
+                          {{ text_missing_use_default }}
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-hreflang #}
+
+              {# ══ Tab: Cron ════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-cron">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-clock-o"></i> {{ tab_cron }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_auto_generation }}</label>
+                      <div>
+                        <input type="hidden" name="module_oc_kit_sitemap_generator_auto_generation" value="0">
+                        <label class="ok-toggle-wrap">
+                          <input type="checkbox" class="ok-toggle-input" name="module_oc_kit_sitemap_generator_auto_generation" value="1" {% if module_oc_kit_sitemap_generator_auto_generation %}checked{% endif %}>
+                          <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="ok-label form-label">{{ entry_schedule }}</label>
+                      <div>
+                        <select name="module_oc_kit_sitemap_generator_cron_schedule" id="sg-cron-schedule" class="ok-select ok-w-200">
+                          <option value="hourly"  {% if module_oc_kit_sitemap_generator_cron_schedule == 'hourly' %}selected{% endif %}>{{ text_schedule_hourly }}</option>
+                          <option value="every6h" {% if module_oc_kit_sitemap_generator_cron_schedule == 'every6h' %}selected{% endif %}>{{ text_schedule_every6h }}</option>
+                          <option value="daily"   {% if module_oc_kit_sitemap_generator_cron_schedule == 'daily' or not module_oc_kit_sitemap_generator_cron_schedule %}selected{% endif %}>{{ text_schedule_daily }}</option>
+                          <option value="weekly"  {% if module_oc_kit_sitemap_generator_cron_schedule == 'weekly' %}selected{% endif %}>{{ text_schedule_weekly }}</option>
+                          <option value="custom"  {% if module_oc_kit_sitemap_generator_cron_schedule == 'custom' %}selected{% endif %}>{{ text_schedule_custom }}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="ok-form-row sg-custom-cron{% if module_oc_kit_sitemap_generator_cron_schedule != 'custom' %} ok-hidden{% endif %}">
+                      <label class="ok-label form-label">{{ entry_custom_cron }}</label>
+                      <div>
+                        <input type="text" name="module_oc_kit_sitemap_generator_custom_cron" value="{{ module_oc_kit_sitemap_generator_custom_cron }}" class="ok-input ok-w-200" placeholder="0 3 * * *">
+                      </div>
+                    </div>
+
+                    {# Cron Key #}
+                    <div class="ok-form-row sg-cron-key-row">
+                      <label class="ok-label form-label">{{ entry_cron_key }}</label>
+                      <div>
+                        <div class="ok-flex ok-gap-8">
+                          <input type="text" id="sg-cron-key" class="ok-input ok-input-monospace ok-w-300" value="{{ cron_key }}" readonly>
+                          <button type="button" class="ok-copy-btn" data-target="sg-cron-key" data-notify="{{ text_copied }}">
+                            <i class="fa fa-copy"></i>
+                          </button>
+                          <button type="button" id="sg-btn-regen-key" class="ok-btn ok-btn-warning ok-btn-sm">
+                            <i class="fa fa-refresh"></i> {{ button_regenerate_key }}
+                          </button>
+                        </div>
+                        <small class="ok-help">{{ help_cron_key }}</small>
+                      </div>
+                    </div>
+
+                    {# CLI crontab command #}
+                    <div class="sg-cron-block">
+                      <label class="ok-label form-label">{{ text_crontab_command }}</label>
+                      <div class="ok-code-block ok-w-full">
+                        <code id="sg-crontab-cmd">{{ crontab_cmd }}</code>
+                        <button type="button" class="ok-copy-btn" data-target="sg-crontab-cmd" data-notify="{{ text_copied }}">
+                          <i class="fa fa-copy"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    {# HTTP Cron URL #}
+                    <div class="sg-cron-block">
+                      <label class="ok-label form-label">{{ text_http_cron_url }}</label>
+                      <p class="ok-help sg-cron-hint">{{ text_http_cron_hint }}</p>
+                      <div class="ok-code-block ok-w-full">
+                        <code id="sg-cron-url">{{ cron_url }}</code>
+                        <button type="button" class="ok-copy-btn" data-target="sg-cron-url" data-notify="{{ text_copied }}">
+                          <i class="fa fa-copy"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-cron #}
+
+              {# ══ Tab: Logs ════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-logs">
+
+                <div class="ok-block">
+                  <div class="ok-block-title">
+                    <i class="fa fa-list-alt"></i> {{ tab_logs }}
+                    <button type="button" id="sg-btn-clear-logs" class="ok-btn ok-btn-danger ok-btn-xs ok-ml-auto">
+                      <i class="fa fa-trash"></i> {{ button_clear_logs }}
+                    </button>
+                  </div>
+                  <div class="ok-block-body ok-block-body-flush" id="sg-logs-container">
+                    <p class="ok-text-muted sg-logs-empty">{{ text_logs_empty }}</p>
+                  </div>
+                </div>
+
+              </div>{# /layout-logs #}
+
+              {# ══ Tab: License ═════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-license">
+
+                <div class="ok-block">
+                  <div class="ok-block-title"><i class="fa fa-key"></i> {{ tab_license }}</div>
+                  <div class="ok-block-body">
+
+                    <div class="ok-w-520">
+
+                      <div class="sg-license-status">
+                        {% if license_info.status == 'active' %}
+                          <span class="ok-badge ok-badge-success sg-license-badge">
+                            <i class="fa fa-check-circle"></i> {{ text_license_status_active }}
+                          </span>
+                        {% elseif license_info.status == 'grace' %}
+                          <span class="ok-badge ok-badge-warning sg-license-badge">
+                            <i class="fa fa-exclamation-triangle"></i> {{ text_license_status_grace }}
+                          </span>
+                        {% elseif license_info.status == 'invalid' %}
+                          <span class="ok-badge ok-badge-danger sg-license-badge">
+                            <i class="fa fa-times-circle"></i> {{ text_license_status_invalid }}
+                          </span>
+                        {% else %}
+                          <span class="ok-badge ok-badge-default sg-license-badge">
+                            <i class="fa fa-question-circle"></i> {{ text_license_status_not_validated }}
+                          </span>
+                        {% endif %}
+                      </div>
+
+                      <div class="sg-license-meta">
+                        {{ text_license_version }}: <strong>{{ license_info.version ?? '1.0.0' }}</strong>
+                        {% if license_info.domain ?? '' %}
+                          &nbsp;|&nbsp; {{ text_license_domain }}: <strong>{{ license_info.domain }}</strong>
+                        {% endif %}
+                      </div>
+
+                      <label class="form-label sg-license-label">
+                        {{ entry_license_key }}
+                      </label>
+                      <div class="ok-input-inline sg-license-input">
+                        <input type="text" id="sg-license-key" name="module_oc_kit_sitemap_generator_license_key"
+                               value="{{ module_oc_kit_sitemap_generator_license_key ?? '' }}"
+                               class="ok-input ok-w-300" placeholder="XXXX-XXXX-XXXX-XXXX">
+                        <button type="button" id="sg-btn-activate" class="ok-btn ok-btn-primary ok-btn-sm">
+                          <i class="fa fa-key"></i> {{ button_activate }}
+                        </button>
+                      </div>
+
+                      <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                        <i class="fa fa-shopping-cart"></i> {{ text_license_buy }}
+                      </a>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>{# /layout-license #}
+
+              {# ══ Tab: FAQ ═════════════════════════════════════════════════ #}
+              <div class="ok-layout-panel" id="layout-faq">
+
+                {% set faq_items = [
+                  { q: 'faq_q_static_vs_dynamic',  a: 'faq_a_static_vs_dynamic'  },
+                  { q: 'faq_q_cron_setup',          a: 'faq_a_cron_setup'          },
+                  { q: 'faq_q_output_dir',          a: 'faq_a_output_dir'          },
+                  { q: 'faq_q_hreflang',            a: 'faq_a_hreflang'            },
+                  { q: 'faq_q_xdefault',            a: 'faq_a_xdefault'            },
+                  { q: 'faq_q_url_limit',           a: 'faq_a_url_limit'           },
+                  { q: 'faq_q_robots',              a: 'faq_a_robots'              },
+                  { q: 'faq_q_gsc',                 a: 'faq_a_gsc'                 },
+                  { q: 'faq_q_server_config',       a: 'faq_a_server_config'       },
+                ] %}
+
+                {% for item in faq_items %}
+                <div class="ok-block sg-faq-block">
+                  <div class="ok-block-title sg-faq-title">
+                    <i class="fa fa-question-circle sg-faq-icon"></i>
+                    {{ attribute(_context, item.q) }}
+                  </div>
+                  <div class="ok-block-body sg-faq-body">
+                    {{ attribute(_context, item.a) | raw }}
+                  </div>
+                </div>
+                {% endfor %}
+
+              </div>{# /layout-faq #}
+
+            </div>{# /ok-content #}
+          </div>{# /ok-layout #}
+        </div>{# /sg #}
+
+      </form>
+
+    </div>{# /oc-kit #}
+  </div>
+</div>
+
+<script>
+window.sgI18n = {{ lang_js|json_encode|raw }};
+window.sgAjax = {
+  save:             '{{ ajax_save }}',
+  generate:         '{{ ajax_generate }}',
+  generate_resizes: '{{ ajax_generate_resizes }}',
+  saveMap:     '{{ ajax_save_map }}',
+  deleteMap:   '{{ ajax_delete_map }}',
+  deleteFiles: '{{ ajax_delete_files }}',
+  clearLogs:   '{{ ajax_clear_logs }}',
+  logs:        '{{ ajax_logs }}',
+  regenKey:    '{{ ajax_regen_key }}',
+  activate:    '{{ ajax_activate }}',
+  storeUrl:    '{{ store_url }}'
+};
+</script>
+
+{{ footer }}

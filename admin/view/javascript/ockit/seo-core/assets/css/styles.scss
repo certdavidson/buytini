@@ -1,0 +1,981 @@
+// SEO Core — Admin Styles
+// © 2026 oc-kit.com | https://oc-kit.com
+
+// ── Variables (match ok-* design system) ────────────────────────────────────
+$ok-white:    #ffffff;
+$ok-bg:       #f4f6f9;
+$ok-bg2:      #eef0f5;
+$ok-border:   #e0e4eb;
+$ok-border2:  #c8d0db;
+$ok-text:     #2c3e50;
+$ok-text2:    #5a6474;
+$ok-muted:    #8a94a6;
+$ok-accent:   #7EB2FF;
+$ok-accent2:  #508EF5;
+$ok-success:  #22bb6a;
+$ok-danger:   #e74c3c;
+$ok-warning:  #f39c12;
+$ok-info:     #3498db;
+$ok-mono:     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+$ok-radius:   8px;
+$ok-radius-lg: 10px;
+$ok-radius-full: 999px;
+$ok-trans:    .15s ease;
+
+.oc-kit {
+
+  // ── Module nav ──────────────────────────────────────────────────────────────
+
+  .ok-module-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 0 16px;
+    border-bottom: 1px solid $ok-border;
+    margin-bottom: 20px;
+  }
+
+  .ok-module-nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: $ok-radius;
+    font-size: 13px;
+    font-weight: 500;
+    color: $ok-text2;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background $ok-trans, color $ok-trans, border-color $ok-trans;
+
+    svg { width: 14px; height: 14px; }
+
+    &:hover {
+      background: $ok-bg;
+      color: $ok-text;
+      text-decoration: none;
+    }
+
+    &.active {
+      background: $ok-bg;
+      border-color: $ok-border;
+      color: $ok-accent2;
+      font-weight: 600;
+    }
+  }
+
+  // ── Dashboard stat cards row ──────────────────────────────────────────────
+
+  .ok-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .ok-stat-card {
+      flex: 1 1 160px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: $ok-radius;
+      border: 1px solid $ok-border;
+      background: $ok-white;
+
+      .ok-stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: $ok-radius;
+        background: $ok-bg;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: $ok-accent;
+
+        svg { width: 20px; height: 20px; }
+      }
+
+      .ok-stat-body { flex: 1; min-width: 0; }
+
+      .ok-stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: $ok-text;
+        line-height: 1.1;
+      }
+
+      .ok-stat-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: $ok-muted;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        margin-top: 3px;
+      }
+
+      &.ok-stat-card-error {
+        border-left: 3px solid $ok-danger;
+        .ok-stat-icon { background: #fdf2f2; color: $ok-danger; }
+        .ok-stat-value { color: $ok-danger; }
+      }
+
+      &.ok-stat-card-warning {
+        border-left: 3px solid $ok-warning;
+        .ok-stat-icon { background: #fffbf0; color: $ok-warning; }
+        .ok-stat-value { color: $ok-warning; }
+      }
+
+      &.ok-stat-card-alert {
+        border-left: 3px solid $ok-warning;
+        .ok-stat-icon { background: #fffbf0; color: $ok-warning; }
+      }
+    }
+  }
+
+  // ── Quick actions ─────────────────────────────────────────────────────────
+
+  .ok-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ok-quick-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: $ok-radius;
+    border: 1px solid $ok-border;
+    background: $ok-white;
+    font-size: 14px;
+    font-weight: 500;
+    color: $ok-text;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color $ok-trans, background $ok-trans, color $ok-trans;
+
+    svg { width: 16px; height: 16px; color: $ok-accent; }
+
+    &:hover {
+      background: $ok-bg;
+      border-color: $ok-accent;
+      color: $ok-text;
+      text-decoration: none;
+    }
+
+    &.ok-quick-action-btn {
+      background: none;
+      font-family: inherit;
+      font-size: 14px;
+    }
+  }
+
+  // ── Panel warning variant ─────────────────────────────────────────────────
+
+  .ok-panel-warning {
+    background: #fffbf0;
+    border-bottom-color: #fde8b0;
+    color: #784212;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    svg { width: 16px; height: 16px; color: $ok-warning; }
+  }
+
+  // ── Chains list ───────────────────────────────────────────────────────────
+
+  .ok-chains-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    li {
+      font-size: 13px;
+      font-family: $ok-mono;
+      background: $ok-bg;
+      padding: 6px 12px;
+      border-radius: $ok-radius;
+      color: $ok-text2;
+    }
+  }
+
+  // ── FAQ ───────────────────────────────────────────────────────────────────
+
+  .ok-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ok-faq-item {
+    border-bottom: 1px solid $ok-border;
+    padding: 16px 0;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  .ok-faq-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: $ok-text;
+    margin-bottom: 8px;
+
+    &::before {
+      content: 'Q: ';
+      color: $ok-accent;
+    }
+  }
+
+  .ok-faq-a {
+    font-size: 14px;
+    color: $ok-text2;
+    line-height: 1.6;
+
+    code {
+      font-family: $ok-mono;
+      font-size: 13px;
+      background: $ok-bg;
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: $ok-text;
+    }
+
+    pre {
+      font-family: $ok-mono;
+      font-size: 12px;
+      background: $ok-bg;
+      padding: 10px 14px;
+      border-radius: $ok-radius;
+      color: $ok-text;
+      overflow-x: auto;
+      margin: 8px 0 0;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin: 6px 0 0;
+    }
+  }
+
+  // ── robots.txt textarea ───────────────────────────────────────────────────
+
+  .ok-robots-textarea {
+    font-family: $ok-mono;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    background: $ok-bg;
+    border-radius: $ok-radius;
+    min-height: 360px;
+  }
+
+  // Robots syntax-highlight overlay (textarea sits transparent on top of <pre>)
+  .ok-robots-wrap {
+    position: relative;
+    .ok-robots-highlight {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      padding: 8px 12px;
+      font-family: $ok-mono;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: auto;
+      pointer-events: none;
+      background: $ok-bg;
+      border-radius: $ok-radius;
+      color: transparent;
+    }
+    .ok-robots-textarea {
+      position: relative;
+      background: transparent;
+      color: transparent;
+      caret-color: #222;
+      z-index: 2;
+    }
+    .ok-robots-textarea::selection { background: rgba(80, 130, 220, .15); }
+    .tok-directive { color: #4a5d7e; font-weight: 600; }
+    .tok-path      { color: #3a6e9c; }
+    .tok-url       { color: #2f7a5b; }
+    .tok-comment   { color: #9aa3b2; font-style: italic; }
+    .tok-glob      { color: #b07e2a; font-weight: 600; }
+  }
+
+  .ok-text-error { color: $ok-danger; font-size: 13px; }
+
+  // ── Sitemap list ──────────────────────────────────────────────────────────
+
+  .ok-sitemap-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+
+      a { color: $ok-accent; word-break: break-all; }
+    }
+  }
+
+  // ── Spinner ───────────────────────────────────────────────────────────────
+
+  .ok-spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: $ok-text2;
+    padding: 8px 0;
+    animation: none !important;        // shared _modal.scss spins the whole container — opt-out
+    width: auto;
+    height: auto;
+    border: none;
+    border-radius: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      animation: ok-spin 1s linear infinite;
+    }
+  }
+
+  @keyframes ok-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  // ── Spacing utils ─────────────────────────────────────────────────────────
+
+  .ok-mt-1 { margin-top: 6px; }
+  .ok-mt-2 { margin-top: 12px; }
+  .ok-mt-3 { margin-top: 20px; }
+  .ok-ml-2 { margin-left: 8px; }
+
+  // ── Empty state ───────────────────────────────────────────────────────────
+
+  .ok-empty {
+    text-align: center;
+    padding: 24px;
+    color: $ok-muted;
+    font-size: 14px;
+  }
+
+  // ── Progress wrap (bulk fill) ─────────────────────────────────────────────
+
+  .ok-progress-wrap {
+    margin-top: 12px;
+  }
+
+  .ok-progress-bar-track {
+    height: 8px;
+    background: $ok-bg2;
+    border-radius: $ok-radius-full;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .ok-progress-bar-fill {
+    height: 100%;
+    background: $ok-accent;
+    border-radius: $ok-radius-full;
+    transition: width .2s ease;
+  }
+
+  .ok-progress-status {
+    font-size: 13px;
+    color: $ok-text2;
+  }
+
+  // ── Mask regen row ────────────────────────────────────────────────────────
+
+  .ok-mask-regen-row {
+    padding-top: 8px;
+  }
+
+  // ── Code editor textarea ──────────────────────────────────────────────────
+
+  .ok-code-editor {
+    font-family: $ok-mono;
+    font-size: 13px;
+    background: $ok-bg;
+  }
+
+  // ── License page layout ───────────────────────────────────────────────────
+
+  .ok-license-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 60vh;
+    padding: 40px 20px;
+  }
+
+  .ok-license-box {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .ok-license-hero {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .ok-license-hero-icon {
+    font-size: 48px;
+    color: $ok-accent;
+    margin-bottom: 8px;
+    svg { width: 48px; height: 48px; color: $ok-accent; }
+  }
+
+  .ok-license-hero-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $ok-text;
+  }
+
+  .ok-license-hero-sub {
+    font-size: 13px;
+    color: $ok-muted;
+    margin-top: 4px;
+    a { color: $ok-accent; }
+  }
+
+  .ok-license-status-row {
+    margin-bottom: 16px;
+  }
+
+  .ok-badge-lg {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .ok-license-version {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: $ok-text2;
+  }
+
+  .ok-license-key-row {
+    margin-bottom: 12px;
+  }
+
+  .ok-license-buy-row {
+    margin-top: 4px;
+  }
+
+  // ── Compact table variant ─────────────────────────────────────────────────
+
+  .ok-table-compact {
+    td, th { padding: 6px 10px; font-size: 13px; }
+  }
+
+  // ── Brand version badge ───────────────────────────────────────────────────
+
+  .ok-brand-version {
+    font-size: 10px;
+    font-weight: 500;
+    color: $ok-muted;
+    background: $ok-bg2;
+    border-radius: $ok-radius-full;
+    padding: 1px 6px;
+    margin-left: 4px;
+    letter-spacing: .2px;
+    vertical-align: middle;
+  }
+
+  // ── Bulk fill category autocomplete ──────────────────────────────────────
+
+  #ok-bulk-cat-wrap {
+    position: relative;
+    min-width: 180px;
+
+    .ok-autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 200;
+      min-width: 220px;
+    }
+  }
+
+  // ── Meta templates stack (grouping box around per-type lang tabs) ────────
+  .ok-meta-tpl-stack {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: $ok-bg;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+
+    .ok-lang-tab-bar { margin-top: 0; }
+    .ok-meta-tpl-group + .ok-meta-tpl-group { margin-top: 0; }
+  }
+
+  // ── Autocomplete wrap (meta override / canonical override modals) ────────
+  .ok-autocomplete-wrap {
+    position: relative;
+    .ok-autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1100;       // above modals (ok-modal z-index 1000)
+      max-height: 260px;
+      overflow-y: auto;
+    }
+  }
+
+  // ── Inline-editable URL cells ────────────────────────────────────────────
+
+  .ok-url-lang-sel {
+    min-width: 90px;
+    padding: 4px 28px 4px 8px;
+    font-size: 13px;
+    min-height: 30px;
+    border-radius: 6px;
+  }
+
+  // ── License bar ───────────────────────────────────────────────────────────
+
+  .ok-license-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    border-radius: $ok-radius;
+    font-size: 13px;
+    font-weight: 500;
+
+    svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    &.ok-license-active  { background: #eafaf1; color: #1e8449; svg { color: $ok-success; } }
+    &.ok-license-trial   { background: #cce5ff; color: #004085; svg { color: $ok-info; } }
+    &.ok-license-grace   { background: #fff3cd; color: #856404; svg { color: $ok-warning; } }
+    &.ok-license-invalid,
+    &.ok-license-expired { background: #fdf2f2; color: #c0392b; svg { color: $ok-danger; } }
+  }
+
+  // ── Audit severity stat icons ─────────────────────────────────────────────
+
+  .ok-stat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    svg { width: 14px; height: 14px; }
+  }
+
+  tr.ok-row-error   .ok-stat-icon { background: #fdf2f2; color: $ok-danger; }
+  tr.ok-row-warning .ok-stat-icon { background: #fffbf0; color: $ok-warning; }
+  tr.ok-row-info    .ok-stat-icon { background: #eff8ff; color: $ok-info; }
+
+  // ── Audit status select (compact inline) ─────────────────────────────────
+  .ok-select-sm {
+    min-height: 28px;
+    padding: 4px 24px 4px 8px;
+    font-size: 12px;
+    background-size: 10px;
+  }
+
+  // ── Diff modal ────────────────────────────────────────────────────────────
+  .ok-diff-legend {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .ok-diff-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    svg { width: 12px; height: 12px; }
+    &.ok-diff-rem { background: #fdedec; color: $ok-danger; }
+    &.ok-diff-add { background: #eafaf1; color: $ok-success; }
+  }
+  .ok-diff-body {
+    font-family: $ok-mono;
+    font-size: 12px;
+    line-height: 1.5;
+    background: $ok-bg;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    padding: 10px 12px;
+    max-height: 60vh;
+    overflow: auto;
+    margin: 0;
+    white-space: pre;
+  }
+  .ok-diff-line {
+    display: block;
+    padding: 0 4px;
+    &.ok-diff-rem { background: #fdedec; color: #922b21; }
+    &.ok-diff-add { background: #eafaf1; color: #1e8449; }
+  }
+  .ok-diff-sign {
+    display: inline-block;
+    width: 14px;
+    color: $ok-muted;
+    user-select: none;
+  }
+
+  // ── Code guide (redirect HTTP codes help) ────────────────────────────────
+  .ok-code-guide {
+    margin-top: 12px;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    background: $ok-bg;
+    > summary {
+      cursor: pointer;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: $ok-text;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+      &::-webkit-details-marker { display: none; }
+      svg { width: 14px; height: 14px; }
+    }
+    &[open] > summary { border-bottom: 1px solid $ok-border; }
+  }
+  .ok-code-guide-list {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    dt {
+      font-weight: 600;
+      color: $ok-text;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      &:first-child { margin-top: 0; }
+    }
+    dd {
+      margin: 2px 0 0 0;
+      color: $ok-text2;
+    }
+  }
+
+  // ── Badge row (variable tokens under an input) ───────────────────────────
+  .ok-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  // ── Radio cards (URL depth / binary choice) ──────────────────────────────
+  .ok-radio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    &-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  }
+  .ok-radio-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    background: $ok-white;
+    cursor: pointer;
+    transition: border-color $ok-trans, background $ok-trans;
+    margin: 0;
+    input[type="radio"] { display: none; }
+    &:hover { border-color: $ok-accent2; }
+    &.active {
+      border-color: $ok-accent2;
+      background: #eef4ff;
+      box-shadow: inset 0 0 0 1px $ok-accent2;
+    }
+    .ok-radio-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: $ok-text;
+    }
+    .ok-radio-card-ex {
+      font-family: $ok-mono;
+      font-size: 11px;
+      color: $ok-text2;
+      background: $ok-bg;
+      padding: 2px 6px;
+      border-radius: 4px;
+      align-self: flex-start;
+      white-space: nowrap;
+    }
+  }
+
+  .ok-stat-icon-file { background: #eef4ff; color: $ok-accent2; }
+
+  .ok-file-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ok-stat-card-accent  .ok-stat-icon { background: #eef4ff; color: $ok-accent; }
+  .ok-stat-card-info    .ok-stat-icon { background: #eff8ff; color: $ok-info; }
+  .ok-stat-card-success .ok-stat-icon { background: #eafaf1; color: $ok-success; }
+  .ok-stat-card-danger  .ok-stat-icon { background: #fdf2f2; color: $ok-danger; }
+  .ok-stat-card-warning .ok-stat-icon { background: #fffbf0; color: $ok-warning; }
+
+  .ok-col-action { width: 40px; }
+  .ok-col-xs     { width: 32px; }
+
+  // Action cell: right-aligned, buttons spaced via inline-flex gap
+  .ok-col-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+    > .ok-btn,
+    > a.ok-btn { margin-left: 6px; }
+    > .ok-btn:first-child,
+    > a.ok-btn:first-child { margin-left: 0; }
+  }
+  // When the cell holds a row of buttons via wrapper
+  .ok-actions-row {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .ok-code-block {
+    background: #f7f8fa;
+    border: 1px solid $ok-border;
+    border-radius: $ok-radius;
+    padding: 10px 12px;
+    margin: 6px 0;
+    font-family: $ok-mono;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-x: auto;
+    color: #2d3748;
+    code { background: transparent; padding: 0; }
+  }
+
+  // ── Language flag ─────────────────────────────────────────────────────────
+
+  .ok-lang-flag {
+    width: 16px;
+    height: 11px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border-radius: 2px;
+  }
+
+  // ── Language tabs (meta templates) ────────────────────────────────────────
+
+  .ok-lang-tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid $ok-border;
+    margin-bottom: 16px;
+  }
+
+  .ok-lang-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: $ok-text2;
+    cursor: pointer;
+    margin-bottom: -2px;
+    transition: color $ok-trans, border-color $ok-trans;
+
+    img { width: 16px; height: 11px; border-radius: 2px; }
+
+    &:hover { color: $ok-text; }
+
+    &.active {
+      color: $ok-accent2;
+      border-bottom-color: $ok-accent2;
+      font-weight: 600;
+    }
+  }
+
+  // ── Default lang radio ────────────────────────────────────────────────────
+
+  .ok-lang-default-radio {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: $ok-text2;
+    cursor: pointer;
+
+    input[type="radio"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      accent-color: $ok-accent2;
+    }
+  }
+
+  // ── Small badge variant ────────────────────────────────────────────────────
+
+  .ok-badge-sm {
+    font-size: 11px;
+    padding: 2px 6px;
+    line-height: 1.4;
+    
+    .lucide {
+      width: 16px;
+      height: 20px;
+    }
+  }
+
+  // ── Audit issues cell (wraps multiple badges) ──────────────────────────────
+
+  .ok-audit-issues {
+    .ok-badge { margin: 1px 2px 1px 0; }
+  }
+
+  // ── Pagination ellipsis ────────────────────────────────────────────────────
+
+  .ok-pager-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 4px;
+    color: $ok-muted;
+    font-size: 13px;
+    user-select: none;
+  }
+
+  // ── Button group ──────────────────────────────────────────────────────────
+
+  .ok-btn-group {
+    display: inline-flex;
+
+    .ok-btn {
+      border-radius: 0;
+      border-right-width: 0;
+
+      &:first-child { border-radius: 6px 0 0 6px; }
+      &:last-child  { border-radius: 0 6px 6px 0; border-right-width: 1px; }
+    }
+  }
+
+  // ── Audit severity filter buttons (colored per level) ────────────────────
+
+  .ok-sev-group {
+    display: inline-flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .ok-sev-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid transparent;
+    background: $ok-white;
+    svg { width: 12px; height: 12px; }
+
+    &.ok-sev-all     { color: $ok-text;    border-color: $ok-border; }
+    &.ok-sev-error   { color: $ok-danger;  background: #fdf2f2; border-color: #f5c6cb; }
+    &.ok-sev-warning { color: $ok-warning; background: #fffbf0; border-color: #fce5ba; }
+    &.ok-sev-info    { color: $ok-info;    background: #eff8ff; border-color: #bee3f8; }
+
+    &.active {
+      font-weight: 600;
+      box-shadow: inset 0 0 0 1px currentColor;
+    }
+    &.ok-sev-all.active {
+      background: $ok-accent2;
+      border-color: $ok-accent2;
+      color: #fff;
+      box-shadow: none;
+    }
+  }
+
+  // ── Audit row states ──────────────────────────────────────────────────────
+
+  tr.ok-row-fixed   td { background: #f0faf3 !important; }
+  tr.ok-row-ignored td { opacity: .55; }
+
+  // ── Entity link in audit table ────────────────────────────────────────────
+
+  .ok-entity-link {
+    color: $ok-accent2;
+    text-decoration: none;
+    svg {
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      opacity: .6;
+      vertical-align: middle;
+    }
+    &:hover { text-decoration: underline; }
+  }
+
+  .ok-audit-filter-type { min-width: 160px; }
+
+  // Single-line control row (Run audit / Test rule)
+  .ok-audit-run-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    > .ok-label  { margin: 0; padding: 0; flex-shrink: 0; white-space: nowrap; }
+    > .ok-select { width: auto; max-width: 260px; flex-shrink: 0; }
+    > .ok-input  { flex: 1; min-width: 0; }
+    > .ok-btn    { flex-shrink: 0; }
+  }
+  .ok-sev-count {
+    display: inline-block;
+    min-width: 20px;
+    padding: 1px 6px;
+    margin-left: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .06);
+    color: inherit;
+  }
+  .ok-sev-btn.active .ok-sev-count { background: rgba(255, 255, 255, .22); }
+
+  // ── Audit bulk action bar ─────────────────────────────────────────────────
+
+  .ok-audit-bulk-bar {
+    padding: 8px 16px;
+    border-bottom: 1px solid $ok-border;
+  }
+
+  // ── Panel body hint (description row inside panel) ────────────────────────
+
+  .ok-panel-body-hint {
+    padding: 8px 16px;
+    border-bottom: 1px solid $ok-border;
+    font-size: 13px;
+    color: $ok-muted;
+  }
+
+}

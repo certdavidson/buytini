@@ -1,0 +1,128 @@
+{# SEO Core | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-layout">
+          {% include 'extension/module/ockit/seo_core/_nav.twig' %}
+
+          <div class="ok-content">
+
+            <div class="ok-block">
+              <div class="ok-block-title"><i data-lucide="circle-help"></i> {{ text_faq_title }}</div>
+              <div class="ok-block-body ok-faq">
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Як модуль взаємодіє зі стандартним OC SEO Pro?</div>
+                  <div class="ok-faq-a">
+                    SEO Core замінює SeoPro через OCMOD-патч. Коли модуль увімкнений (<code>status = 1</code>),
+                    всі три точки — <code>prepareRoute</code>, <code>validate</code>, <code>rewrite</code> —
+                    делегуються в <code>SeoCore</code>. SeoPro при цьому ігнорується.
+                    Якщо модуль вимкнений — стандартний SeoPro продовжує працювати без змін.
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Що таке «маски URL» і як їх налаштувати?</div>
+                  <div class="ok-faq-a">
+                    Маска — це шаблон для автоматичної генерації SEO-slug із даних сутності.
+                    Доступні плейсхолдери: <code>{name}</code>, <code>{model}</code>, <code>{sku}</code> (для товарів).
+                    Приклад: <code>{name}</code> для товару «Nike Air Max» згенерує slug <code>nike-air-max</code>.
+                    Після зміни маски натисніть «Регенерувати SEO URL» — модуль заповнить відсутні записи
+                    (режим «Тільки порожні») або перезапише всі (режим «Всі»).
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Як працює пагінація з SEO?</div>
+                  <div class="ok-faq-a">
+                    Модуль підтримує три режими:
+                    <ul>
+                      <li><strong>Вимкнено</strong> — пагінація не обробляється модулем.</li>
+                      <li><strong>Noindex через X-Robots-Tag</strong> — сторінки 2+ отримують заголовок <code>X-Robots-Tag: noindex,follow</code>.</li>
+                      <li><strong>404 для зайвих сторінок</strong> — якщо <code>page</code> перевищує реальну кількість сторінок.</li>
+                    </ul>
+                    Також автоматично виправляється canonical для <code>?page=1</code> → редирект на базовий URL.
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Що таке ланцюги редиректів і чому вони небезпечні?</div>
+                  <div class="ok-faq-a">
+                    Ланцюг виникає, коли A→B і B→C — браузер виконує 2 редиректи замість 1.
+                    Google рекомендує не більше 1 редиректу. Кнопка «Виправити автоматично» на Дашборді
+                    замінює A→B→C на A→C одним запитом до БД.
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Як налаштувати мовні префікси URL?</div>
+                  <div class="ok-faq-a">
+                    У полі «Мовні префікси» введіть JSON-масив. Мова з порожнім <code>prefix</code> — головна,
+                    без префіксу в URL. Інші мови отримають <code>/prefix/slug</code>.
+                    Приклад:
+                    <pre>[{"language_id":1,"code":"uk","prefix":"","default":true},{"language_id":2,"code":"ru","prefix":"ru","default":false}]</pre>
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Де зберігаються мета-override і як вони пріоритизуються?</div>
+                  <div class="ok-faq-a">
+                    Три рівні пріоритету (від вищого до нижчого):
+                    <ol>
+                      <li><strong>Ручний override</strong> — збережений у таблиці <code>oc_kit_seo_meta_override</code>.</li>
+                      <li><strong>Шаблон з плейсхолдерами</strong> — генерується з даних сутності.</li>
+                      <li><strong>Рідний OC meta_title/meta_description</strong> — з таблиць <code>product_description</code> тощо.</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Чи можна відкотити зміни robots.txt?</div>
+                  <div class="ok-faq-a">
+                    Так. Кожне збереження автоматично створює резервну копію
+                    (<code>robots.txt.bak.TIMESTAMP</code>). Список резервних копій і кнопка «Відновити»
+                    доступні на вкладці «robots.txt».
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Як перевірити чи правило заголовків спрацює для URI?</div>
+                  <div class="ok-faq-a">
+                    На вкладці «{{ tab_headers }}» є панель «{{ text_headers_test }}» — введіть URI
+                    (наприклад <code>/catalog/category/shoes</code>) і натисніть «{{ text_headers_test }}».
+                    Якщо є збіг — відобразиться яке правило спрацює і яке значення robots буде застосовано.
+                  </div>
+                </div>
+
+                <div class="ok-faq-item">
+                  <div class="ok-faq-q">Чи потрібно вмикати кеш після встановлення?</div>
+                  <div class="ok-faq-a">
+                    Модуль самостійно керує кешем SEO URL через <code>CacheWarmer</code>.
+                    Після будь-яких змін у <code>oc_seo_url</code> кеш інвалідується автоматично.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+  </div>
+</div>
+{{ footer }}
+
+<script>
+window.seoCoreI18n = {{ lang_js }};
+lucide.createIcons();
+</script>
