@@ -1,0 +1,73 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--product cb-block--product-wide {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  {% for product in products %}
+    <div class="cb-block--product-wide__row" itemscope itemtype="https://schema.org/Product">
+      <div class="cb-block--product-wide__gallery">
+        <div class="cb-block--product-wide__main">
+          <img id="cb-pw-main-{{ bid }}" src="{{ product.popup_image ?: product.image }}" alt="{{ product.name }}" itemprop="image">
+        </div>
+      </div>
+      <div class="cb-block--product-wide__body">
+        <h3 class="cb-block--product-wide__name" itemprop="name"><a href="{{ product.href }}">{{ product.name }}</a></h3>
+        {% if params.show_price ?? true %}
+          <div class="cb-block--product-wide__price-row">
+            <div class="cb-block--product-wide__price">
+              {% if product.special %}
+                <span class="cb-block--product-wide__price-old">{{ product.price }}</span>
+                <span class="cb-block--product-wide__price-new" itemprop="price">{{ product.special }}</span>
+                {% if product.special_percent > 0 %}<span class="cb-block--product-wide__price-pct">-{{ product.special_percent }}%</span>{% endif %}
+              {% else %}<span itemprop="price">{{ product.price }}</span>{% endif %}
+            </div>
+            {% if params.show_button ?? true %}
+              <a href="{{ product.href }}" class="cb-block--product-wide__btn{% if not (product.in_stock ?? true) %} is-out{% endif %}"{% if product.cart_add_js %} onclick="{{ product.cart_add_js }}"{% endif %}>{{ product.in_stock ?? true ? 'Купити' : 'Немає в наявності' }}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+        {% if product.description %}<div class="cb-block--product-wide__short">{{ product.description|striptags|slice(0, 200) }}…</div>{% endif %}
+
+        {% if product.pluses or product.minuses %}
+          <div class="cb-block--product-wide__pm">
+            {% if product.pluses %}
+              <div class="cb-block--product-wide__pm-col">
+                <div class="cb-block--product-wide__pm-head cb-block--product-wide__pm-head--plus">Переваги</div>
+                {% for p in product.pluses %}<div class="cb-block--product-wide__pm-item">{{ p }}</div>{% endfor %}
+              </div>
+            {% endif %}
+            {% if product.minuses %}
+              <div class="cb-block--product-wide__pm-col">
+                <div class="cb-block--product-wide__pm-head cb-block--product-wide__pm-head--minus">Недоліки</div>
+                {% for m in product.minuses %}<div class="cb-block--product-wide__pm-item">{{ m }}</div>{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if product.attribute_groups %}
+          <div class="cb-block--product-wide__meta">
+            <div class="cb-block--product-wide__meta-title">Основні характеристики</div>
+            <div class="cb-block--product-wide__meta-grid">
+              {% for ag in product.attribute_groups %}
+                {% for attr in ag.attribute %}
+                  <div class="cb-block--product-wide__meta-name">{{ attr.name }}</div>
+                  <div class="cb-block--product-wide__meta-val">{{ attr.text }}</div>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if product.images %}
+          {% set thumbs_n = product.images|length %}
+          <div class="cb-block--product-wide__thumbs" style="--cb-thumbs-n: {{ thumbs_n }};">
+            {% for thumb in product.images %}
+              <a href="{{ thumb.popup }}" data-cb-thumb data-main="cb-pw-main-{{ bid }}">
+                <img src="{{ thumb.thumb }}" alt="">
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<script>(function(){var b=document.querySelector('[data-block-id="{{ bid }}"]');if(!b||b.dataset.cbpwBound)return;b.dataset.cbpwBound=1;b.addEventListener('click',function(e){var t=e.target.closest('[data-cb-thumb]');if(!t)return;e.preventDefault();var m=document.getElementById(t.dataset.main);if(m){var img=t.querySelector('img');m.src=t.getAttribute('href')||(img&&img.src);}});})();</script>

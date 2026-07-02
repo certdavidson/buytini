@@ -1,0 +1,23 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-bordered {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+<div class="cb-grid cb-grid-6 cb-block--products_carousel-bordered__grid">
+      {% for product in products %}
+        <div class="cb-block--products_carousel-bordered__slide" itemscope itemtype="https://schema.org/Product">
+          {% if product.special %}<div class="cb-block--products_carousel-bordered__sale">-{{ ((1 - (product.special_raw / product.price_raw)) * 100)|round }}%</div>{% endif %}
+          <a href="{{ product.href }}" class="cb-block--products_carousel-bordered__img"><img src="{{ product.image }}" alt="{{ product.name }}"></a>
+          <a href="{{ product.href }}" class="cb-block--products_carousel-bordered__name" itemprop="name">{{ product.name }}</a>
+          {% if (params.show_rating ?? true) %}
+            <div class="cb-block--products_carousel-bordered__rating">
+              <span class="cb-block--products_carousel-bordered__stars">{% for i in 1..5 %}<span class="{% if i <= (product.rating ?? 0) %}on{% endif %}">★</span>{% endfor %}</span>
+              <span class="cb-block--products_carousel-bordered__rcount">{{ product.reviews ?? 0 }} відгуків</span>
+            </div>
+          {% endif %}
+          {% if params.show_price ?? true %}
+            <div class="cb-block--products_carousel-bordered__price-row">
+              {% if product.special %}<span class="cb-block--products_carousel-bordered__old">{{ product.price }}</span><span class="cb-block--products_carousel-bordered__price">{{ product.special }}</span>{% else %}<span class="cb-block--products_carousel-bordered__price">{{ product.price }}</span>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+</div>

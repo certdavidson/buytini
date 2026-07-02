@@ -1,0 +1,34 @@
+{% set el_id   = element.element_id ?? 0 %}
+{% set params  = element.params     ?? {} %}
+{% set fields  = params.fields      ?? [] %}
+{% set recipient = params.recipient_email ?? '' %}
+
+<div class="cb-element" data-el-id="{{ el_id }}" data-el-type="form"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="mail"></i> {{ i18n.el_form }}</span>
+    <span class="cb-item-label ok-text-sm ok-ml-2">
+      {{ i18n.form_builder_field_count }}: <b class="cb-form-field-count">{{ fields|length }}</b>
+    </span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-form-configure"
+        title="{{ i18n.form_builder_configure }}"><i data-lucide="settings-2"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body cb-form-element-body">
+    <div class="ok-text-sm ok-text-muted">
+      {% if recipient %}
+        <i data-lucide="at-sign"></i> <span>{{ recipient }}</span>
+      {% else %}
+        <i data-lucide="info"></i> <span>{{ i18n.form_builder_no_recipient }}</span>
+      {% endif %}
+    </div>
+    {# Hidden JSON payload — written back on form-builder save #}
+    <input type="hidden" class="cb-form-params-json" value="{{ params|json_encode|escape('html_attr') }}">
+  </div>
+</div>

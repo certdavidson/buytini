@@ -1,134 +1,175 @@
 {{ header }}
-<div id="product-category" class="container">
-  <ul class="breadcrumb">
-    {% for breadcrumb in breadcrumbs %}
-    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-    {% endfor %}
-  </ul>
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <h2>{{ heading_title }}</h2>
-      {% if thumb or description %}
-      <div class="row"> {% if thumb %}
-        <div class="col-sm-2"><img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
-        {% endif %}
-        {% if description %}
-        <div class="col-sm-10">{{ description }}</div>
-        {% endif %}</div>
-      <hr>
-      {% endif %}
-      {% if categories %}
-      <h3>{{ text_refine }}</h3>
-      {% if categories|length <= 5 %}
-      <div class="row">
-        <div class="col-sm-3">
-          <ul>
-            {% for category in categories %}
-            <li><a href="{{ category.href }}">{{ category.name }}</a></li>
-            {% endfor %}
-          </ul>
+<main>
+  <div class="catalog-bar">
+    
+
+    
+  </div>
+  <div class="catalog-head">
+    <h1 class="catalog-head__title">{{ heading_title }}</h1>
+    <p class="catalog-head__meta">248 товарів зі США та Європи · ціни у ₴ з базовою валютою</p>
+  </div>
+  <div class="catalog">
+    <aside class="filters" id="filters">
+      <div class="filters__card">
+        <div class="filters__head"><span class="filters__title">Фільтри</span><button class="filters__clear"
+            type="button" data-filters-clear>Скинути</button><button class="filters__close" type="button"
+            data-filters-close aria-label="Закрити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg></button></div>
+        <div class="filters__group"><span class="filters__group-title">Ціна, ₴</span><input class="range" type="range"
+            min="0" max="20000" step="500" value="20000" data-price aria-label="Максимальна ціна">
+          <div class="filters__price-row"><span>0 ₴</span><b data-price-label>20 000 ₴</b></div>
         </div>
+        <div class="filters__group"><span class="filters__group-title">Країна походження</span>
+          <div class="filters__list">
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>США</label>
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>Європа</label>
+          </div>
+        </div>
+        <div class="filters__group"><span class="filters__group-title">Бренд</span>
+          <div class="filters__list">
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>Nike<span class="check__count">124</span></label>
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>New Balance<span class="check__count">86</span></label>
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>Adidas<span class="check__count">92</span></label>
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>Asics<span class="check__count">54</span></label>
+            <label class="check"><span class="check__box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg></span>Puma<span class="check__count">61</span></label>
+          </div>
+        </div>
+        <div class="filters__group"><span class="filters__group-title">Розмір</span>
+          <div class="filters__chips">
+            <button class="size-btn" type="button">36</button>
+            <button class="size-btn" type="button">37</button>
+            <button class="size-btn" type="button">38</button>
+            <button class="size-btn" type="button">39</button>
+            <button class="size-btn" type="button">40</button>
+            <button class="size-btn" type="button">41</button>
+            <button class="size-btn" type="button">42</button>
+            <button class="size-btn" type="button">43</button>
+          </div>
+        </div>
+        <div class="filters__group"><span class="filters__group-title">Колір</span>
+          <div class="filters__chips">
+            <button class="swatch swatch--black" type="button" aria-label="Чорний"></button>
+            <button class="swatch swatch--white" type="button" aria-label="Білий"></button>
+            <button class="swatch swatch--beige" type="button" aria-label="Бежевий"></button>
+            <button class="swatch swatch--blue" type="button" aria-label="Синій"></button>
+            <button class="swatch swatch--red" type="button" aria-label="Червоний"></button>
+            <button class="swatch swatch--green" type="button" aria-label="Зелений"></button>
+          </div>
+        </div>
+        <div class="filters__group"><label class="filters__avail">Тільки в наявності<span class="toggle"><span
+                class="toggle__dot"></span></span></label></div>
+      </div>
+    </aside>
+    <div class="catalog__main">
+      <div class="toolbar">
+        <button class="toolbar__filter-btn" type="button" data-filters-open><svg width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>Фільтри</button>
+        <span class="toolbar__count">Знайдено 248 товарів</span>
+        <div class="toolbar__side">
+          <div class="sort"><button class="sort__trigger" type="button" data-toggle="sort"><span
+                data-sort-label>Популярні</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg></button>
+            <div class="sort__menu" id="sort-menu" data-popover hidden><button class="sort__item is-active"
+                type="button" data-sort-item>Популярні</button><button class="sort__item" type="button"
+                data-sort-item>Спершу дешеві</button><button class="sort__item" type="button" data-sort-item>Спершу
+                дорогі</button><button class="sort__item" type="button" data-sort-item>Новинки</button></div>
+          </div>
+          <div class="view-toggle"><button class="view-toggle__btn is-active" type="button" data-view="grid"
+              aria-label="Сітка"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+                <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+                <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+                <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+              </svg></button><button class="view-toggle__btn" type="button" data-view="list" aria-label="Список"><svg
+                width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" x2="21" y1="6" y2="6"></line>
+                <line x1="8" x2="21" y1="12" y2="12"></line>
+                <line x1="8" x2="21" y1="18" y2="18"></line>
+                <line x1="3" x2="3.01" y1="6" y2="6"></line>
+                <line x1="3" x2="3.01" y1="12" y2="12"></line>
+                <line x1="3" x2="3.01" y1="18" y2="18"></line>
+              </svg></button></div>
+        </div>
+      </div>
+      <div class="active-filters">
+        <button class="chip" type="button" data-chip>Nike<svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg></button>
+        <button class="chip" type="button" data-chip>США<svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg></button>
+      </div>
+
+      {% if products %}
+      <div class="product-grid" id="product-grid">
+        {% for product in products %}
+
+        {% endfor %}
       </div>
       {% else %}
-      <div class="row">{% for category in categories|batch((categories|length / 4)|round(1, 'ceil')) %}
-        <div class="col-sm-3">
-          <ul>
-            {% for child in category %}
-            <li><a href="{{ child.href }}">{{ child.name }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-        {% endfor %}</div>
-      <br/>
+      <p>Товари не знайдено</p>
       {% endif %}
-      {% endif %}
-      {% if products %}
-      <div class="row">
-        <div class="col-md-2 col-sm-6 hidden-xs">
-          <div class="btn-group btn-group-sm">
-            <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="{{ button_list }}"><i class="fa fa-th-list"></i></button>
-            <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="{{ button_grid }}"><i class="fa fa-th"></i></button>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="form-group"><a href="{{ compare }}" id="compare-total" class="btn btn-link">{{ text_compare }}</a></div>
-        </div>
-        <div class="col-md-4 col-xs-6">
-          <div class="form-group input-group input-group-sm">
-            <label class="input-group-addon" for="input-sort">{{ text_sort }}</label>
-            <select id="input-sort" class="form-control" onchange="location = this.value;">
-              {% for sorts in sorts %}
-              {% if sorts.value == '%s-%s'|format(sort, order) %}
-              <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
-              {% else %}
-              <option value="{{ sorts.href }}">{{ sorts.text }}</option>
-              {% endif %}
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3 col-xs-6">
-          <div class="form-group input-group input-group-sm">
-            <label class="input-group-addon" for="input-limit">{{ text_limit }}</label>
-            <select id="input-limit" class="form-control" onchange="location = this.value;">
-              {% for limits in limits %}
-              {% if limits.value == limit %}
-              <option value="{{ limits.href }}" selected="selected">{{ limits.text }}</option>
-              {% else %}
-              <option value="{{ limits.href }}">{{ limits.text }}</option>
-              {% endif %}
-              {% endfor %}
-            </select>
-          </div>
-        </div>
+
+      <div class="pagination">
+        <a class="btn btn--ghost btn--lg" href="#">Завантажити ще 24 товари</a>
+        <div class="pagination__pages"><button class="pagination__arrow" type="button" aria-label="Назад"><svg
+              width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg></button><button class="pagination__page is-active" type="button">1</button><button
+            class="pagination__page" type="button">2</button><button class="pagination__page"
+            type="button">3</button><button class="pagination__page" type="button">8</button><button
+            class="pagination__arrow" type="button" aria-label="Далі"><svg width="16" height="16" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg></button></div>
       </div>
-      <div class="row"> {% for product in products %}
-        <div class="product-layout product-list col-xs-12">
-          <div class="product-thumb">
-            <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
-            <div>
-              <div class="caption">
-                <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
-                <p>{{ product.description }}</p>
-                {% if product.price %}
-                <p class="price"> {% if not product.special %}
-                  {{ product.price }}
-                  {% else %} <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span> {% endif %}
-                  {% if product.tax %} <span class="price-tax">{{ text_tax }} {{ product.tax }}</span> {% endif %} </p>
-                {% endif %}
-                {% if product.rating %}
-                <div class="rating"> {% for i in 1..5 %}
-                  {% if product.rating < i %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>{% endif %}
-                  {% endfor %} </div>
-                {% endif %} </div>
-              <div class="button-group">
-                <button type="button" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span></button>
-                <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart"></i></button>
-                <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="fa fa-exchange"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %} </div>
-      <div class="row">
-        <div class="col-sm-6 text-left">{{ pagination }}</div>
-        <div class="col-sm-6 text-right">{{ results }}</div>
+      <div class="seo-block">
+        <h2 class="seo-block__title">Жіноче взуття з-за кордону з доставкою в Україну</h2>
+        <p class="seo-block__text">buytini викуповує жіноче взуття в офіційних магазинах брендів у США та Європі —
+          кросівки Nike й New Balance, черевики, туфлі та босоніжки. Ціни показані у гривні з базовою валютою покупки, а
+          в кожній картці видно країну походження та орієнтовний строк доставки. Не знайшли потрібну модель?
+          Скористайтесь сервісом викупу за посиланням — привеземо з будь-якого сайту.</p>
       </div>
-      {% endif %}
-      {% if not categories and not products %}
-      <p>{{ text_empty }}</p>
-      <div class="buttons">
-        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
-      </div>
-      {% endif %}
-      {{ content_bottom }}</div>
-    {{ column_right }}</div>
-</div>
-{{ footer }} 
+    </div>
+  </div>
+</main>
+<div class="filters-backdrop" id="filters-backdrop" hidden></div>
+
+{{ footer }}

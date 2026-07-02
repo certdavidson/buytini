@@ -1,0 +1,39 @@
+{# Content Blocks Pro — item: FAQ | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id   = element.element_id ?? 0 %}
+{% set el_data = element.data       ?? {} %}
+
+<div class="cb-element cb-item" data-el-id="{{ el_id }}" data-el-type="faq_item"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted">Q&A</span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% for lang in languages %}
+    <div class="cb-lang-panel{% if lang.language_id == language_id %} active{% endif %}"
+      data-lang-id="{{ lang.language_id }}">
+      <input type="text" class="ok-input ok-input-sm cb-faq-question ok-mb-1"
+        data-lang="{{ lang.language_id }}"
+        value="{{ el_data[lang.language_id].question ?? '' }}"
+        placeholder="{{ i18n.placeholder_faq_question }}">
+      <textarea class="ok-input cb-faq-answer" data-lang="{{ lang.language_id }}" rows="2"
+        placeholder="{{ i18n.placeholder_faq_answer }}">{{ el_data[lang.language_id].answer ?? '' }}</textarea>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

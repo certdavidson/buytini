@@ -1,0 +1,36 @@
+{% set el_id      = element.element_id ?? 0 %}
+{% set el_params  = element.params     ?? {} %}
+{% set art_id     = el_params.article_id   ?? 0 %}
+{% set art_name   = el_params.article_name ?? '' %}
+{% set art_img    = el_params.article_img  ?? '' %}
+
+<div class="cb-element cb-item cb-item-compact" data-el-id="{{ el_id }}" data-el-type="blog_article_item"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    {% if art_img %}
+    <img src="{{ art_img }}" class="cb-item-thumb" alt="">
+    {% endif %}
+    {% if art_name %}
+      <a class="cb-item-label ok-text-sm ok-ml-2" href="{{ entity_edit_urls.article|default('')|replace({'{ID}': art_id}) }}" target="_blank" rel="noopener">{{ art_name }}</a>
+    {% else %}
+      <span class="cb-item-label ok-text-sm ok-ml-2">{{ i18n.text_pick_article }}</span>
+    {% endif %}
+    <input type="hidden" class="cb-ac-val" value="{{ art_id }}">
+    <input type="hidden" class="cb-ac-name" value="{{ art_name }}">
+    <input type="hidden" class="cb-ac-img" value="{{ art_img }}">
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-autocomplete-panel"{% if art_id %} hidden{% endif %}>
+    <div class="cb-autocomplete-wrap" data-type="article">
+      <input type="text" class="ok-input ok-input-sm cb-autocomplete-input" placeholder="{{ i18n.placeholder_search_article }}">
+      <div class="cb-autocomplete-dropdown" hidden></div>
+    </div>
+  </div>
+
+</div>

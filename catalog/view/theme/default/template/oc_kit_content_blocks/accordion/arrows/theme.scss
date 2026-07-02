@@ -1,0 +1,76 @@
+/* Content Blocks Pro — accordion / arrows | © 2026 oc-kit.com */
+.cb-block--accordion-arrows {
+    --cb-acc-primary: #3498db;
+    --cb-acc-bg: #f7f9fc;
+    --cb-acc-bg-h: #eef3fa;
+    --cb-acc-bg-on: #e8f1fb;
+    --cb-acc-text: #2c3e50;
+    --cb-acc-muted: #5a6474;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &__item {
+        background: var(--cb-acc-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: background .2s;
+
+        &:has(> .cb-block--accordion-arrows__head[aria-expanded="true"]) {
+            background: var(--cb-acc-bg-on);
+        }
+    }
+    &__head {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: transparent;
+        border: 0;
+        padding: 14px 18px;
+        cursor: pointer;
+        font: inherit;
+        color: var(--cb-acc-text);
+        text-align: left;
+        transition: background .15s;
+
+        &:hover { background: var(--cb-acc-bg-h); }
+    }
+    &__chev {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cb-acc-primary);
+        transition: transform .25s ease;
+        svg { width: 18px; height: 18px; }
+    }
+    &__head[aria-expanded="true"] &__chev { transform: rotate(90deg); }
+
+    &__title {
+        flex: 1;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    &__body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .3s ease;
+    }
+    &__body-inner {
+        overflow: hidden;
+        min-height: 0;
+        padding: 0 18px 0 56px;
+        color: var(--cb-acc-muted);
+    }
+    &__head[aria-expanded="true"] + &__body { grid-template-rows: 1fr; }
+    &__head[aria-expanded="true"] + &__body &__body-inner { padding-top: 16px; padding-bottom: 16px; }
+
+    .cb-el-text p:last-child,
+    .cb-el-html p:last-child { margin-bottom: 0; }
+}

@@ -1,0 +1,13 @@
+<div class="cb-block cb-block--categories cb-block--categories-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+<div class="cb-grid cb-grid-6">
+    {% for cat in categories %}
+      <a href="{{ cat.href }}" class="cb-block--categories-default__item">
+        <span class="cb-block--categories-default__img" aria-hidden="true">
+          <img src="{{ cat.image }}" alt="{{ cat.name }}">
+        </span>
+        <span class="cb-block--categories-default__mask" aria-hidden="true"></span>
+        <span class="cb-block--categories-default__name">{{ cat.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

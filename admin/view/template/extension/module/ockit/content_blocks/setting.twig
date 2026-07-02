@@ -1,0 +1,842 @@
+{# Content Blocks Pro | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            <li><a href="{{ extensions_url }}">{{ text_extensions }}</a></li>
+            <li><a href="{{ extensions_url }}">{{ text_modules }}</a></li>
+            <li><a href="#">{{ heading_title_simple }}</a></li>
+          </ul>
+          <div class="ok-flex ok-gap-8">
+            <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="cb-btn-save">
+              <i data-lucide="save"></i> {{ button_save }}
+            </button>
+            <a href="{{ extensions_url }}" class="ok-btn ok-btn-default ok-btn-sm">
+              {{ button_cancel }}
+            </a>
+          </div>
+        </div>
+
+        <div class="ok-layout">
+
+          {# ── Sidebar ──────────────────────────────────────────────────── #}
+          <div class="ok-sidebar">
+
+            <div class="ok-brand">
+              <div class="ok-brand-icon"><i data-lucide="layout-grid"></i></div>
+              <a href="https://oc-kit.com" target="_blank" class="ok-brand-logo">oc-kit.com</a>
+              <span class="ok-brand-name">Content Blocks<span class="ok-brand-version">v{{ module_version }}</span></span>
+            </div>
+
+            <div class="ok-tabs-sidebar">
+
+              <button type="button" class="ok-tabs-sidebar-item active" data-tab="tab-general">
+                <i data-lucide="settings"></i> {{ tab_general }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-types">
+                <i data-lucide="layout-grid"></i> {{ tab_types }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-stickers">
+                <i data-lucide="tag"></i> {{ tab_stickers }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-presets">
+                <i data-lucide="paintbrush"></i> {{ tab_presets }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-integrations">
+                <i data-lucide="plug"></i> {{ tab_integrations }}
+              </button>
+
+              <hr class="ok-divider ok-divider--nav">
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-submissions">
+                <i data-lucide="inbox"></i> {{ tab_form_submissions }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-migration">
+                <i data-lucide="arrow-left-right"></i> {{ tab_migration }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-faq">
+                <i data-lucide="help-circle"></i> {{ tab_faq }}
+              </button>
+
+              <button type="button" class="ok-tabs-sidebar-item" data-tab="tab-license">
+                <i data-lucide="key"></i> {{ tab_license }}
+              </button>
+
+              <hr class="ok-divider ok-divider--nav">
+
+              <a href="{{ global_url }}" class="ok-tabs-sidebar-item">
+                <i data-lucide="globe"></i> Global Blocks
+              </a>
+
+            </div>
+          </div>
+
+          {# ── Content ──────────────────────────────────────────────────── #}
+          <div class="ok-content">
+
+            {# ══ GENERAL ═══════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel active" id="tab-general">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="settings"></i> {{ tab_general }}</div>
+                <div class="ok-block-body">
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_status }}</label>
+                    <div>
+                      <input type="hidden" name="status" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" id="cb-status" name="status" value="1" class="ok-toggle-input"{% if status %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_wysiwyg }}</label>
+                    <div>
+                      <select name="wysiwyg_editor" class="ok-select">
+                        <option value="jodit"{% if wysiwyg == 'jodit' %} selected{% endif %}>{{ wysiwyg_jodit }}</option>
+                        <option value="summernote"{% if wysiwyg == 'summernote' %} selected{% endif %}>{{ wysiwyg_summernote }}</option>
+                        <option value="ckeditor"{% if wysiwyg == 'ckeditor' %} selected{% endif %}>{{ wysiwyg_ckeditor }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_openai_key }}</label>
+                    <div>
+                      <input type="text" name="openai_key" value="{{ openai_key }}" class="ok-input" placeholder="sk-...">
+                      <p class="ok-help">{{ entry_openai_key_help }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_upload_dir }}</label>
+                    <div>
+                      <input type="text" name="upload_dir" value="{{ upload_dir }}" class="ok-input" placeholder="image/catalog/content-blocks">
+                      <p class="ok-help">{{ entry_upload_dir_help }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label ok-pt-0">{{ entry_enable_cache }}</label>
+                    <div>
+                      <input type="hidden" name="enable_cache" value="0">
+                      <label class="ok-toggle-wrap">
+                        <input type="checkbox" name="enable_cache" value="1" class="ok-toggle-input"{% if enable_cache %} checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_form_max_size }}</label>
+                    <div>
+                      <input type="number" name="form_max_size" value="{{ form_max_size }}" class="ok-input ok-input-sm cb-num-input" min="64" placeholder="5120">
+                      <p class="ok-help">{{ entry_form_max_size_help }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_form_accept_file }}</label>
+                    <div>
+                      <input type="text" name="form_accept_file" value="{{ form_accept_file }}" class="ok-input" placeholder=".pdf,.doc,...">
+                      <p class="ok-help">{{ entry_form_accept_file_help }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_form_accept_image }}</label>
+                    <div>
+                      <input type="text" name="form_accept_image" value="{{ form_accept_image }}" class="ok-input" placeholder="image/*">
+                      <p class="ok-help">{{ entry_form_accept_image_help }}</p>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_custom_css }}</label>
+                    <div>
+                      <textarea name="custom_css" class="ok-input" rows="5" placeholder="/* your CSS */">{{ custom_css }}</textarea>
+                      <small class="ok-text-muted">{{ entry_custom_css_help }}</small>
+                    </div>
+                  </div>
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label">{{ entry_custom_js }}</label>
+                    <div>
+                      <textarea name="custom_js" class="ok-input" rows="5" placeholder="// your JS">{{ custom_js }}</textarea>
+                      <small class="ok-text-muted">{{ entry_custom_js_help }}</small>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            {# ══ TYPES ═════════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-types">
+
+              {% for type in block_types %}
+              {% set cfg = types_config[type.type] is defined ? types_config[type.type] : {} %}
+              <div class="ok-block cb-type-settings">
+
+                <div class="ok-block-title ok-flex ok-items-center ok-gap-8">
+                  <i data-lucide="{{ type.icon ?? 'box' }}" class="ok-text-muted"></i>
+                  <span>{{ attribute(_context,'type_' ~ type.type) }}</span>
+                  <span class="ok-badge ok-badge-muted ok-badge-sm">{{ type.type }}</span>
+                  <div class="ok-ml-auto ok-flex ok-items-center ok-gap-8">
+                    <div title="{{ entry_type_status }}">
+                      <input type="hidden" name="types[{{ type.type }}][status]" value="0">
+                      <label class="ok-toggle-wrap ok-toggle-sm">
+                        <input type="checkbox" class="ok-toggle-input"
+                          name="types[{{ type.type }}][status]" value="1"
+                          {% if cfg.status is not defined or cfg.status %}checked{% endif %}>
+                        <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ok-block-body cb-type-params">
+                  <div class="{#cb-type-params-grid#}">
+
+                    {% if type.type == 'grid' %}
+                    <p class="ok-text-muted ok-text-sm ok-p-2">{{ text_no_type_params }}</p>
+                    {% endif %}
+
+                    {% if type.type not in ['grid', 'video', 'accordion', 'faq'] %}
+                    <div class="ok-form-row">
+                      <label class="form-label ok-label ok-pt-0">{{ entry_image_width }}</label>
+                      <div>
+                      <input type="text" name="types[{{ type.type }}][img_w]"
+                        value="{{ cfg.img_w ?? type.default_img_w ?? '' }}"
+                        class="ok-input ok-input-sm cb-num-input" placeholder="px">
+                        </div>
+                    </div>
+
+                    <div class="ok-form-row">
+                      <label class="form-label ok-label ok-pt-0">{{ entry_image_height }}</label>
+                      <div>
+                      <input type="text" name="types[{{ type.type }}][img_h]"
+                        value="{{ cfg.img_h ?? type.default_img_h ?? '' }}"
+                        class="ok-input ok-input-sm cb-num-input" placeholder="px">
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% for param_key, param in type.params_schema %}
+                    {% if param_key not in ['device_display', 'responsive_order'] %}
+
+                      {% if param.type == 'toggle' %}
+                      {% set pval = cfg[param_key] is defined ? cfg[param_key] : param.default %}
+                      <div class="ok-form-row">
+                        <label class="form-label ok-label">{{ attribute(_context,param.label_key) }}</label>
+                        <div>
+                          <input type="hidden" name="types[{{ type.type }}][{{ param_key }}]" value="0">
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input"
+                              name="types[{{ type.type }}][{{ param_key }}]" value="1"
+                              {% if pval %}checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {% elseif param.type == 'number' %}
+                      {% set pval = cfg[param_key] is defined ? cfg[param_key] : param.default %}
+                      <div class="ok-form-row">
+                        <label class="form-label ok-label">{{ attribute(_context,param.label_key) }}</label>
+                        <input type="number" class="ok-input ok-input-sm cb-num-input"
+                          name="types[{{ type.type }}][{{ param_key }}]"
+                          value="{{ pval }}" min="0">
+                      </div>
+
+                      {% elseif param.type == 'text' %}
+                      {% set pval = cfg[param_key] is defined ? cfg[param_key] : param.default %}
+                      <div class="ok-form-row">
+                        <label class="form-label ok-label">{{ attribute(_context,param.label_key) }}</label>
+                        <input type="text" class="ok-input ok-input-sm"
+                          name="types[{{ type.type }}][{{ param_key }}]"
+                          value="{{ pval }}"{% if param.placeholder ?? '' %} placeholder="{{ param.placeholder }}"{% endif %}>
+                      </div>
+
+                      {% elseif param.type == 'device_inputs' %}
+                      {% set pval = cfg[param_key] is defined ? cfg[param_key] : param.default %}
+                      <div class="ok-form-row cb-type-device-inputs">
+                        <label class="form-label ok-label">{{ attribute(_context,param.label_key) }}</label>
+                        <div class="cb-type-device-row">
+                          <span class="cb-type-device-item ok-btn-group">
+                            <span class="cb-device-prepend"><i data-lucide="smartphone" title="{{ device_mobile }}"></i></span>
+                            <input type="text" class="ok-input ok-input-sm cb-num-input-sm"
+                              name="types[{{ type.type }}][{{ param_key }}][mobile]"
+                              value="{{ pval.mobile is defined ? pval.mobile : param.default.mobile }}">
+                          </span>
+                          <span class="cb-type-device-item ok-btn-group">
+                            <span class="cb-device-prepend"><i data-lucide="tablet" title="{{ device_tablet }}"></i></span>
+                            <input type="text" class="ok-input ok-input-sm cb-num-input-sm"
+                              name="types[{{ type.type }}][{{ param_key }}][tablet]"
+                              value="{{ pval.tablet is defined ? pval.tablet : param.default.tablet }}">
+                          </span>
+                          <span class="cb-type-device-item ok-btn-group">
+                            <span class="cb-device-prepend"><i data-lucide="monitor" title="{{ device_desktop }}"></i></span>
+                            <input type="text" class="ok-input ok-input-sm cb-num-input-sm"
+                              name="types[{{ type.type }}][{{ param_key }}][desktop]"
+                              value="{{ pval.desktop is defined ? pval.desktop : param.default.desktop }}">
+                          </span>
+                        </div>
+                      </div>
+
+                      {% endif %}
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if type.type == 'blog_article' %}
+                    <div class="ok-form-row">
+                      <label class="form-label ok-label">{{ entry_author_img_w }}</label>
+                      <input type="text" name="types[blog_article][author_img_w]"
+                        value="{{ cfg.author_img_w ?? '' }}"
+                        class="ok-input ok-input-sm cb-num-input" placeholder="px">
+                    </div>
+                    <div class="ok-form-row">
+                      <label class="form-label ok-label">{{ entry_author_img_h }}</label>
+                      <input type="text" name="types[blog_article][author_img_h]"
+                        value="{{ cfg.author_img_h ?? '' }}"
+                        class="ok-input ok-input-sm cb-num-input" placeholder="px">
+                    </div>
+                    {% endif %}
+
+                  </div>
+                </div>
+
+              </div>
+              {% endfor %}
+
+            </div>
+
+            {# ══ STICKERS ══════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-stickers">
+
+              <div class="ok-block">
+                <div class="ok-block-title ok-flex ok-items-center ok-gap-8">
+                  <i data-lucide="tag"></i> {{ text_stickers }}
+                  <button type="button" class="ok-btn ok-btn-primary ok-btn-sm ok-ml-auto" id="cb-btn-add-sticker">
+                    {{ button_add_sticker }}
+                  </button>
+                </div>
+                <div class="ok-block-body ok-p-0">
+
+                  <table class="ok-table" id="cb-stickers-table">
+                    <thead>
+                      <tr>
+                        <th class="cb-th-handle"></th>
+                        <th>{{ column_sticker_text }}</th>
+                        <th class="cb-th-color">{{ column_sticker_color }}</th>
+                        <th class="cb-th-color">{{ column_sticker_bg }}</th>
+                        <th class="cb-th-color">{{ column_sticker_border }}</th>
+                        <th class="cb-th-radius-col">{{ column_sticker_radius }}</th>
+                        <th class="cb-th-pos">{{ column_sticker_pos }}</th>
+                        <th class="cb-th-status">{{ column_sticker_status }}</th>
+                        <th class="cb-th-action"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="cb-stickers-body">
+                      {% for sticker in stickers %}
+                      {% set pos = sticker.position ?? 'top-left' %}
+                      <tr class="cb-sticker-row" data-id="{{ sticker.sticker_id }}">
+                        <td class="ok-handle"><i data-lucide="menu" class="ok-text-muted"></i></td>
+                        <td>
+                          <div class="cb-sticker-text-col">
+                            <div class="cb-sticker-preview-wrap">
+                              <span class="cb-sticker-preview"
+                                data-color="{{ sticker.color }}"
+                                data-bg="{{ sticker.bg_color }}"
+                                data-border="{{ sticker.border_color ?? '' }}"
+                                data-radius="{{ sticker.border_radius ?? '' }}">
+                                {{ sticker.text[languages[0].language_id ?? 1] ?? 'Стікер' }}
+                              </span>
+                            </div>
+                            <div class="ok-tabs-pills ok-mb-1 cb-sticker-lang-tabs">
+                              {% for lang in languages %}
+                              <button type="button" class="ok-tabs-pills-item{% if loop.first %} active{% endif %}"
+                                data-sticker-lang="{{ lang.language_id }}"
+                                title="{{ lang.name }}">
+                                {{ lang.code|upper|slice(0,2) }}
+                              </button>
+                              {% endfor %}
+                            </div>
+                            <div class="cb-sticker-inputs">
+                              {% for lang in languages %}
+                              <div class="cb-sticker-lang-row{% if not loop.first %} hidden{% endif %}" data-sticker-lang="{{ lang.language_id }}">
+                                <input type="text" class="ok-input ok-input-sm cb-sticker-text"
+                                  data-lang-id="{{ lang.language_id }}"
+                                  value="{{ sticker.text[lang.language_id] ?? '' }}"
+                                  placeholder="{{ lang.name }}">
+                              </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <input type="text" class="ok-input ok-input-sm coloris cb-sticker-color"
+                            value="{{ sticker.color }}" placeholder="#333333">
+                        </td>
+                        <td>
+                          <input type="text" class="ok-input ok-input-sm coloris cb-sticker-bg"
+                            value="{{ sticker.bg_color }}" placeholder="#ffcc00">
+                        </td>
+                        <td>
+                          <input type="text" class="ok-input ok-input-sm coloris cb-sticker-border"
+                            value="{{ sticker.border_color ?? '' }}" placeholder="#cccccc">
+                        </td>
+                        <td>
+                          <input type="text" class="ok-input ok-input-sm cb-sticker-radius"
+                            value="{{ sticker.border_radius ?? '' }}" placeholder="px">
+                        </td>
+                        <td>
+                          <div class="cb-sticker-pos-thumb" data-position="{{ pos }}">
+                            <button type="button" class="cb-sticker-pos-btn{% if pos == 'top-left' %} active{% endif %}" data-pos="top-left" title="{{ entry_pos_top_left }}"></button>
+                            <button type="button" class="cb-sticker-pos-btn{% if pos == 'top-right' %} active{% endif %}" data-pos="top-right" title="{{ entry_pos_top_right }}"></button>
+                            <button type="button" class="cb-sticker-pos-btn{% if pos == 'bottom-left' %} active{% endif %}" data-pos="bottom-left" title="{{ entry_pos_bottom_left }}"></button>
+                            <button type="button" class="cb-sticker-pos-btn{% if pos == 'bottom-right' %} active{% endif %}" data-pos="bottom-right" title="{{ entry_pos_bottom_right }}"></button>
+                          </div>
+                        </td>
+                        <td>
+                          <label class="ok-toggle-wrap ok-toggle-sm">
+                            <input type="checkbox" class="ok-toggle-input cb-sticker-status" value="1"{% if sticker.status %} checked{% endif %}>
+                            <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                          </label>
+                        </td>
+                        <td>
+                          <button type="button" class="ok-btn ok-btn-danger ok-btn-sm cb-btn-delete-sticker">
+                            <i data-lucide="trash-2"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+
+              {# Sticker row template #}
+              <template id="cb-sticker-tpl">
+                <tr class="cb-sticker-row" data-id="0">
+                  <td class="ok-handle"><i data-lucide="menu" class="ok-text-muted"></i></td>
+                  <td>
+                    <div class="cb-sticker-text-col">
+                      <div class="cb-sticker-preview-wrap">
+                        <span class="cb-sticker-preview cb-sticker-preview-sample">Стікер</span>
+                      </div>
+                      <div class="ok-tabs-pills ok-mb-1 cb-sticker-lang-tabs">
+                        {% for lang in languages %}
+                        <button type="button" class="ok-tabs-pills-item{% if loop.first %} active{% endif %}"
+                          data-sticker-lang="{{ lang.language_id }}"
+                          title="{{ lang.name }}">
+                          {{ lang.code|upper|slice(0,2) }}
+                        </button>
+                        {% endfor %}
+                      </div>
+                      <div class="cb-sticker-inputs">
+                        {% for lang in languages %}
+                        <div class="cb-sticker-lang-row{% if not loop.first %} hidden{% endif %}" data-sticker-lang="{{ lang.language_id }}">
+                          <input type="text" class="ok-input ok-input-sm cb-sticker-text"
+                            data-lang-id="{{ lang.language_id }}"
+                            value=""
+                            placeholder="{{ lang.name }}">
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm coloris cb-sticker-color" value="" placeholder="#333333">
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm coloris cb-sticker-bg" value="" placeholder="#ffcc00">
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm coloris cb-sticker-border" value="" placeholder="#cccccc">
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm cb-sticker-radius" value="" placeholder="px">
+                  </td>
+                  <td>
+                    <div class="cb-sticker-pos-thumb" data-position="top-left">
+                      <button type="button" class="cb-sticker-pos-btn active" data-pos="top-left"></button>
+                      <button type="button" class="cb-sticker-pos-btn" data-pos="top-right"></button>
+                      <button type="button" class="cb-sticker-pos-btn" data-pos="bottom-left"></button>
+                      <button type="button" class="cb-sticker-pos-btn" data-pos="bottom-right"></button>
+                    </div>
+                  </td>
+                  <td>
+                    <label class="ok-toggle-wrap ok-toggle-sm">
+                      <input type="checkbox" class="ok-toggle-input cb-sticker-status" value="1" checked>
+                      <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+                    </label>
+                  </td>
+                  <td>
+                    <button type="button" class="ok-btn ok-btn-danger ok-btn-sm cb-btn-delete-sticker">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </td>
+                </tr>
+              </template>
+
+            </div>
+
+            {# ══ PRESETS ═══════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-presets">
+
+              <div class="ok-block">
+                <div class="ok-block-title ok-flex ok-items-center ok-gap-8">
+                  <span><i data-lucide="paintbrush"></i> {{ tab_presets }}</span>
+                  <div class="ok-ml-auto ok-flex ok-gap-8">
+                    <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="cb-btn-reset-presets"
+                      title="{{ text_reset_presets_confirm }}">
+                      <i data-lucide="refresh-cw"></i> {{ button_reset_presets }}
+                    </button>
+                    <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="cb-btn-add-preset">
+                      {{ button_add_preset }}
+                    </button>
+                  </div>
+                </div>
+                <div class="ok-block-body">
+                  <p class="ok-help-text ok-mb-0">{{ text_presets_help }}</p>
+                </div>
+                <div class="ok-block-body ok-p-0">
+
+                  <table class="ok-table" id="cb-presets-table">
+                    <thead>
+                      <tr>
+                        <th class="cb-th-handle"></th>
+                        <th class="cb-th-preset-group">{{ column_preset_group }}</th>
+                        <th>{{ column_preset_name }}</th>
+                        <th>{{ column_preset_classes }}</th>
+                        <th class="cb-th-action"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="cb-presets-body" data-sortable="presets">
+                      {% set current_group = null %}
+                      {% for group_name, group_presets in presets_grouped %}
+                        {% if group_name %}
+                        <tr class="cb-preset-group-row">
+                          <td colspan="5"><i data-lucide="folder" class="ok-text-muted ok-mr-1"></i> <strong>{{ group_name }}</strong></td>
+                        </tr>
+                        {% endif %}
+                        {% for preset in group_presets %}
+                        <tr class="cb-preset-row" data-id="{{ preset.preset_id }}">
+                          <td class="ok-handle"><i data-lucide="menu" class="ok-text-muted"></i></td>
+                          <td>
+                            <input type="text" class="ok-input ok-input-sm cb-preset-group"
+                              value="{{ preset.group ?? '' }}" placeholder="{{ column_preset_group }}"
+                              list="cb-preset-groups-datalist">
+                          </td>
+                          <td>
+                            <input type="text" class="ok-input ok-input-sm cb-preset-name"
+                              value="{{ preset.name }}" placeholder="{{ column_preset_name }}">
+                          </td>
+                          <td>
+                            <input type="text" class="ok-input ok-input-sm cb-preset-classes"
+                              value="{{ preset.classes }}" placeholder="class1 class2">
+                          </td>
+                          <td>
+                            <button type="button" class="ok-btn ok-btn-danger ok-btn-sm cb-btn-delete-preset">
+                              <i data-lucide="trash-2"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                  {# Datalist for group suggestions #}
+                  <datalist id="cb-preset-groups-datalist">
+                    {% for group_name in presets_grouped|keys %}
+                    {% if group_name %}<option value="{{ group_name }}">{% endif %}
+                    {% endfor %}
+                  </datalist>
+
+                </div>
+              </div>
+
+              <template id="cb-preset-tpl">
+                <tr class="cb-preset-row" data-id="0">
+                  <td class="ok-handle"><i data-lucide="menu" class="ok-text-muted"></i></td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm cb-preset-group"
+                      value="" placeholder="{{ column_preset_group }}" list="cb-preset-groups-datalist">
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm cb-preset-name"
+                      value="" placeholder="{{ column_preset_name }}">
+                  </td>
+                  <td>
+                    <input type="text" class="ok-input ok-input-sm cb-preset-classes"
+                      value="" placeholder="class1 class2">
+                  </td>
+                  <td>
+                    <button type="button" class="ok-btn ok-btn-danger ok-btn-sm cb-btn-delete-preset">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </td>
+                </tr>
+              </template>
+
+            </div>
+
+            {# ══ INTEGRATIONS ══════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-integrations">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="plug"></i> {{ tab_integrations }}</div>
+                <div class="ok-block-body">
+
+                  <div class="ok-form-row">
+                    <label class="form-label ok-label ok-pt-0">{{ entry_blog_type }}</label>
+                    <div>
+                      <select name="blog_type" class="ok-select">
+                        <option value="default"{% if blog_type == 'default' %} selected{% endif %}>{{ blog_type_default }}</option>
+                        <option value="octemplates"{% if blog_type == 'octemplates' %} selected{% endif %}>{{ blog_type_octemplates }}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            {# ══ FORM SUBMISSIONS ═════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-submissions">
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="inbox"></i> {{ tab_form_submissions }}</div>
+                <div class="ok-block-body">
+
+                  <div class="ok-filter-bar ok-mb-3">
+                    <input type="number" class="ok-input ok-input-sm cb-subm-filter-block"
+                      placeholder="Block ID">
+                    <button type="button" class="ok-btn ok-btn-default ok-btn-sm" id="cb-subm-reload">
+                      <i data-lucide="refresh-cw"></i>
+                    </button>
+                    <span class="ok-ml-auto ok-text-muted ok-text-sm" id="cb-subm-total"></span>
+                  </div>
+
+                  <div class="ok-table-wrap">
+                    <table class="ok-table cb-subm-table">
+                      <thead><tr>
+                        <th>{{ column_submission_id }}</th>
+                        <th>{{ column_submission_block }}</th>
+                        <th>{{ column_submission_page }}</th>
+                        <th>{{ column_submission_ip }}</th>
+                        <th>{{ column_submission_date }}</th>
+                        <th class="ok-text-right">{{ column_submission_actions }}</th>
+                      </tr></thead>
+                      <tbody id="cb-subm-body">
+                        <tr><td colspan="6" class="ok-text-muted ok-text-center ok-py-3">—</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="cb-subm-pages ok-mt-2 ok-flex ok-gap-1" id="cb-subm-pages"></div>
+
+                </div>
+              </div>
+            </div>
+
+            {# ══ MIGRATION ════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-migration">
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="arrow-left-right"></i> {{ tab_migration }}</div>
+                <div class="ok-block-body">
+
+                  <p class="ok-help-text ok-mb-3">{{ text_migration_desc }}</p>
+                  <div class="ok-alert ok-alert-warning ok-mb-3">
+                    <i data-lucide="alert-triangle"></i> {{ text_migration_warning }}
+                  </div>
+                  <p class="ok-text-muted ok-mb-3"><em>{{ text_migration_available }}</em></p>
+
+                  <button type="button" class="ok-btn ok-btn-warning ok-btn-sm" id="cb-btn-migrate">
+                    <i data-lucide="arrow-left-right"></i> {{ button_migrate }}
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="layout-grid"></i> {{ text_demo_page_title }}</div>
+                <div class="ok-block-body">
+
+                  <p class="ok-help-text ok-mb-3">{{ text_demo_page_desc }}</p>
+
+                  <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="cb-btn-demo-create">
+                    <i data-lucide="plus-square"></i> {{ button_demo_create }}
+                  </button>
+                  <button type="button" class="ok-btn ok-btn-danger ok-btn-sm" id="cb-btn-demo-delete">
+                    <i data-lucide="trash-2"></i> {{ button_demo_delete }}
+                  </button>
+
+                </div>
+              </div>
+
+            </div>
+
+            {# ══ FAQ ════════════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-faq">
+
+              {% set faq_items = [
+                {
+                  q: 'Як додати блок на сторінку товару?',
+                  a: 'Відкрийте товар в адмінці. Внизу сторінки з\'явиться розділ <strong>Content Blocks</strong>. Натисніть «Додати блок», оберіть тип та заповніть вміст.'
+                },
+                {
+                  q: 'Як вставити блок в опис товару?',
+                  a: 'Скопіюйте шорткод блоку (кнопка <i data-lucide="clipboard"></i> в заголовку блоку) і вставте його в опис: <code>[cb block_id=123]</code>.'
+                },
+                {
+                  q: 'Що таке глобальні блоки?',
+                  a: 'Глобальні блоки — незалежні від сторінок блоки, які можна вставляти скрізь за допомогою шорткоду. Розділ «Глобальні блоки» буде доступний після активації ліцензії.'
+                },
+                {
+                  q: 'Які типи блоків підтримуються?',
+                  a: 'Сітка, Відео, Акордеон, FAQ, Відгуки, Карусель товарів, Карусель зображень, Товар, Категорії, Стаття блогу — загалом 10 типів.'
+                },
+                {
+                  q: 'Чи можна прив\'язати кілька блоків до однієї сторінки?',
+                  a: 'Так, кількість блоків на одній сторінці необмежена. Їх можна сортувати перетягуванням.'
+                },
+                {
+                  q: 'Як налаштувати WYSIWYG-редактор?',
+                  a: 'Перейдіть на вкладку «Загальні» та оберіть редактор: Jodit (рекомендовано), Summernote або CKEditor. Обраний редактор підключається автоматично при редагуванні текстових елементів.'
+                },
+                {
+                  q: 'Що таке CSS-пресети?',
+                  a: 'CSS-пресети — іменовані набори CSS-класів (наприклад, «Кнопка основна» → <code>btn btn-primary</code>), які можна швидко застосувати до блоку, рядка, колонки або елементу з попапу налаштувань.'
+                },
+                {
+                  q: 'Як увімкнути кешування блоків?',
+                  a: 'На вкладці «Загальні» активуйте перемикач «Кешування блоків». При включеному кешуванні HTML блоків зберігається в пам\'яті на стороні сервера, що прискорює відображення сторінок.'
+                },
+                {
+                  q: 'Як мігрувати зі старого модуля Simple Blocks?',
+                  a: 'Перейдіть на вкладку «Міграція» і натисніть «Мігрувати з Simple Blocks». Блоки будуть перенесені до нової структури. Шаблони блоків не мігруються через несумісний формат. Старі таблиці не видаляються.'
+                },
+                {
+                  q: 'Де зберігаються завантажені зображення?',
+                  a: 'Шлях до директорії завантаження вказується в полі «Директорія завантаження» на вкладці «Загальні» (наприклад: <code>image/catalog/content-blocks</code>). Директорія буде створена автоматично при першому завантаженні.'
+                },
+              ] %}
+
+              {% for item in faq_items %}
+              <div class="ok-block cb-faq-block">
+                <div class="ok-block-title cb-faq-title">
+                  <i data-lucide="help-circle" class="ok-text-muted"></i>
+                  {{ item.q }}
+                </div>
+                <div class="ok-block-body">
+                  {{ item.a }}
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+
+            {# ══ LICENSE ════════════════════════════════════════════════════ #}
+            <div class="ok-layout-panel" id="tab-license">
+              <div class="ok-block">
+                <div class="ok-block-title"><i data-lucide="key"></i> {{ tab_license }}</div>
+                <div class="ok-block-body">
+                  <div class="cb-license-wrap">
+
+                    <div class="cb-license-badge">
+                      {% if license_info.status == 'active' %}
+                        <span class="ok-badge ok-badge-success"><i data-lucide="check-circle"></i> {{ text_license_status_active }}</span>
+                      {% elseif license_info.status == 'expired' %}
+                        <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle"></i> {{ text_license_status_expired }}</span>
+                      {% elseif license_info.status == 'invalid' %}
+                        <span class="ok-badge ok-badge-danger"><i data-lucide="x-circle"></i> {{ text_license_status_invalid }}</span>
+                      {% elseif license_info.status == 'grace' %}
+                        <span class="ok-badge ok-badge-warning"><i data-lucide="alert-triangle"></i> {{ text_license_status_grace }}</span>
+                      {% else %}
+                        <span class="ok-badge ok-badge-default"><i data-lucide="help-circle"></i> {{ text_license_status_not_validated }}</span>
+                      {% endif %}
+                    </div>
+
+                    {% if license_info.version is defined %}
+                    <div class="cb-license-meta">{{ text_license_version }}: <strong>{{ license_info.version }}</strong></div>
+                    {% endif %}
+                    {% if license_info.domain is defined and license_info.domain %}
+                    <div class="cb-license-meta">{{ text_license_domain }}: <strong>{{ license_info.domain }}</strong></div>
+                    {% endif %}
+
+                    <label class="form-label ok-fw-600 ok-mt-2 ok-mb-1">{{ entry_license_key }}</label>
+                    <div class="ok-input-inline ok-mb-2">
+                      <input type="text" id="cb-license-key"
+                             name="module_oc_kit_content_blocks_license_key"
+                             class="ok-input ok-flex-1"
+                             value="{{ license_key }}"
+                             placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
+                             autocomplete="off">
+                      <button type="button" id="cb-btn-activate" class="ok-btn ok-btn-primary"
+                              data-url="{{ license_activate_url }}">
+                        <i data-lucide="check"></i> {{ button_activate }}
+                      </button>
+                    </div>
+
+                    <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                      <i data-lucide="shopping-cart"></i> {{ text_license_buy }}
+                    </a>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>{# /ok-content #}
+        </div>{# /ok-layout #}
+      </div>{# /ok-panel #}
+    </div>{# /oc-kit #}
+
+  </div>
+</div>
+
+<div id="cb-settings-data" hidden
+  data-save-url="{{ save_url }}"
+  data-stickers-url="{{ stickers_url }}"
+  data-presets-url="{{ presets_url }}"
+  data-migrate-url="{{ migrate_url }}"
+  data-demo-url="{{ demo_url }}"
+  data-submissions-url="{{ submissions_url }}"></div>
+
+{# ── Submission view modal ───────────────────────────────────────── #}
+<div class="cb-modal-backdrop" id="cb-modal-submission" hidden>
+  <div class="cb-modal cb-modal-lg">
+    <div class="cb-modal-header">
+      <span>{{ tab_form_submissions }} <span id="cb-subm-modal-id" class="ok-text-muted"></span></span>
+      <button type="button" class="cb-modal-close" data-dismiss="cb-modal-submission">&times;</button>
+    </div>
+    <div class="cb-modal-body" id="cb-subm-modal-body">—</div>
+  </div>
+</div>
+
+<script>
+window.cbSettingsI18n = {{ i18n_js|json_encode }};
+</script>
+
+{{ footer }}

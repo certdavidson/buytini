@@ -1,0 +1,27 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-pc-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for product in products %}
+        <div class="swiper-slide cb-block--products_carousel-default__slide" itemscope itemtype="https://schema.org/Product">
+          <a href="{{ product.href }}" class="cb-block--products_carousel-default__img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></a>
+          <a href="{{ product.href }}" class="cb-block--products_carousel-default__name" itemprop="name">{{ product.name }}</a>
+          {% if params.show_price ?? true %}
+            <div class="cb-block--products_carousel-default__price">
+              {% if product.special %}
+                <span class="cb-block--products_carousel-default__price-old">{{ product.price }}</span>
+                <span class="cb-block--products_carousel-default__price-new" itemprop="price">{{ product.special }}</span>
+              {% else %}
+                <span itemprop="price">{{ product.price }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if params.show_button ?? true %}<a href="{{ product.href }}" class="cb-block--products_carousel-default__btn{% if not (product.in_stock ?? true) %} is-out{% endif %}">{{ product.in_stock ?? true ? 'Купити' : 'Немає в наявності' }}</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-pc-{{ bid }}',{slidesPerView:1.2,spaceBetween:14,navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-pc-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-pc-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-pc-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},breakpoints:{576:{slidesPerView:2,spaceBetween:18},992:{slidesPerView:3,spaceBetween:20},1200:{slidesPerView:{{ params.per_view ?? 4 }},spaceBetween:24}},autoplay:{{ params.autoplay ? '{delay:3500}' : 'false' }},loop:{{ (params.loop ?? false) ? 'true' : 'false' }}});}});</script>

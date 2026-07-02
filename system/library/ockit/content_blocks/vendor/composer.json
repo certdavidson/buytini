@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mobiledetect/mobiledetectlib": "3.74.*"
+    },
+    "config": { "platform-check": false }
+}

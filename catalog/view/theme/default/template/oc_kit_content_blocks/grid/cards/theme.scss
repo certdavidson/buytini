@@ -1,0 +1,29 @@
+/* Content Blocks Pro — grid / cards (soft bg wrapper + lifted white cards) */
+.cb-block--grid-cards {
+    --cb-grid-primary: #3498db;
+
+    background: linear-gradient(180deg, #f7f9fc 0%, #eef3fa 100%);
+    padding: 28px 22px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    @media (min-width: 768px) { padding: 36px 28px; }
+
+    &__col {
+        background: #fff;
+        border-radius: 14px;
+        padding: 26px 24px;
+        box-shadow: 0 4px 14px rgba(20, 30, 50, .06);
+        transition: transform .25s ease, box-shadow .25s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 32px rgba(20, 30, 50, .10);
+        }
+    }
+
+    .cb-el-text p:last-child,
+    .cb-el-html p:last-child { margin-bottom: 0; }
+}

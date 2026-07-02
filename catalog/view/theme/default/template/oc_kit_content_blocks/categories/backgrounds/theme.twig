@@ -1,0 +1,17 @@
+<div class="cb-block cb-block--categories cb-block--categories-backgrounds {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-grid cb-grid-2 cb-gap-2 cb-lg-gap-4 cb-block--categories-backgrounds__grid">
+    {% for cat in categories %}
+      {% set is_large = loop.first %}
+      <a href="{{ cat.href }}" class="cb-block--categories-backgrounds__item{% if is_large %} cb-block--categories-backgrounds__item--large{% endif %}">
+        <img class="cb-block--categories-backgrounds__image" src="{{ cat.image }}" alt="{{ cat.name }}">
+        <span class="cb-block--categories-backgrounds__mask" aria-hidden="true"></span>
+        <span class="cb-block--categories-backgrounds__info">
+          <span class="span.cb-block--categories-backgrounds__title">
+            <span class="cb-block--categories-backgrounds__name">{{ cat.name }}</span>
+            <span class="cb-block--categories-backgrounds__shop">Переглянути</span>
+          </span>
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

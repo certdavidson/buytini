@@ -1,0 +1,96 @@
+/* Content Blocks Pro — blog_article / with_meta | © 2026 oc-kit.com */
+.cb-block--blog_article-with_meta {
+    --cb-ba-primary: #3498db;
+    --cb-ba-primary-d: #2c80b4;
+    --cb-ba-text: #2c3e50;
+    --cb-ba-muted: #5a6474;
+    --cb-ba-light: #8a94a6;
+    --cb-ba-border: #e8ecf2;
+    --cb-ba-tag-bg: #f0f4fa;
+
+    &__title {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        margin: 0 0 24px;
+        color: var(--cb-ba-text);
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: transform .25s;
+        &:hover { transform: translateY(-3px); }
+        &:hover &__name { color: var(--cb-ba-primary) !important; }
+    }
+    &__img {
+        display: block;
+        aspect-ratio: 4/3;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #ececec;
+        position: relative;
+        img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .5s ease;
+        }
+        &::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(52,152,219,0) 60%, rgba(52,152,219,.15) 100%);
+            opacity: 0;
+            transition: opacity .25s;
+        }
+        &:hover img { transform: scale(1.06); }
+        &:hover::after { opacity: 1; }
+    }
+    &__meta {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 2px;
+        flex-wrap: wrap;
+    }
+    &__meta > span:first-child {
+        color: var(--cb-ba-light);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+    &__tag {
+        background: var(--cb-ba-tag-bg);
+        color: var(--cb-ba-primary-d);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    &__name {
+        color: var(--cb-ba-text) !important;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 1.35;
+        text-decoration: none !important;
+        transition: color .15s;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        &:hover { color: var(--cb-ba-primary) !important; }
+    }
+    &__lead {
+        color: var(--cb-ba-muted);
+        font-size: 14px;
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}

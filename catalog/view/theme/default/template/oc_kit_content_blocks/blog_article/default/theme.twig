@@ -1,0 +1,15 @@
+<div class="cb-block cb-block--blog_article cb-block--blog_article-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+{% if blog_error %}<!-- CB blog: {{ blog_error }} -->{% endif %}
+<div class="cb-grid cb-grid-3 cb-gap-6">
+      {% for article in articles %}
+        <article class="cb-block--blog_article-default__item">
+          <div class="cb-block--blog_article-default__meta">
+            {% if article.date_added %}<span class="cb-block--blog_article-default__date">{{ article.date_added|date('d.m.Y') }}</span>{% endif %}
+            <span class="cb-block--blog_article-default__tag">Блог</span>
+          </div>
+          <a href="{{ article.href }}" class="cb-block--blog_article-default__name">{{ article.name }}</a>
+          {% if article.description %}<div class="cb-block--blog_article-default__lead">{{ article.description|striptags|slice(0, 130) }}…</div>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+</div>

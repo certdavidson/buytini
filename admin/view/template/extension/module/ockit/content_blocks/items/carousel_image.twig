@@ -1,0 +1,66 @@
+{# Content Blocks Pro — item: carousel image | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id   = element.element_id ?? 0 %}
+{% set el_data = element.data       ?? {} %}
+{# Image is shared across languages: read from current lang, fall back to first lang with a value. #}
+{% set img_src = el_data[language_id].image ?? '' %}
+{% if img_src is empty %}
+  {% for _ld in el_data %}{% if _ld.image is defined and _ld.image %}{% set img_src = _ld.image %}{% endif %}{% endfor %}
+{% endif %}
+{% set img_thumb = img_src ? catalog_url ~ 'image/' ~ img_src : '' %}
+
+<div class="cb-element cb-item" data-el-id="{{ el_id }}" data-el-type="carousel_image"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="image"></i></span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+    <div class="ok-upload-zone cb-image-row">
+
+      <div class="cb-image-picker-wrap" data-cb-img-init>
+        <a href="" data-toggle="image" class="img-thumbnail cb-image-thumb-link">
+          <img src="{{ img_thumb ? img_thumb : placeholder }}" data-placeholder="{{ placeholder }}"
+               class="img-responsive cb-image-thumb" alt="">
+        </a>
+        <input type="hidden" class="cb-image-val" value="{{ img_src }}">
+      </div>
+
+      <div class="cb-image-side">
+        <label class="ok-btn ok-btn-default ok-btn-xs cb-btn-upload-image"
+          title="{{ i18n.button_upload_image }}">
+          <i data-lucide="upload"></i>
+          <input type="file" class="cb-image-file-input" accept="image/*" hidden>
+        </label>
+      </div>
+    </div>
+
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs ok-mt-1">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% for lang in languages %}
+    <div class="cb-lang-panel{% if lang.language_id == language_id %} active{% endif %} cb-image-meta-row ok-mt-1"
+      data-lang-id="{{ lang.language_id }}">
+      <input type="text" class="ok-input ok-input-sm cb-image-alt flex-1"
+        data-lang="{{ lang.language_id }}"
+        value="{{ el_data[lang.language_id].alt ?? '' }}"
+        placeholder="Alt">
+      <input type="text" class="ok-input ok-input-sm cb-image-url flex-1"
+        data-lang="{{ lang.language_id }}"
+        value="{{ el_data[lang.language_id].url ?? '' }}"
+        placeholder="URL">
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

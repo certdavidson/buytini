@@ -1,0 +1,14 @@
+<div class="cb-block cb-block--product cb-block--product-compact {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for product in products %}
+    <a href="{{ product.href }}" class="cb-block--product-compact__card" itemscope itemtype="https://schema.org/Product">
+      <div class="cb-block--product-compact__img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></div>
+      <div class="cb-block--product-compact__name" itemprop="name">{{ product.name }}</div>
+      {% if params.show_price ?? true %}
+        <div class="cb-block--product-compact__price">
+          {% if product.special %}<span class="cb-block--product-compact__price-old">{{ product.price }}</span><span class="cb-block--product-compact__price-new" itemprop="price">{{ product.special }}</span>
+          {% else %}<span itemprop="price">{{ product.price }}</span>{% endif %}
+        </div>
+      {% endif %}
+    </a>
+  {% endfor %}
+</div>

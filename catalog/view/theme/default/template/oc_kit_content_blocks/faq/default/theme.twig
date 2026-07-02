@@ -1,0 +1,17 @@
+{% set bid = block_id ? block_id : 0 %}
+{% set collapse_in = params.collapse_in ?? false %}
+<div class="cb-block cb-block--faq cb-block--faq-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  {% for item in items %}
+    {% set tid = 'cbf-' ~ bid ~ '-' ~ loop.index0 %}
+    <div class="cb-block--faq-default__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <button type="button" class="cb-block--faq-default__q" data-cb-acc="{{ tid }}" aria-controls="{{ tid }}" aria-expanded="{% if collapse_in and loop.first %}true{% else %}false{% endif %}" itemprop="name">
+        <span class="cb-block--faq-default__q-text">{{ item.data.question }}</span>
+        <span class="cb-block--faq-default__icon" aria-hidden="true"></span>
+      </button>
+      <div class="cb-block--faq-default__a" id="{{ tid }}" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" role="region">
+        <div class="cb-block--faq-default__a-inner" itemprop="text">{{ item.data.answer }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<script>(function(){var b=document.querySelector('[data-block-id="{{ bid }}"]');if(!b||b.dataset.cbAccBound)return;b.dataset.cbAccBound=1;b.addEventListener('click',function(e){var h=e.target.closest('[data-cb-acc]');if(!h)return;h.setAttribute('aria-expanded',h.getAttribute('aria-expanded')==='true'?'false':'true');});})();</script>

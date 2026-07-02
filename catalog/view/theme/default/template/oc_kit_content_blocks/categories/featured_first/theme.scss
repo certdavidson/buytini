@@ -1,0 +1,137 @@
+/* Content Blocks Pro — categories / featured_first | © 2026 oc-kit.com */
+.cb-block--categories-featured_first {
+    --cb-cat-primary: #3498db;
+    --cb-cat-primary-d: #2c80b4;
+    --cb-cat-text: #2c3e50;
+    --cb-cat-muted: #5a6474;
+    --cb-cat-border: #e8ecf2;
+
+    &__grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-auto-rows: 1fr;
+        }
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border: 1px solid var(--cb-cat-border);
+        border-radius: 16px;
+        padding: 16px;
+        text-decoration: none !important;
+        color: var(--cb-cat-text);
+        transition: border-color .2s, box-shadow .25s, transform .25s;
+
+        @media (min-width: 768px) {
+            grid-row: span 2;
+            grid-column: span 1;
+        }
+        &:hover {
+            border-color: #cdd6e3;
+            box-shadow: 0 14px 32px rgba(20, 30, 50, .12);
+            transform: translateY(-3px);
+        }
+        &:hover &-img img { transform: scale(1.05); }
+        &:hover &-name { color: var(--cb-cat-primary); }
+        &:hover &-sub {
+            color: var(--cb-cat-primary);
+            &::after { transform: translateX(4px); }
+        }
+
+        &-img {
+            flex: 1;
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f7f9fc;
+            margin-bottom: 16px;
+            img {
+                width: 100%; height: 100%;
+                object-fit: cover;
+                transition: transform .55s ease;
+            }
+        }
+        @media (min-width: 768px) {
+            &-img { aspect-ratio: auto; }
+        }
+        &-body {
+            padding: 0 6px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        &-name {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            transition: color .15s;
+            @media (min-width: 1024px) { font-size: 26px; }
+        }
+        &-sub {
+            color: var(--cb-cat-muted);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color .15s;
+            &::after {
+                content: '→';
+                font-size: 14px;
+                line-height: 1;
+                transition: transform .25s ease;
+            }
+        }
+    }
+
+    &__small {
+        background: #fff;
+        border: 1px solid var(--cb-cat-border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        text-decoration: none !important;
+        color: var(--cb-cat-text);
+        transition: border-color .2s, box-shadow .25s, transform .25s;
+
+        &:hover {
+            border-color: var(--cb-cat-primary);
+            box-shadow: 0 8px 22px rgba(52, 152, 219, .12);
+            transform: translateY(-2px);
+        }
+        &:hover &-img img { transform: scale(1.08); }
+        &:hover &-name { color: var(--cb-cat-primary); }
+
+        &-img {
+            width: 56px; height: 56px;
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f7f9fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 100%; height: 100%;
+                object-fit: contain;
+                transition: transform .35s ease;
+            }
+        }
+        &-name {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.35;
+            transition: color .15s;
+        }
+    }
+}

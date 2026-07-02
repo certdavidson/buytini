@@ -1,0 +1,9 @@
+/* Content Blocks Pro — grid / default (minimal) */
+.cb-block--grid-default {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .cb-el-text p:last-child,
+    .cb-el-html p:last-child { margin-bottom: 0; }
+}

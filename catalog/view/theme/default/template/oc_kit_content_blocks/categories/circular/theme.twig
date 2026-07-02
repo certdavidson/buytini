@@ -1,0 +1,10 @@
+<div class="cb-block cb-block--categories cb-block--categories-circular {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+    <div class="cb-block--categories-circular__list">
+      {% for cat in categories %}
+        <a href="{{ cat.href }}" class="cb-block--categories-circular__item">
+          <div class="cb-block--categories-circular__img"><img src="{{ cat.image }}" alt="{{ cat.name }}"></div>
+          <div class="cb-block--categories-circular__name">{{ cat.name }}</div>
+        </a>
+      {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,100 @@
+/* Content Blocks Pro — reviews / cards (3-col elevated cards with quote mark) */
+.cb-block--reviews-cards {
+    --cb-rv-primary: #3498db;
+    --cb-rv-primary-d: #2c80b4;
+    --cb-rv-text: #2c3e50;
+    --cb-rv-muted: #5a6474;
+    --cb-rv-light: #8a94a6;
+    --cb-rv-border: #e8ecf2;
+    --cb-rv-star: #f5b50a;
+    --cb-rv-star-off: #d8dde6;
+
+    &__item {
+        position: relative;
+        background: #fff;
+        border: 1px solid var(--cb-rv-border);
+        border-radius: 16px;
+        padding: 26px 24px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: border-color .2s, box-shadow .25s, transform .25s;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #cdd6e3;
+            box-shadow: 0 14px 32px rgba(20, 30, 50, .08);
+            transform: translateY(-3px);
+        }
+    }
+    &__quote {
+        position: absolute;
+        top: 12px;
+        right: 20px;
+        font-family: Georgia, serif;
+        font-size: 72px;
+        line-height: 1;
+        color: var(--cb-rv-primary);
+        opacity: .14;
+        pointer-events: none;
+    }
+    &__stars {
+        display: flex;
+        gap: 2px;
+        position: relative;
+        z-index: 1;
+    }
+    &__star {
+        color: var(--cb-rv-star-off);
+        font-size: 16px;
+        line-height: 1;
+        &.is-on { color: var(--cb-rv-star); }
+    }
+    &__text {
+        color: var(--cb-rv-text);
+        line-height: 1.65;
+        font-size: 14.5px;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+    }
+    &__foot {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 14px;
+        border-top: 1px solid var(--cb-rv-border);
+        margin-top: 4px;
+    }
+    &__avatar {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--cb-rv-primary), var(--cb-rv-primary-d));
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.02em;
+        flex-shrink: 0;
+    }
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+    &__author {
+        color: var(--cb-rv-text);
+        font-size: 13.5px;
+        font-weight: 700;
+        line-height: 1.25;
+    }
+    &__date {
+        color: var(--cb-rv-light);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+    }
+}

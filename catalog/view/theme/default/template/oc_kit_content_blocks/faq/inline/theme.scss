@@ -1,0 +1,28 @@
+/* Content Blocks Pro — faq / inline (open list) */
+.cb-block--faq-inline {
+    --cb-faq-primary: #3498db;
+    --cb-faq-text: #2c3e50;
+    --cb-faq-muted: #5a6474;
+    --cb-faq-line: #eaeef4;
+
+    &__item {
+        padding: 22px 0;
+        border-bottom: 1px solid var(--cb-faq-line);
+        &:first-child { border-top: 1px solid var(--cb-faq-line); }
+    }
+    &__q {
+        font-weight: 700;
+        color: var(--cb-faq-text);
+        font-size: 17px;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+        margin-bottom: 10px;
+    }
+    &__a {
+        color: var(--cb-faq-muted);
+        font-size: 15px;
+        line-height: 1.65;
+
+        p:last-child { margin-bottom: 0; }
+    }
+}

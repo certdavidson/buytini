@@ -1,0 +1,63 @@
+{# Content Blocks Pro — item: accordion panel (col) | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set col_id     = col.col_id ?? 0 %}
+{% set col_params = col.params ?? {} %}
+{% set col_titles = col_params.title ?? {} %}
+
+<div class="cb-col cb-accordion-panel" data-col-id="{{ col_id }}"
+  data-sort="{{ col.sort_order ?? 0 }}">
+
+  <div class="cb-col-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs cb-lang-tabs-inline">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for lang in languages %}
+    <input type="text" class="ok-input ok-input-sm cb-acc-title{% if lang.language_id != language_id %} hidden{% endif %}"
+      data-lang="{{ lang.language_id }}"
+      value="{{ col_titles[lang.language_id] ?? '' }}"
+      placeholder="{{ i18n.placeholder_accordion_title }}">
+    {% endfor %}
+
+    <div class="cb-col-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-col-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-col"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-elements-wrap" data-sortable="elements">
+    {% for el in col.elements ?? [] %}
+      {% set el_tpl = 'extension/module/ockit/content_blocks/elements/' ~ el.element_type ~ '.twig' %}
+      {% include el_tpl with {
+        element:     el,
+        languages:   languages,
+        language_id: language_id,
+        presets:     presets,
+        i18n:        i18n
+      } only %}
+    {% endfor %}
+  </div>
+
+  <div class="cb-col-footer">
+    <div class="cb-add-el-wrap">
+      <button type="button" class="ok-btn ok-btn-primary ok-btn-xs cb-btn-add-element-col">
+        {{ i18n.button_add_element }}
+      </button>
+      <div class="cb-el-dropdown" hidden>
+        <button type="button" class="cb-el-dropdown-item" data-el-type="text">{{ i18n.el_text }}</button>
+        <button type="button" class="cb-el-dropdown-item" data-el-type="image">{{ i18n.el_image }}</button>
+        <button type="button" class="cb-el-dropdown-item" data-el-type="html">{{ i18n.el_html }}</button>
+        <button type="button" class="cb-el-dropdown-item" data-el-type="video">{{ i18n.el_video }}</button>
+      </div>
+    </div>
+  </div>
+
+</div>

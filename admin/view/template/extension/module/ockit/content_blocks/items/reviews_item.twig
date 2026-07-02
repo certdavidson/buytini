@@ -1,0 +1,73 @@
+{% set el_id    = element.element_id ?? 0 %}
+{% set el_data  = element.data       ?? {} %}
+{% set el_params = element.params    ?? {} %}
+{% set src_prod_id   = el_params.source_product_id   ?? 0 %}
+{% set src_prod_name = el_params.source_product_name ?? '' %}
+{% set src_cat_id    = el_params.source_category_id   ?? 0 %}
+{% set src_cat_name  = el_params.source_category_name ?? '' %}
+
+<div class="cb-element cb-item" data-el-id="{{ el_id }}" data-el-type="reviews_item"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="star"></i> {{ i18n.item_reviews }}</span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+
+    {# Sources: optional bind to a product or category — autocomplete (per-element) #}
+    <div class="cb-review-sources cb-settings-grid ok-mb-2">
+      <div class="cb-autocomplete-wrap" data-type="product" data-target="source_product">
+        <label class="form-label ok-label-sm">{{ i18n.param_source_products }}</label>
+        <div class="cb-autocomplete-selected{% if not src_prod_id %} hidden{% endif %}" data-product-id="{{ src_prod_id }}">
+          <span class="cb-autocomplete-name">{{ src_prod_name }}</span>
+        </div>
+        <input type="text" class="ok-input ok-input-sm cb-autocomplete-input" placeholder="{{ i18n.placeholder_search_product }}">
+        <input type="hidden" class="cb-src-product-id"   value="{{ src_prod_id }}">
+        <input type="hidden" class="cb-src-product-name" value="{{ src_prod_name }}">
+        <div class="cb-autocomplete-dropdown" hidden></div>
+      </div>
+      <div class="cb-autocomplete-wrap" data-type="category" data-target="source_category">
+        <label class="form-label ok-label-sm">{{ i18n.param_source_categories }}</label>
+        <div class="cb-autocomplete-selected{% if not src_cat_id %} hidden{% endif %}" data-category-id="{{ src_cat_id }}">
+          <span class="cb-autocomplete-name">{{ src_cat_name }}</span>
+        </div>
+        <input type="text" class="ok-input ok-input-sm cb-autocomplete-input" placeholder="{{ i18n.placeholder_search_category }}">
+        <input type="hidden" class="cb-src-category-id"   value="{{ src_cat_id }}">
+        <input type="hidden" class="cb-src-category-name" value="{{ src_cat_name }}">
+        <div class="cb-autocomplete-dropdown" hidden></div>
+      </div>
+    </div>
+
+    <div class="cb-review-meta ok-flex ok-gap-8 ok-mb-2">
+      <input type="text" class="ok-input ok-input-sm cb-review-author"
+        value="{{ el_params.author ?? '' }}" placeholder="{{ i18n.placeholder_review_author }}">
+      <select class="ok-input ok-input-sm cb-review-rating">
+        {% for r in 1..5 %}
+        <option value="{{ r }}"{% if (el_params.rating ?? 5) == r %} selected{% endif %}>{{ r }}★</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% for lang in languages %}
+    <div class="cb-lang-panel{% if lang.language_id == language_id %} active{% endif %}"
+      data-lang-id="{{ lang.language_id }}">
+      <textarea class="ok-input cb-review-text" data-lang="{{ lang.language_id }}" rows="2"
+        placeholder="{{ i18n.placeholder_review_text }}">{{ el_data[lang.language_id].content ?? '' }}</textarea>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

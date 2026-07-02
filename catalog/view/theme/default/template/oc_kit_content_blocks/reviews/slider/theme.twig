@@ -1,0 +1,30 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--reviews cb-block--reviews-slider {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-rs-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for item in items %}
+        <div class="swiper-slide cb-block--reviews-slider__slide" itemscope itemtype="https://schema.org/Review">
+          <span class="cb-block--reviews-slider__quote" aria-hidden="true">❝</span>
+          {% if item.params.rating %}
+            <div class="cb-block--reviews-slider__stars">
+              {% for i in 1..5 %}<span class="cb-block--reviews-slider__star{% if i <= item.params.rating %} is-on{% endif %}">★</span>{% endfor %}
+            </div>
+          {% endif %}
+          <div class="cb-block--reviews-slider__text" itemprop="reviewBody">{{ item.data.content }}</div>
+          {% if item.params.author %}
+            <div class="cb-block--reviews-slider__foot">
+              <span class="cb-block--reviews-slider__avatar" aria-hidden="true">{{ item.author_initial }}</span>
+              <div class="cb-block--reviews-slider__meta">
+                <div class="cb-block--reviews-slider__author" itemprop="author">{{ item.params.author }}</div>
+                {% if item.params.date %}<div class="cb-block--reviews-slider__date">{{ item.params.date }}</div>{% endif %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-rs-{{ bid }}',{slidesPerView:1.1,spaceBetween:16,navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-rs-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-rs-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-rs-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},breakpoints:{768:{slidesPerView:2,spaceBetween:20},992:{slidesPerView:3,spaceBetween:24}},loop:{{ (params.loop ?? true) ? 'true' : 'false' }}});}});</script>

@@ -1,0 +1,470 @@
+/* Content Blocks Pro — base utilities | © 2026 oc-kit.com | https://oc-kit.com
+   Self-contained reset + grid + spacing utilities for catalog themes.
+   Independent of Bootstrap (works on BS3/4/5 / standalone).
+   Compile: sass --style=compressed cb-base.scss cb-base.css */
+
+@import "variables.scss";
+
+/* ── Design tokens ─────────────────────────────────────────────────────── */
+$cb-text:        #2c3e50;
+$cb-muted:       #5a6474;
+$cb-light:       #8a94a6;
+$cb-border:      #e8ecf2;
+$cb-border-h:    #d5dde9;
+$cb-bg:          #f7f9fc;
+$cb-white:       #fff;
+$cb-primary:     $color-blue;          // #3498DB (з variables)
+$cb-primary-d:   darken($color-blue, 8%);
+$cb-radius:      10px;
+$cb-radius-sm:   6px;
+$cb-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Helvetica Neue", sans-serif;
+
+/* ── Reset / scope ─────────────────────────────────────────────────────── */
+.cb-block,
+.cb-block *,
+.cb-block *::before,
+.cb-block *::after { box-sizing: border-box; }
+
+.cb-block {
+    font-family: $cb-font;
+    // color: $cb-text;
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+    position: relative;
+
+    img { max-width: 100%; height: auto; display: block; }
+    a   {
+        // color: $cb-primary;
+        text-decoration: none;
+        transition: color .15s;
+    }
+    a:hover { color: $cb-primary-d; text-decoration: underline; }
+    button, a, input, img { transition: all .2s ease-out; }
+
+    & + .cb-block { margin-top: 0; }
+}
+
+/* ── Container (optional, opt-in only) ─────────────────────────────────── */
+.cb-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+/* ── Display utilities ─────────────────────────────────────────────────── */
+.cb-d-block   { display: block !important; }
+.cb-d-inline  { display: inline-block !important; }
+.cb-d-grid    { display: grid !important; }
+.cb-d-flex    { display: flex !important; }
+.cb-d-none, .cb-hidden { display: none !important; }
+
+@media ($sm)  { .cb-sm-d-block{display:block!important} .cb-sm-d-flex{display:flex!important} .cb-sm-d-grid{display:grid!important} .cb-sm-d-none{display:none!important} }
+@media ($md)  { .cb-md-d-block{display:block!important} .cb-md-d-flex{display:flex!important} .cb-md-d-grid{display:grid!important} .cb-md-d-none{display:none!important} }
+@media ($lg)  { .cb-lg-d-block{display:block!important} .cb-lg-d-flex{display:flex!important} .cb-lg-d-grid{display:grid!important} .cb-lg-d-none{display:none!important} }
+@media ($xl)  { .cb-xl-d-block{display:block!important} .cb-xl-d-flex{display:flex!important} .cb-xl-d-grid{display:grid!important} .cb-xl-d-none{display:none!important} }
+@media ($xxl) { .cb-xxl-d-block{display:block!important} .cb-xxl-d-flex{display:flex!important} .cb-xxl-d-grid{display:grid!important} .cb-xxl-d-none{display:none!important} }
+
+/* ── Flex / alignment ──────────────────────────────────────────────────── */
+.cb-flex-wrap        { flex-wrap: wrap !important; }
+.cb-flex-nowrap      { flex-wrap: nowrap !important; }
+.cb-flex-col         { flex-direction: column !important; }
+.cb-flex-row         { flex-direction: row !important; }
+.cb-items-start      { align-items: flex-start !important; }
+.cb-items-center     { align-items: center !important; }
+.cb-items-end        { align-items: flex-end !important; }
+.cb-justify-start    { justify-content: flex-start !important; }
+.cb-justify-center   { justify-content: center !important; }
+.cb-justify-end      { justify-content: flex-end !important; }
+.cb-justify-between  { justify-content: space-between !important; }
+.cb-justify-around   { justify-content: space-around !important; }
+
+/* ── Grid (12-col Bootstrap-like) ──────────────────────────────────────── */
+.cb-row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+}
+.cb-col { grid-column: span 12; min-width: 0; }
+@media ($md) {
+    @for $i from 1 through 12 {
+        .cb-col-#{$i} { grid-column: span $i; }
+    }
+}
+
+/* ── Grid columns (responsive by breakpoint) ─────────────────────────────
+   Mental model: .cb-grid-{N}        — N columns at every viewport width
+                 .cb-grid-sm-{N}     — N columns from $sm and up
+                 .cb-grid-md-{N}     — N columns from $md and up
+                 .cb-grid-lg-{N}     — N columns from $lg and up
+                 .cb-grid-xl-{N}     — N columns from $xl and up
+                 .cb-grid-xxl-{N}    — N columns from $xxl and up
+   Stack: <div class="cb-grid cb-grid-1 cb-grid-md-2 cb-grid-lg-4">
+─────────────────────────────────────────────────────────────────────── */
+.cb-grid { display: grid; gap: 16px; }
+
+@for $i from 1 through 12 {
+    .cb-grid-#{$i} { grid-template-columns: repeat($i, minmax(0, 1fr)); }
+}
+@media ($sm)  { @for $i from 1 through 12 { .cb-grid-sm-#{$i}  { grid-template-columns: repeat($i, minmax(0, 1fr)); } } }
+@media ($md)  { @for $i from 1 through 12 { .cb-grid-md-#{$i}  { grid-template-columns: repeat($i, minmax(0, 1fr)); } } }
+@media ($lg)  { @for $i from 1 through 12 { .cb-grid-lg-#{$i}  { grid-template-columns: repeat($i, minmax(0, 1fr)); } } }
+@media ($xl)  { @for $i from 1 through 12 { .cb-grid-xl-#{$i}  { grid-template-columns: repeat($i, minmax(0, 1fr)); } } }
+@media ($xxl) { @for $i from 1 through 12 { .cb-grid-xxl-#{$i} { grid-template-columns: repeat($i, minmax(0, 1fr)); } } }
+
+/* Grid item span/start */
+/* ── Grid item span / start (responsive by breakpoint) ───────────────────
+   .cb-grid-row-{N}       — row span N (all widths)
+   .cb-grid-row-start-{N} — row start at line N
+   .cb-grid-col-{N}       — column span N
+   .cb-grid-col-start-{N} — column start at line N
+   prefixed: .cb-grid-{sm|md|lg|xl|xxl}-row-{N} etc — from that breakpoint
+─────────────────────────────────────────────────────────────────────── */
+@for $i from 1 through 12 {
+    .cb-grid-row-#{$i}        { grid-row: span #{$i} / span #{$i}; }
+    .cb-grid-row-start-#{$i}  { grid-row-start: #{$i}; }
+    .cb-grid-col-#{$i}        { grid-column: span #{$i} / span #{$i}; }
+    .cb-grid-col-start-#{$i}  { grid-column-start: #{$i}; }
+}
+@media ($sm) {
+    @for $i from 1 through 12 {
+        .cb-grid-sm-row-#{$i}       { grid-row: span #{$i} / span #{$i}; }
+        .cb-grid-sm-row-start-#{$i} { grid-row-start: #{$i}; }
+        .cb-grid-sm-col-#{$i}       { grid-column: span #{$i} / span #{$i}; }
+        .cb-grid-sm-col-start-#{$i} { grid-column-start: #{$i}; }
+    }
+}
+@media ($md) {
+    @for $i from 1 through 12 {
+        .cb-grid-md-row-#{$i}       { grid-row: span #{$i} / span #{$i}; }
+        .cb-grid-md-row-start-#{$i} { grid-row-start: #{$i}; }
+        .cb-grid-md-col-#{$i}       { grid-column: span #{$i} / span #{$i}; }
+        .cb-grid-md-col-start-#{$i} { grid-column-start: #{$i}; }
+    }
+}
+@media ($lg) {
+    @for $i from 1 through 12 {
+        .cb-grid-lg-row-#{$i}       { grid-row: span #{$i} / span #{$i}; }
+        .cb-grid-lg-row-start-#{$i} { grid-row-start: #{$i}; }
+        .cb-grid-lg-col-#{$i}       { grid-column: span #{$i} / span #{$i}; }
+        .cb-grid-lg-col-start-#{$i} { grid-column-start: #{$i}; }
+    }
+}
+@media ($xl) {
+    @for $i from 1 through 12 {
+        .cb-grid-xl-row-#{$i}       { grid-row: span #{$i} / span #{$i}; }
+        .cb-grid-xl-row-start-#{$i} { grid-row-start: #{$i}; }
+        .cb-grid-xl-col-#{$i}       { grid-column: span #{$i} / span #{$i}; }
+        .cb-grid-xl-col-start-#{$i} { grid-column-start: #{$i}; }
+    }
+}
+@media ($xxl) {
+    @for $i from 1 through 12 {
+        .cb-grid-xxl-row-#{$i}       { grid-row: span #{$i} / span #{$i}; }
+        .cb-grid-xxl-row-start-#{$i} { grid-row-start: #{$i}; }
+        .cb-grid-xxl-col-#{$i}       { grid-column: span #{$i} / span #{$i}; }
+        .cb-grid-xxl-col-start-#{$i} { grid-column-start: #{$i}; }
+    }
+}
+
+/* ── Aspect ratio ──────────────────────────────────────────────────────── */
+.cb-ratio {
+    position: relative;
+    width: 100%;
+    &::before { content: ''; display: block; padding-top: 56.25%; }   /* default 16:9 */
+    > * {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+    }
+}
+.cb-ratio-1x1::before  { padding-top: 100%; }
+.cb-ratio-4x3::before  { padding-top: 75%; }
+.cb-ratio-3x4::before  { padding-top: 133.33%; }
+.cb-ratio-16x9::before { padding-top: 56.25%; }
+.cb-ratio-9x16::before { padding-top: 177.77%; }
+.cb-ratio-21x9::before { padding-top: 42.85%; }
+
+/* ── Sizing ────────────────────────────────────────────────────────────── */
+.cb-w-full, .cb-w-100 { width: 100%; }
+.cb-h-full, .cb-h-100 { height: 100%; }
+.cb-mw-100            { max-width: 100%; }
+.cb-img-fluid         { max-width: 100%; height: auto; }
+
+@for $i from 0 through 12 {
+    .cb-w-#{$i}00 { width: #{$i}00px; }
+    @media ($md) { .cb-md-w-#{$i}00 { width: #{$i}00px; } }
+    @media ($lg) { .cb-lg-w-#{$i}00 { width: #{$i}00px; } }
+    @media ($xl) { .cb-xl-w-#{$i}00 { width: #{$i}00px; } }
+}
+
+/* ── Line clamp ────────────────────────────────────────────────────────── */
+.cb-line-clamp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+@for $i from 1 through 12 {
+    .cb-line-clamp-#{$i} {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: #{$i};
+                line-clamp: #{$i};
+    }
+    @media ($md) { .cb-md-line-clamp-#{$i} { -webkit-line-clamp: #{$i}; line-clamp: #{$i}; } }
+    @media ($lg) { .cb-lg-line-clamp-#{$i} { -webkit-line-clamp: #{$i}; line-clamp: #{$i}; } }
+    @media ($xl) { .cb-xl-line-clamp-#{$i} { -webkit-line-clamp: #{$i}; line-clamp: #{$i}; } }
+}
+
+/* ── Spacing scale (0.25rem step, 0..12) ───────────────────────────────── */
+/* ── Spacing utilities (margin/padding, 0–12 × 0.25rem) ─────────────────
+   Naming: .cb-{prop}-{n}                — all viewports
+           .cb-{prop}-{sm|md|lg|xl|xxl}-{n}  — from given breakpoint
+   Props:  mt mb ml mr mx my  pt pb pl pr px py
+─────────────────────────────────────────────────────────────────────── */
+
+// Map property → CSS rule(s). Each value is one or more declarations.
+$cb-space-props: (
+    mt: (margin-top),
+    mb: (margin-bottom),
+    ml: (margin-left),
+    mr: (margin-right),
+    mx: (margin-left, margin-right),
+    my: (margin-top, margin-bottom),
+    pt: (padding-top),
+    pb: (padding-bottom),
+    pl: (padding-left),
+    pr: (padding-right),
+    px: (padding-left, padding-right),
+    py: (padding-top, padding-bottom),
+);
+
+@mixin cb-space($prefix: '') {
+    @for $i from 0 through 12 {
+        $v: #{$i * 0.25}rem;
+        @each $name, $rules in $cb-space-props {
+            .cb-#{$name}-#{$prefix}#{if($prefix == '', '', '')}#{$i} {
+                @each $rule in $rules { #{$rule}: $v !important; }
+            }
+        }
+    }
+}
+
+// Base (no breakpoint)
+@for $i from 0 through 12 {
+    $v: #{$i * 0.25}rem;
+    @each $name, $rules in $cb-space-props {
+        .cb-#{$name}-#{$i} { @each $rule in $rules { #{$rule}: $v !important; } }
+    }
+}
+// Per-breakpoint: .cb-mt-md-3, .cb-px-lg-4 …
+@media ($sm)  { @for $i from 0 through 12 { $v: #{$i * 0.25}rem; @each $n, $rules in $cb-space-props { .cb-#{$n}-sm-#{$i}  { @each $r in $rules { #{$r}: $v !important; } } } } }
+@media ($md)  { @for $i from 0 through 12 { $v: #{$i * 0.25}rem; @each $n, $rules in $cb-space-props { .cb-#{$n}-md-#{$i}  { @each $r in $rules { #{$r}: $v !important; } } } } }
+@media ($lg)  { @for $i from 0 through 12 { $v: #{$i * 0.25}rem; @each $n, $rules in $cb-space-props { .cb-#{$n}-lg-#{$i}  { @each $r in $rules { #{$r}: $v !important; } } } } }
+@media ($xl)  { @for $i from 0 through 12 { $v: #{$i * 0.25}rem; @each $n, $rules in $cb-space-props { .cb-#{$n}-xl-#{$i}  { @each $r in $rules { #{$r}: $v !important; } } } } }
+@media ($xxl) { @for $i from 0 through 12 { $v: #{$i * 0.25}rem; @each $n, $rules in $cb-space-props { .cb-#{$n}-xxl-#{$i} { @each $r in $rules { #{$r}: $v !important; } } } } }
+
+/* Auto margins */
+/* ── Auto-margins (responsive) ──────────────────────────────────────────
+   Format: .cb-{prop}-auto     — all viewports
+           .cb-{prop}-{bp}-auto — from breakpoint (sm/md/lg/xl/xxl)
+─────────────────────────────────────────────────────────────────────── */
+$cb-auto-props: (
+    mt: (margin-top),
+    mb: (margin-bottom),
+    ml: (margin-left),
+    mr: (margin-right),
+    mx: (margin-left, margin-right),
+    my: (margin-top, margin-bottom),
+);
+
+@mixin cb-auto-margins($bp: '') {
+    $sep: if($bp == '', '', '-#{$bp}');
+    @each $name, $rules in $cb-auto-props {
+        .cb-#{$name}#{$sep}-auto { @each $r in $rules { #{$r}: auto !important; } }
+    }
+}
+@include cb-auto-margins;
+@media ($sm)  { @include cb-auto-margins('sm'); }
+@media ($md)  { @include cb-auto-margins('md'); }
+@media ($lg)  { @include cb-auto-margins('lg'); }
+@media ($xl)  { @include cb-auto-margins('xl'); }
+@media ($xxl) { @include cb-auto-margins('xxl'); }
+
+/* ── Full padding scale (0..24 × 0.25rem) — p / px / py ─────────────────
+   Format: .cb-{p|px|py}-{n}       — all viewports
+           .cb-{p|px|py}-{bp}-{n}  — from breakpoint
+─────────────────────────────────────────────────────────────────────── */
+$cb-pad-props: (
+    p:  (padding),
+    px: (padding-left, padding-right),
+    py: (padding-top, padding-bottom),
+);
+
+@mixin cb-pad-scale($bp: '') {
+    $sep: if($bp == '', '', '-#{$bp}');
+    @for $i from 0 through 24 {
+        $v: #{$i * 0.25}rem;
+        @each $name, $rules in $cb-pad-props {
+            .cb-#{$name}#{$sep}-#{$i} { @each $r in $rules { #{$r}: $v !important; } }
+        }
+    }
+}
+@include cb-pad-scale;
+@media ($sm)  { @include cb-pad-scale('sm'); }
+@media ($md)  { @include cb-pad-scale('md'); }
+@media ($lg)  { @include cb-pad-scale('lg'); }
+@media ($xl)  { @include cb-pad-scale('xl'); }
+@media ($xxl) { @include cb-pad-scale('xxl'); }
+
+/* ── Border radius (rem scale 0..12) ───────────────────────────────────── */
+@for $i from 0 through 12 {
+    .cb-rounded-#{$i} { border-radius: #{$i * 0.25}rem; }
+}
+.cb-rounded-sm   { border-radius: #{$cb-radius-sm}; }
+.cb-rounded-md   { border-radius: #{$cb-radius}; }
+.cb-rounded-lg   { border-radius: 16px; }
+.cb-rounded-full { border-radius: 9999px; }
+
+/* ── Gap utilities (0.5rem step, 0..24) ────────────────────────────────── */
+@for $i from 0 through 24 {
+    .cb-row-gap-#{$i}    { row-gap: #{$i * 0.5}rem !important; }
+    .cb-col-gap-#{$i}    { column-gap: #{$i * 0.5}rem !important; }
+    .cb-gap-#{$i}        { gap: #{$i * 0.5}rem !important; }
+    @media ($sm)  { .cb-sm-row-gap-#{$i}{row-gap:#{$i*0.5}rem!important} .cb-sm-col-gap-#{$i}{column-gap:#{$i*0.5}rem!important} .cb-sm-gap-#{$i}{gap:#{$i*0.5}rem!important} }
+    @media ($md)  { .cb-md-row-gap-#{$i}{row-gap:#{$i*0.5}rem!important} .cb-md-col-gap-#{$i}{column-gap:#{$i*0.5}rem!important} .cb-md-gap-#{$i}{gap:#{$i*0.5}rem!important} }
+    @media ($lg)  { .cb-lg-row-gap-#{$i}{row-gap:#{$i*0.5}rem!important} .cb-lg-col-gap-#{$i}{column-gap:#{$i*0.5}rem!important} .cb-lg-gap-#{$i}{gap:#{$i*0.5}rem!important} }
+    @media ($xl)  { .cb-xl-row-gap-#{$i}{row-gap:#{$i*0.5}rem!important} .cb-xl-col-gap-#{$i}{column-gap:#{$i*0.5}rem!important} .cb-xl-gap-#{$i}{gap:#{$i*0.5}rem!important} }
+    @media ($xxl) { .cb-xxl-row-gap-#{$i}{row-gap:#{$i*0.5}rem!important} .cb-xxl-col-gap-#{$i}{column-gap:#{$i*0.5}rem!important} .cb-xxl-gap-#{$i}{gap:#{$i*0.5}rem!important} }
+}
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+.cb-h1 { font-size: 32px; font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; margin: 0 0 16px; }
+.cb-h2 { font-size: 24px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; }
+.cb-h3 { font-size: 20px; font-weight: 600; line-height: 1.3;  margin: 0 0 10px; }
+.cb-h4 { font-size: 17px; font-weight: 600; line-height: 1.35; margin: 0 0 8px; }
+
+.cb-text-xs  { font-size: 12px; line-height: 1.4; }
+.cb-text-sm  { font-size: 14px; line-height: 1.5; }
+.cb-text-md  { font-size: 16px; line-height: 1.5; }
+.cb-text-lg  { font-size: 18px; line-height: 1.5; }
+
+.cb-text-center { text-align: center; }
+.cb-text-left   { text-align: left; }
+.cb-text-right  { text-align: right; }
+@media ($lg) { .cb-lg-text-center { text-align: center; } .cb-lg-text-left { text-align: left; } .cb-lg-text-right { text-align: right; } }
+
+.cb-text-muted { color: $cb-muted; }
+.cb-text-light { color: $cb-light; }
+
+.cb-fw-400 { font-weight: 400; }
+.cb-fw-500 { font-weight: 500; }
+.cb-fw-600 { font-weight: 600; }
+.cb-fw-700 { font-weight: 700; }
+.cb-fw-800 { font-weight: 800; }
+
+@for $i from 1 through 12 {
+    .cb-fz-rem-#{$i} { font-size: #{$i * 0.25}rem; }
+    @media ($lg) { .cb-lg-fz-rem-#{$i} { font-size: #{$i * 0.25}rem; } }
+    @media ($xl) { .cb-xl-fz-rem-#{$i} { font-size: #{$i * 0.25}rem; } }
+}
+@for $i from 12 through 28 {
+    .cb-fz-#{$i} { font-size: #{$i}px; }
+    @media ($lg) { .cb-lg-fz-#{$i} { font-size: #{$i}px; } }
+    @media ($xl) { .cb-xl-fz-#{$i} { font-size: #{$i}px; } }
+}
+
+/* ── Position / overflow / object-fit ──────────────────────────────────── */
+.cb-relative { position: relative; }
+.cb-absolute { position: absolute; }
+.cb-static   { position: static; }
+.cb-overflow-hidden { overflow: hidden; }
+.cb-object-cover    { object-fit: cover; object-position: center; }
+.cb-object-contain  { object-fit: contain; object-position: center; }
+
+/* ── Background colors ─────────────────────────────────────────────────── */
+.cb-bg-white  { background-color: #fff; }
+.cb-bg-soft   { background-color: $cb-bg; }
+
+/* ── Card primitive ────────────────────────────────────────────────────── */
+.cb-card {
+    background: $cb-white;
+    border: 1px solid $cb-border;
+    border-radius: $cb-radius;
+    padding: 20px;
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+
+    &:hover {
+        border-color: $cb-border-h;
+        box-shadow: 0 6px 16px rgba(20, 30, 50, .08);
+    }
+}
+
+/* ── Button ────────────────────────────────────────────────────────────── */
+.cb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: $cb-radius-sm;
+    border: 1px solid transparent;
+    background: $cb-primary;
+    color: $cb-white !important;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: background .15s, border-color .15s, transform .15s, box-shadow .15s;
+
+    &:hover {
+        background: $cb-primary-d;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(52, 152, 219, .25);
+    }
+}
+
+.cb-btn-outline {
+    background: transparent;
+    color: $cb-primary !important;
+    border-color: $cb-primary;
+
+    &:hover { background: $cb-primary; color: $cb-white !important; box-shadow: 0 6px 14px rgba(52, 152, 219, .20); }
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────────── */
+.cb-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #eef2f7;
+    color: #5a6474;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* ── Hover helpers ─────────────────────────────────────────────────────── */
+.cb-hover-opacity-75 { cursor: pointer; transition: opacity .2s ease-out; &:hover { opacity: .75; } }
+.cb-hover-lift       { transition: transform .2s, box-shadow .2s; &:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(20,30,50,.08); } }
+
+/* ── Embed video wrapper ──────────────────────────────────────────────── */
+.cb-video-embed {
+    position: relative;
+    overflow: hidden;
+    border-radius: $cb-radius;
+    background: #000;
+
+    iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+}

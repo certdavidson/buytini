@@ -1,0 +1,7 @@
+<div class="cb-block cb-block--categories cb-block--categories-compact {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+    <div class="cb-block--categories-compact__list">
+      {% for cat in categories %}
+        <a href="{{ cat.href }}" class="cb-block--categories-compact__chip">{{ cat.name }}</a>
+      {% endfor %}
+    </div>
+</div>

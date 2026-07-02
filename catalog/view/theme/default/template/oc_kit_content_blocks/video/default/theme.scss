@@ -1,0 +1,11 @@
+/* Content Blocks Pro — video / default (clean stack) */
+.cb-block--video-default {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__item .cb-video-embed {
+        border-radius: 12px;
+        background: #000;
+    }
+}

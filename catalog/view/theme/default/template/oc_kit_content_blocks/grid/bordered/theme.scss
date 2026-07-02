@@ -1,0 +1,31 @@
+/* Content Blocks Pro — grid / bordered (outer frame + per-cell cards) */
+.cb-block--grid-bordered {
+    --cb-grid-primary: #3498db;
+    --cb-grid-border: #e0e6ef;
+    --cb-grid-border-soft: #e8ecf2;
+
+    background: #fff;
+    border: 2px solid var(--cb-grid-border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__col {
+        background: #fff;
+        border: 1px solid var(--cb-grid-border-soft);
+        border-radius: 10px;
+        padding: 20px;
+        transition: border-color .2s, box-shadow .25s, transform .2s;
+
+        &:hover {
+            border-color: #cdd6e3;
+            box-shadow: 0 6px 16px rgba(20, 30, 50, .06);
+            transform: translateY(-1px);
+        }
+    }
+
+    .cb-el-text p:last-child,
+    .cb-el-html p:last-child { margin-bottom: 0; }
+}

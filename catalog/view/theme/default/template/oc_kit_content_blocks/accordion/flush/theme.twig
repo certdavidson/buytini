@@ -1,0 +1,21 @@
+{% set bid = block_id ? block_id : 0 %}
+{% set collapse_in = params.collapse_in ?? false %}
+<div class="cb-block cb-block--accordion cb-block--accordion-flush {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  {% for row in rows %}{% for col in row.cols %}
+    {% set ci = loop.index0 %}{% set tid = 'cba-' ~ bid ~ '-' ~ ci %}
+    <div class="cb-block--accordion-flush__item {{ col.css_classes }}">
+      <button type="button" class="cb-block--accordion-flush__head" data-cb-acc="{{ tid }}" aria-controls="{{ tid }}" aria-expanded="{% if collapse_in and ci == 0 %}true{% else %}false{% endif %}">
+        <span class="cb-block--accordion-flush__title">{{ col.title }}</span>
+        <span class="cb-block--accordion-flush__chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+      </button>
+      <div class="cb-block--accordion-flush__body" id="{{ tid }}" role="region">
+        <div class="cb-block--accordion-flush__body-inner">
+          {% include 'default/template/oc_kit_content_blocks/partials/elements.twig' with { elements: col.elements_data } only %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}{% endfor %}
+</div>
+<script>(function(){var b=document.querySelector('[data-block-id="{{ bid }}"]');if(!b||b.dataset.cbAccBound)return;b.dataset.cbAccBound=1;b.addEventListener('click',function(e){var h=e.target.closest('[data-cb-acc]');if(!h)return;h.setAttribute('aria-expanded',h.getAttribute('aria-expanded')==='true'?'false':'true');});})();</script>

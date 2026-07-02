@@ -1,0 +1,37 @@
+{% set el_id     = element.element_id ?? 0 %}
+{% set el_params = element.params     ?? {} %}
+{% set prod_id   = el_params.product_id   ?? 0 %}
+{% set prod_name = el_params.product_name ?? '' %}
+{% set prod_img  = el_params.product_img  ?? '' %}
+
+<div class="cb-element cb-item cb-item-compact" data-el-id="{{ el_id }}" data-el-type="carousel_product"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    {% if prod_img %}
+    <img src="{{ prod_img }}" class="cb-item-thumb" alt="">
+    {% endif %}
+    {% if prod_name %}
+      <a class="cb-item-label ok-text-sm ok-ml-2" href="{{ entity_edit_urls.product|default('')|replace({'{ID}': prod_id}) }}" target="_blank" rel="noopener">{{ prod_name }}</a>
+    {% else %}
+      <span class="cb-item-label ok-text-sm ok-ml-2">{{ i18n.text_pick_product }}</span>
+    {% endif %}
+    <input type="hidden" class="cb-ac-val" value="{{ prod_id }}">
+    <input type="hidden" class="cb-ac-name" value="{{ prod_name }}">
+    <input type="hidden" class="cb-ac-img" value="{{ prod_img }}">
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  {# Inline picker — always visible until a product is selected #}
+  <div class="cb-autocomplete-panel"{% if prod_id %} hidden{% endif %}>
+    <div class="cb-autocomplete-wrap" data-type="product">
+      <input type="text" class="ok-input ok-input-sm cb-autocomplete-input" placeholder="{{ i18n.placeholder_search_product }}">
+      <div class="cb-autocomplete-dropdown" hidden></div>
+    </div>
+  </div>
+
+</div>

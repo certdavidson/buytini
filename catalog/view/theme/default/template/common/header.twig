@@ -62,10 +62,17 @@
   <header class="header">
     <div class="header__inner">
 
-      <a class="header__logo" href="index.html">
+      {% if home == og_url %}
+      <button class="header__logo" data-href="/">
+        <img class="header__logo-img" src="/catalog/view/theme/default/assets/images/buytini-logo.svg" alt="buytini" width="40" height="42">
+        <span class="header__logo-text">buytini</span>
+      </button>
+      {% else %}
+      <a class="header__logo" href="{{ home }}">
         <img class="header__logo-img" src="/catalog/view/theme/default/assets/images/buytini-logo.svg" alt="buytini" width="40" height="42">
         <span class="header__logo-text">buytini</span>
       </a>
+      {% endif %}
 
       <button class="catalog-btn" type="button" data-toggle="mega" aria-label="Каталог">
         <span class="catalog-btn__open"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></span>

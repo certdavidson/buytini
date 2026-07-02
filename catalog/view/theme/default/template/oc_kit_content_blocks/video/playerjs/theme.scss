@@ -1,0 +1,15 @@
+/* Content Blocks Pro — video / playerjs (Playerjs library wrapper) */
+.cb-block--video-playerjs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__player {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(20, 30, 50, .08);
+    }
+}

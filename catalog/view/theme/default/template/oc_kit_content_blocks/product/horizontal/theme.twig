@@ -1,0 +1,20 @@
+<div class="cb-block cb-block--product cb-block--product-horizontal {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for product in products %}
+    <div class="cb-block--product-horizontal__card" itemscope itemtype="https://schema.org/Product">
+      <a href="{{ product.href }}" class="cb-block--product-horizontal__img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></a>
+      <div class="cb-block--product-horizontal__body">
+        <a href="{{ product.href }}" class="cb-block--product-horizontal__name" itemprop="name">{{ product.name }}</a>
+        {% if params.show_description ?? false %}<div class="cb-block--product-horizontal__desc">{{ product.description|striptags|slice(0, 160) }}…</div>{% endif %}
+        <div class="cb-block--product-horizontal__row">
+          {% if params.show_price ?? true %}
+            <div class="cb-block--product-horizontal__price">
+              {% if product.special %}<span class="cb-block--product-horizontal__price-old">{{ product.price }}</span><span class="cb-block--product-horizontal__price-new" itemprop="price">{{ product.special }}</span>
+              {% else %}<span itemprop="price">{{ product.price }}</span>{% endif %}
+            </div>
+          {% endif %}
+          {% if params.show_button ?? true %}<a href="{{ product.href }}" class="cb-btn cb-btn-outline">Купити</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

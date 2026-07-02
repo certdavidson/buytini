@@ -1,0 +1,39 @@
+{# Content Blocks Pro — row partial | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set row_id = row.row_id ?? 0 %}
+
+<div class="cb-row" data-row-id="{{ row_id }}" data-sort="{{ row.sort_order ?? 0 }}">
+
+  <div class="cb-row-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="cb-row-label ok-text-muted ok-text-sm">{#<i data-lucide="layout-list"></i> #}{{ i18n.text_row }}</span>
+    <div class="cb-row-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-row-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-row"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-cols-wrap" data-sortable="cols">
+    {% for col in row.cols ?? [] %}
+      {% include 'extension/module/ockit/content_blocks/partials/column.twig' with {
+        col:         col,
+        languages:   languages,
+        language_id: language_id,
+        presets:     presets,
+        catalog_url: catalog_url,
+        i18n:        i18n,
+        add_el_type: add_el_type
+      } only %}
+    {% endfor %}
+  </div>
+
+  <div class="cb-row-footer">
+    <button type="button" class="ok-btn ok-btn-default ok-btn-sm cb-btn-add-col ok-w-full"
+      data-el-type="{{ add_el_type }}">
+      <i data-lucide="plus"></i>
+      {{ i18n.button_add_col }}
+    </button>
+  </div>
+
+</div>

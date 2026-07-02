@@ -1,0 +1,49 @@
+{# Content Blocks Pro — element: text | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id     = element.element_id ?? 0 %}
+{% set el_params = element.params     ?? {} %}
+{% set el_data   = element.data       ?? {} %}
+
+<div class="cb-element" data-el-id="{{ el_id }}" data-el-type="text"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="type"></i> {{ i18n.el_text }}</span>
+
+    {% set current_tag = el_params.tag ?? 'div' %}
+    <div class="cb-el-tag-btns" title="{{ i18n.entry_element_tag }}">
+      {% for tag in ['div','p','h1','h2','h3'] %}
+      <button type="button" class="cb-el-tag-btn{% if current_tag == tag %} active{% endif %}" data-tag="{{ tag }}">{{ tag }}</button>
+      {% endfor %}
+      {% for tag in ['h4','h5','h6','span'] %}
+      <button type="button" class="cb-el-tag-btn cb-el-tag-minor{% if current_tag == tag %} active{% endif %}" data-tag="{{ tag }}">{{ tag }}</button>
+      {% endfor %}
+    </div>
+    <input type="hidden" class="cb-el-tag-val" value="{{ current_tag }}">
+
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-el-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% for lang in languages %}
+    <div class="cb-lang-panel{% if lang.language_id == language_id %} active{% endif %}"
+      data-lang-id="{{ lang.language_id }}">
+      <div class="cb-wysiwyg" data-lang="{{ lang.language_id }}">{{ el_data[lang.language_id].content ?? '' }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

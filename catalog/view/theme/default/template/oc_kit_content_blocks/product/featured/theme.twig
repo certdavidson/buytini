@@ -1,0 +1,21 @@
+<div class="cb-block cb-block--product cb-block--product-featured {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for product in products %}
+    <div class="cb-block--product-featured__hero" itemscope itemtype="https://schema.org/Product">
+      <div class="cb-block--product-featured__inner">
+        <div class="cb-block--product-featured__img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></div>
+        <div class="cb-block--product-featured__body">
+          <span class="cb-block--product-featured__badge">Топ продаж</span>
+          <h1 class="cb-block--product-featured__name" itemprop="name">{{ product.name }}</h1>
+          {% if params.show_description ?? false %}<div class="cb-block--product-featured__desc">{{ product.description|striptags|slice(0, 240) }}…</div>{% endif %}
+          {% if params.show_price ?? true %}
+            <div class="cb-block--product-featured__price">
+              {% if product.special %}<span class="cb-block--product-featured__price-old">{{ product.price }}</span><span class="cb-block--product-featured__price-new" itemprop="price">{{ product.special }}</span>
+              {% else %}<span itemprop="price">{{ product.price }}</span>{% endif %}
+            </div>
+          {% endif %}
+          {% if params.show_button ?? true %}<a href="{{ product.href }}" class="cb-block--product-featured__btn">Купити</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

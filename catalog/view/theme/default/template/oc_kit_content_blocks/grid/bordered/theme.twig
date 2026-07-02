@@ -1,0 +1,11 @@
+<div class="cb-block cb-block--grid cb-block--grid-bordered {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for row in rows %}
+    <div class="cb-row cb-block--grid-bordered__row {{ row.css_classes }}"{% if row.inline_style %} style="{{ row.inline_style }}"{% endif %}>
+      {% for col in row.cols %}
+        <div class="cb-col cb-col-{{ col.col_width ?? 12 }} cb-block--grid-bordered__col {{ col.css_classes }}"{% if col.inline_style %} style="{{ col.inline_style }}"{% endif %}>
+          {% include 'default/template/oc_kit_content_blocks/partials/elements.twig' with { elements: col.elements_data } only %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>

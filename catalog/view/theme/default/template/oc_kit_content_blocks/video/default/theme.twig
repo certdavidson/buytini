@@ -1,0 +1,17 @@
+<div class="cb-block cb-block--video cb-block--video-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for vid in videos %}
+    {% set d = vid.data %}
+    {% set p = vid.params %}
+    <div class="cb-block--video-default__item">
+      <div class="cb-video-embed cb-ratio {% if p.vertical %}cb-ratio-9x16{% else %}cb-ratio-16x9{% endif %}">
+        {% if d.local %}
+          <video controls{% if p.autoplay %} autoplay muted{% endif %}{% if vid.video_poster %} poster="{{ vid.video_poster }}"{% endif %}>
+            <source src="{{ d.local }}">
+          </video>
+        {% elseif d.video_id %}
+          <iframe src="https://www.youtube.com/embed/{{ d.video_id }}{% if p.autoplay %}?autoplay=1&mute=1{% endif %}" allowfullscreen loading="lazy"></iframe>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

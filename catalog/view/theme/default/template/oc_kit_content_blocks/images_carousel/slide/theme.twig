@@ -1,0 +1,17 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--images_carousel cb-block--images_carousel-slide {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-is-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide cb-block--images_carousel-slide__slide">
+          {% if img.data.url %}<a href="{{ img.data.url }}">{% endif %}
+          <img src="{{ img.image_resized ?? img.data.image }}" alt="{{ img.data.alt ?? '' }}">
+          {% if img.data.url %}</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-is-{{ bid }}',{slidesPerView:1,spaceBetween:0,navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-is-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-is-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-is-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},autoplay:{{ params.autoplay ? '{delay:5000}' : 'false' }},loop:{{ (params.loop ?? true) ? 'true' : 'false' }}});}});</script>

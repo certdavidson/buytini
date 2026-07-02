@@ -1,0 +1,105 @@
+{% set el_id     = element.element_id ?? 0 %}
+{% set el_params = element.params     ?? {} %}
+{% set el_data   = element.data       ?? {} %}
+{% set prod_id   = el_params.product_id ?? 0 %}
+{% set prod_name = el_params.product_name ?? '' %}
+{% set prod_img  = el_params.product_img  ?? '' %}
+{% set ovr_image = el_params.override_image  ?? '' %}
+{% set ovr_image_thumb = ovr_image ? catalog_url ~ 'image/' ~ ovr_image : '' %}
+
+<div class="cb-element cb-item" data-el-id="{{ el_id }}" data-el-type="product_item"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    {% if prod_img %}
+    <img src="{{ prod_img }}" class="cb-item-thumb" alt="">
+    {% endif %}
+    {% if prod_name %}
+      <a class="cb-item-label ok-text-sm ok-ml-2" href="{{ entity_edit_urls.product|default('')|replace({'{ID}': prod_id}) }}" target="_blank" rel="noopener">{{ prod_name }}</a>
+    {% else %}
+      <span class="cb-item-label ok-text-sm ok-ml-2">{{ i18n.text_pick_product }}</span>
+    {% endif %}
+    <input type="hidden" class="cb-ac-val" value="{{ prod_id }}">
+    <input type="hidden" class="cb-ac-name" value="{{ prod_name }}">
+    <input type="hidden" class="cb-ac-img"  value="{{ prod_img }}">
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+    <div class="cb-autocomplete-panel"{% if prod_id %} hidden{% endif %}>
+      <div class="cb-autocomplete-wrap" data-type="product">
+        <input type="text" class="ok-input ok-input-sm cb-autocomplete-input"
+          placeholder="{{ i18n.placeholder_search_product }}">
+        <div class="cb-autocomplete-dropdown" hidden></div>
+      </div>
+    </div>
+
+    {# Optional per-block overrides — image is single (not multilang),
+       name/description/pros/cons are per-language. #}
+    <div class="cb-product-overrides ok-mt-2">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-toggle-overrides">
+        <i data-lucide="settings-2"></i> {{ i18n.text_product_overrides ?? 'Кастомні поля' }}
+      </button>
+      <div class="cb-product-overrides-body ok-mt-2" hidden>
+
+        {# ── Image override — single, not multilang.
+             Clear is handled by the OC native file-picker popover (no extra button). #}
+        <div class="ok-form-row">
+          <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_image ?? 'Фото (перевизначене)' }}</label>
+          <div class="ok-upload-zone cb-image-row">
+            <div class="cb-image-picker-wrap" data-cb-img-init>
+              <a href="" data-toggle="image" class="img-thumbnail cb-image-thumb-link">
+                <img src="{{ ovr_image_thumb ? ovr_image_thumb : placeholder }}" data-placeholder="{{ placeholder }}"
+                     class="img-responsive cb-image-thumb" alt="">
+              </a>
+              <input type="hidden" class="cb-override-image-val" value="{{ ovr_image }}">
+            </div>
+          </div>
+        </div>
+
+        {# ── Rating — single, language-independent ── #}
+        <div class="ok-form-row">
+          <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_rating ?? 'Рейтинг (1–5)' }}</label>
+          <input type="number" min="0" max="5" step="0.1" class="ok-input ok-input-sm cb-override-rating" value="{{ el_params.override_rating ?? '' }}">
+        </div>
+
+        {# ── Multilang fields: name, description, pros, cons ── #}
+        {% if languages|length > 1 %}
+        <div class="cb-lang-tabs ok-mt-2">
+          {% for lang in languages %}
+          <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+            data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% for lang in languages %}
+        <div class="cb-lang-panel{% if lang.language_id == language_id %} active{% endif %}" data-lang-id="{{ lang.language_id }}">
+          <div class="ok-form-row">
+            <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_name ?? 'Назва (перевизначена)' }}</label>
+            <input type="text" class="ok-input ok-input-sm cb-override-name" data-lang="{{ lang.language_id }}"
+              value="{{ el_data[lang.language_id].override_name ?? '' }}">
+          </div>
+          <div class="ok-form-row">
+            <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_description ?? 'Опис' }}</label>
+            <textarea class="ok-input ok-input-sm cb-override-description" data-lang="{{ lang.language_id }}" rows="3">{{ el_data[lang.language_id].override_description ?? '' }}</textarea>
+          </div>
+          <div class="ok-form-row">
+            <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_pros ?? 'Переваги (по одній на рядок)' }}</label>
+            <textarea class="ok-input ok-input-sm cb-override-pros" data-lang="{{ lang.language_id }}" rows="3">{{ el_data[lang.language_id].override_pros ?? '' }}</textarea>
+          </div>
+          <div class="ok-form-row">
+            <label class="ok-label ok-label-sm form-label">{{ i18n.text_override_cons ?? 'Недоліки (по одній на рядок)' }}</label>
+            <textarea class="ok-input ok-input-sm cb-override-cons" data-lang="{{ lang.language_id }}" rows="3">{{ el_data[lang.language_id].override_cons ?? '' }}</textarea>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,65 @@
+/* Content Blocks Pro — images_carousel / lightbox (Swiper + GLightbox) */
+.cb-block--images_carousel-lightbox {
+    --cb-ic-primary: #3498db;
+    --cb-ic-nav: #c8d0db;
+
+    .cb-swiper { padding: 4px 0 36px; }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: var(--cb-ic-nav);
+        --swiper-navigation-size: 26px;
+        transition: color .15s;
+        &:hover { color: #5a6474; }
+        &::after { font-weight: 800; }
+    }
+    .swiper-pagination-bullet { background: var(--cb-ic-nav); opacity: .4; }
+    .swiper-pagination-bullet-active { background: var(--cb-ic-primary); opacity: 1; }
+
+    &__item {
+        position: relative;
+        display: block;
+        aspect-ratio: 1/1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f4f7fb;
+        cursor: zoom-in;
+        text-decoration: none !important;
+
+        img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .45s ease;
+        }
+        &::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(52,152,219,0) 50%, rgba(52,152,219,.25) 100%);
+            opacity: 0;
+            transition: opacity .25s;
+            z-index: 1;
+        }
+        &:hover img { transform: scale(1.08); }
+        &:hover::before { opacity: 1; }
+        &:hover &__zoom { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    &__zoom {
+        position: absolute;
+        top: 50%; left: 50%;
+        z-index: 2;
+        width: 48px; height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .92);
+        backdrop-filter: blur(6px);
+        color: var(--cb-ic-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.7);
+        transition: opacity .25s, transform .25s;
+        box-shadow: 0 8px 22px rgba(20, 30, 50, .18);
+        svg { width: 22px; height: 22px; }
+    }
+}

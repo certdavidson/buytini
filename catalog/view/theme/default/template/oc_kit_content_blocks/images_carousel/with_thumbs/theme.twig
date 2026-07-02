@@ -1,0 +1,28 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--images_carousel cb-block--images_carousel-with_thumbs {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+
+  <div class="swiper cb-block--images_carousel-with_thumbs__main" id="cb-icmt-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide cb-block--images_carousel-with_thumbs__slide">
+          {% if img.data.url %}<a href="{{ img.data.url }}">{% endif %}
+          <img src="{{ img.image_resized ?? img.data.image }}" alt="{{ img.data.alt ?? '' }}">
+          {% if img.data.url %}</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+
+  <div class="swiper cb-block--images_carousel-with_thumbs__thumbs" id="cb-icth-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide cb-block--images_carousel-with_thumbs__thumb">
+          <img src="{{ img.image_resized ?? img.data.image }}" alt="">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(!window.Swiper)return;var thumbs=new Swiper('#cb-icth-{{ bid }}',{slidesPerView:'auto',spaceBetween:10,watchSlidesProgress:true,freeMode:true});new Swiper('#cb-icmt-{{ bid }}',{slidesPerView:1,spaceBetween:0,navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-icmt-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-icmt-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},thumbs:{swiper:thumbs},autoplay:{{ params.autoplay ? '{delay:5000}' : 'false' }},loop:{{ (params.loop ?? false) ? 'true' : 'false' }}});});</script>

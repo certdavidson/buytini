@@ -1,0 +1,21 @@
+{% set bid = block_id ? block_id : 0 %}
+{% set pv = params.per_view ?? {} %}
+{% set pv_m = pv.mobile  ?? 1 %}
+{% set pv_t = pv.tablet  ?? 2 %}
+{% set pv_d = pv.desktop ?? 4 %}
+<div class="cb-block cb-block--images_carousel cb-block--images_carousel-grid {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-ig-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide cb-block--images_carousel-grid__slide">
+          {% if img.data.url %}<a href="{{ img.data.url }}">{% endif %}
+          <img src="{{ img.image_resized ?? img.data.image }}" alt="{{ img.data.alt ?? '' }}">
+          {% if img.data.url %}</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-ig-{{ bid }}',{slidesPerView:{{ pv_m }},spaceBetween:12,breakpoints:{576:{slidesPerView:{{ pv_t }},spaceBetween:14},992:{slidesPerView:{{ pv_d }},spaceBetween:18}},navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-ig-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-ig-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-ig-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},autoplay:{{ params.autoplay ? '{delay:4500}' : 'false' }},loop:{{ (params.loop ?? true) ? 'true' : 'false' }}});}});</script>

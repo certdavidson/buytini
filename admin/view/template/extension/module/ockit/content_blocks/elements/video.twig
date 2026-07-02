@@ -1,0 +1,100 @@
+{# Content Blocks Pro — element: video | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id    = element.element_id ?? 0 %}
+{% set el_data  = element.data       ?? {} %}
+{% set el_params = element.params    ?? {} %}
+{% set vid_url  = el_data[language_id].url      ?? '' %}
+{% set vid_id   = el_data[language_id].video_id ?? '' %}
+{% set vid_thumb = el_data[language_id].thumb   ?? '' %}
+{% set vid_poster = el_data[language_id].poster ?? '' %}
+{% set vid_local  = el_data[language_id].local  ?? '' %}
+{% set pjs_enable = el_params.playerjs_enable   ?? 0 %}
+{% set pjs_poster = el_params.playerjs_poster   ?? 0 %}
+{% set vid_autoplay = el_params.autoplay ?? 0 %}
+{% set vid_vertical = el_params.vertical ?? 0 %}
+
+<div class="cb-element" data-el-id="{{ el_id }}" data-el-type="video"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="play-circle"></i> {{ i18n.el_video }}</span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-el-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body cb-video-body">
+
+    {# Top row: 3 picker tiles + toggle group #}
+    <div class="cb-video-top">
+
+      {# Tile 1: Local video from server #}
+      <div class="cb-video-tile cb-video-tile-local">
+        <span class="cb-video-tile-label">{{ i18n.param_video_local }}</span>
+        <div class="cb-image-picker-wrap cb-video-local-picker-wrap" data-cb-img-init data-pick-type="video">
+          <a href="" data-toggle="image" class="cb-video-tile-thumb-link">
+            <img src="{{ vid_local ? vid_local : placeholder }}" data-placeholder="{{ placeholder }}"
+                 class="cb-video-tile-thumb" alt="">
+          </a>
+          <input type="hidden" class="cb-image-val cb-video-local-val" value="{{ vid_local }}">
+        </div>
+        <button type="button" class="cb-video-tile-clear cb-btn-clear-video-local"{% if not vid_local %} hidden{% endif %}
+          title="{{ i18n.button_clear_image }}">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      {# Tile 2: Custom poster image #}
+      <div class="cb-video-tile cb-video-tile-poster">
+        <span class="cb-video-tile-label">{{ i18n.param_video_poster }}</span>
+        <div class="cb-image-picker-wrap" data-cb-img-init>
+          <a href="" data-toggle="image" class="cb-video-tile-thumb-link">
+            <img src="{{ vid_poster ? vid_poster : placeholder }}" data-placeholder="{{ placeholder }}"
+                 class="cb-video-tile-thumb cb-video-poster-thumb" alt="">
+          </a>
+          <input type="hidden" class="cb-image-val cb-video-poster-val" value="{{ vid_poster }}">
+        </div>
+        <button type="button" class="cb-video-tile-clear cb-btn-clear-video-poster"{% if not vid_poster %} hidden{% endif %}
+          title="{{ i18n.button_clear_image }}">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      {# Tile 3: Auto thumbnail from video host (YouTube/Vimeo) — overridable via OC file manager #}
+      <div class="cb-video-tile cb-video-tile-auto">
+        <span class="cb-video-tile-label">{{ i18n.param_video_thumb_auto }}</span>
+        <div class="cb-image-picker-wrap" data-cb-img-init>
+          <a href="" data-toggle="image" class="cb-video-tile-thumb-link">
+            <img src="{{ vid_thumb ? vid_thumb : placeholder }}" data-placeholder="{{ placeholder }}"
+                 class="cb-video-tile-thumb cb-video-thumb" alt="">
+          </a>
+          <input type="hidden" class="cb-image-val cb-video-thumb-val" value="{{ vid_thumb }}">
+        </div>
+        <input type="hidden" class="cb-video-id" value="{{ vid_id }}">
+        <button type="button" class="cb-video-tile-clear cb-btn-clear-video-thumb"{% if not vid_thumb %} hidden{% endif %}
+          title="{{ i18n.button_clear_image }}"><i data-lucide="x"></i></button>
+      </div>
+
+      {# Toggles — button group on the right #}
+      <div class="cb-video-toggles">
+        <div class="cb-param-btn-group">
+          <button type="button" class="cb-param-btn cb-video-pjs-enable{% if pjs_enable %} active{% endif %}">{{ i18n.param_playerjs_enable }}</button>
+          <button type="button" class="cb-param-btn cb-video-autoplay{% if vid_autoplay %} active{% endif %}">{{ i18n.param_video_autoplay }}</button>
+          <button type="button" class="cb-param-btn cb-video-vertical{% if vid_vertical %} active{% endif %}">{{ i18n.param_vertical }}</button>
+        </div>
+      </div>
+    </div>
+
+    {# Bottom: URL input (auto-fetches thumb on input) #}
+    <div class="cb-video-url-row">
+      <label class="form-label cb-video-url-label">{{ i18n.entry_video_url }}</label>
+      <input type="text" class="ok-input ok-input-sm cb-video-link"
+        value="{{ vid_url }}" placeholder="{{ i18n.entry_video_url }}">
+    </div>
+
+  </div>
+
+</div>

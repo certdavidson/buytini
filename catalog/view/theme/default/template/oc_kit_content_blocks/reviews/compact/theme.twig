@@ -1,0 +1,13 @@
+<div class="cb-block cb-block--reviews cb-block--reviews-compact {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for item in items %}
+    <div class="cb-block--reviews-compact__item" itemscope itemtype="https://schema.org/Review">
+      {% if item.params.rating %}
+        <span class="cb-block--reviews-compact__stars">
+          {% for i in 1..5 %}<span class="cb-block--reviews-compact__star{% if i <= item.params.rating %} is-on{% endif %}">★</span>{% endfor %}
+        </span>
+      {% endif %}
+      {% if item.params.author %}<span class="cb-block--reviews-compact__author" itemprop="author">{{ item.params.author }}</span>{% endif %}
+      <span class="cb-block--reviews-compact__text" itemprop="reviewBody">{{ item.data.content }}</span>
+    </div>
+  {% endfor %}
+</div>

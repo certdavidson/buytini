@@ -1,0 +1,17 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--images_carousel cb-block--images_carousel-coverflow {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-icf-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide cb-block--images_carousel-coverflow__slide">
+          {% if img.data.url %}<a href="{{ img.data.url }}">{% endif %}
+          <img src="{{ img.image_resized ?? img.data.image }}" alt="{{ img.data.alt ?? '' }}">
+          {% if img.data.url %}</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-icf-{{ bid }}',{effect:'coverflow',grabCursor:true,centeredSlides:true,slidesPerView:'auto',coverflowEffect:{rotate:30,stretch:0,depth:120,modifier:1,slideShadows:false},navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-icf-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-icf-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-icf-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},autoplay:{{ params.autoplay ? '{delay:3500}' : 'false' }},loop:{{ (params.loop ?? true) ? 'true' : 'false' }}});}});</script>

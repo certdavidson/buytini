@@ -1,0 +1,46 @@
+/* Content Blocks Pro — blog_article / compact | © 2026 oc-kit.com */
+.cb-block--blog_article-compact {
+    --cb-ba-primary: #3498db;
+    --cb-ba-text: #2c3e50;
+    --cb-ba-muted: #5a6474;
+    --cb-ba-line: #eef2f7;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 12px;
+        margin: 0 -12px;
+        border-bottom: 1px solid var(--cb-ba-line);
+        text-decoration: none !important;
+        color: var(--cb-ba-text);
+        border-radius: 6px;
+        transition: background .15s, padding .2s;
+
+        &:last-child { border-bottom: 0; }
+
+        &:hover {
+            background: #f7f9fc;
+            padding-left: 18px;
+            .cb-block--blog_article-compact__name { color: var(--cb-ba-primary); }
+            .cb-block--blog_article-compact__bullet {
+                color: var(--cb-ba-primary);
+                transform: translateX(4px);
+            }
+        }
+    }
+    &__bullet {
+        flex-shrink: 0;
+        color: var(--cb-ba-primary);
+        font-weight: 800;
+        font-size: 18px;
+        line-height: 1;
+        transition: transform .2s ease, color .15s;
+    }
+    &__name {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 1.45;
+        transition: color .15s;
+    }
+}

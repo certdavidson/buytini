@@ -1,0 +1,199 @@
+{# Content Blocks Pro — settings modal (block/row/col/element) | © 2026 oc-kit.com | https://oc-kit.com #}
+<div class="cb-modal-backdrop" id="cb-modal-settings" hidden>
+  <div class="cb-modal cb-modal-lg">
+
+    <div class="cb-modal-header">
+      <span id="cb-modal-settings-title">{{ i18n.modal_title_block }}</span>
+      <button type="button" class="cb-modal-close" data-dismiss="cb-modal-settings">&times;</button>
+    </div>
+
+    <div class="cb-modal-body cb-modal-body-flat">
+
+      {# ── Style section ───────────────────────────────────────────────────── #}
+      <div class="ok-panel">
+        <div class="ok-panel-header">
+          <h4 class="ok-panel-title"><i data-lucide="paintbrush"></i> {{ i18n.tab_style }}</h4>
+        </div>
+        <div class="ok-panel-body cb-modal-section">
+        <div class="cb-settings-grid">
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_bg_color }}</label>
+            <input type="text" class="ok-input ok-input-sm coloris" id="ms-bg-color" placeholder="transparent">
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_text_color }}</label>
+            <input type="text" class="ok-input ok-input-sm coloris" id="ms-text-color" placeholder="inherit">
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_font_size }}</label>
+            <div class="cb-range-wrap">
+              <input type="range" class="cb-range" id="ms-font-size-range" min="0" max="72" step="1" value="0">
+              <input type="text" class="ok-input ok-input-sm cb-num-input-sm" id="ms-font-size" placeholder="px">
+            </div>
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_font_weight }}</label>
+            <select class="ok-input ok-input-sm" id="ms-font-weight">
+              <option value="">—</option>
+              <option value="300">Light (300)</option>
+              <option value="400">Normal (400)</option>
+              <option value="500">Medium (500)</option>
+              <option value="600">Semi-bold (600)</option>
+              <option value="700">Bold (700)</option>
+            </select>
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_text_align }}</label>
+            <select class="ok-input ok-input-sm" id="ms-text-align">
+              <option value="">—</option>
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+              <option value="justify">Justify</option>
+            </select>
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_border_radius }}</label>
+            <div class="cb-range-wrap">
+              <input type="range" class="cb-range" id="ms-border-radius-range" min="0" max="50" step="1" value="0">
+              <input type="text" class="ok-input ok-input-sm cb-num-input-sm" id="ms-border-radius" placeholder="px">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="cb-settings-grid cb-settings-grid-3">
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_padding }} <span class="ok-text-muted ok-text-sm">(T R B L)</span></label>
+            <div class="cb-spacing-inputs">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-pt" placeholder="T">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-pr" placeholder="R">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-pb" placeholder="B">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-pl" placeholder="L">
+            </div>
+          </div>
+
+          <div class="ok-form-group">
+            <label class="form-label">{{ i18n.entry_margin }} <span class="ok-text-muted ok-text-sm">(T R B L)</span></label>
+            <div class="cb-spacing-inputs">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-mt" placeholder="T">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-mr" placeholder="R">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-mb" placeholder="B">
+              <input type="text" class="ok-input ok-input-sm cb-spacing-input" id="ms-ml" placeholder="L">
+            </div>
+          </div>
+        </div>
+
+        <div class="ok-form-group">
+          <label class="form-label">{{ i18n.entry_border }}</label>
+          <div class="cb-border-inputs">
+            <select class="ok-input ok-input-sm cb-border-width" id="ms-border-width">
+              <option value="">—</option>
+              <option value="1px">1px</option>
+              <option value="2px">2px</option>
+              <option value="3px">3px</option>
+              <option value="4px">4px</option>
+              <option value="5px">5px</option>
+              <option value="6px">6px</option>
+              <option value="8px">8px</option>
+              <option value="10px">10px</option>
+            </select>
+            <select class="ok-input ok-input-sm cb-border-style" id="ms-border-style">
+              <option value="">—</option>
+              <option value="solid">solid</option>
+              <option value="dashed">dashed</option>
+              <option value="dotted">dotted</option>
+              <option value="double">double</option>
+              <option value="none">none</option>
+            </select>
+            <input type="text" class="ok-input ok-input-sm coloris cb-border-color" id="ms-border-color" placeholder="#cccccc">
+          </div>
+          <input type="hidden" id="ms-border" value="">
+        </div>
+
+        </div>{# /ok-panel-body #}
+      </div>{# /ok-panel Style #}
+
+      {# ── Class section ───────────────────────────────────────────────────── #}
+      <div class="ok-panel">
+        <div class="ok-panel-header">
+          <h4 class="ok-panel-title"><i data-lucide="code"></i> {{ i18n.tab_class }}</h4>
+        </div>
+        <div class="ok-panel-body cb-modal-section ok-grid-2">
+
+        {% if presets|length > 0 %}
+        <div class="ok-form-group">
+          <label class="form-label">{{ i18n.entry_preset }}</label>
+          <select class="ok-input ok-input-sm" id="ms-preset">
+            <option value="">{{ i18n.entry_no_preset }}</option>
+            {% for group_name, group_presets in presets_grouped %}
+              {% if group_name %}
+              <optgroup label="{{ group_name }}">
+                {% for preset in group_presets %}
+                <option value="{{ preset.classes }}">{{ preset.name }}</option>
+                {% endfor %}
+              </optgroup>
+              {% else %}
+              {% for preset in group_presets %}
+              <option value="{{ preset.classes }}">{{ preset.name }}</option>
+              {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <div class="ok-form-group">
+          <label class="form-label">{{ i18n.entry_custom_class }}</label>
+          <input type="text" class="ok-input ok-input-sm" id="ms-custom-class"
+            placeholder="my-class another-class">
+        </div>
+
+        </div>{# /ok-panel-body #}
+      </div>{# /ok-panel Class #}
+
+      {# ── Display section ─────────────────────────────────────────────────── #}
+      <div class="ok-panel" id="ms-display-panel">
+        <div class="ok-panel-header">
+          <h4 class="ok-panel-title"><i data-lucide="eye"></i> {{ i18n.tab_display }}</h4>
+        </div>
+        <div class="ok-panel-body cb-modal-section">
+
+        <p class="ok-help-text ok-mb-3">{{ i18n.param_device_display }}</p>
+        <div class="cb-device-checks">
+          <label class="cb-device-check">
+            <input type="checkbox" id="ms-hide-mobile">
+            <i data-lucide="smartphone"></i> {{ i18n.device_mobile }}
+          </label>
+          <label class="cb-device-check">
+            <input type="checkbox" id="ms-hide-tablet">
+            <i data-lucide="tablet"></i> {{ i18n.device_tablet }}
+          </label>
+          <label class="cb-device-check">
+            <input type="checkbox" id="ms-hide-desktop">
+            <i data-lucide="monitor"></i> {{ i18n.device_desktop }}
+          </label>
+        </div>
+
+        </div>{# /ok-panel-body #}
+      </div>{# /ok-panel Display #}
+
+    </div>{# /cb-modal-body #}
+
+    <div class="cb-modal-footer">
+      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm" id="cb-modal-settings-apply">
+        <i data-lucide="check"></i> {{ i18n.button_apply }}
+      </button>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm" data-dismiss="cb-modal-settings">
+        {{ i18n.button_cancel }}
+      </button>
+    </div>
+
+  </div>{# /cb-modal #}
+</div>{# /cb-modal-backdrop #}

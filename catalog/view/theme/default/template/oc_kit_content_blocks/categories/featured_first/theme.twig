@@ -1,0 +1,20 @@
+<div class="cb-block cb-block--categories cb-block--categories-featured_first {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-block--categories-featured_first__grid">
+    {% for cat in categories %}
+      {% if loop.first %}
+        <a href="{{ cat.href }}" class="cb-block--categories-featured_first__main">
+          <div class="cb-block--categories-featured_first__main-img"><img src="{{ cat.image }}" alt="{{ cat.name }}"></div>
+          <div class="cb-block--categories-featured_first__main-body">
+            <div class="cb-block--categories-featured_first__main-name">{{ cat.name }}</div>
+            <div class="cb-block--categories-featured_first__main-sub">Переглянути категорію</div>
+          </div>
+        </a>
+      {% else %}
+        <a href="{{ cat.href }}" class="cb-block--categories-featured_first__small">
+          <div class="cb-block--categories-featured_first__small-img"><img src="{{ cat.image }}" alt="{{ cat.name }}"></div>
+          <div class="cb-block--categories-featured_first__small-name">{{ cat.name }}</div>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

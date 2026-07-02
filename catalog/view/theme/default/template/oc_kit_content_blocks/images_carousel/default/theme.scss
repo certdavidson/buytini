@@ -1,0 +1,39 @@
+/* Content Blocks Pro — images_carousel / default (logo/banner strip) */
+.cb-block--images_carousel-default {
+    --cb-ic-primary: #3498db;
+    --cb-ic-nav: #c8d0db;
+    --cb-ic-nav-h: #5a6474;
+
+    .cb-swiper { padding: 4px 56px 32px; }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: var(--cb-ic-nav);
+        --swiper-navigation-size: 26px;
+        transition: color .15s;
+        &:hover { color: var(--cb-ic-nav-h); }
+        &::after { font-weight: 800; }
+    }
+    .swiper-pagination-bullet { background: var(--cb-ic-nav); opacity: .4; }
+    .swiper-pagination-bullet-active { background: var(--cb-ic-primary); opacity: 1; }
+
+    &__slide {
+        height: 96px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        a, img { display: block; max-width: 100%; max-height: 100%; }
+        img {
+            object-fit: contain;
+            opacity: .75;
+            filter: grayscale(60%);
+            transition: opacity .25s, filter .25s, transform .25s;
+        }
+        a:hover img, &:hover > img {
+            opacity: 1;
+            filter: grayscale(0);
+            transform: scale(1.04);
+        }
+    }
+}

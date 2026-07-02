@@ -1,0 +1,268 @@
+{# Content Blocks Pro — block shell | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set block_id     = block.block_id     ?? 0 %}
+{% set block_name   = block.block_name   ?? '' %}
+{% set block_theme  = block.theme        ?? 'default' %}
+{% set block_params = block.params       ?? {} %}
+{% set block_status = block.status       ?? 1 %}
+{% set dev          = block_params.device_display ?? {} %}
+{% set structure    = type_def.structure ?? 'elements' %}
+{% set add_el_type  = type_def.add_element_type ?? '' %}
+{% set themes       = type_def.themes    ?? [{'name': 'default'}] %}
+
+<div class="cb-block cb-block--collapsed{% if not block_status %} cb-block--inactive{% endif %}" data-block-id="{{ block_id }}" data-block-type="{{ block_type }}"
+  data-structure="{{ structure }}" data-sort="{{ sort_order }}">
+
+  {# ── Block header ────────────────────────────────────────────────────────── #}
+  <div class="cb-block-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+
+    {# Status toggle #}
+    <label class="ok-toggle-wrap ok-toggle-sm cb-block-toggle mb-0" title="{{ i18n.entry_block_status }}">
+      <input type="checkbox" class="cb-block-status ok-toggle-input"{% if block_status %} checked{% endif %}>
+      <span class="ok-toggle-track"><span class="ok-toggle-thumb"></span></span>
+    </label>
+
+    <input type="text" class="cb-block-name ok-input ok-input-sm"
+      value="{{ block_name }}" placeholder="{{ i18n.entry_block_name }}">
+    <span class="ok-ml-1 cb-type-badge">
+      <img src="view/javascript/ockit/content-blocks/assets/img/types/{{ block_type }}.svg"
+           class="cb-type-badge-icon" alt="" onerror="this.style.display='none'">
+      {{ type_name }}
+    </span>
+
+    <button type="button" class="ok-btn ok-btn-default ok-btn-sm cb-btn-select-theme"
+      title="{{ i18n.entry_block_theme }}">
+      <i data-lucide="layout-grid"></i>
+      <span class="cb-block-theme-label">{{ block_theme }}</span>
+    </button>
+    <input type="hidden" class="cb-block-theme" value="{{ block_theme }}">
+
+    {# Device visibility buttons #}
+    <div class="cb-device-btns">
+      <button type="button" class="cb-device-btn{% if (dev.mob ?? 1) %} active{% endif %}"
+        data-device="mob" title="{{ i18n.device_mobile }}"><i data-lucide="smartphone"></i></button>
+      <button type="button" class="cb-device-btn{% if (dev.tablet ?? 1) %} active{% endif %}"
+        data-device="tablet" title="{{ i18n.device_tablet }}"><i data-lucide="tablet"></i></button>
+      <button type="button" class="cb-device-btn{% if (dev.desktop ?? 1) %} active{% endif %}"
+        data-device="desktop" title="{{ i18n.device_desktop }}"><i data-lucide="monitor"></i></button>
+    </div>
+
+    {# Responsive order #}
+    {% set resp_order = block_params.responsive_order ?? {} %}
+    <div class="cb-resp-order-wrap ok-mr-auto" title="{{ i18n.param_responsive_order }}">
+      {% for dkey, dicon in {'mobile': 'mobile', 'tablet': 'tablet', 'desktop': 'desktop'} %}
+        <div class="cb-type-device-item ok-flex">
+          <span class="cb-device-prepend"><i data-lucide="{% if dicon == 'mobile' %}smartphone{% elseif dicon == 'tablet' %}tablet{% else %}monitor{% endif %}"></i></span>
+          <input type="text" class="ok-input ok-input-sm cb-num-input-sm cb-resp-order-input"
+            data-device="{{ dkey }}" value="{{ resp_order[dkey] ?? '' }}" placeholder="0">
+        </div>
+      {% endfor %}
+    </div>
+
+    {# Shortcode — click on text to copy #}
+    {% if block_id > 0 %}
+      <div class="cb-shortcode-text ok-mr-auto" data-shortcode="[cb block_id={{ block_id }}]"
+        title="{{ i18n.button_copy_shortcode }}">[cb block_id={{ block_id }}]</div>
+    {% endif %}
+
+    <div class="cb-block-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-block-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-duplicate"
+        title="{{ i18n.button_duplicate }}"><i data-lucide="copy"></i></button>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-translate"
+        title="{{ i18n.button_translate }}"><i data-lucide="languages"></i></button>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-save-template"
+        title="{{ i18n.button_save_as_template }}"><i data-lucide="bookmark"></i></button>
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-collapse"
+        title="{{ i18n.button_collapse }}"><i data-lucide="chevron-down"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-block"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  {# ── Block body ──────────────────────────────────────────────────────────── #}
+  <div class="cb-block-body">
+
+    {# ── Per-block param overrides ─────────────────────────────────────────── #}
+    {% set has_overridable = false %}
+    {% set overridable_count = 0 %}
+    {% for pkey, pschema in type_def.params_schema ?? {} %}
+      {% if pkey != 'device_display' and pkey != 'responsive_order' %}
+        {% set has_overridable = true %}
+        {% set overridable_count = overridable_count + 1 %}
+      {% endif %}
+    {% endfor %}
+    {% if has_overridable %}
+    <div class="cb-block-params cb-block-params--collapsed">
+
+      {# ── Toggle buttons group ───────────────────────────────────────────────── #}
+      {% set has_toggles = false %}
+      {% for pkey, pschema in type_def.params_schema ?? {} %}
+        {% if pkey != 'device_display' and pkey != 'responsive_order' and pschema.type == 'toggle' %}
+          {% set has_toggles = true %}
+        {% endif %}
+      {% endfor %}
+      {% if has_toggles %}
+      <div class="cb-param-btn-group">
+        {% for pkey, pschema in type_def.params_schema ?? {} %}
+          {% if pkey != 'device_display' and pkey != 'responsive_order' and pschema.type == 'toggle' %}
+            {% set pval = block_params[pkey] is defined ? block_params[pkey] : pschema.default %}
+            <button type="button" class="cb-param-btn{% if pval %} active{% endif %}"
+              data-param-key="{{ pkey }}">{{ i18n[pschema.label_key] ?? pkey }}</button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# ── Number / device_inputs ────────────────────────────────────────────── #}
+      {% for pkey, pschema in type_def.params_schema ?? {} %}
+        {% if pkey != 'device_display' and pkey != 'responsive_order' and pschema.type != 'toggle' %}
+          {% set pval = block_params[pkey] is defined ? block_params[pkey] : pschema.default %}
+          <div class="cb-block-param-item" data-param-key="{{ pkey }}">
+            {% if pschema.type == 'number' %}
+              <div class="cb-param-num-wrap">
+                <span class="cb-param-label">{{ i18n[pschema.label_key] ?? pkey }}</span>
+                <input type="text" class="ok-input ok-input-sm cb-block-param-number" value="{{ pval }}" placeholder="{{ pschema.default }}">
+              </div>
+            {% elseif pschema.type == 'device_inputs' %}
+              <div class="cb-param-device-wrap">
+                <span class="cb-param-label">{{ i18n[pschema.label_key] ?? pkey }}</span>
+                <div class="cb-param-device-inputs">
+                  {% for dkey, dicon in {'mobile': 'mobile', 'tablet': 'tablet', 'desktop': 'desktop'} %}
+                    <div class="cb-type-device-item ok-flex">
+                      <span class="cb-device-prepend"><i data-lucide="{% if dicon == 'mobile' %}smartphone{% elseif dicon == 'tablet' %}tablet{% else %}monitor{% endif %}" title="{{ i18n['device_' ~ dkey] ?? dkey }}"></i></span>
+                      <input type="text" class="ok-input ok-input-sm cb-num-input-sm cb-block-param-device-input"
+                        data-device="{{ dkey }}"
+                        value="{{ pval[dkey] is defined ? pval[dkey] : pschema.default[dkey] }}"
+                        placeholder="{{ pschema.default[dkey] ?? 0 }}">
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% elseif pschema.type == 'multitag_product' or pschema.type == 'multitag_category' or pschema.type == 'multitag_article' %}
+              {% set ac_type = pschema.type == 'multitag_product' ? 'product' : (pschema.type == 'multitag_category' ? 'category' : 'article') %}
+              <div class="cb-param-multitag-wrap">
+                <span class="cb-param-label">{{ i18n[pschema.label_key] ?? pkey }}</span>
+                <div class="ok-multitag cb-block-param-multitag" data-param-key="{{ pkey }}" data-ac-type="{{ ac_type }}">
+                  <div class="ok-multitag-tags">
+                    {% for tag_id in pval ?? [] %}
+                    <span class="ok-multitag-tag" data-id="{{ tag_id }}">
+                      #{{ tag_id }}<button type="button" class="ok-multitag-remove" aria-label="remove">&times;</button>
+                    </span>
+                    {% endfor %}
+                  </div>
+                  <div class="ok-multitag-input-wrap">
+                    <input type="text" class="ok-input ok-input-sm ok-multitag-input cb-autocomplete-input" placeholder="...">
+                    <div class="cb-autocomplete-dropdown ok-multitag-dropdown" hidden></div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if overridable_count > 1 %}
+      <button type="button" class="cb-block-params-toggle">
+        <i data-lucide="chevron-down"></i>
+      </button>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {# ── Grid: rows → cols → elements ───────────────────────────────────────── #}
+    {% if structure == 'rows' %}
+
+    <div class="cb-rows-wrap" data-sortable="rows">
+      {% for row in block.rows ?? [] %}
+        {% include 'extension/module/ockit/content_blocks/partials/row.twig' with {
+          row:         row,
+          languages:   languages,
+          language_id: language_id,
+          presets:     presets,
+          catalog_url: catalog_url,
+          i18n:        i18n,
+          add_el_type: add_el_type
+        } only %}
+      {% endfor %}
+    </div>
+
+    <div class="cb-block-footer">
+      <button type="button" class="ok-btn ok-btn-info ok-btn-sm cb-btn-add-row ok-w-full">
+        <i data-lucide="plus"></i> {{ i18n.button_add_row }}
+      </button>
+    </div>
+
+    {# ── Accordion: cols as panels ────────────────────────────────────────────── #}
+    {% elseif structure == 'cols' %}
+
+    <div class="cb-cols-wrap cb-accordion-cols" data-sortable="cols">
+      {% for row in block.rows ?? [] %}
+        {% for col in row.cols ?? [] %}
+          {% include 'extension/module/ockit/content_blocks/items/accordion_col.twig' with {
+            col:         col,
+            languages:   languages,
+            language_id: language_id,
+            presets:     presets,
+            catalog_url: catalog_url,
+            placeholder: placeholder,
+            i18n:        i18n
+          } only %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="cb-block-footer">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-sm cb-btn-add-col ok-w-full">
+        <i data-lucide="plus"></i> {{ i18n.button_add_col }}
+      </button>
+    </div>
+
+    {# ── Flat elements (faq, reviews, products, etc.) ─────────────────────────── #}
+    {% else %}
+
+    <div class="cb-elements-wrap" data-sortable="elements">
+      {% for el in block.elements ?? [] %}
+        {% if el.element_type in ['text', 'image', 'html', 'video', 'divider', 'form'] %}
+          {% set el_tpl = 'extension/module/ockit/content_blocks/elements/' ~ el.element_type ~ '.twig' %}
+        {% else %}
+          {% set el_tpl = 'extension/module/ockit/content_blocks/items/' ~ el.element_type ~ '.twig' %}
+        {% endif %}
+        {% include el_tpl with {
+          element:     el,
+          languages:   languages,
+          language_id: language_id,
+          presets:     presets,
+          catalog_url: catalog_url,
+          placeholder: placeholder,
+          entity_edit_urls: entity_edit_urls,
+          i18n:        i18n
+        } only %}
+      {% endfor %}
+    </div>
+
+    {% if block_type == 'images_carousel' %}
+    <div class="ok-upload-zone cb-multi-upload-zone ok-mt-2" data-multi-add="carousel_image">
+      <i data-lucide="upload-cloud"></i>
+      <span class="ok-text-sm ok-text-muted">{{ i18n.text_drop_images_here ?? 'Перетягніть зображення сюди — створяться окремі елементи' }}</span>
+      <label class="ok-btn ok-btn-default ok-btn-xs ok-ml-1">
+        {{ i18n.button_browse ?? 'Огляд...' }}
+        <input type="file" class="cb-multi-upload-input" accept="image/*" multiple hidden>
+      </label>
+    </div>
+    {% endif %}
+
+    {% if add_el_type %}
+    <div class="cb-block-footer">
+      <button type="button" class="ok-btn ok-btn-primary ok-btn-sm cb-btn-add-element w-100"
+        data-el-type="{{ add_el_type }}">
+        <i data-lucide="plus"></i> {{ i18n.button_add_element }}
+      </button>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+  </div>{# /cb-block-body #}
+</div>{# /cb-block #}

@@ -1,0 +1,26 @@
+/* Content Blocks Pro — images_carousel / grid (square tiles swiper) */
+.cb-block--images_carousel-grid {
+    --cb-ic-primary: #3498db;
+    --cb-ic-nav: #c8d0db;
+
+    .cb-swiper { padding: 0 0 32px; }
+
+    .swiper-pagination-bullet { background: var(--cb-ic-nav); opacity: .4; }
+    .swiper-pagination-bullet-active { background: var(--cb-ic-primary); opacity: 1; }
+
+    &__slide {
+        aspect-ratio: 1/1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f4f7fb;
+
+        a { display: block; width: 100%; height: 100%; }
+        img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .45s ease;
+        }
+        a:hover img, &:hover > img { transform: scale(1.06); }
+    }
+}

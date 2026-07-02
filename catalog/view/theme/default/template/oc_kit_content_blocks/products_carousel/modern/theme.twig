@@ -1,0 +1,45 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-modern {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  <div class="swiper cb-swiper" id="cb-pcm-{{ bid }}">
+    <div class="swiper-wrapper">
+      {% for product in products %}
+        <div class="swiper-slide cb-block--products_carousel-modern__slide" itemscope itemtype="https://schema.org/Product">
+          <div class="cb-block--products_carousel-modern__image">
+            {% if product.stickers %}
+              <span class="cb-block--products_carousel-modern__stickers">
+                {% for sticker in product.stickers %}
+                  <span class="cb-block--products_carousel-modern__sticker"{% if sticker.css %} style="{{ sticker.css }}"{% endif %}>{{ sticker.text }}</span>
+                {% endfor %}
+              </span>
+            {% endif %}
+            <img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image">
+            <a href="{{ product.href }}" class="cb-block--products_carousel-modern__overlay" aria-label="{{ product.name }}"></a>
+            <span class="cb-block--products_carousel-modern__shade" aria-hidden="true"></span>
+            {% if params.show_price ?? true %}
+              <div class="cb-block--products_carousel-modern__price">
+                {% if product.special %}
+                  <span class="cb-block--products_carousel-modern__price-old">{{ product.price }}</span>
+                  <span class="cb-block--products_carousel-modern__price-special" itemprop="price">{{ product.special }}</span>
+                {% else %}
+                  <span class="cb-block--products_carousel-modern__price-default" itemprop="price">{{ product.price }}</span>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          <a href="{{ product.href }}" class="cb-block--products_carousel-modern__name" itemprop="name">{{ product.name }}</a>
+          {% if product.category %}<a href="{{ product.category_href ?? product.href }}" class="cb-block--products_carousel-modern__category">{{ product.category }}</a>{% endif %}
+          {% if params.show_button ?? true %}
+            {% if product.in_stock ?? true %}
+              <a href="{{ product.href }}" class="cb-block--products_carousel-modern__buy">Купити</a>
+            {% else %}
+              <span class="cb-block--products_carousel-modern__buy cb-block--products_carousel-modern__buy--out">Немає в наявності</span>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if params.pagination ?? true %}<div class="swiper-pagination"></div>{% endif %}
+    {% if params.arrows ?? true %}<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>{% endif %}
+  </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.Swiper){new Swiper('#cb-pcm-{{ bid }}',{slidesPerView:1.2,spaceBetween:16,navigation:{{ (params.arrows ?? true) ? "{nextEl:'#cb-pcm-" ~ bid ~ " .swiper-button-next',prevEl:'#cb-pcm-" ~ bid ~ " .swiper-button-prev'}" : 'false' }},pagination:{{ (params.pagination ?? true) ? "{el:'#cb-pcm-" ~ bid ~ " .swiper-pagination',clickable:true}" : 'false' }},breakpoints:{576:{slidesPerView:2,spaceBetween:20},768:{slidesPerView:3,spaceBetween:24},1280:{slidesPerView:{{ params.per_view ?? 4 }},spaceBetween:32}},autoplay:{{ params.autoplay ? '{delay:3500}' : 'false' }},loop:{{ (params.loop ?? false) ? 'true' : 'false' }}});}});</script>

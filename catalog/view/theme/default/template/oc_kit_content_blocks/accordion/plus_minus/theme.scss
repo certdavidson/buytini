@@ -1,0 +1,81 @@
+/* Content Blocks Pro — accordion / plus_minus | © 2026 oc-kit.com */
+.cb-block--accordion-plus_minus {
+    --cb-acc-primary: #3498db;
+    --cb-acc-text: #2c3e50;
+    --cb-acc-muted: #5a6474;
+    --cb-acc-line: #eaeef4;
+    --cb-acc-icon-bg: #f0f4fa;
+
+    &__item {
+        border-bottom: 1px solid var(--cb-acc-line);
+        &:first-child { border-top: 1px solid var(--cb-acc-line); }
+    }
+    &__head {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        background: transparent;
+        border: 0;
+        padding: 20px 0;
+        cursor: pointer;
+        font: inherit;
+        color: var(--cb-acc-text);
+        text-align: left;
+        transition: color .15s;
+
+        &:hover { color: var(--cb-acc-primary); }
+    }
+    &__title {
+        flex: 1;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    &__icon {
+        position: relative;
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--cb-acc-icon-bg);
+        transition: background .25s ease, transform .35s cubic-bezier(.65, .05, .36, 1);
+    }
+    &__h, &__v {
+        position: absolute;
+        background: var(--cb-acc-primary);
+        transition: background .25s ease, opacity .25s ease, transform .35s cubic-bezier(.65, .05, .36, 1);
+    }
+    &__h { left: 50%; top: 50%; width: 12px; height: 2px; transform: translate(-50%, -50%); }
+    &__v { left: 50%; top: 50%; width: 2px; height: 12px; transform: translate(-50%, -50%); }
+
+    &__head[aria-expanded="true"] &__icon {
+        background: var(--cb-acc-primary);
+        transform: rotate(180deg);
+    }
+    &__head[aria-expanded="true"] &__h { background: #fff; }
+    &__head[aria-expanded="true"] &__v {
+        background: #fff;
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    &__body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .3s ease;
+    }
+    &__body-inner {
+        overflow: hidden;
+        min-height: 0;
+        color: var(--cb-acc-muted);
+        padding: 0;
+    }
+    &__head[aria-expanded="true"] + &__body { grid-template-rows: 1fr; }
+    &__head[aria-expanded="true"] + &__body &__body-inner { padding-top: 4px; padding-bottom: 20px; }
+
+    .cb-el-text p:last-child,
+    .cb-el-html p:last-child { margin-bottom: 0; }
+}

@@ -1,0 +1,11 @@
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-compact {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-block--products_carousel-compact__track">
+    {% for product in products %}
+      <a href="{{ product.href }}" class="cb-block--products_carousel-compact__slide" itemscope itemtype="https://schema.org/Product">
+        <div class="cb-block--products_carousel-compact__img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></div>
+        <div class="cb-block--products_carousel-compact__name" itemprop="name">{{ product.name }}</div>
+        {% if params.show_price ?? true %}<div class="cb-block--products_carousel-compact__price" itemprop="price">{{ product.special ?? product.price }}</div>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+</div>

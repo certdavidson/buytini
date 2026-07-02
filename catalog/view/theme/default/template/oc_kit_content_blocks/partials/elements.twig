@@ -1,0 +1,137 @@
+{% for el in elements ?? [] %}
+  {% set el_css   = el.css_classes ?? '' %}
+  {% set el_style = el.inline_style ?? '' %}
+  {% set el_data  = el.data ?? {} %}
+  {% set el_pars  = el.params ?? {} %}
+
+  {% if el.element_type == 'text' %}
+    <div class="cb-el cb-el-text {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+      {{ el_data.content }}
+    </div>
+
+  {% elseif el.element_type == 'image' %}
+    <div class="cb-el cb-el-image {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+      {% if el_data.url %}<a href="{{ el_data.url }}">{% endif %}
+      <img src="{{ el.image_resized ? el.image_resized : ('image/' ~ el_data.image) }}" alt="{{ el_data.alt ?? '' }}"{% if el_data.title %} title="{{ el_data.title }}"{% endif %}>
+      {% if el_data.url %}</a>{% endif %}
+    </div>
+
+  {% elseif el.element_type == 'html' %}
+    <div class="cb-el cb-el-html {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+      {{ el_data.content }}
+    </div>
+
+  {% elseif el.element_type == 'divider' %}
+    <hr class="cb-el cb-el-divider {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+
+  {% elseif el.element_type == 'form' %}
+    {% set eid          = el.element_id ?? 0 %}
+    {% set fields       = el_pars.fields ?? [] %}
+    {% set submit_label = el_pars.submit_label ?: 'Submit' %}
+    {% set success_msg  = el_pars.success_message ?: '' %}
+    {% set max_size_kb  = el_pars.max_file_size ?? 5120 %}
+    <div class="cb-el cb-el-form {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+      <form class="cb-form" novalidate
+        data-element-id="{{ eid }}"
+        data-submit-url="{{ el_pars.submit_url ?? '' }}"
+        data-success="{{ success_msg }}"
+        data-redirect="{{ el_pars.redirect_url ?? '' }}"
+        data-max-size="{{ max_size_kb * 1024 }}">
+        {% for f in fields %}
+          {% set name  = f.name ?: 'field_' ~ loop.index %}
+          {% set label = f.label ?: name %}
+          {% set ph    = f.placeholder ?? '' %}
+          {% set req   = f.required ? ' required' : '' %}
+          {% set acc   = f.accept ?: '' %}
+          <div class="cb-form-field cb-form-field--{{ f.type }}">
+            {% if f.type != 'checkbox' %}
+              <label class="cb-form-label" for="cbf-{{ eid }}-{{ name }}">
+                {{ label }}{% if f.required %} <span class="cb-form-required">*</span>{% endif %}
+              </label>
+            {% endif %}
+
+            {% if f.type == 'textarea' %}
+              <textarea id="cbf-{{ eid }}-{{ name }}" name="{{ name }}" placeholder="{{ ph }}" rows="4"{{ req }}></textarea>
+
+            {% elseif f.type == 'select' %}
+              <select id="cbf-{{ eid }}-{{ name }}" name="{{ name }}"{{ req }}>
+                <option value="">{{ ph ?: '—' }}</option>
+                {% for line in (f.options ?? '')|split('\n') %}
+                  {% set parts = line|trim|split('|') %}
+                  {% if parts|length > 0 and parts[0]|trim %}
+                    <option value="{{ parts[0]|trim }}">{{ (parts[1] ?? parts[0])|trim }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+
+            {% elseif f.type == 'radio' %}
+              <div class="cb-form-radio-group">
+                {% for line in (f.options ?? '')|split('\n') %}
+                  {% set parts = line|trim|split('|') %}
+                  {% if parts|length > 0 and parts[0]|trim %}
+                    <label class="cb-form-radio">
+                      <input type="radio" name="{{ name }}" value="{{ parts[0]|trim }}"{{ req }}>
+                      <span>{{ (parts[1] ?? parts[0])|trim }}</span>
+                    </label>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            {% elseif f.type == 'checkbox' %}
+              <label class="cb-form-checkbox">
+                <input type="checkbox" id="cbf-{{ eid }}-{{ name }}" name="{{ name }}" value="1"{{ req }}>
+                <span>{{ label }}{% if f.required %} <span class="cb-form-required">*</span>{% endif %}</span>
+              </label>
+
+            {% elseif f.type == 'file' or f.type == 'image' %}
+              <div class="cb-form-file-wrap">
+                <label class="cb-form-file-label" for="cbf-{{ eid }}-{{ name }}">
+                  <span class="cb-form-file-btn">{{ ph ?: 'Choose file' }}…</span>
+                  <span class="cb-form-file-name"></span>
+                </label>
+                <input type="file" id="cbf-{{ eid }}-{{ name }}" name="{{ name }}"{% if acc %} accept="{{ acc }}"{% endif %}{{ req }}>
+                {% if f.type == 'image' %}<div class="cb-form-file-preview"></div>{% endif %}
+              </div>
+
+            {% else %}
+              <input type="{{ f.type }}" id="cbf-{{ eid }}-{{ name }}"
+                name="{{ name }}" placeholder="{{ ph }}"{{ req }}>
+            {% endif %}
+
+            <div class="cb-form-error" hidden></div>
+          </div>
+        {% endfor %}
+
+        <div class="cb-form-actions">
+          <button type="submit" class="cb-form-submit">
+            <span class="cb-form-submit-text">{{ submit_label }}</span>
+            <span class="cb-form-submit-loader" hidden>…</span>
+          </button>
+        </div>
+
+        <div class="cb-form-message" hidden></div>
+      </form>
+    </div>
+
+  {% elseif el.element_type == 'video' %}
+    <div class="cb-el cb-el-video {{ el_css }}"{% if el_style %} style="{{ el_style }}"{% endif %}>
+      {% set vid = el_data.video_id ?? '' %}
+      {% set local = el_data.local ?? '' %}
+      {% set poster = el_data.poster ?? (el_data.thumb ?? '') %}
+      {% set is_vertical = el_pars.vertical ?? 0 %}
+      {% set autoplay = el_pars.autoplay ?? 0 %}
+
+      <div class="cb-video-embed {% if is_vertical %}cb-ratio cb-ratio-9x16{% else %}cb-ratio cb-ratio-16x9{% endif %}">
+        {% if local %}
+          <video controls{% if autoplay %} autoplay muted{% endif %}{% if poster %} poster="{{ poster }}"{% endif %}>
+            <source src="{{ local }}">
+          </video>
+        {% elseif vid %}
+          <iframe src="https://www.youtube.com/embed/{{ vid }}{% if autoplay %}?autoplay=1&mute=1{% endif %}" allowfullscreen></iframe>
+        {% elseif el_data.url %}
+          <iframe src="{{ el_data.url }}" allowfullscreen></iframe>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

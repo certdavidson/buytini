@@ -1,0 +1,84 @@
+{# Content Blocks Pro — element: image | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id   = element.element_id ?? 0 %}
+{% set el_data = element.data       ?? {} %}
+
+<div class="cb-element" data-el-id="{{ el_id }}" data-el-type="image"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="image"></i> {{ i18n.el_image }}</span>
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-el-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+
+    {# Language switcher #}
+    {% if languages|length > 1 %}
+    <div class="cb-lang-tabs ok-mb-1">
+      {% for lang in languages %}
+      <button type="button" class="cb-lang-tab{% if lang.language_id == language_id %} active{% endif %}"
+        data-lang-id="{{ lang.language_id }}">{{ lang.code|upper|slice(0,2) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Per-language picker + meta row (alt/url/W/H) — image stored per language;
+       frontend falls back to first defined image if current language is empty. #}
+    {% for lang in languages %}
+      {% set lid       = lang.language_id %}
+      {% set img_src   = el_data[lid].image ?? '' %}
+      {% set img_thumb = img_src ? catalog_url ~ 'image/' ~ img_src : '' %}
+      <div class="cb-lang-panel{% if lid == language_id %} active{% endif %}" data-lang-id="{{ lid }}">
+
+        <div class="ok-upload-zone cb-image-row" data-lang="{{ lid }}">
+          <div class="cb-image-picker-wrap" data-cb-img-init>
+            <a href="" data-toggle="image" class="img-thumbnail cb-image-thumb-link">
+              <img src="{{ img_thumb ? img_thumb : placeholder }}" data-placeholder="{{ placeholder }}"
+                   class="img-responsive cb-image-thumb" alt="">
+            </a>
+            <input type="hidden" class="cb-image-val" data-lang="{{ lid }}" value="{{ img_src }}">
+          </div>
+          <div class="cb-image-side">
+            <label class="ok-btn ok-btn-default ok-btn-xs cb-btn-upload-image"
+              title="{{ i18n.button_upload_image }}">
+              <i data-lucide="upload"></i>
+              <input type="file" class="cb-image-file-input" accept="image/*" hidden>
+            </label>
+          </div>
+        </div>
+
+        <div class="cb-image-meta-row ok-mt-1">
+          <input type="text" class="ok-input ok-input-sm cb-image-alt flex-1"
+            data-lang="{{ lid }}"
+            value="{{ el_data[lid].alt ?? '' }}"
+            placeholder="Alt">
+          <input type="text" class="ok-input ok-input-sm cb-image-title flex-1"
+            data-lang="{{ lid }}"
+            value="{{ el_data[lid].title ?? '' }}"
+            placeholder="Title">
+          <input type="text" class="ok-input ok-input-sm cb-image-url flex-1"
+            data-lang="{{ lid }}"
+            value="{{ el_data[lid].url ?? '' }}"
+            placeholder="URL">
+          <input type="text" class="ok-input ok-input-sm cb-image-w"
+            data-lang="{{ lid }}"
+            value="{{ el_data[lid].width ?? '' }}"
+            placeholder="W" title="Ширина (px) — пусто = оригінал">
+          <input type="text" class="ok-input ok-input-sm cb-image-h"
+            data-lang="{{ lid }}"
+            value="{{ el_data[lid].height ?? '' }}"
+            placeholder="H" title="Висота (px) — пусто = оригінал">
+        </div>
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+</div>

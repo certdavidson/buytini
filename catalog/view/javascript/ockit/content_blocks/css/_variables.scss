@@ -1,0 +1,22 @@
+// Breakpoints (same scale as old simple_blocks)
+$sm : 'min-width: 640px';
+$md : 'min-width: 720px';
+$lg : 'min-width: 960px';
+$xl : 'min-width: 1140px';
+$xxl: 'min-width: 1320px';
+
+// Brand
+$color-green:  #00BC52;
+$color-red:    #E74C3C;
+$color-blue:   #3498DB;
+$color-yellow: #F5B50A;
+
+// Text / surfaces
+$cb-text:    #2c3e50;
+$cb-muted:   #8a94a6;
+$cb-border:  #e8ecf2;
+$cb-bg:      #f4f6f9;
+$cb-white:   #ffffff;
+
+$cb-primary:   $color-blue;
+$cb-primary-d: darken($color-blue, 8%);

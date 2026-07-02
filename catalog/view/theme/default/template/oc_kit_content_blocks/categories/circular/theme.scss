@@ -1,0 +1,63 @@
+/* Content Blocks Pro — categories / circular (rounded-square, larger) | © 2026 oc-kit.com */
+.cb-block--categories-circular {
+    --cb-cat-primary: #3498db;
+    --cb-cat-text: #2c3e50;
+    --cb-cat-border: #e8ecf2;
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px 22px;
+        justify-content: center;
+    }
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        width: 150px;
+        text-decoration: none !important;
+        color: var(--cb-cat-text);
+        transition: transform .25s ease;
+
+        @media (min-width: 768px) { width: 170px; }
+
+        &:hover { transform: translateY(-4px); }
+        &:hover &__img {
+            border-color: var(--cb-cat-primary);
+            box-shadow: 0 14px 28px rgba(52, 152, 219, .20);
+        }
+        &:hover &__img img { transform: scale(1.05); }
+        &:hover &__name { color: var(--cb-cat-primary); }
+    }
+    &__img {
+        width: 140px;
+        height: 140px;
+        border-radius: 20px;
+        border: 2px solid var(--cb-cat-border);
+        padding: 10px;
+        background: #fff;
+        overflow: hidden;
+        transition: border-color .25s, box-shadow .25s, background .25s;
+
+        @media (min-width: 768px) {
+            width: 160px;
+            height: 160px;
+            border-radius: 22px;
+        }
+
+        img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            transition: transform .35s ease;
+        }
+    }
+    &__name {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        line-height: 1.35;
+        transition: color .15s;
+    }
+}

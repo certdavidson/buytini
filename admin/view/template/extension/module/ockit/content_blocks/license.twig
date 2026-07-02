@@ -1,0 +1,97 @@
+{# Content Blocks | © 2026 oc-kit.com | https://oc-kit.com #}
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+
+    <div class="oc-kit">
+      <div class="ok-panel ok-panel-sticky">
+
+        <div class="ok-panel-header">
+          <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="ok-license-wrap">
+          <div class="ok-license-card">
+
+            <div class="ok-license-brand">
+              <div class="ok-license-icon"><i data-lucide="key-round"></i></div>
+              <div class="ok-license-title">{{ heading_title }}</div>
+              <div class="ok-license-link">
+                <a href="https://oc-kit.com" target="_blank">oc-kit.com</a> &middot;
+                v{{ module_version }}
+              </div>
+            </div>
+
+            <div class="ok-panel ok-py-5 ok-px-5">
+
+              <div class="ok-license-status">
+                {% if license_info.status == 'active' %}
+                  <span class="ok-badge ok-badge-success ok-badge-lg">
+                    <i data-lucide="check-circle" class="ok-icon-xs"></i> {{ text_license_status_active }}
+                  </span>
+                {% elseif license_info.status == 'trial' %}
+                  <span class="ok-badge ok-badge-warning ok-badge-lg">
+                    <i data-lucide="clock" class="ok-icon-xs"></i>
+                    {{ text_license_status_trial }}{% if license_info.trial_days_left is defined %} — {{ license_info.trial_days_left }}{% endif %}
+                  </span>
+                {% elseif license_info.status == 'expired' %}
+                  <span class="ok-badge ok-badge-danger ok-badge-lg">
+                    <i data-lucide="x-circle" class="ok-icon-xs"></i> {{ text_license_status_expired }}
+                  </span>
+                {% elseif license_info.status == 'invalid' %}
+                  <span class="ok-badge ok-badge-danger ok-badge-lg">
+                    <i data-lucide="x-circle" class="ok-icon-xs"></i> {{ text_license_status_invalid }}
+                  </span>
+                {% elseif license_info.status == 'grace' %}
+                  <span class="ok-badge ok-badge-warning ok-badge-lg">
+                    <i data-lucide="alert-triangle" class="ok-icon-xs"></i> {{ text_license_status_grace }}
+                  </span>
+                {% else %}
+                  <span class="ok-badge ok-badge-muted ok-badge-lg">
+                    <i data-lucide="help-circle" class="ok-icon-xs"></i> {{ text_license_status_not_validated }}
+                  </span>
+                {% endif %}
+              </div>
+
+              {% if license_info.domain is defined and license_info.domain %}
+              <div class="ok-text-sm ok-text-muted ok-mb-1">
+                {{ text_license_domain }}: <code>{{ license_info.domain }}</code>
+              </div>
+              {% endif %}
+              <div class="ok-text-sm ok-text-muted ok-mb-4">
+                {{ text_license_version }}: <strong>{{ license_info.version }}</strong>
+              </div>
+
+              <label class="form-label ok-fw-600 ok-mb-1">{{ entry_license_key }}</label>
+              <div class="ok-input-inline ok-mb-3">
+                <input type="text" id="cb-license-key" class="ok-input ok-mono ok-flex-1"
+                       value="{{ license_key }}"
+                       placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
+                       autocomplete="off">
+                <button type="button" id="cb-btn-activate" class="ok-btn ok-btn-primary"
+                        data-url="{{ action_activate }}">
+                  <i data-lucide="check" class="ok-icon-xs"></i> {{ button_activate }}
+                </button>
+              </div>
+
+              <div id="cb-license-msg" class="ok-help ok-mb-3"></div>
+
+              <a href="https://oc-kit.com" target="_blank" class="ok-btn ok-btn-default ok-btn-sm">
+                <i data-lucide="shopping-cart" class="ok-icon-xs"></i> {{ text_license_buy }}
+              </a>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{{ footer }}

@@ -1,0 +1,38 @@
+/* Content Blocks Pro — images_carousel / slide (full-width Swiper, 1 slide) */
+.cb-block--images_carousel-slide {
+    --cb-ic-primary: #3498db;
+    --cb-ic-nav: #c8d0db;
+
+    .cb-swiper {
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: #fff;
+        background: rgba(0, 0, 0, .35);
+        width: 42px; height: 42px;
+        border-radius: 50%;
+        backdrop-filter: blur(4px);
+        transition: background .15s;
+        &:hover { background: rgba(0, 0, 0, .55); }
+        &::after { font-size: 18px; font-weight: 800; }
+    }
+    .swiper-pagination-bullet {
+        background: rgba(255, 255, 255, .6);
+        opacity: 1;
+    }
+    .swiper-pagination-bullet-active { background: var(--cb-ic-primary); }
+
+    &__slide {
+        a { display: block; }
+        img {
+            width: 100%;
+            height: auto;
+            max-height: 520px;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}

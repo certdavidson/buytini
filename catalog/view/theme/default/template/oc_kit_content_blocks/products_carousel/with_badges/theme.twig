@@ -1,0 +1,29 @@
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-with_badges {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-grid cb-grid-4">
+    {% for product in products %}
+      <div class="cb-block--products_carousel-with_badges__slide" itemscope itemtype="https://schema.org/Product">
+        <a href="{{ product.href }}" class="cb-block--products_carousel-with_badges__img-wrap">
+          <img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image">
+          {% if product.stickers %}
+            <div class="cb-block--products_carousel-with_badges__stickers">
+              {% for sticker in product.stickers %}
+                <span class="cb-block--products_carousel-with_badges__st"{% if sticker.css %} style="{{ sticker.css }}"{% endif %}>{{ sticker.text }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </a>
+        <a href="{{ product.href }}" class="cb-block--products_carousel-with_badges__name" itemprop="name">{{ product.name }}</a>
+        {% if params.show_price ?? true %}
+          <div class="cb-block--products_carousel-with_badges__price">
+            {% if product.special %}
+              <span class="cb-block--products_carousel-with_badges__price-old">{{ product.price }}</span>
+              <span class="cb-block--products_carousel-with_badges__price-new" itemprop="price">{{ product.special }}</span>
+            {% else %}
+              <span itemprop="price">{{ product.price }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

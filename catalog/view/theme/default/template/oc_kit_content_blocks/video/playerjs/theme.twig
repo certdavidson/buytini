@@ -1,0 +1,10 @@
+{% set bid = block_id ? block_id : 0 %}
+<div class="cb-block cb-block--video cb-block--video-playerjs {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ bid }}">
+  {% for vid in videos %}
+    {% set pid = 'cb-pjs-' ~ bid ~ '-' ~ loop.index %}
+    <div class="cb-block--video-playerjs__item">
+      <div id="{{ pid }}" class="cb-block--video-playerjs__player"></div>
+      <script>document.addEventListener('DOMContentLoaded',function(){if(window.Playerjs){new Playerjs({id:'{{ pid }}',file:'{{ vid.video_src }}'{% if vid.video_poster %},poster:'{{ vid.video_poster }}'{% endif %}{% if vid.params.autoplay %},autoplay:1{% endif %}});}});</script>
+    </div>
+  {% endfor %}
+</div>

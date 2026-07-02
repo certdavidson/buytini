@@ -1,0 +1,38 @@
+/* Content Blocks Pro — faq / two_columns (side-by-side Q/A) */
+@import "../../../../../../javascript/ockit/content_blocks/css/variables.scss";
+
+.cb-block--faq-two_columns {
+    --cb-faq-text: #2c3e50;
+    --cb-faq-muted: #5a6474;
+    --cb-faq-line: #eaeef4;
+
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px 32px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--cb-faq-line);
+        &:first-child { border-top: 1px solid var(--cb-faq-line); }
+
+        @media ($lg) {
+            grid-template-columns: 5fr 7fr;
+            gap: 0 32px;
+            padding: 28px 0;
+        }
+    }
+    &__q {
+        font-weight: 700;
+        color: var(--cb-faq-text);
+        font-size: 16px;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        padding-right: 8px;
+    }
+    &__a {
+        color: var(--cb-faq-muted);
+        font-size: 15px;
+        line-height: 1.7;
+
+        p:last-child { margin-bottom: 0; }
+    }
+}

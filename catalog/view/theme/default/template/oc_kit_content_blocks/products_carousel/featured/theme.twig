@@ -1,0 +1,24 @@
+<div class="cb-block cb-block--products_carousel cb-block--products_carousel-featured {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-block--products_carousel-featured__grid">
+    {% for product in products %}
+      {% if loop.first %}
+        <a href="{{ product.href }}" class="cb-block--products_carousel-featured__main" itemscope itemtype="https://schema.org/Product">
+          <div class="cb-block--products_carousel-featured__main-img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></div>
+          <div class="cb-block--products_carousel-featured__main-body">
+            <span class="cb-block--products_carousel-featured__badge">Топ</span>
+            <h3 class="cb-block--products_carousel-featured__main-name" itemprop="name">{{ product.name }}</h3>
+            {% if params.show_price ?? true %}<div class="cb-block--products_carousel-featured__main-price" itemprop="price">{{ product.special ?? product.price }}</div>{% endif %}
+          </div>
+        </a>
+      {% else %}
+        <a href="{{ product.href }}" class="cb-block--products_carousel-featured__small" itemscope itemtype="https://schema.org/Product">
+          <div class="cb-block--products_carousel-featured__small-img"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></div>
+          <div class="cb-block--products_carousel-featured__small-body">
+            <div class="cb-block--products_carousel-featured__small-name" itemprop="name">{{ product.name }}</div>
+            {% if params.show_price ?? true %}<div class="cb-block--products_carousel-featured__small-price" itemprop="price">{{ product.special ?? product.price }}</div>{% endif %}
+          </div>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

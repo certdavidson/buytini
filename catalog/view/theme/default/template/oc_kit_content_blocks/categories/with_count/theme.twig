@@ -1,0 +1,13 @@
+<div class="cb-block cb-block--categories cb-block--categories-with_count {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+    <div class="cb-grid cb-grid-3">
+      {% for cat in categories %}
+        <a href="{{ cat.href }}" class="cb-block--categories-with_count__item">
+          <div class="cb-block--categories-with_count__img"><img src="{{ cat.image }}" alt="{{ cat.name }}"></div>
+          <div class="cb-block--categories-with_count__body">
+            <div class="cb-block--categories-with_count__name">{{ cat.name }}</div>
+            {% if cat.product_count is defined %}<div class="cb-block--categories-with_count__count">{{ cat.product_count }} товарів</div>{% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+</div>

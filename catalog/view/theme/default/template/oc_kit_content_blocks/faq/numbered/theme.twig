@@ -1,0 +1,13 @@
+<div class="cb-block cb-block--faq cb-block--faq-numbered {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for item in items %}
+    <div class="cb-block--faq-numbered__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="cb-block--faq-numbered__num" aria-hidden="true">{{ '%02d'|format(loop.index) }}</div>
+      <div class="cb-block--faq-numbered__body">
+        <div class="cb-block--faq-numbered__q" itemprop="name">{{ item.data.question }}</div>
+        <div class="cb-block--faq-numbered__a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <div itemprop="text">{{ item.data.answer }}</div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

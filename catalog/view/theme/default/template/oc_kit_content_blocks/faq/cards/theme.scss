@@ -1,0 +1,48 @@
+/* Content Blocks Pro — faq / cards */
+.cb-block--faq-cards {
+    --cb-faq-primary: #3498db;
+    --cb-faq-text: #2c3e50;
+    --cb-faq-muted: #5a6474;
+    --cb-faq-border: #e8ecf2;
+
+    &__item {
+        position: relative;
+        background: #fff;
+        border: 1px solid var(--cb-faq-border);
+        border-radius: 14px;
+        padding: 24px 26px;
+        transition: border-color .2s, box-shadow .25s, transform .25s;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 24px; bottom: 24px;
+            width: 3px;
+            background: var(--cb-faq-primary);
+            border-radius: 0 3px 3px 0;
+            opacity: 0;
+            transition: opacity .25s;
+        }
+        &:hover {
+            border-color: #cdd6e3;
+            box-shadow: 0 12px 28px rgba(20, 30, 50, .08);
+            transform: translateY(-2px);
+            &::before { opacity: 1; }
+        }
+    }
+    &__q {
+        font-weight: 700;
+        color: var(--cb-faq-text);
+        font-size: 16px;
+        line-height: 1.35;
+        margin-bottom: 12px;
+        letter-spacing: -0.01em;
+    }
+    &__a {
+        color: var(--cb-faq-muted);
+        font-size: 14px;
+        line-height: 1.6;
+
+        p:last-child { margin-bottom: 0; }
+    }
+}

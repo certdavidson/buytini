@@ -1,0 +1,23 @@
+{# Content Blocks Pro — element: divider | © 2026 oc-kit.com | https://oc-kit.com #}
+{% set el_id = element.element_id ?? 0 %}
+
+<div class="cb-element cb-element-divider" data-el-id="{{ el_id }}" data-el-type="divider"
+  data-sort="{{ element.sort_order ?? 0 }}">
+
+  <div class="cb-element-header">
+    <span class="ok-handle cb-handle"><i data-lucide="menu"></i></span>
+    <span class="ok-badge ok-badge-muted"><i data-lucide="minus"></i> {{ i18n.el_divider ?? 'Розділювач' }}</span>
+
+    <div class="cb-el-actions ok-ml-auto">
+      <button type="button" class="ok-btn ok-btn-default ok-btn-xs cb-btn-el-settings"
+        title="{{ i18n.button_settings }}"><i data-lucide="sliders-horizontal"></i></button>
+      <button type="button" class="ok-btn ok-btn-danger ok-btn-xs cb-btn-delete-el"
+        title="{{ i18n.button_delete }}"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>
+
+  <div class="cb-element-body">
+    <hr class="cb-divider-preview">
+  </div>
+
+</div>

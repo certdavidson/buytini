@@ -1,0 +1,104 @@
+/* Content Blocks Pro — products_carousel / default (clean Swiper grid) */
+.cb-block--products_carousel-default {
+    --cb-pc-primary: #3498db;
+    --cb-pc-text: #2c3e50;
+    --cb-pc-muted: #5a6474;
+    --cb-pc-price: #e74c3c;
+    --cb-pc-border: #e8ecf2;
+    --cb-pc-bg: #f7f9fc;
+    --cb-pc-btn-bg: #f3f4f6;
+    --cb-pc-btn-bg-h: #e8ecf2;
+    --cb-pc-btn-text: #111827;
+
+    .cb-swiper { padding: 4px 50px 38px; position: relative; }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: #c8d0db;
+        --swiper-navigation-size: 28px;
+        transition: color .15s;
+        &:hover { color: #5a6474; }
+        &::after { font-weight: 800; }
+    }
+    .swiper-pagination-bullet { opacity: .35; }
+    .swiper-pagination-bullet-active { background: var(--cb-pc-primary); opacity: 1; }
+
+    &__slide {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: 12px;
+        text-align: center;
+    }
+
+    &__img {
+        display: block;
+        aspect-ratio: 1/1;
+        background: var(--cb-pc-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 10px;
+
+        img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            transition: transform .35s ease;
+        }
+        &:hover img { transform: scale(1.04); }
+    }
+
+    &__name {
+        color: var(--cb-pc-text);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.35;
+        min-height: 36px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+                line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-decoration: none !important;
+        transition: color .15s;
+
+        &:hover { color: var(--cb-pc-primary); }
+    }
+
+    &__price {
+        color: var(--cb-pc-text);
+        font-weight: 800;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 8px;
+    }
+    &__price-old {
+        color: #b1b1b1;
+        font-weight: 400;
+        font-size: 13px;
+        text-decoration: line-through;
+    }
+    &__price-new { color: var(--cb-pc-price); }
+
+    &__btn {
+        display: block;
+        margin-top: auto;
+        padding: 10px 0;
+        background: var(--cb-pc-btn-bg);
+        color: var(--cb-pc-btn-text) !important;
+        text-decoration: none !important;
+        text-align: center;
+        font-size: 13.5px;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: background .15s;
+
+        &:hover { background: var(--cb-pc-btn-bg-h); }
+        &.is-out {
+            opacity: .65;
+            pointer-events: none;
+        }
+    }
+}

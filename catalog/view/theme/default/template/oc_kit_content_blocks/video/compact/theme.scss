@@ -1,0 +1,18 @@
+/* Content Blocks Pro — video / compact (centered focal player) */
+.cb-block--video-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__item {
+        max-width: 760px;
+        width: 100%;
+        margin: 0 auto;
+
+        .cb-video-embed {
+            border-radius: 12px;
+            background: #000;
+            box-shadow: 0 10px 28px rgba(20, 30, 50, .12);
+        }
+    }
+}

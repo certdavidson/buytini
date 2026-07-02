@@ -1,0 +1,24 @@
+<div class="cb-block cb-block--reviews cb-block--reviews-cards {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-grid cb-grid-3 cb-gap-5">
+    {% for item in items %}
+      <div class="cb-block--reviews-cards__item" itemscope itemtype="https://schema.org/Review">
+        <span class="cb-block--reviews-cards__quote" aria-hidden="true">❝</span>
+        {% if item.params.rating %}
+          <div class="cb-block--reviews-cards__stars">
+            {% for i in 1..5 %}<span class="cb-block--reviews-cards__star{% if i <= item.params.rating %} is-on{% endif %}">★</span>{% endfor %}
+          </div>
+        {% endif %}
+        <div class="cb-block--reviews-cards__text" itemprop="reviewBody">{{ item.data.content }}</div>
+        {% if item.params.author %}
+          <div class="cb-block--reviews-cards__foot">
+            <span class="cb-block--reviews-cards__avatar" aria-hidden="true">{{ item.author_initial }}</span>
+            <div class="cb-block--reviews-cards__meta">
+              <div class="cb-block--reviews-cards__author" itemprop="author">{{ item.params.author }}</div>
+              {% if item.params.date %}<div class="cb-block--reviews-cards__date">{{ item.params.date }}</div>{% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

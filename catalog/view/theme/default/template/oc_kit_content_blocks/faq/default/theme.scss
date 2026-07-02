@@ -1,0 +1,73 @@
+/* Content Blocks Pro — faq / default (collapse) */
+.cb-block--faq-default {
+    --cb-faq-primary: #3498db;
+    --cb-faq-text: #2c3e50;
+    --cb-faq-muted: #5a6474;
+    --cb-faq-line: #eaeef4;
+
+    &__item {
+        border-bottom: 1px solid var(--cb-faq-line);
+        &:first-child { border-top: 1px solid var(--cb-faq-line); }
+    }
+    &__q {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        background: transparent;
+        border: 0;
+        padding: 20px 4px;
+        cursor: pointer;
+        font: inherit;
+        color: var(--cb-faq-text);
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1.4;
+        text-align: left;
+        transition: color .15s;
+
+        &:hover { color: var(--cb-faq-primary); }
+    }
+    &__q-text { flex: 1; }
+    &__icon {
+        position: relative;
+        flex-shrink: 0;
+        width: 24px; height: 24px;
+        border-radius: 50%;
+        background: #f0f4fa;
+        transition: background .2s, transform .25s ease;
+
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            background: var(--cb-faq-primary);
+            transition: background .2s, opacity .25s ease, transform .25s ease;
+        }
+        &::before { width: 11px; height: 2px; transform: translate(-50%, -50%); }
+        &::after  { width: 2px; height: 11px; transform: translate(-50%, -50%); }
+    }
+    &__q[aria-expanded="true"] &__icon {
+        background: var(--cb-faq-primary);
+        &::before, &::after { background: #fff; }
+        &::after { opacity: 0; transform: translate(-50%, -50%) rotate(90deg); }
+    }
+
+    &__a {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .3s ease;
+    }
+    &__a-inner {
+        overflow: hidden;
+        min-height: 0;
+        color: var(--cb-faq-muted);
+        padding: 0 4px;
+        line-height: 1.65;
+    }
+    &__q[aria-expanded="true"] + &__a { grid-template-rows: 1fr; }
+    &__q[aria-expanded="true"] + &__a &__a-inner { padding-top: 2px; padding-bottom: 20px; }
+
+    p:last-child { margin-bottom: 0; }
+}

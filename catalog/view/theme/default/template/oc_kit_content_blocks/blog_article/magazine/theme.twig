@@ -1,0 +1,22 @@
+<div class="cb-block cb-block--blog_article cb-block--blog_article-magazine {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+{% if blog_error %}<!-- CB blog: {{ blog_error }} -->{% endif %}
+    <div class="cb-block--blog_article-magazine__layout">
+      {% for article in articles %}
+        {% if loop.first %}
+          <a href="{{ article.href }}" class="cb-block--blog_article-magazine__hero">
+            <div class="cb-block--blog_article-magazine__hero-img"><img src="{{ article.image }}" alt="{{ article.name }}"></div>
+            <div class="cb-block--blog_article-magazine__hero-body">
+              <span class="cb-badge">Головна стаття</span>
+              <h2 class="cb-block--blog_article-magazine__hero-name">{{ article.name }}</h2>
+              {% if article.description %}<div class="cb-block--blog_article-magazine__hero-desc">{{ article.description|striptags|slice(0, 200) }}…</div>{% endif %}
+            </div>
+          </a>
+        {% else %}
+          <a href="{{ article.href }}" class="cb-block--blog_article-magazine__small">
+            <div class="cb-block--blog_article-magazine__small-img"><img src="{{ article.image }}" alt="{{ article.name }}"></div>
+            <div class="cb-block--blog_article-magazine__small-name">{{ article.name }}</div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="cb-block cb-block--grid cb-block--grid-masonry {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  <div class="cb-block--grid-masonry__list">
+    {% for row in rows %}{% for col in row.cols %}
+      <div class="cb-block--grid-masonry__item {{ col.css_classes }}"{% if col.inline_style %} style="{{ col.inline_style }}"{% endif %}>
+        {% include 'default/template/oc_kit_content_blocks/partials/elements.twig' with { elements: col.elements_data } only %}
+      </div>
+    {% endfor %}{% endfor %}
+  </div>
+</div>

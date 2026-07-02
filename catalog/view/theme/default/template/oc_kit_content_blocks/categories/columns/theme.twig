@@ -1,0 +1,15 @@
+<div class="cb-block cb-block--categories cb-block--categories-columns {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+<div class="cb-grid cb-grid-7 cb-gap-8">
+    {% for cat in categories %}
+      <div class="cb-block--categories-columns__item">
+        <a href="{{ cat.href }}" class="cb-block--categories-columns__img">
+          <img src="{{ cat.image }}" alt="{{ cat.name }}">
+        </a>
+        <div class="cb-block--categories-columns__body">
+          <a href="{{ cat.href }}" class="cb-block--categories-columns__name">{{ cat.name }}</a>
+          {% if cat.description %}<div class="cb-block--categories-columns__desc">{{ cat.description|striptags|slice(0, 180) }}{% if cat.description|striptags|length > 180 %}…{% endif %}</div>{% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

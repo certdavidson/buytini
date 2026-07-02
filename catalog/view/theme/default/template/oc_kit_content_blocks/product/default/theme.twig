@@ -1,0 +1,20 @@
+<div class="cb-block cb-block--product cb-block--product-default {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+  {% for product in products %}
+    <div class="cb-block--product-default__card" itemscope itemtype="https://schema.org/Product">
+      <div class="cb-block--product-default__img-wrap">
+        <a href="{{ product.href }}"><img src="{{ product.image }}" alt="{{ product.name }}" itemprop="image"></a>
+      </div>
+      <div class="cb-block--product-default__body">
+        <h2 class="cb-block--product-default__name" itemprop="name"><a href="{{ product.href }}">{{ product.name }}</a></h2>
+        {% if params.show_description ?? false %}<div class="cb-block--product-default__desc" itemprop="description">{{ product.description|striptags|slice(0, params.description_length ?? 200) }}…</div>{% endif %}
+        {% if params.show_price ?? true %}
+          <div class="cb-block--product-default__price">
+            {% if product.special %}<span class="cb-block--product-default__price-old">{{ product.price }}</span><span class="cb-block--product-default__price-new" itemprop="price">{{ product.special }}</span>
+            {% else %}<span itemprop="price">{{ product.price }}</span>{% endif %}
+          </div>
+        {% endif %}
+        {% if params.show_button ?? true %}<a href="{{ product.href }}" class="cb-btn cb-block--product-default__btn">Купити</a>{% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

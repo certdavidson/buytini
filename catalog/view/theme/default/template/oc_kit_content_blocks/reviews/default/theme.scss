@@ -1,0 +1,51 @@
+/* Content Blocks Pro — reviews / default (clean open list) */
+.cb-block--reviews-default {
+    --cb-rv-text: #2c3e50;
+    --cb-rv-muted: #5a6474;
+    --cb-rv-light: #8a94a6;
+    --cb-rv-line: #eaeef4;
+    --cb-rv-star: #f5b50a;
+    --cb-rv-star-off: #d8dde6;
+
+    &__item {
+        padding: 22px 0;
+        border-bottom: 1px solid var(--cb-rv-line);
+        &:first-child { border-top: 1px solid var(--cb-rv-line); }
+    }
+    &__head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    &__author {
+        font-weight: 700;
+        color: var(--cb-rv-text);
+        font-size: 15px;
+        letter-spacing: -0.01em;
+    }
+    &__date {
+        color: var(--cb-rv-light);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+    &__stars {
+        display: inline-flex;
+        gap: 2px;
+        margin-left: auto;
+    }
+    &__star {
+        color: var(--cb-rv-star-off);
+        font-size: 16px;
+        line-height: 1;
+        &.is-on { color: var(--cb-rv-star); }
+    }
+    &__text {
+        color: var(--cb-rv-muted);
+        line-height: 1.65;
+        font-size: 14.5px;
+    }
+}

@@ -1,0 +1,9 @@
+<div class="cb-block cb-block--blog_article cb-block--blog_article-compact {{ css_classes }}"{% if inline_style %} style="{{ inline_style }}"{% endif %} data-block-id="{{ block_id ? block_id : 0 }}">
+{% if blog_error %}<!-- CB blog: {{ blog_error }} -->{% endif %}
+    {% for article in articles %}
+      <a href="{{ article.href }}" class="cb-block--blog_article-compact__item">
+        <span class="cb-block--blog_article-compact__bullet">›</span>
+        <span class="cb-block--blog_article-compact__name">{{ article.name }}</span>
+      </a>
+    {% endfor %}
+</div>
